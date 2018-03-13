@@ -416,6 +416,14 @@ inline bool valueEquivalent(int m1, int m2, int m3)
 
 
 // This function gets the largest month of the 3 
+// 
+// Because the function returns relatively quick
+// inlining the function saves runtime overhead by
+// treating the calling of the function in the source as a 
+// macro for the definition of the function, and embedding 
+// the instructions directly in the line of execution
+// instead of creating a new stack frame and pushing the arguments
+// to that stack frame
 inline int getmLarge(int m1, int m2, int m3)
 {
 	int maxval;
