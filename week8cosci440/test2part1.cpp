@@ -133,20 +133,30 @@ int main()
 
 std::string cwriteFile(void)
 {
+
+	// Gives user option to submit filename
+	// assume good input...
 	std::string filename;
 	std::cout << "Please enter filename to write records to: ";
 	std::cin >> filename;
 
+
+	// Opens file
 	std::fstream outputFile(filename,std::fstream::out);
 	
+
+	// Variables for input
 	std::string first, last, sOrN, yN;
 	int num1, num2, i = 1;
 	
+
+	// Print title
 	outputFile << std::right <<  std::setw(40) << "airline test\n";
 
 
 	do
 	{
+		// Start input sequence
 		std::cout <<"\n\nEntering for Record " << i++ << "\n";
 		std::cout <<"# # # # # # # # # # # # # # # # # # # # # # \n";
 
@@ -171,31 +181,49 @@ std::string cwriteFile(void)
 		std::cin >> num2;
 
 
-		outputFile << std::left << std::setw(20) << first+" "+last;
+
+		// Write formatted data
+		outputFile << std::left << std::setw(20) << last+" "+first;
 		outputFile << std::left << std::setw(10) << sOrN;
 		outputFile << std::left << std::setw(10) << num1;
 		outputFile << std::left << std::setw(10) << num2 << "\n";
 
 
+		// Ask for more input
 		std::cout << "Enter more records? (y/N):\n";
 		std::cin >> yN;
 
 
 	}while (yN == "Y" || yN == "y");
 
+
+	// Returns filename for read function to open file
 	return filename;
 }
+
+
+
+
+
+
+
+
 
 
 void creadFile(std::string filename)
 {
 	std::fstream inFile(filename, std::fstream::in);
 	std::string line;	
+	
+
 
 	std::cout << "\n\n\nDisplaying Records:\n\n";
 
+
+	// Get lines from file until EOF
 	while (std::getline(inFile, line))
 	{
+		// Print lines
 		std::cout << line << "\n";
 	}
 	return;
