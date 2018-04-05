@@ -13,7 +13,7 @@ Allison Dennis      S         8         3
 Greenblatt Richard  S         10        1         
 Davis Bob           S         10        2         
 Woods Bill          S         10        2         
-Borax M             S         9         2         
+Borax M T           S         9         2         
 Henry John          N         1         3         
 Stevenson E         N         1         3         
 Williams Ken        N         2         1         
