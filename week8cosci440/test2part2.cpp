@@ -86,7 +86,7 @@
 
 
 	
-THIS PROGRAM WILL BE PART 1	
+THIS PROGRAM WILL BE PART 2	
 
 
 (Section is commented out via the extended line comment syntax rather than //)
@@ -102,20 +102,34 @@ THIS PROGRAM WILL BE PART 1
 #include <string>
 #include <vector>
 #include <stdexcept>
+#include <iterator>
+#include <cstdio>
+#include <cstdlib>
+
+// Cast to void for No-op 
+#define NOOP (void)0
 
 #define NAME_FIELD_W 20
 #define OTHER_FIELD_W 10
+#define NUM_FIELD_1 0
+#define NUM_FIELD_2 1
 
+std::string cwriteFile(void);
+void creadFile(std::string filename);
+void printStructureData(struct Record *rec);
 
-
-void cwriteFile(void);
-
+struct Record
+{
+	std::string fName, lName, sN;
+	int num1, num2;
+};
 
 int main()
 {
 
-	cwriteFile();
-
+	// std::string filename = cwriteFile();
+	std::string filename = "records.txt";
+	creadFile(filename);
 
 	return 0;
 
@@ -128,7 +142,7 @@ int main()
 
 
 
-void cwriteFile(void)
+std::string cwriteFile(void)
 {
 
 	// Gives user option to submit filename
@@ -185,6 +199,7 @@ void cwriteFile(void)
 		outputFile << std::left << std::setw(OTHER_FIELD_W) << num1;
 		outputFile << std::left << std::setw(OTHER_FIELD_W) << num2 << "\n";
 
+
 		// Ask for more input
 		std::cout << "Enter more records? (y/N):\n";
 		std::cin >> yN;
@@ -195,7 +210,7 @@ void cwriteFile(void)
 
 
 	// Returns filename for read function to open file
-	return;
+	return filename;
 }
 
 
@@ -203,6 +218,139 @@ void cwriteFile(void)
 
 
 
+
+
+
+
+void creadFile(std::string filename)
+{
+	std::fstream inFile(filename, std::fstream::in);
+	std::string line, tempNumStr;	
+	int lineCount = 0;
+
+	std::string::iterator pos;
+
+
+
+	std::cout << "\n\n\nDisplaying Records:\n\n";
+
+
+	// Get lines from file until EOF
+	while (std::getline(inFile, line))
+	{
+			
+		if (lineCount++ == 0)
+		{
+			continue;
+		}
+
+		std::string c;
+		Record rec;
+		int i = 0;
+		// Iterate char by char in line retrieved from file;
+		for (pos = line.begin(); pos != line.end(); )
+		{
+			
+
+
+
+			// Store entries for name field
+			for (; i < NAME_FIELD_W;)
+			{
+				// Get last name untill space
+				// since all last names entered are one word
+				while (*pos != ' ')
+				{
+					c = *pos;
+					rec.lName.append(c);
+					++pos;
+					++i;
+				}
+				// Get the rest of the field and append
+				// char by char into first name
+				while (i < NAME_FIELD_W)
+				{
+					c = *pos;
+					rec.fName.append(c);
+					++i;
+					++pos;
+				}
+			}
+
+
+
+
+
+
+			// Get characters from N or S field	
+			for (i = 0; i < OTHER_FIELD_W; ++i, ++pos)
+			{
+				if (*pos != ' ')
+				{
+					c = *pos;
+					rec.sN.append(c);
+				}
+			}
+	
+
+
+			for (int z = 0; z < 2; ++z)
+			{
+
+				// Get characters from num1 field
+				for (i = 0; i < OTHER_FIELD_W; ++i, ++pos)
+				{
+					if (*pos != ' ')
+					{
+						c = *pos;
+						tempNumStr.append(c);
+					}
+				}
+
+				// Then store as integer in structure
+				// depending on field number
+				
+				if (z == NUM_FIELD_1)
+				{
+					rec.num1 = std::stoi(tempNumStr.c_str());
+				}
+				else
+				{
+					rec.num2 = std::stoi(tempNumStr.c_str());
+				}
+
+				tempNumStr.clear();
+
+			}	
+
+			
+		}
+
+
+		printStructureData(&rec);
+
+	}
+	return;
+
+}
+
+
+
+
+
+
+void printStructureData(struct Record *rec)
+{
+
+	
+	std::cout << std::left << std::setw(NAME_FIELD_W) << rec->lName+" "+rec->fName;
+	std::cout << std::left << std::setw(OTHER_FIELD_W) << rec->sN;
+	std::cout << std::left << std::setw(OTHER_FIELD_W) << rec->num1;
+	std::cout << std::left << std::setw(OTHER_FIELD_W) << rec->num2 << "\n";
+
+
+	return;
+}
 
 
 
