@@ -103,9 +103,6 @@ THIS PROGRAM WILL BE PART 1
 #include <vector>
 #include <stdexcept>
 
-#define MONTH_1 0 
-#define MONTH_2 1 
-#define MONTH_3 2
 
 
 
