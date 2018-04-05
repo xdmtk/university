@@ -138,7 +138,7 @@ std::string cwriteFile(void)
 	// assume good input...
 	std::string filename;
 	std::cout << "Please enter filename to write records to: ";
-	std::cin >> filename;
+	std::getline(std::cin, filename, '\n');
 
 
 	// Opens file
@@ -162,11 +162,11 @@ std::string cwriteFile(void)
 
 
 		std::cout << "Enter first name: ";
-		std::cin >> first;
+		std::getline(std::cin, first, '\n');
 
 
 		std::cout << "Enter last name: ";
-		std::cin >> last;
+		std::getline(std::cin, last, '\n');
 
 
 		std::cout << "Enter S or N: ";
@@ -192,6 +192,7 @@ std::string cwriteFile(void)
 		// Ask for more input
 		std::cout << "Enter more records? (y/N):\n";
 		std::cin >> yN;
+		std::cin.ignore();
 
 
 	}while (yN == "Y" || yN == "y");
