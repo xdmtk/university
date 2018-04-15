@@ -39,7 +39,13 @@
 
 
 
-#! Put togethet a multi file program based on this header.
+                                THIS IS THE SOURCE FILE FOR
+                                PROGRAM 1 OF THE WORK SHEET
+
+
+
+
+#! Put together a multi file program based on this header.
     One file named golf.cpp should provice suitable function definitons to match
     the protoypes in the header file. 
 
@@ -79,14 +85,39 @@
 int main()
 {
 
-
+    // Create golf structure nick
     golf nick;
     
-    if (setgolf(nick))
-    {
-        std::cout << "Functon succeeded" << std::endl
-    }
 
+    // Call interactive setgolf overload
+    if (!setgolf(nick))
+    {
+        // If function returns 0 value, alert user name field
+        // left blank
+        std::cout << "Warning: Name entry left blank ! \n";
+    }
+    
+
+    // Shows results of entry
+    showgolf(nick);
+
+    
+    // Call non-interactive overload of setgolf
+    setgolf(nick, "Nicky", 22);
+
+
+
+    // Show the results of the call
+    showgolf(nick);
+
+
+
+    // Set the handicap from the program
+    handicap(nick, 55);
+
+
+    // Show the results of the call
+    showgolf(nick);
 
 
 
@@ -101,7 +132,11 @@ int main()
 
 void setgolf(golf& g, const char * name, int hc)
 {
+    // None interactive version copys the supplied string
+    // from parameter to the referenced structure
     strcpy(g.fullname, name);
+
+    // Sets referenced structures handicap to supplied handicap
     g.handicap = hc;
 }
 
@@ -109,21 +144,31 @@ void setgolf(golf& g, const char * name, int hc)
 
 int setgolf(golf& g)
 {
+
+    // Declare temporary string and integer variable
+    // for easier data handling
     std::string name;
     int hc;
 
+    // Getline used to tolerate whitespace in name supplied
     std::cout << "Enter golfer name: ";
     std::getline(std::cin, name, '\n');
 
+    // Copy the name to structures fullname field,
+    // notice c_str() function on std::string variable
+    // is applied to properly convert std::string to char *
     strcpy(g.fullname, name.c_str());
    
+
+    // Gets handicap
     std::cout << "Enter handicap: ";
     std::cin >> hc;
 
     g.handicap = hc;
 
-
-    if (strlen(name.c_str()) == 0)
+    // size() function of std::string class is applied
+    // to get string length
+    if (name.size() == 0)
     {
        return 0;
     }
@@ -133,7 +178,22 @@ int setgolf(golf& g)
 }
 
 
-    
+// Self explanatory
+void handicap(golf& g,int hc)
+{
+    g.handicap = hc;
+}
+
+
+void showgolf(const golf& g)
+{
+    // Prints out field contents of referenced structure
+    std::cout << "Golfer name: " << g.fullname << std::endl;
+    std::cout << "Golfer handicap: " << g.handicap << std::endl;
+    std::cout << "\n\n";
+}
+
+
 
 
 

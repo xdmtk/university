@@ -76,7 +76,7 @@
 #include <stdexcept>
 #include <cstring>
 
-
+// Header guard set here
 #ifndef GOLF_H 
 #define GOLF_H 
 
