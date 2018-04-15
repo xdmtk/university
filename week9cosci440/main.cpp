@@ -39,9 +39,8 @@
                 
 
 
-                                      THIS IS THE SOURCE FILE
-                                      DEFINING ALL FUNCTIONS
-
+                                    THIS IS THE MAIN FILE
+                                    OF THE PROGRAM
 
 
 
@@ -110,133 +109,32 @@
 
 
 
-
-void SALES::setSales(Sales& s, const double ar[], int n)
+int main()
 {
-
-    // Initialize values
-    s.average = 0;
-
-    // Setting oppositie maximums/minimums for 
-    // initial values, so when comparing values in 'ar[]'
-    // the max and min values will be continuously updated
-    // every iteration with the correct value
-    s.max = DBL_MIN;
-    s.min = DBL_MAX;
-    
-
-
-    for (int i = 0; i < n; ++i)
-    {
-        // Copy data
-        s.sales[i] = ar[i];
-
-        // Add values to average total
-        s.average += ar[i];
-        
-
-        // If value is greater than the current maximum
-        // set new maximum value
-        if (ar[i] > s.max)
-        {
-            s.max = ar[i]; 
-        }
-
-
-        // If value is less than the current minimum
-        // set new minimum value
-        if (ar[i] < s.min)
-        {
-            s.min = ar[i];
-        }
-
-    }
-    
-    // Divide average cumulative value by
-    // number of values totaled.
-    s.average /= n;
-
-}
-
-
-
-
-
-void SALES::setSales(Sales& s)
-{
-    
+    SALES::Sales s1, s2;
     double ar[SALES::QUARTERS];
-    int n = 4;    
-    s.max = DBL_MIN;
-    s.min = DBL_MAX;
-
-    // Interactivity data entry    
-    for (int i = 0; i < SALES::QUARTERS; ++i)
-    {
-        std::cout << "Enter sales for quarter " << (i+1) << ": ";
-        std::cin >> ar[i];
-        std::cout << "\n";
-        
-    }
 
 
 
-
-// REUSABLE CODE SECTION
-
-    for (int i = 0; i < SALES::QUARTERS; ++i)
-    {
-        // Copy data
-        s.sales[i] = ar[i];
-
-        // Add values to average total
-        s.average += ar[i];
-        
-
-        // If value is greater than the current maximum
-        // set new maximum value
-        if (ar[i] > s.max)
-        {
-            s.max = ar[i]; 
-        }
+    // Usinig interactive overload of setSales
+    // in SALES namespace
+    SALES::setSales(s1);
+    SALES::showSales(s1);
 
 
-        // If value is less than the current minimum
-        // set new minimum value
-        if (ar[i] < s.min)
-        {
-            s.min = ar[i];
-        }
+    // Fill ar[] with arbitrary values
+    ar[0] = 324.21;
+    ar[1] = 2013.99;
+    ar[2] = 111.11;
+    ar[3] = 1009.23;
 
-    }
-    
-    // Divide average cumulative value by
-    // number of values totaled.
-    s.average /= n;
-
-
-}
+    SALES::setSales(s2, ar, 4);
+    SALES::showSales(s2);
 
 
 
+    return 0;
 
-
-void SALES::showSales(const Sales& s)
-{
-
-    std::cout << "\n\nDisplaying structure information\n";
-    std::cout << "########################################\n\n";
-    
-    // Iterate through sales array 
-    for (int i = 0; i < 4; ++i)
-    {
-        std::cout << "Quarter " << (i+1) << ": " << s.sales[i] << std::endl;
-    }
-
-
-    std::cout << "\n\nSales average: " << s.average << std::endl;
-    std::cout << "\n\nSales maximum: " << s.max << std::endl;
-    std::cout << "\n\nSales minimum: " << s.min << std::endl;
 
 
 }
