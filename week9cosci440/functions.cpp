@@ -67,15 +67,11 @@
 *///////////////////////////////////////////////////////////////////////////
 
 
-#include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <ios>
 #include <string>
-#include <vector>
-#include <stdexcept>
-#include <cfloat>
-
+#include <cstring>
 
 struct box
 {
@@ -87,7 +83,7 @@ struct box
 };
 
 void showBox(box &b);
-
+void setBox(box &b);
 
 
 
@@ -112,16 +108,23 @@ int main()
 // function rather than pass them as parameters
 void setBox(box &b)
 {
+
+    std::string maker;
+    std::cout << "\n\nEnter maker: ";
+    std::getline(std::cin, maker, '\n');
+
+    strcpy(b.maker, maker.c_str());
+
     std::cout << "\n\nEnter height: ";
     std::cin >> b.height;
 
 
     std::cout << "\n\nEnter width: ";
-    std::cin >> b.height;
+    std::cin >> b.width;
 
 
     std::cout << "\n\nEnter length: ";
-    std::cin >> b.height;
+    std::cin >> b.length;
 
     b.volume = (b.height * b.width * b.length);
     
@@ -132,10 +135,10 @@ void setBox(box &b)
 // Function that displays value of each member
 void showBox(box &b)
 {
-    std::cout << "\n\n" << box.maker << std::endl;
-    std::cout << box.height << std::endl;
-    std::cout << box.width << std::endl;
-    std::cout << box.length << std::endl;
-    std::cout << box.volume << std::endl;
+    std::cout << "\n\nMaker: " << b.maker << std::endl;
+    std::cout << "Height: " << b.height << std::endl;
+    std::cout << "Width: " << b.width << std::endl;
+    std::cout << "Length: " << b.length << std::endl;
+    std::cout << "Volume: " << b.volume << std::endl;
 }
 
