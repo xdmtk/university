@@ -4,9 +4,9 @@
 !	Programmer: 	Nick Martinez					     #
 #	Class:		COSCI 440 - TUE 5:45 - 10:00PM			     !
 !	Instructor:	Mari Rettke					     #
-#	Date:		4/13/2018					     !
+#	Date:		4/17/2018					     !
 !									     #
-#	                Lab Assignment: Namespaces                           !	
+#	                Lab Assignment: Classes                              !	
 !									     #
 #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 
@@ -39,9 +39,7 @@
                 
 
 
-                                      THIS IS THE SOURCE FILE
-                                      DEFINING ALL FUNCTIONS
-
+                                THIS IS THE MAIN FILE
 
 
 
