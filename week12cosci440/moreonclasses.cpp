@@ -92,6 +92,7 @@ int main()
     // Create Date object
     Date foo;
 
+    std::cout << "\n\nCurrent Date: \n";
     // Get the current date
     foo.init();
 
@@ -126,6 +127,9 @@ int main()
     //
     //
     //
+
+    std::cout << "\n\nAfter init with parameters: \n";
+
     foo.init(11-1, 25-1, 2018-1900);
     foo.print();
 
