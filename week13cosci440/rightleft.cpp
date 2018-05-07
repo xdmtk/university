@@ -94,15 +94,27 @@ int main()
 
 
     std::cout << "\n\n\n";
+
+    // We can use this for loop to iterate through the 3 lines to
+    // be printed
     for (int i = 0; i < 3; ++i)
     {
-        // Setting variable attributes for width requirements of terminal 
+
+
+        // Setting the lengths of the elements in the line
+	// both the numbers and the names
         numLenVar = numLen[i];
         nameLen = strlen(names[i]);
 
-        // 'twidth, total width of terminal
-        //  numLenVar, number of entries in row of multi-dim array numbers[][]
-        //  numLenVar-1, number of commas to put
+
+
+        //  twidth: total width of terminal
+        //  numLenVar: number of entries in row of multi-dim array numbers[][]
+        //  numLenVar-1: number of commas to put
+	//
+	//  If we subtract the total characters in all of the elements of the line from
+	//  the width of the terminal, we can figure out how many spaces are needed to fill up
+	//  the terminal width
         spaces = twidth - (nameLen + numLenVar + (numLenVar - 1));
 
 
@@ -116,13 +128,18 @@ int main()
             putchar(' ');
         }
 
+
+
         // Use x as index for numbers to print in numbers[][]
         // and use z as a counter to determine whether to output a 
         // comma or a number
         for (int x = z = 0; z < (numLenVar + ( numLenVar-1)); ++z)
         {
+
+	    // Only print a comma for every other iteration
             if ((z % 2) == 0)
             {
+		// Only increment the 'x' index for each number printed
                 printf("%c", numbers[i][x++]);
             }
             else
