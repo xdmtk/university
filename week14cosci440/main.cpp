@@ -74,33 +74,100 @@ int main()
     int x;
 
 
+
+// Setting
+///////////////////////////////////////////////////////////////
+//
+
+
     for (int i = 0; i < 20; ++i)
     {
         // If the element is sucessfully able to be set
-        // then print out the asterisj 
+        // then print out the asterisk
         if (test.setElement(i,9))
         {
             std::cout << "*" << std::endl;
+        
         }
+        // Otherwise print out which element is out of bounds
         else
         {
-
+            std::cout << "Element " << i << " is out of range" << std::endl;
+        }
     }
 
+//
+///////////////////////////////////////////////////////////////
+//
 
 
+
+
+
+
+
+
+// Getting 
+///////////////////////////////////////////////////////////////
+//
 
 
     for (int i = 0; i < 20; ++i)
     {
+        // Return the element specified by i
+        // and store into x, then print x
         x  = test.getElement(i);
-        std::cout << x << std::endl;
+       
+       
+        // getElement() returns the macro constant 
+        // OUT_OF_BOUNDS if the requested element is out of
+        // bounds of the array
+        //
+        // Therefore we test x for that value to determine whether we have
+        // a value to print or not
+        if (x == OUT_OF_BOUNDS)
+        {
+            std::cout << "Element " << i << " is out of range" << std::endl;
+        }
+        else
+        {
+            std::cout << x << std::endl;
+        }
     }
 
+//
+///////////////////////////////////////////////////////////////
+//
 
 
 
 
+
+// Trying to retrieve values out of bounds 
+///////////////////////////////////////////////////////////////
+//
+
+
+    // Starting at a valid range but ending 
+    // in an invalid range
+    for (int i = 10; i < 30; ++i)
+    {
+        x  = test.getElement(i);
+       
+       
+        if (x == OUT_OF_BOUNDS)
+        {
+            std::cout << "Element " << i << " is out of range" << std::endl;
+        }
+        else
+        {
+            std::cout << x << std::endl;
+        }
+    }
+
+//
+///////////////////////////////////////////////////////////////
+//
 
 
 

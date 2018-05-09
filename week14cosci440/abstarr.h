@@ -69,17 +69,31 @@ class IntegerList
         
     public:
         
+
+        // Overloaded constructors in case caller does not
+        // specify a size, a default size is set
         IntegerList(int size);
         IntegerList();
-        ~IntegerList();  
+
+        // Destructor
+        ~IntegerList();
+
+
+        // Two member functions  
         bool setElement(int pos, int value);
         int getElement(int pos);
 
 
 
     private:
+        
 
+        // A pointer to hold the address of the
+        // dynamically allocated array upon the calling
+        // of the constructor
         int *pVector;
+
+
         int numElements;
 };
 

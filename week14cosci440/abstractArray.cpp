@@ -42,10 +42,7 @@
 #! Write a program that will allow the user to type in a line of text. The line
     the user types in should be printed centered in the page
                 
-
-        THIS FILE CONTAINS THE DEFINTIONS OF THE FUNCTIONS DECLARED IN
-        THE HEADER FILE "ABSTARR.H"
-
+            THIS IS THE MAIN FILE
 
 
 
@@ -121,6 +118,7 @@ bool IntegerList::setElement(int pos, int value)
 
     // Set the value of the dynamically allocated array
     pVector[pos] = value;
+
 
     // Return true because validation was passed
     // successfully
