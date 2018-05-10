@@ -55,7 +55,7 @@
 
 #include <iostream>
 #include <iomanip>
-#include "abstarr.h"
+#include "integerList.h"
 
 
 
@@ -66,7 +66,7 @@ int main()
 {
 
 
-    // Create integer list object
+    // Create integer list object with SIZE as argument for constructor
     IntegerList test(SIZE);
 
     // Create temporary variable to hold return value
@@ -80,6 +80,10 @@ int main()
 //
 
 
+    std::cout << "\n\nStoring nines into array\n\n";
+    std::cout << "###################################\n";
+    
+    
     for (int i = 0; i < 20; ++i)
     {
         // If the element is sucessfully able to be set
@@ -107,9 +111,13 @@ int main()
 
 
 
-// Getting 
+// Getting - (Valid Values)
 ///////////////////////////////////////////////////////////////
 //
+
+
+    std::cout << "\n\nGetting valid values\n\n";
+    std::cout << "###################################\n";
 
 
     for (int i = 0; i < 20; ++i)
@@ -147,6 +155,11 @@ int main()
 ///////////////////////////////////////////////////////////////
 //
 
+
+
+
+    std::cout << "\n\nStarting at range 10 to 30, should produce 10 invalid range errors\n\n";
+    std::cout << "###################################\n";
 
     // Starting at a valid range but ending 
     // in an invalid range
