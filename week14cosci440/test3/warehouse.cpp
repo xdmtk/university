@@ -10,7 +10,7 @@
 !                       Function Source File    			     #
 #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 
-
+TODO: Fix the spacing issues for the warehouse lines
 
 		  _             _           _            _              _     
 		/\ \           /\ \        / /\        /\ \            /\ \
@@ -85,13 +85,19 @@
 
 
 #include <iostream>
-#include "warehouse.h"
 
 #include <cstdio>
+#include <cstdlib>
+
+
 #include <sys/ioctl.h>
 #include <unistd.h>
 
 
+#include "warehouse.h"
+
+
+// Function to get the current terminal width
 void Formatter::getTerminalWidth()
 {
     // IOCTL call to kernel requesting current 
@@ -108,6 +114,14 @@ void Formatter::getTerminalWidth()
 
 
 
+
+
+
+
+
+
+// Function to print a line with the text passed as a parameter
+// centered, and also print the specified amount of newlines
 void Formatter::centerText(std::string line, int newlines)
 {
     
@@ -151,6 +165,11 @@ void Formatter::centerText(std::string line, int newlines)
 }
 
 
+
+
+
+
+// This function may be deleted..
 void Formatter::rightJustify(std::string line, int newlines)
 {
     // This function is just for text that needs
@@ -194,6 +213,12 @@ void Formatter::rightJustify(std::string line, int newlines)
 
 
 
+
+
+
+
+// This function prints a line with three formatting justifications, text right justified
+// text left justified, and text centered between the two
 void Formatter::leftCenterRight(std::string left, std::string center, std::string right, int newlines)
 {
 
@@ -304,6 +329,11 @@ inline bool Formatter::checkLineFit(int l1, int l2, int l3)
 
 }
 
+
+
+
+
+
 // Overloaded instance for the center only printing function
 inline bool Formatter::checkLineFit(int l1)
 {
@@ -325,12 +355,15 @@ inline bool Formatter::checkLineFit(int l1)
 
 
 
+
+
+
+// Just a quick inline to print new lines at the end
+// of a formatted text function call
 inline void Formatter::printNewLines(int newlines)
 {
     
 
-    // Just a quick inline to print new lines at the end
-    // of a formatted text function call
     for (int i = 0; i < newlines; ++i)
     {
         std::cout << "\n";
@@ -339,6 +372,88 @@ inline void Formatter::printNewLines(int newlines)
     return;
 
 }
+
+
+
+
+
+
+
+
+// This function will take the integer data stored in the integer
+// arrays, and return them as a line of text to be printed
+// in the following print function
+void Formatter::formatDataText(int warehouse[], std::string &line, std::string &sum)
+{
+    std::string data;
+    int sumint = 0; 
+
+    // For each data member, append it to the string
+    for (int i = 0; i < STOCK_LIMIT; ++i)
+    {
+
+        // Total the data elements in sum
+        sumint += warehouse[i];
+
+
+
+        // First convert the data member to a character string
+        // stored in 'data' by the function itoa() 
+        data = std::to_string(warehouse[i]); 
+
+        // This switch is going to craft the center string
+        // with the appropriate amount of spacing 
+        switch (i)
+        {
+            case 0:
+                line.assign(data);
+                break;
+
+
+            case 4: 
+                (warehouse[i-1] >= 10) ? line.append("      ") : line.append("      ");
+                line.append(data);
+                line.append(" ");
+                break;
+
+
+            default:
+
+                (warehouse[i-1] >= 10) ? line.append("      ") : line.append("       ");
+                line.append(data);
+                break;
+
+        }
+
+    }
+    line.append("         ");
+
+
+    // Set the sum to the string
+    sum.assign(std::to_string(sumint));
+
+
+    
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

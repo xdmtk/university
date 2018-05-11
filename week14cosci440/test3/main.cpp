@@ -94,6 +94,14 @@
 
 int main()
 {
+    // Hardcoding data values
+    int _w1[STOCK_LIMIT]{14,15,5,0,16};
+    int _w2[STOCK_LIMIT]{15,20,25,0,5};
+    int _w3[STOCK_LIMIT]{25,25,40,30,20};
+    int _w4[STOCK_LIMIT]{5,3,10,0,10};
+
+
+
 
     // Print ZERO Report
     //
@@ -162,18 +170,38 @@ int main()
 
 
 
+    // Begin data lines
+
 
     left.assign("WAREHOUSE 1");
     
     // Here is a tricky part, we must get the data stored as integers
-    // into their character equivalents to be stored in the center string,
+    // into their character equivalents to be stored in the
+    // appropriate strings
     //
-
+    // So we pass the first warehouse data array, the center string to be
+    // filled with the data, and the right string to be filled with the sum
+    // of the data elements
+    align.formatDataText(_w1, center, right);
+      
     align.leftCenterRight(left,center,right,1);
 
 
 
+    left.assign("WAREHOUSE 2");
+    align.formatDataText(_w2, center, right);
+    align.leftCenterRight(left,center,right,1);
 
+
+
+    left.assign("WAREHOUSE 3");
+    align.formatDataText(_w3, center, right);
+    align.leftCenterRight(left,center,right,1);
+
+
+    left.assign("WAREHOUSE 4");
+    align.formatDataText(_w4, center, right);
+    align.leftCenterRight(left,center,right,1);
 
 
 

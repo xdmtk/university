@@ -89,9 +89,11 @@
 
 #include <iostream>
 #ifndef WAREHOUSE_H
+
+
 #define WAREHOUSE_H
 
-
+#define STOCK_LIMIT 5
 
 class Formatter
 {
@@ -105,7 +107,9 @@ class Formatter
         void centerText(std::string line, int newlines);
         void rightJustify(std::string line, int newlines);
         void leftCenterRight(std::string left, std::string center, std::string right, int newlines);
-        
+       
+        void formatDataText(int warehouse[], std::string &line, std::string &sum);
+
         inline bool checkLineFit(int l1, int l2, int l3);
         inline bool checkLineFit(int l1);
 
@@ -124,11 +128,6 @@ class Formatter
         // I could do a read/input for this but hardcoding it
         // takes out a lot of unnecessary code for the point
         // of this test
-
-        int _w1[5]{14,15,5,0,16};
-        int _w2[5]{15,20,25,0,5};
-        int _w3[5]{25,25,40,30,20};
-        int _w4[5]{5,3,10,0,10};
 
 
 };
