@@ -140,8 +140,36 @@ int main()
 
 
     center.assign("Stock#  Stock#  Stock#  Stock#  Stock#");
-    align.centerText(center, 2);
+    align.centerText(center, 1);
 
+
+    // Begin the left right and center calls
+
+    right.assign("TOTAL/WAREHOUSE");
+
+    // You might be wondering, why am I assigning a blank spot to the 
+    // left text?
+    //
+    // Well, this particular line has a strange format to it, being that
+    // the numbers are supposed to be centered, but theres only text on the right
+    //
+    // So in order to line everything up with the following lines, I've 
+    // put the same amount of spaces as in the word "WAREHOUSE *", since
+    // the next lines are going to have that as their spacing requirements
+    left.assign("            ");
+    center.assign("  1       2       3       4       5 ");
+    align.leftCenterRight(left,center,right,1);
+
+
+
+
+    left.assign("WAREHOUSE 1");
+    
+    // Here is a tricky part, we must get the data stored as integers
+    // into their character equivalents to be stored in the center string,
+    //
+
+    align.leftCenterRight(left,center,right,1);
 
 
 
