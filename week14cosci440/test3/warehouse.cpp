@@ -408,6 +408,17 @@ void Formatter::formatDataText(int warehouse[], std::string &line, std::string &
 
         // This switch is going to craft the center string
         // with the appropriate amount of spacing 
+        //
+        // The gist of this switch statement is that, the first data item
+        // simply gets appended to the string, then the next 3 data items,
+        // being the middle data items, get appended witha particular amount of 
+        // spacing that matches the "Stock #" spacing
+        //
+        // Then we calculate for numbers less than 10 requiring an
+        // extra space to fill a width requirement, in line 440
+        //
+        // The last line is essentially the same except without the trailing
+        // space after the data item
         switch (i)
         {
             case 0:
@@ -434,9 +445,16 @@ void Formatter::formatDataText(int warehouse[], std::string &line, std::string &
             line.append(" ");
         }
     }
+
+    // This final append is necessary for the centering process to work
     line.append("        ");
 
-    // Set the sum to the string
+
+
+
+    // Setting the sum of the data items to a string
+    // then appending it to the 'right' parameter 
+    // to be crafted for the following format function
     sum.assign(std::to_string(sumint));
     int spaceToAppend = 3 - sum.size();
     for( int i = 0; i < spaceToAppend; ++i)
@@ -474,4 +492,4 @@ void Formatter::formatDataText(int warehouse[], std::string &line, std::string &
 
 
 
-
+Fix the spacing issues for the warehouse lines
