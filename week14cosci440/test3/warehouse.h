@@ -104,6 +104,11 @@
 #define ITEM_TOTALS 1
 #define ITEM_LTT 2
 
+#define PRINT_ZERO_REPORT 1
+#define PRINT_LTT_REPORT 2
+#define QUIT_PROGRAM 3
+
+
 class Formatter
 {
 

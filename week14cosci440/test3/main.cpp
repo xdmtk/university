@@ -11,6 +11,8 @@
 #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 
 
+TODO: Start at line 285
+
 
 		  _             _           _            _              _
 		/\ \           /\ \        / /\        /\ \            /\ \
@@ -112,9 +114,9 @@ int main()
     int choice;
     menu(choice);
 
-    while (choice != 3)
+    while (choice != QUIT_PROGRAM)
     {
-        if (choice == 1)
+        if (choice == PRINT_ZERO_REPORT)
         {
             system("clear");
             // Print ZERO Report
@@ -252,15 +254,67 @@ int main()
             std::cin.ignore();
             std::getline(std::cin, none);
         }
+
+
+        else if (choice == PRINT_LTT_REPORT)
+        {
+
+            // This section is a duplicate from the previous report
+            // and wont be re-explained here
+            system("clear");
+            Formatter align;
+
+            align.getTerminalWidth();
+            std::string left, right, center;
+
+
+            center.assign("QUANTUM CORP");
+            align.centerText(center,3);
+
+            center.assign("ZERO STOCK REPORT");
+            align.centerText(center,1);
+
+            center.assign("04/07/17");
+            align.centerText(center, 2);
+
+            left.assign("WAREHOUSE");
+            right.assign("ITEM");
+            center.assign(" ");
+            align.leftCenterRight(left,center,right,1);
+
+            std::cout << "NUMBER\n";
+
+
+        // Left off here
+
+
+
+
+
+            std::cout << "\n\n\nPress any key to return to menu...";
+            std::string none;
+            std::cin.ignore();
+            std::getline(std::cin, none);
+
+
+
+
+        }
+        else
+        {
+            system("clear");
+            std::cout << "Invalid choice\n\n\n";
+
+            std::cout << "Press any key to return to menu...";
+            std::string none;
+            std::cin.ignore();
+            std::getline(std::cin, none);
+
+        }
         system("clear");
         menu(choice);
+
     }
-
-
-
-
-
-
 
 
 
