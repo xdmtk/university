@@ -147,7 +147,7 @@ int main()
     align.centerText(center, 2);
 
 
-    center.assign("Stock#  Stock#  Stock#  Stock#  Stock#");
+    center.assign("Stock#   Stock#   Stock#   Stock#   Stock#");
     align.centerText(center, 1);
 
 
@@ -165,7 +165,7 @@ int main()
     // put the same amount of spaces as in the word "WAREHOUSE *", since
     // the next lines are going to have that as their spacing requirements
     left.assign("            ");
-    center.assign("  1       2       3       4       5 ");
+    center.assign("  1        2        3        4        5 ");
     align.leftCenterRight(left,center,right,1);
 
 

@@ -115,6 +115,7 @@ class Formatter
 
 
 
+        inline void printSpaces(int spaces);
         inline void printNewLines(int newlines);
 
 

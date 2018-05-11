@@ -10,7 +10,7 @@
 !                       Function Source File    			     #
 #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 
-TODO: Fix the spacing issues for the warehouse lines
+TODO: Fixed the spacing issue 
 
 		  _             _           _            _              _     
 		/\ \           /\ \        / /\        /\ \            /\ \
@@ -195,12 +195,8 @@ void Formatter::rightJustify(std::string line, int newlines)
     // Set spaces to the remaining width of the 
     // terminal minus the text to be printed 
     int spaces = _twidth - len;
- 
-    for (int i = 0; i < spaces; ++i)
-    {
-        putchar(' ');
-    }
-
+    printSpaces(spaces);
+    
     std::cout << line;
 
     printNewLines(newlines);
@@ -269,22 +265,16 @@ void Formatter::leftCenterRight(std::string left, std::string center, std::strin
   
 
     // Output spaces    
-    for (int i = 0; i < spaces; ++i)
-    {
-        putchar(' ');
-    }
-
+    printSpaces(spaces);
 
     // Print center text
     std::cout << center;
 
 
     // Output spaces    
-    for (int i = 0; i < spaces; ++i)
-    {
-        putchar(' ');
-    }
-   
+    printSpaces(spaces);
+
+
     // Output right text 
     std::cout << right;
 
@@ -374,6 +364,21 @@ inline void Formatter::printNewLines(int newlines)
 }
 
 
+// Just a quick inline to print new lines at the end
+// of a formatted text function call
+inline void Formatter::printSpaces(int spaces)
+{
+    
+
+    for (int i = 0; i < spaces; ++i)
+    {
+        std::cout << " ";
+    }
+
+    return;
+
+}
+
 
 
 
@@ -411,7 +416,7 @@ void Formatter::formatDataText(int warehouse[], std::string &line, std::string &
 
 
             case 4: 
-                (warehouse[i-1] >= 10) ? line.append("      ") : line.append("      ");
+                line.append("       ");
                 line.append(data);
                 line.append(" ");
                 break;
@@ -419,18 +424,25 @@ void Formatter::formatDataText(int warehouse[], std::string &line, std::string &
 
             default:
 
-                (warehouse[i-1] >= 10) ? line.append("      ") : line.append("       ");
+                line.append("       ");
                 line.append(data);
                 break;
 
         }
-
+        if (warehouse[i] < 10) 
+        {
+            line.append(" ");
+        }
     }
-    line.append("         ");
-
+    line.append("        ");
 
     // Set the sum to the string
     sum.assign(std::to_string(sumint));
+    int spaceToAppend = 3 - sum.size();
+    for( int i = 0; i < spaceToAppend; ++i)
+    {
+        sum.append(" ");
+    } 
 
 
     
