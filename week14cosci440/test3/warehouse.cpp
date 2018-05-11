@@ -388,82 +388,207 @@ inline void Formatter::printSpaces(int spaces)
 // This function will take the integer data stored in the integer
 // arrays, and return them as a line of text to be printed
 // in the following print function
-void Formatter::formatDataText(int warehouse[], std::string &line, std::string &sum)
+void Formatter::formatDataText(int dataArray[], std::string &center, std::string &right, int mode)
 {
-    std::string data;
-    int sumint = 0; 
 
-    // For each data member, append it to the string
-    for (int i = 0; i < STOCK_LIMIT; ++i)
+
+
+// 
+// Stock and Sum Line Priting Mode
+// ////////////////////////////////////////////////////////////////////////////
+// //
+// /
+//
+
+    if (mode == STOCK_AND_SUM)
     {
+        std::string data;
+        int sumint = 0; 
 
-        // Total the data elements in sum
-        sumint += warehouse[i];
-
-
-
-        // First convert the data member to a character string
-        // stored in 'data' by the function itoa() 
-        data = std::to_string(warehouse[i]); 
-
-        // This switch is going to craft the center string
-        // with the appropriate amount of spacing 
-        //
-        // The gist of this switch statement is that, the first data item
-        // simply gets appended to the string, then the next 3 data items,
-        // being the middle data items, get appended witha particular amount of 
-        // spacing that matches the "Stock #" spacing
-        //
-        // Then we calculate for numbers less than 10 requiring an
-        // extra space to fill a width requirement, in line 440
-        //
-        // The last line is essentially the same except without the trailing
-        // space after the data item
-        switch (i)
+        // For each data member, append it to the string
+        for (int i = 0; i < STOCK_LIMIT; ++i)
         {
-            case 0:
-                line.assign(data);
-                break;
+
+            // Total the data elements in sum
+            sumint += dataArray[i];
 
 
-            case 4: 
-                line.append("       ");
-                line.append(data);
-                line.append(" ");
-                break;
+
+            // First convert the data member to a character string
+            // stored in 'data' by the function itoa() 
+            data = std::to_string(dataArray[i]); 
+
+            // This switch is going to craft the center string
+            // with the appropriate amount of spacing 
+            //
+            // The gist of this switch statement is that, the first data item
+            // simply gets appended to the string, then the next 3 data items,
+            // being the middle data items, get appended witha particular amount of 
+            // spacing that matches the "Stock #" spacing
+            //
+            // Then we calculate for numbers less than 10 requiring an
+            // extra space to fill a width requirement, in line 440
+            //
+            // The last line is essentially the same except without the trailing
+            // space after the data item
+            switch (i)
+            {
+                case 0:
+                    center.assign(data);
+                    break;
 
 
-            default:
+                case 4: 
+                    center.append("       ");
+                    center.append(data);
+                    center.append(" ");
+                    break;
 
-                line.append("       ");
-                line.append(data);
-                break;
 
+                default:
+
+                    center.append("       ");
+                    center.append(data);
+                    break;
+
+            }
+            if (dataArray[i] < 10) 
+            {
+                center.append(" ");
+            }
         }
-        if (warehouse[i] < 10) 
+
+        // This final append is necessary for the centering process to work
+        center.append("        ");
+
+
+
+
+        // Setting the sum of the data items to a string
+        // then appending it to the 'right' parameter 
+        // to be crafted for the following format function
+        right.assign(std::to_string(sumint));
+        int spaceToAppend = 3 - right.size();
+        for( int i = 0; i < spaceToAppend; ++i)
         {
-            line.append(" ");
-        }
+            right.append(" ");
+        } 
     }
 
-    // This final append is necessary for the centering process to work
-    line.append("        ");
+//
+// /
+// // 
+// End Stock and Sum Line Priting Mode
+// ////////////////////////////////////////////////////////////////////////////
+//
 
 
 
 
-    // Setting the sum of the data items to a string
-    // then appending it to the 'right' parameter 
-    // to be crafted for the following format function
-    sum.assign(std::to_string(sumint));
-    int spaceToAppend = 3 - sum.size();
-    for( int i = 0; i < spaceToAppend; ++i)
+
+
+
+
+
+// 
+// Item Totals Line Printing Mode 
+// ////////////////////////////////////////////////////////////////////////////
+// //
+// /
+//
+
+
+
+    else if (mode == ITEM_TOTALS)
     {
-        sum.append(" ");
-    } 
+        std::string data;    
 
+        for (int i = 0; i < STOCK_LIMIT; ++i)
+        {
 
     
+
+            data = std::to_string(dataArray[i]); 
+
+            switch (i)
+            {
+                case 0:
+                    center.assign(data);
+                    break;
+
+
+                case 4: 
+                    center.append("       ");
+                    center.append(data);
+                    center.append(" ");
+                    break;
+
+
+                default:
+
+                    center.append("       ");
+                    center.append(data);
+                    break;
+
+            }
+            if (dataArray[i] < 10) 
+            {
+                center.append(" ");
+            }
+        }
+
+        // This final append is necessary for the centering process to work
+        center.append("        ");
+
+        right.assign("    ");
+    }
+
+
+//
+// /
+// // 
+// End Stock and Sum Line Priting Mode
+// ////////////////////////////////////////////////////////////////////////////
+//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// 
+// Item Totals Line Printing Mode 
+// ////////////////////////////////////////////////////////////////////////////
+// //
+// /
+//
+
+
+
+    else if (mode == ITEM_LTT)
+    {
+
+
+
+    }
+
+    
+
+//
+// /
+// // 
+// End Stock and Sum Line Priting Mode
+// ////////////////////////////////////////////////////////////////////////////
+//
+
     return;
 }
 
@@ -492,4 +617,3 @@ void Formatter::formatDataText(int warehouse[], std::string &line, std::string &
 
 
 
-Fix the spacing issues for the warehouse lines

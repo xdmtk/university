@@ -93,7 +93,16 @@
 
 #define WAREHOUSE_H
 
+
+// Array limit macros
+#define WAREHOUSES 4
 #define STOCK_LIMIT 5
+
+
+// Formatting modes
+#define STOCK_AND_SUM 0
+#define ITEM_TOTALS 1
+#define ITEM_LTT 2
 
 class Formatter
 {
@@ -108,7 +117,7 @@ class Formatter
         void rightJustify(std::string line, int newlines);
         void leftCenterRight(std::string left, std::string center, std::string right, int newlines);
        
-        void formatDataText(int warehouse[], std::string &line, std::string &sum);
+        void formatDataText(int dataArray[], std::string &center, std::string &right, int mode);
 
         inline bool checkLineFit(int l1, int l2, int l3);
         inline bool checkLineFit(int l1);
