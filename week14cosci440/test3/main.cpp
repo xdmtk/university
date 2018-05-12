@@ -271,8 +271,8 @@ int main()
             center.assign("QUANTUM CORP");
             align.centerText(center,3);
 
-            center.assign("ZERO STOCK REPORT");
-            align.centerText(center,1);
+            center.assign("LESS THAN TEN REPORT");
+            align.centerText(center,2);
 
             center.assign("04/07/17");
             align.centerText(center, 2);
@@ -290,6 +290,8 @@ int main()
             align.formatDataText( stockLessTen, left, right, totalLessTen);
 
 
+
+            std::cout << "\n\nTOTAL ITEM NUMBERS LESS THAN TEN: " << totalLessTen;
 
             std::cout << "\n\n\nPress any key to return to menu...";
             std::string none;
