@@ -102,7 +102,6 @@
 // Formatting modes
 #define STOCK_AND_SUM 0
 #define ITEM_TOTALS 1
-#define ITEM_LTT 2
 
 #define PRINT_ZERO_REPORT 1
 #define PRINT_LTT_REPORT 2
@@ -123,6 +122,7 @@ class Formatter
         void leftCenterRight(std::string left, std::string center, std::string right, int newlines);
        
         void formatDataText(int dataArray[], std::string &center, std::string &right, int mode);
+        void formatDataText(int dataArray[][5], std::string &left, std::string &right, int &totalLessThanTen);
 
         inline bool checkLineFit(int l1, int l2, int l3);
         inline bool checkLineFit(int l1);

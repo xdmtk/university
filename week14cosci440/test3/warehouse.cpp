@@ -561,46 +561,65 @@ void Formatter::formatDataText(int dataArray[], std::string &center, std::string
 
 
 
-
-
-
-// 
-// Item Totals Line Printing Mode 
-// ////////////////////////////////////////////////////////////////////////////
-// //
-// /
-//
-
-
-
-    else if (mode == ITEM_LTT)
-    {
-
-
-
-    }
-
-    
-
-//
-// /
-// // 
-// End Stock and Sum Line Priting Mode
-// ////////////////////////////////////////////////////////////////////////////
-//
-
     return;
 }
 
 
 
 
+// Since the Less than Ten array is a multidimensional array, we need an overloaded
+// instance of the formatDataText function
+//
+// Additionally that array and its output will be handled very differently than the above function
+// 
+void Formatter::formatDataText(int dataArray[][5], std::string &left, std::string &right, int &totalLessThanTen)
+{
+    bool ltt = false;
+    int spaces;
+    for (int i = 0; i < 4; ++i)
+    {
+        for (int x = 0; x < 5; ++x)
+        {
+            if (dataArray[i][x] != 0)
+            {
+               ltt = true;
+               totalLessThanTen++;
+            }
+        }
+        if (ltt)
+        {
+            left.assign(std::to_string(i+1));
+            for (int x = 0; x < 5; ++x)
+            {
+                if (dataArray[i][x])
+                {
+                    right.append(std::to_string(dataArray[i][x]));
+
+                    right.append(",");
+                }
+            }
+            
+            right.pop_back();
+            ltt = false;
+            spaces = _twidth - (left.size() + right.size());
+            std::cout << left;
+
+            for (int z = 0; z < spaces; ++z)
+            {
+                std::cout << " ";
+            }
+            
+            std::cout << right;
+            right.clear();
+        }
 
 
+    
+    }
+    return;
 
 
-
-
+}
 
 
 

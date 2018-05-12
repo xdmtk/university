@@ -279,15 +279,15 @@ int main()
 
             left.assign("WAREHOUSE");
             right.assign("ITEM");
-            center.assign(" ");
+            center.assign("");
             align.leftCenterRight(left,center,right,1);
 
             std::cout << "NUMBER\n";
 
-
+            right.clear();
         // Left off here
-
-
+            int totalLessTen = 0;
+            align.formatDataText( stockLessTen, left, right, totalLessTen);
 
 
 
