@@ -574,23 +574,60 @@ void Formatter::formatDataText(int dataArray[], std::string &center, std::string
 // 
 void Formatter::formatDataText(int dataArray[][5], std::string &left, std::string &right, int &totalLessThanTen)
 {
+
+    // Here were going to set a bool to see if the
+    // given warehouse has items with less than 10 stock
     bool ltt = false;
+    
+    // Also since there is only a right and left justified 
+    // text in these lines, we can calculate the spacing like
+    // we have in the centered functions, by subtracting the
+    // size of the left and right texts from the terminal width
     int spaces;
+
+
+
+    // Here were going to loop through each warehouse and their corresponding
+    // stocks in the multidimensional array
     for (int i = 0; i < 4; ++i)
     {
         for (int x = 0; x < 5; ++x)
         {
+
+            // A non zero value in this array indicates
+            // that one of the data members has less than ten stock
+            //
+            // See the initDataValues() function for why that is so
             if (dataArray[i][x] != 0)
             {
+
+               // Next we change the bool to true to indicate
+               // this line will be printed in the report
                ltt = true;
+
+               // Also we up the less than ten count
+               // for when we need to print the total
                totalLessThanTen++;
             }
         }
+
+        // Here if the line was indicated to be printed,
+        // we enter the code body that will handle this
         if (ltt)
         {
+
+
+            // Like always, since we are formatting text manually,
+            // we must set our left and right elements
+            // using the string functions assign() and append()
             left.assign(std::to_string(i+1));
             for (int x = 0; x < 5; ++x)
             {
+
+
+                // Once again we check for a non zero value,
+                // if one is detected, we add it to the right hand list
+                // (as a string of course), and put a comma for th next value
                 if (dataArray[i][x])
                 {
                     right.append(std::to_string(dataArray[i][x]));
@@ -599,17 +636,35 @@ void Formatter::formatDataText(int dataArray[][5], std::string &left, std::strin
                 }
             }
             
+
+            // Once all values that are less than 10 have been 
+            // stored into the right text segment, we use pop_back()
+            // to remove the trailing comma appended after each value
             right.pop_back();
+
+
+            // We also reset the bool for the next warehouse iteration
             ltt = false;
+
+            // Calculate spacing like normal
             spaces = _twidth - (left.size() + right.size());
+
+
+            // Print the left text
             std::cout << left;
 
+
+            // Apply spacing
             for (int z = 0; z < spaces; ++z)
             {
                 std::cout << " ";
             }
             
+
+            // Print the right text
             std::cout << right;
+
+            // Then  clear the right string for the next iteration
             right.clear();
         }
 
