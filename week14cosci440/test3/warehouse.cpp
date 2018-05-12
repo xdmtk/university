@@ -169,42 +169,6 @@ void Formatter::centerText(std::string line, int newlines)
 
 
 
-// This function may be deleted..
-void Formatter::rightJustify(std::string line, int newlines)
-{
-    // This function is just for text that needs
-    // to be right justified, no special centered
-    // additions
-
-    // Only one line seems to require this in the expected
-    // output, so this function should only need to be called
-    // once
-
-    int len = line.size();
-   
-
-    // If the line supplied is too long for the terminal window
-    // to fit all on one line, the program will exit
-    if (!checkLineFit(len))
-    {
-        exit(1);
-    }
-
-
-
-    // Set spaces to the remaining width of the 
-    // terminal minus the text to be printed 
-    int spaces = _twidth - len;
-    printSpaces(spaces);
-    
-    std::cout << line;
-
-    printNewLines(newlines);
-
-
-    return;
-}
-
 
 
 

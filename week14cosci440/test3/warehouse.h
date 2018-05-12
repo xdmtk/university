@@ -103,6 +103,8 @@
 #define STOCK_AND_SUM 0
 #define ITEM_TOTALS 1
 
+
+// Menu choices
 #define PRINT_ZERO_REPORT 1
 #define PRINT_LTT_REPORT 2
 #define QUIT_PROGRAM 3
@@ -118,7 +120,6 @@ class Formatter
         void getTerminalWidth();
 
         void centerText(std::string line, int newlines);
-        void rightJustify(std::string line, int newlines);
         void leftCenterRight(std::string left, std::string center, std::string right, int newlines);
        
         void formatDataText(int dataArray[], std::string &center, std::string &right, int mode);
