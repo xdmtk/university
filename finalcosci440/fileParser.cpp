@@ -387,17 +387,30 @@ void InputParser::printCharFrequency()
     }
 
 
-
+    // Set iterators of character and value vectors
+    // to beginning
     iterSortedC = sortedC.begin();
     iterSortedF = sortedF.begin();
 
-    for (int i = 0;iterSortedC != sortedC.end(); ++i, ++iterSortedC,++iterSortedF)
+    for (int i = 0; iterSortedC != sortedC.end(); ++i, ++iterSortedC,++iterSortedF)
     {
 
         std::string line;
+        
+        // In order to get a proper cast from char to std::string, the append()
+        // member function accepts a pair of range iterators that automatically
+        // do the correct cast, where as the dereferenced iterator below isnt
+        // necessary because to_string will not store an improperly casted value
+        //
         line.append(sortedC.begin()+i, sortedC.begin()+i+1);
+        
         line.append(" -> x");
+        
         line.append(std::to_string(*iterSortedF));
+      
+      
+        // If the number value has less than two digits,
+        // apply an extra space to keep good formatting
         if (*iterSortedF < 10)
         {
             line.append(" ");
