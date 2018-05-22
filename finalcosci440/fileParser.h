@@ -100,6 +100,8 @@
 #define FILEPARSER_H
 
 
+#define ALPHABET_SIZE 26
+
 class Formatter
 {
 
@@ -136,7 +138,7 @@ class InputParser
         bool verifyFileExistence();
         void readFileAndWordFrequency();
         void printWordMap();
-
+        void printCharFrequency();
 
 
     private:

@@ -176,8 +176,11 @@ void Formatter::specialToLower(std::string regularString, std::string &lowerStri
     for (int i = 0; i < regularString.size(); ++i)
     {
         c = regularString[i];
-        b = tolower(c);
-        lowerString.append(b);
+        if (isalpha(c))
+        {
+            b = tolower(c);
+            lowerString.append(b);
+        }
     }
     return;
 }

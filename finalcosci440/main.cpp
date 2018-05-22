@@ -108,7 +108,7 @@ int main()
 
     obj.readFileAndWordFrequency();
     obj.printWordMap();
-
+    obj.printCharFrequency();
 
         
 
