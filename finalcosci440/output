@@ -1,0 +1,4 @@
+formatting.cpp: In member function ‘void Formatter::specialToLower(std::__cxx11::string, std::__cxx11::string&)’:
+formatting.cpp:171:25: error: conversion from ‘char’ to non-scalar type ‘std::__cxx11::string’ {aka ‘std::__cxx11::basic_string<char>’} requested
+         std::string c = *iter;
+                         ^~~~~
