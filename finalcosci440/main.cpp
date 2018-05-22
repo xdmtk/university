@@ -106,8 +106,8 @@ int main()
     }
 
 
-    obj.wordFrequency();
-
+    obj.readFileAndWordFrequency();
+    obj.printWordMap();
 
 
         

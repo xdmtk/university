@@ -133,11 +133,10 @@ class InputParser
         
         InputParser();
 
-
-
         bool verifyFileExistence();
+        void readFileAndWordFrequency();
+        void printWordMap();
 
-        void wordFrequency();
 
 
     private:

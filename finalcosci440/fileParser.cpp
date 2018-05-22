@@ -104,12 +104,12 @@ InputParser::InputParser()
 
     // Print program banner as part of InputParser object constructor
 
-    std::cout << "    _______ __        ___                __           _         ___ ____" << std::endl;
-    std::cout << "   / ____(_/ ___     /   |  ____  ____ _/ __  _______(______   <  // __ \\" << std::endl;
-    std::cout << "  / /_  / / / _ \\   / /| | / __ \\/ __ `/ / / / / ___/ / ___/   / // / / /" << std::endl;
-    std::cout << " / __/ / / /  __/  / ___ |/ / / / /_/ / / /_/ (__  / (__  )   / _/ /_/ /" << std::endl;
-    std::cout << "/_./   /_/_/\\___/  /_/  |_/_/ /_/\\__,_/_/\\__, /____/_/____/   /_(_\\____/" << std::endl;
-    std::cout << "                           /____/\n\n\n";
+    menuWriter.centerText("    _______ __        ___                __           _         ___ ____",1);
+    menuWriter.centerText("   / ____(_/ ___     /   |  ____  ____ _/ __  _______(______   <  // __ \\",1);
+    menuWriter.centerText("  / /_  / / / _ \\   / /| | / __ \\/ __ `/ / / / / ___/ / ___/   / // / / /",1);
+    menuWriter.centerText(" / __/ / / /  __/  / ___ |/ / / / /_/ / / /_/ (__  / (__  )   / _/ /_/ /",1);
+    menuWriter.centerText("/_./   /_/_/\\___/  /_/  |_/_/ /_/\\__,_/_/\\__, /____/_/____/   /_(_\\____/",1);
+    menuWriter.centerText("                           /____/\n\n\n",1);
   
 
     // Reusing formatting code from previous assignments to make layout 
@@ -150,7 +150,7 @@ bool InputParser::verifyFileExistence()
 }
 
 
-void InputParser::wordFrequency()
+void InputParser::readFileAndWordFrequency()
 {
     Formatter obj;
 
@@ -159,10 +159,9 @@ void InputParser::wordFrequency()
     std::string wordBuffer, wordBufferLower;
 
 
-    while(inputFile)
+    while(inputFile >> wordBuffer)
     {
         // Get all words from input file
-        inputFile >> wordBuffer;
         
         // Convert word received to lowercase for map 
         // entry, to get case-insenstive word freqeuncy
@@ -179,7 +178,10 @@ void InputParser::wordFrequency()
             _wordCount[wordBufferLower]++;
         }
         wordBufferLower.clear();
+
+        // Read file and store into _inputText
         _inputText.append(wordBuffer);
+        _inputText.append(" ");
         
     }
 
@@ -188,3 +190,41 @@ void InputParser::wordFrequency()
 
     return;
 }
+
+
+
+
+void InputParser::printWordMap()
+{
+    std::map<std::string, int>::iterator iter;
+
+    for (iter = _wordCount.begin(); iter != _wordCount.end(); ++iter)
+    {
+        std::cout << iter->first << " + " << iter->second << std::endl;
+    }
+    return;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

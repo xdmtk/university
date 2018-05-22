@@ -1,3 +1,8 @@
+// TODO FIX LOWERCASE BULLSHIT
+
+
+
+
 /*#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 !									     #
 #									     !
@@ -95,8 +100,8 @@
 
 #include <locale>
 #include <iterator>
-
-
+#include <algorithm>
+#include <string>
 
 #include "fileParser.h"
 
@@ -164,14 +169,7 @@ inline void Formatter::printSpaces(int spaces)
 // Function to store the lowercase version of 'regularString' into 'lowerString'
 void Formatter::specialToLower(std::string regularString, std::string &lowerString)
 {
-    std::string::iterator iter;
-    std::string c;
-    iter = regularString.begin();
-    for (;iter != regularString.end(); ++iter)
-    { 
-        c = *iter;
-        lowerString.append(c);
-    }
+    // FIX THIS
     return;
 }
 
