@@ -169,7 +169,16 @@ inline void Formatter::printSpaces(int spaces)
 // Function to store the lowercase version of 'regularString' into 'lowerString'
 void Formatter::specialToLower(std::string regularString, std::string &lowerString)
 {
-    // FIX THIS
+    int i;
+    char c;
+    std::string b;
+
+    for (int i = 0; i < regularString.size(); ++i)
+    {
+        c = regularString[i];
+        b = tolower(c);
+        lowerString.append(b);
+    }
     return;
 }
 
