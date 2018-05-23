@@ -139,6 +139,7 @@ class InputParser
         void readFileAndWordFrequency();
         void printWordMap();
         void printCharFrequency();
+        void getAverages();
 
 
     private:
@@ -150,6 +151,7 @@ class InputParser
         std::map<std::string,int> _wordCount;
         
         
+        int _averageCharacters, _averageWords;
 
 };
 

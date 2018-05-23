@@ -425,7 +425,7 @@ void InputParser::printCharFrequency()
             
         
     }
-
+    std::cout << "\n\n\n";
 
     return;
 }
@@ -437,19 +437,84 @@ void InputParser::printCharFrequency()
 
 
 
+void InputParser::getAverages()
+{   
+
+    Formatter obj;
+    
+    // Print header
+    obj.getTerminalWidth();
+    obj.centerText("Sentence Stats",1);
+    obj.centerText("-------------------------------------------------------",2);
+    
+    
+    
+    // Begin iterating through the text
+    std::string::iterator iter = _inputText.begin();
+    char c;
+    int wordCount, sentenceCount, characterCount;
+
+
+    // Set counts all to 0
+    wordCount = sentenceCount = characterCount = 0;
+    _averageWords = _averageCharacters = 0;
+    
+
+
+
+    for (; iter != _inputText.end(); ++iter)
+    {
+
+        // Analyze each character
+        c = *iter;
+
+        // If its a regular character, skip to end of loop
+        if (isalpha(c))
+        {
+            continue;
+        }
+        // If theres a space, count it for a word.
+        else if (c == ' ')
+        {
+            wordCount++; 
+            continue;
+
+        }
+        // If theres a period, count it for a sentence
+        else if (c == '.')
+        {
+            sentenceCount++;
+        }
+    }
+
+    _averageWords = wordCount/sentenceCount;
+
+    std::string line = "Average words per sentence >> ";
+    line.append(std::to_string(_averageWords));
+    obj.centerText(line,1);
+
+
+
+    
+    iter = _inputText.begin();
+    for (; iter != _inputText.end(); ++iter)
+    {
+        c = *iter;
+        if (isalpha(c))
+        {
+            characterCount++;
+        }
+    }
+
+    _averageCharacters = characterCount/wordCount;
+
+
+    line.assign("Average characters per word >> ");
+    line.append(std::to_string(_averageCharacters));
+    obj.centerText(line,1);
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+    return;
+}
