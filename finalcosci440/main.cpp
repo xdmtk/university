@@ -106,6 +106,9 @@ int main()
     }
 
 
+
+    // Self explanatory functions, all of these are located in
+    // fileparser.cpp
     obj.readFileAndWordFrequency();
     obj.printWordMap();
     obj.printCharFrequency();

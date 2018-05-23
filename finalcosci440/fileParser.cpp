@@ -487,15 +487,20 @@ void InputParser::getAverages()
         }
     }
 
+
+     // Get averages
     _averageWords = wordCount/sentenceCount;
 
+
+
+    
     std::string line = "Average words per sentence >> ";
     line.append(std::to_string(_averageWords));
     obj.centerText(line,1);
 
 
 
-    
+    // Get all characters from the file that are alphanumeric
     iter = _inputText.begin();
     for (; iter != _inputText.end(); ++iter)
     {
