@@ -1,3 +1,9 @@
+; Nicholas Martinez
+; COSCI 416 - M 5:45 - 10:00PM
+; M. Rettke
+; May 28th 2018
+; Final Exam
+;
 ;File: fig0648.pep
 ;Computer Systems, Fifth edition
 ;Figure 6.48
