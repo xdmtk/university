@@ -3,27 +3,53 @@
 #include <cstdlib>
 #include <string>
 
+
+
+// Ncurses library for actively updating line of terminal 
+// while typing. 
 #include <ncurses.h>
 
 #define MAX_PASSLEN 24
 
 
-enum propertyTags{Uppers, Lowers, Alphas, Digits, Specials, Length};
+// Function to check password strength based on conditions
 char *returnPassStrength(char pass[]);
 
 int main()
 {
+
+
     int ch, row, col, i = 0;
     char password[MAX_PASSLEN] = "Yo fuck";
     char *strength;
 
-    initscr();			
+
+    // Initscr() basically makes the program aware of the terminal
+    // environment
+    initscr();	
+
+    // Gets the boundarys of the terminal    
     getmaxyx(stdscr,row,col);
 
+
+
+    // Looks for 'q' as the sentinal value to end program
     while (ch != 'q')
     {
+
+        // This function moves the curse to the first 2 arguments
+        // (row,column), and uses the third argument as what to print
+        // at the cursor location
         mvprintw(1,0,"Password strength:");
+
+
+        // Moves the cursor to (row,col) parameters
+        // Plus i for moving the cursor as the user types
         move(2,0+(i));
+
+
+        // Getch() to get input, which by default
+        // echos input onto screen
         ch = getch();
         if (ch != 127)
         {
