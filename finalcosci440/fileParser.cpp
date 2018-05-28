@@ -481,7 +481,7 @@ void InputParser::getAverages()
 
         }
         // If theres a period, count it for a sentence
-        else if (c == '.')
+        else if ((c == '.') || (c == '!') || (c == '?'))
         {
             sentenceCount++;
         }
