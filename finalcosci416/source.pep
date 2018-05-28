@@ -16,6 +16,8 @@ value:   .EQUATE 0           ;local variable #2d
 
 rmsg:    .ASCII "In reverse:\n\x00"
 
+;; Original Program
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 main:    SUBSP   10,i         ;push #p2 #first2 #first #p #value
          LDWA    0,i         ;first = 0
@@ -73,9 +75,14 @@ endFor:  BR      reverse
 
          STOP     
 
+;; Original Program End
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
 
+
+;; Addition for Final
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 reverse: LDWA 0,i             ; Begin reverse sequence 
          STWA first2,s        ; Set first2 = 0
@@ -163,6 +170,9 @@ prntrvrs:LDWA    first2,s    ; Load first2 which should be pointing to last next
 
 endfor2: STOP
 
+
+;; End Addition for Final
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
                          
 
