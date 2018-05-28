@@ -12,6 +12,44 @@
 #define MAX_PASSLEN 24
 
 
+/*
+ *  NOTE: As far as I'm aware, in order to actively print 
+ *  text while the user is entering input, you must manipulate the cursor
+ *  position in response to every keypress signal.
+ *
+ *  Getchar() is simply not enough because it waits for a newline
+ *  to respond with output.
+ *
+ *  Likewise return carriage escaping is also not enough because 
+ *  cursor position among rows can only be manipulated by the terminal
+ *  emulator running the program, which is generally only accessible through
+ *  the system.
+ *
+ *
+ *  The Linux Operating system ships with a library called "ncurses", and it specializes
+ *  in terminal text manipulation.
+ *
+ *  There is a Windows port of this library, but needs to be built and installed on the
+ *  windows operating system, and I'm not sure how to utilize Visual Studio's command line
+ *  compiler to write a script to install the necessary dependancy
+ *
+ *
+ *
+ *  In short: This program only runs on linux. So if you would like to run it
+ *  you can either run the executable in linux or compile it and run the executable.
+ *
+ *  g++ passwordvalidation.c -lncurses 
+ *
+ *
+ * 
+ */
+
+
+
+
+
+
+
 // Function to check password strength based on conditions
 char *returnPassStrength(char pass[]);
 
