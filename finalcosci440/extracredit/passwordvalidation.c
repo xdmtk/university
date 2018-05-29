@@ -41,7 +41,8 @@
  *  g++ passwordvalidation.c -lncurses 
  *
  *
- * 
+ *  Otherwise I have included a video (.webm format.. most players should be able to play it)
+ *  of the program working in action. Check it out! 
  */
 
 
