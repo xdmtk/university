@@ -67,6 +67,52 @@ Ch3. Vectors   8 27 18
 
 
 
+        ** Order of addition in vectors does not matter 
+
+
+
+
+
+
+
+
+    Subtracting Vectors
+    ###############################################3
+    
+
+    A-> - B-> = A-> + (-B->)
+
+    **Negative sign reverses direction of vector, and then can add like usual
+
+
+
+
+
+
+
+
+
+    Mathematical Representation of Vectors
+    ###############################################3
+    
+
+       1. Give magnitude (|A->|) and direction (theta) of A->
+
+            Note: As in Trig, (theta) is defined with respect to the X-axis
+            Positive (theta) is in counter counterclockwise direction
+    
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
