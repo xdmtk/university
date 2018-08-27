@@ -38,4 +38,40 @@ Ch3. Vectors   8 27 18
 
 
 
+    Adding Vectors
+    ###############################################3
+
+    Method 1: Head to Tail Method
+
+        1. Draw 1st vector
+        2. Place tail of second vector at head of 1st vector
+        3. The sum is the vector between the tail of 1st vector and head of 2nd vector
+
+
+                              /\
+                              /
+                             /
+                            /
+                           /
+                          /
+        ----------------->
+        
+
+    Method 2: Parallelogram Method
+
+        1. Place tails of both vectors together
+        2. Draw the parallelogram
+        3. The sum is the diagonal between the two vectors
+            (the vector from the two tails to the opposite end of the parallelogram)
+
+
+
+
+
+
+
+
+
+
+
 
