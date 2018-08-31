@@ -54,25 +54,35 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 import java.lang.Math;
-
+import java.util.Map;
+import java.util.AbstractMap;
 
 public class occurrence {
 
+    public static Map<Integer,Integer> occur;
 
     public static void main(String args[]) {
 
-        System.out.println("fuck");
+        // Instantiate new integery array
         int[] numbers = new int[100];
 
+        // Instantiate map class
+        occur = new HashMap();
+
+        // Populate that array
         populateNumArray(numbers);
-        
-        for (int i=0; i < numbers.length; ++i) {    
-            System.out.print(numbers[i] + " " );
-        }
+       
 
 
 
     }
+
+
+
+
+
+
+
 
 
 
@@ -104,6 +114,15 @@ public class occurrence {
     }
 
 
+
+
+    public static void countOccur(int numbers[], Map occur) {
+
+
+
+
+
+    }
 
 
 
