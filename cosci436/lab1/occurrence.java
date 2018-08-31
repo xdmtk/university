@@ -54,25 +54,31 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 import java.lang.Math;
-import java.util.Map;
-import java.util.AbstractMap;
+import java.util.*;
 
 public class occurrence {
 
-    public static Map<Integer,Integer> occur;
 
     public static void main(String args[]) {
 
         // Instantiate new integery array
         int[] numbers = new int[100];
-
+        
         // Instantiate map class
-        occur = new HashMap();
+        Map<Integer, Integer>occur = new HashMap<Integer,Integer>();
 
-        // Populate that array
+
+
+        // Populate the array
         populateNumArray(numbers);
+        
+        // Count occurances by key/value map pairings
+        countOccur(numbers, occur);
        
-
+        for (Map.Entry<Integer, Integer> entry : occur.entrySet()) {
+            System.out.print(entry.getKey() + " " + entry.getValue() + "\n");
+        }
+        
 
 
     }
@@ -116,9 +122,17 @@ public class occurrence {
 
 
 
-    public static void countOccur(int numbers[], Map occur) {
+    public static void countOccur(int numbers[], Map<Integer, Integer> occur) {
 
-
+        for (int i=0; i < numbers.length; ++i) {    
+            if (occur.containsKey(numbers[i]) ) {
+                int val = occur.get(numbers[i]) + 1;
+                occur.put(numbers[i], val);
+            }
+            else {
+                occur.put(numbers[i],1);
+            }
+        }
 
 
 
