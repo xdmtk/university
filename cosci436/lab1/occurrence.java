@@ -67,7 +67,7 @@ public class occurrence {
 
     public static void main(String args[]) {
 
-        // Instantiate new integery array
+        // Instantiate new integer array
         int[] numbers = new int[1000];
         
         // Instantiate map class
