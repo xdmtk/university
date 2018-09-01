@@ -52,9 +52,13 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
-
+// Import to generate random numbers
 import java.lang.Math;
+
+// Import to use Map and HashMap class
 import java.util.*;
+
+// Import to format number padding
 import java.lang.String.*;
 
 
@@ -64,7 +68,7 @@ public class occurrence {
     public static void main(String args[]) {
 
         // Instantiate new integery array
-        int[] numbers = new int[100];
+        int[] numbers = new int[1000];
         
         // Instantiate map class
         Map<Integer, Integer>occur = new HashMap<Integer,Integer>();
@@ -149,14 +153,25 @@ public class occurrence {
     }
 
 
+
+
+    // Function to print out the key/value pairs of the map
     public static void printMap(Map<Integer, Integer> occur) {
-        
+       
+
+
+
         System.out.println("* * * * * * * * * * * * * * * * * *");
+
+        // Set up a Map iterator using the Entry interface and the entrySet() method
+        // of the map class
         for (Map.Entry<Integer, Integer> e : occur.entrySet()) {
 
+            // Get the keys and values of the current iteration
             int key = e.getKey();
             int val = e.getValue();
 
+            // Print them out in a table style
             System.out.print("*  Number: " + String.format("%02d", key));
             System.out.print("  -  Occurence: " + String.format("%02d", val));
             System.out.println("   *");
