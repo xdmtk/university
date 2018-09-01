@@ -55,6 +55,8 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 import java.lang.Math;
 import java.util.*;
+import java.lang.String.*;
+
 
 public class occurrence {
 
@@ -75,11 +77,8 @@ public class occurrence {
         // Count occurances by key/value map pairings
         countOccur(numbers, occur);
        
-        for (Map.Entry<Integer, Integer> entry : occur.entrySet()) {
-            System.out.print(entry.getKey() + " " + entry.getValue() + "\n");
-        }
-        
-
+        // Print the map
+        printMap(occur);
 
     }
 
@@ -121,15 +120,26 @@ public class occurrence {
 
 
 
-
+    // Function to create key/value pairs between the numbers found in
+    // the numbers array, and how many times they appear
     public static void countOccur(int numbers[], Map<Integer, Integer> occur) {
 
         for (int i=0; i < numbers.length; ++i) {    
+
+            // Check if Map contains the current number in the array
             if (occur.containsKey(numbers[i]) ) {
+
+                // If so, get the current value in the map (the amount of times
+                // its already been seen) and add 1
                 int val = occur.get(numbers[i]) + 1;
+
+                // Then store back into map
                 occur.put(numbers[i], val);
             }
             else {
+
+                // If its the first time the number has been seen,
+                // entry in map and put value as 1
                 occur.put(numbers[i],1);
             }
         }
@@ -139,7 +149,31 @@ public class occurrence {
     }
 
 
+    public static void printMap(Map<Integer, Integer> occur) {
+        
+        System.out.println("* * * * * * * * * * * * * * * * * *");
+        for (Map.Entry<Integer, Integer> e : occur.entrySet()) {
 
+            int key = e.getKey();
+            int val = e.getValue();
+
+            System.out.print("*  Number: " + String.format("%02d", key));
+            System.out.print("  -  Occurence: " + String.format("%02d", val));
+            System.out.println("   *");
+        } 
+
+        System.out.println("* * * * * * * * * * * * * * * * * *");
+
+
+
+
+    }
+
+
+    
+
+
+    
 
 
 
