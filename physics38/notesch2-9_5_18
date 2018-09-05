@@ -51,3 +51,22 @@ Ch2 Motion in ID
     Instantaneous Velocity: Velocity at an instant in time, t
 
         v->(t) = dx->/dt (Slope of tanget line / Derivative) 
+
+
+
+    Acceleration = Derivative of velocity, Second derivative of position
+
+
+
+
+
+    Given a->(t) = a(t)=a=constant, find v(t)
+
+
+
+    v(t) = v(0) + a*t
+        
+        v(0) = v_0
+        v-zero, v-naught
+
+
