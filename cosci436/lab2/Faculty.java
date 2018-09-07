@@ -73,37 +73,46 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 */
 
 
+import java.util.ArrayList;
 
 
+public class Faculty extends Staff {
 
-public class Person {
+    ArrayList courses;
+    
 
-    public enum Status {
-        Registered, Enrolled, InActive, Archived;
+    public Faculty() {
+
+        super.overridenMethod();
+
+
     }
         
+ 
+    public boolean setCourses(ArrayList c ) {
+       
+        this.courses = c;
+        // Return true if assignment is sucessful
+        if (this.courses == p) {
+            return true;
+        }
+        // Return false otherwise
+        return false;
+    }
 
-    public void overridenMethod() {
+    public String getCourses() {
+        // Gets and returns the calling object's hiredate
+        return this.courses;
+    }
+
     
-        System.out.println("This method will be called using the super keyword from a subclass");
-        return;
+    
+    
+    @Override
+    public String toString() {
 
+        return ("Courses : " + this.courses.toString());
     }
-
-
-    public static void main(String[] args) {
-
-        Student nick = new Student();
-        nick.overridenMethod();
-
-
-
-
-
-
-    }
-
-
 
 }
 

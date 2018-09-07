@@ -129,7 +129,7 @@ public class Administrator extends Staff {
 
 
 
-
+    @Override
     public String toString() {
 
         return ("Position: " + this.position + "\n" + "Department: " + this.dept);
