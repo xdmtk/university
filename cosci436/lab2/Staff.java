@@ -41,64 +41,12 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
            Create sub class: Administration and Faculty - of Staff
 
-                enum Status: Registered, Enrolled, InActive and Archived
-                
-                Student extends Person
-                    Status status
-                    -- other relevant methods. 
-                    -- use super
-                
-                Staff extends Person
-                double salary
-                    Date hiredate
-                    -- Constructor(s) - using super
-                    -- setters and getters
-                    -- toString()
-                
-                Administrator extends Staff
-                    String position
-                    String dept
-                    -- Constructor(s) - using super
-                    -- setters and getters
-                    -- toString()
-                
-                Faculty extends Staff
-                    ArrayList courses
-                    -- Constructor(s) - using super
-                    - setters and getters
-                    -- toString()
 
 
 
 */
 
-
-import java.lang.Enum.*;
-
-
-
-public class Person {
-
-    public enum  {
-        Registered, Enrolled, InActive, Archived;
-    }
-
-
-
-}
-
-
-
-public class Student extends Person {
-    
-    Status status;
-    
-    // Other relevant methods...
-    // User super in some methods..
-
-}
-
-
+import java.util.Date;
 
 public class Staff extends Person {
 
@@ -108,42 +56,10 @@ public class Staff extends Person {
     public Staff() {
 
         // Constructor for Staff class
+        super.overridenMethod(); 
 
 
 
     }
 
-
-
-    private void setDate(Date hd) {
-
-        this.hiredate = hd;
-
-
-    }
-
-
-    private Date getDate() {
-
-        return this.hiredate;
-    }
-
-
-    private void setSalary(double s) {
-        
-        this.salary = s;
-
-    }
-
-    private double getSalary() {
-
-        return this.salary;
-    }
-
-
-
-    private void toString() {
-
-
-
-    }
+}
