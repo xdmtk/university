@@ -41,76 +41,71 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
            Create sub class: Administration and Faculty - of Staff
 
+                enum Status: Registered, Enrolled, InActive and Archived
+                
+                Student extends Person
+                    Status status
+                    -- other relevant methods. 
+                    -- use super
+                
+                Staff extends Person
+                double salary
+                    Date hiredate
+                    -- Constructor(s) - using super
+                    -- setters and getters
+                    -- toString()
+                
+                Administrator extends Staff
+                    String position
+                    String dept
+                    -- Constructor(s) - using super
+                    -- setters and getters
+                    -- toString()
+                
+                Faculty extends Staff
+                    ArrayList courses
+                    -- Constructor(s) - using super
+                    - setters and getters
+                    -- toString()
 
 
 
 */
 
-import java.util.Date;
 
-public class Staff extends Person {
 
-    private Date hiredate;
-    private double salary;
+
+
+public class Person {
+
+    public enum Status {
+        Registered, Enrolled, InActive, Archived;
+    }
+        
+
+    public void overridenMethod() {
     
-    public Staff() {
-
-        // Constructor for Staff class
-        super.overridenMethod(); 
+        System.out.println("This method will be called using the super keyword from a subclass");
+        return;
 
     }
 
 
+    public static void main(String[] args) {
 
-    // Getters and setters
-    /*
-     *
-     *
-     *
-     */
-    public boolean setHireDate(Date hd) {
-       
-        this.hiredate = hd;
-        // Return true if assignment is sucessful
-        if (this.hiredate == hd) {
-            return true;
-        }
-        // Return false otherwise
-        return false;
-    }
-
-    public Date getHireDate() {
-        // Gets and returns the calling object's hiredate
-        return this.hiredate;
-    }
+        Student nick = new Student();
+        nick.overridenMethod();
 
 
 
-    public boolean setSalary(double s) {
-       
-        this.salary = s;
-        // Return true if assignment is sucessful
-        if (this.salary == s) {
-            return true;
-        }
-        // Return false otherwise
-        return false;
-    }
-    
-    public double getSalary() {
-        // Gets and returns the calling object's salary
-        return this.salary;
-    }
 
 
-    // Overriding the object's toString method with a custom textual
-    // representation of the object
-    @Override
-    public String toString() {
 
-        return ("Hiredate: " + this.hiredate.toString() + "\n" + "Salary: " + this.salary);
     }
 
 
 
 }
+
+
+
