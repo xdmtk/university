@@ -86,7 +86,7 @@ public class Student extends Person {
     boolean homework;
 
     // Other relevant methods..
-    private boolean hasDoneHomework() {
+    public boolean hasDoneHomework() {
         
 
         // Dummy implementation

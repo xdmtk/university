@@ -78,7 +78,7 @@ import java.util.ArrayList;
 
 public class Faculty extends Staff {
 
-    ArrayList courses;
+    ArrayList<String> courses;
     
 
     public Faculty() {
@@ -89,18 +89,18 @@ public class Faculty extends Staff {
     }
         
  
-    public boolean setCourses(ArrayList c ) {
+    public boolean setCourses(ArrayList<String> c ) {
        
         this.courses = c;
         // Return true if assignment is sucessful
-        if (this.courses == p) {
+        if (this.courses == c) {
             return true;
         }
         // Return false otherwise
         return false;
     }
 
-    public String getCourses() {
+    public ArrayList<String> getCourses() {
         // Gets and returns the calling object's hiredate
         return this.courses;
     }
