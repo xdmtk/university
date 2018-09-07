@@ -50,7 +50,7 @@ import java.util.Date;
 
 public class Staff extends Person {
 
-    private  Date hiredate;
+    private Date hiredate;
     private double salary;
     
     public Staff() {
@@ -58,8 +58,41 @@ public class Staff extends Person {
         // Constructor for Staff class
         super.overridenMethod(); 
 
-
-
     }
+
+
+
+    // Getters and setters
+    /*
+     *
+     *
+     *
+     */
+    public boolean setHireDate(Date hd) {
+       
+        this.hiredate = hd;
+        // Return true if assignment is sucessful
+        if (this.hiredate == hd) {
+            return true;
+        }
+        // Return false otherwise
+        return false;
+    }
+
+    public Date getHireDate() {
+        // Gets and returns the calling object's hiredate
+        return this.hiredate;
+    }
+
+
+    // Overriding the object's toString method with a custom textual
+    // representation of the object
+    @Override
+    public String toString() {
+
+        return ("Hiredate: " + this.hiredate.toString() + "\n" + "Salary: " + this.salary);
+    }
+
+
 
 }

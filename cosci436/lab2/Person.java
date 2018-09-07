@@ -73,9 +73,6 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 */
 
 
-import java.lang.Enum.*;
-import java.util.Date;
-import java.util.ArrayList;
 
 
 
@@ -92,7 +89,20 @@ public class Person {
         return;
 
     }
-        
+
+
+    public static void main(String[] args) {
+
+        Student nick = new Student();
+        nick.overridenMethod();
+
+
+
+
+
+
+    }
+
 
 
 }
