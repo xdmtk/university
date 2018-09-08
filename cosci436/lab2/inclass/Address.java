@@ -98,10 +98,71 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 public class Address {
 
-    String addressLine1;
-    String addressLine2;
+    private String addressLine1;
+    private String addressLine2;
 
 
+
+    public Address() {
+
+        // Empty constructor....
+
+    }
+
+    
+
+    // Constructor with arguments
+    public Address(String line1, String line2) {
+
+
+        this.addressLine1 = line1;
+        this.addressLine2 = line2;
+
+
+
+    }
+
+
+
+    // Getters and setters....
+    // 
+    public void setAddressLine1(String line1) {
+
+        this.addressLine1 = line1;
+    
+    }
+    
+    public String getAddressLine1() {
+        
+        return this.addressLine1;
+
+    }
+
+
+
+    // Getters and setters....
+    // 
+    public void setAddressLine2(String line2) {
+
+        this.addressLine2 = line2;
+    
+    }
+    
+    public String getAddressLine2() {
+        
+        return this.addressLine2;
+
+    }
+
+
+
+
+    // Override on the toString method for Java objects
+    @Override 
+    public String toString() {
+
+        return "Address Line 1: " + this.addressLine1  + "\nAddress Line 2" + this.addressLine2;
+    }
 
 
 

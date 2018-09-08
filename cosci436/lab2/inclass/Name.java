@@ -99,18 +99,15 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 public class Name {
 
 
-    String fName;
-    String lName;
+    private String fName;
+    private String lName;
    
-
-
 
 
     // Regular constructor
     public Name() {
 
-
-
+        System.out.println("This is a constructor with no arguments");
 
     }
 
@@ -118,7 +115,9 @@ public class Name {
     // Overloaded constructor with parameters to set
     // lname and fname
     public Name(String fName, String lName) {
+        
 
+        System.out.println("This constructor sets the value of the instance variables");
         this.fName = fName;
         this.lName = lName;
 

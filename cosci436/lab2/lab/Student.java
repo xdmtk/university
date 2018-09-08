@@ -84,6 +84,14 @@ public class Student extends Person {
     Status status;
     boolean homework;
 
+    public Student(Student  p) {
+
+        this(p.status, p.homework);
+    }
+
+
+
+
     // Other relevant methods..
     public boolean hasDoneHomework() {
         
@@ -98,7 +106,8 @@ public class Student extends Person {
         
     }
 
-    
+
+
 
     // This method will utilize the super keyword to call
     // the overriden method of its parent class

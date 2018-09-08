@@ -95,6 +95,9 @@ public class Person {
         Student nick = new Student();
         nick.overridenMethod();
 
+        Staff professor = new Staff();
+        professor.setSalary(49.37);
+        System.out.println(professor.getSalary());
 
 
 
