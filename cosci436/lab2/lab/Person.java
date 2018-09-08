@@ -35,7 +35,6 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
   _____________________\///_______\/////////________\/////////______________________
 
 
-        Count occurence of numbers: 
 
            Create sub class: Student and Staff - of Person
 
@@ -73,46 +72,37 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 */
 
 
-import java.util.ArrayList;
 
 
-public class Faculty extends Staff {
 
-    ArrayList<String> courses;
-    
+public class Person {
 
-    public Faculty() {
-
-        super.overridenMethod();
-
-
+    public enum Status {
+        Registered, Enrolled, InActive, Archived;
     }
         
- 
-    public boolean setCourses(ArrayList<String> c ) {
-       
-        this.courses = c;
-        // Return true if assignment is sucessful
-        if (this.courses == c) {
-            return true;
-        }
-        // Return false otherwise
-        return false;
+
+    public void overridenMethod() {
+    
+        System.out.println("This method will be called using the super keyword from a subclass");
+        return;
+
     }
 
-    public ArrayList<String> getCourses() {
-        // Gets and returns the calling object's hiredate
-        return this.courses;
+
+    public static void main(String[] args) {
+
+        Student nick = new Student();
+        nick.overridenMethod();
+
+
+
+
+
+
     }
 
-    
-    
-    
-    @Override
-    public String toString() {
 
-        return ("Courses : " + this.courses.toString());
-    }
 
 }
 

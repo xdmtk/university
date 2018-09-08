@@ -34,39 +34,60 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
    ____________________\/\\\____\///\\\\\\\\\/____\///\\\\\\\\\/______________________
   _____________________\///_______\/////////________\/////////______________________
 
+    In class we create Name class
 
-        Count occurence of numbers: 
 
-           Create sub class: Student and Staff - of Person
+        Name:
+            fields: String fName
+            fields: String lName
+            
+            Constructor Name()
+            Constructor Name(fName, lName)
+            
+            setFName(fName)
+            getFName()
+            setLName(lName)
+            getLName()
+           
+            getName(): "FirstName LastName"
+            getLastFirst(): "LastName, FirstName"
+           
+            toString(): String displays fName and lName
 
-           Create sub class: Administration and Faculty - of Staff
+            Tested the Name class in 3 different ways
+                
+                main() -- 3 alternatives
+                -- Within the Class
+                -- Class Under the same Class
+                -- Separate Class - TestName
 
-                enum Status: Registered, Enrolled, InActive and Archived
-                
-                Student extends Person
-                    Status status
-                    -- other relevant methods. 
-                    -- use super
-                
-                Staff extends Person
-                double salary
-                    Date hiredate
-                    -- Constructor(s) - using super
-                    -- setters and getters
-                    -- toString()
-                
-                Administrator extends Staff
-                    String position
-                    String dept
-                    -- Constructor(s) - using super
-                    -- setters and getters
-                    -- toString()
-                
-                Faculty extends Staff
-                    ArrayList courses
-                    -- Constructor(s) - using super
-                    - setters and getters
-                    -- toString()
+            
+            Created Array of Objects
+                - declare, initialize and print
+
+    In class we then created Address class
+
+
+        Address
+        
+            -USA addresses
+            String addressLine1
+            String addressLine2
+
+        Followed by creating a "composite" object
+
+
+            Person -- composite object (Name and Address)
+            Name name -- naming conventions for variables and methods
+            int id
+            Address address
+            String phoneNumber
+        
+        
+        
+        Test by creating an object with no parameters - test1
+            -an object with all parameters - test2
+            -an object with only Name and int passed
 
 
 
@@ -75,37 +96,25 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
+public class Address {
 
-public class Person {
-
-    public enum Status {
-        Registered, Enrolled, InActive, Archived;
-    }
-        
-
-    public void overridenMethod() {
-    
-        System.out.println("This method will be called using the super keyword from a subclass");
-        return;
-
-    }
-
-
-    public static void main(String[] args) {
-
-        Student nick = new Student();
-        nick.overridenMethod();
+    String addressLine1;
+    String addressLine2;
 
 
 
 
 
 
-    }
+
+
+
+
+
+
+
+
 
 
 
 }
-
-
-

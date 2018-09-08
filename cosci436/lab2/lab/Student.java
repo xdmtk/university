@@ -35,7 +35,6 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
   _____________________\///_______\/////////________\/////////______________________
 
 
-        Count occurence of numbers: 
 
            Create sub class: Student and Staff - of Person
 
@@ -76,64 +75,47 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
-public class Administrator extends Staff {
+
+
+public class Student extends Person {
     
-    String position;
-    String dept;
 
+    // Variable of Status type
+    Status status;
+    boolean homework;
 
-    public Administrator() {
+    // Other relevant methods..
+    public boolean hasDoneHomework() {
         
+
+        // Dummy implementation
+        if (this.homework == true) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        
+    }
+
+    
+
+    // This method will utilize the super keyword to call
+    // the overriden method of its parent class
+    public void overridenMethod() {
+        
+        // Using the super keyword to access the parent class
+        // method
         super.overridenMethod();
-
-    }
-
-   
-
-    // Getters and setters
-    //
-
-    public boolean setPosition(String p) {
-       
-        this.position = p;
-        // Return true if assignment is sucessful
-        if (this.position == p) {
-            return true;
-        }
-        // Return false otherwise
-        return false;
-    }
-
-    public String getPosition() {
-        // Gets and returns the calling object's hiredate
-        return this.position;
+        
+        System.out.println("Calling from the subclass using normal method");
     }
 
 
 
-    public boolean setDept(String d) {
-       
-        this.dept = d;
-        // Return true if assignment is sucessful
-        if (this.dept == d) {
-            return true;
-        }
-        // Return false otherwise
-        return false;
-    }
 
-    public String getDept() {
-        // Gets and returns the calling object's hiredate
-        return this.dept;
-    }
+    
 
-
-
-    @Override
-    public String toString() {
-
-        return ("Position: " + this.position + "\n" + "Department: " + this.dept);
-    }
 }
 
 

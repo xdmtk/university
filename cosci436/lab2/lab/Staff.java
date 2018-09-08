@@ -35,12 +35,37 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
   _____________________\///_______\/////////________\/////////______________________
 
 
-        Count occurence of numbers: 
 
            Create sub class: Student and Staff - of Person
 
            Create sub class: Administration and Faculty - of Staff
 
+                enum Status: Registered, Enrolled, InActive and Archived
+                
+                Student extends Person
+                    Status status
+                    -- other relevant methods. 
+                    -- use super
+                
+                Staff extends Person
+                double salary
+                    Date hiredate
+                    -- Constructor(s) - using super
+                    -- setters and getters
+                    -- toString()
+                
+                Administrator extends Staff
+                    String position
+                    String dept
+                    -- Constructor(s) - using super
+                    -- setters and getters
+                    -- toString()
+                
+                Faculty extends Staff
+                    ArrayList courses
+                    -- Constructor(s) - using super
+                    - setters and getters
+                    -- toString()
 
 
 
