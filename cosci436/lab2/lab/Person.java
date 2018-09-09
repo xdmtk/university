@@ -77,33 +77,81 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 public class Person {
 
+    private Name name;
+    private int id;
+    private  Address address;
+    private String phoneNumber;
+
+    
+    
     public enum Status {
         Registered, Enrolled, InActive, Archived;
     }
+    
+   
+    // Parameter-less constructor
+    public Person() {
+        System.out.println("This constructor is being called with no arguments");
+    }
+
+    // Constructor to set all instance variables
+    public Person(Name n, int id, Address a, String p) {
+    
+        this.name = n;
+        this.id = id;
+        this.address = a;
+        this.phoneNumber = p;
+
+    }
+
+
+    
+
+
+
+
+
+
+   
+    
+   // Main method to test out all classes 
+   public static void main(String[] args) {
+
+        Name myName = new Name("Nick", "Martinez");
+        Address myAddress = new Address(); 
+
+        Person myPerson = new Person(myName, 9999, myAddress, "818-999-9999");
         
 
+
+        Student myStudent = new Student();
+        Staff myStaff = new Staff();
+        
+
+
+    }
+
+    
+        
+
+
+
+
+
+
+
+
+    // This is the method to be called from sub-classes using 'super' keyword
     public void overridenMethod() {
     
-        System.out.println("This method will be called using the super keyword from a subclass");
+        System.out.print("This method of the Person class is being called with the super");
+        System.out.print(" keyword from a subclass of the Person class\n");
+
         return;
 
     }
 
 
-    public static void main(String[] args) {
-
-        Student nick = new Student();
-        nick.overridenMethod();
-
-        Staff professor = new Staff();
-        professor.setSalary(49.37);
-        System.out.println(professor.getSalary());
-
-
-
-
-
-    }
 
 
 

@@ -107,7 +107,7 @@ public class Name {
     // Regular constructor
     public Name() {
 
-        System.out.println("This is a constructor with no arguments");
+        System.out.println("This is a Name constructor with no arguments");
 
     }
 
@@ -117,7 +117,7 @@ public class Name {
     public Name(String fName, String lName) {
         
 
-        System.out.println("This constructor sets the value of the instance variables");
+        System.out.println("This Name constructor sets the value of the instance variables");
         this.fName = fName;
         this.lName = lName;
 

@@ -79,7 +79,8 @@ public class Staff extends Person {
     private double salary;
     
     public Staff() {
-
+        
+        System.out.println("This is a Staff constructor with no arguments");
         // Constructor for Staff class
         super.overridenMethod(); 
 

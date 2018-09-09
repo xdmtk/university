@@ -84,6 +84,21 @@ public class Student extends Person {
     Status status;
     boolean homework;
 
+
+    // Constructor with no arguments
+    public Student() {
+        System.out.println("This is a Student constructor with no arguments");
+    }
+
+    public Student(Status s, boolean h) {
+        
+        
+        System.out.println("This is a Student constructor with arguments");
+        this.status = s;
+        this.homework = h;
+    }
+
+    // Constructor with object as argument
     public Student(Student  p) {
 
         this(p.status, p.homework);

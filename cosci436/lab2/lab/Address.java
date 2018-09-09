@@ -96,67 +96,89 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
-public class Name {
+public class Address {
+
+    private String addressLine1;
+    private String addressLine2;
 
 
-    private String fName;
-    private String lName;
-   
 
-
-    // Regular constructor
-    public Name() {
-
-        System.out.println("This is a constructor with no arguments");
-
-    }
-
-
-    // Overloaded constructor with parameters to set
-    // lname and fname
-    public Name(String fName, String lName) {
+    public Address() {
         
-
-        System.out.println("This constructor sets the value of the instance variables");
-        this.fName = fName;
-        this.lName = lName;
-
+        System.out.println("This is an Address constructor with no arguments");
+        // Empty constructor....
 
     }
 
-    // More basic setter/getter 
-    public void setFName(String name) {
-        this.fName = name;
-    }
-    public String getFName() {
-        return this.fName;
-    }
-
-
-    public void setLName(String name) {
-        this.lName = name;
-    }
-    public String getLName() {
-        return this.lName;
-    }
     
 
-    // Return concatenated string of first and last name
-    public String getName() {
-        return this.fName + " " + this.lName;
+    // Constructor with arguments
+    public Address(String line1, String line2) {
+
+        System.out.println("This is an Address constructor with arguments");
+
+        this.addressLine1 = line1;
+        this(p.status, p.homework);
+        this.addressLine2 = line2;
+
+
+
     }
 
-    public String getLastFirst() {
-        return this.lName + ", " + this.fName;
+
+
+    // Getters and setters....
+    // 
+    public void setAddressLine1(String line1) {
+
+        this.addressLine1 = line1;
+    
+    }
+    
+    public String getAddressLine1() {
+        
+        return this.addressLine1;
+
     }
 
-    @Override
+
+
+    // Getters and setters....
+    // 
+    public void setAddressLine2(String line2) {
+
+        this.addressLine2 = line2;
+    
+    }
+    
+    public String getAddressLine2() {
+        
+        return this.addressLine2;
+
+    }
+
+
+
+
+    // Override on the toString method for Java objects
+    @Override 
     public String toString() {
-        return "First name: " + this.fName + "\nLast name: " + this.lName;
+
+        return "Address Line 1: " + this.addressLine1  + "\nAddress Line 2" + this.addressLine2;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
-
-
-
