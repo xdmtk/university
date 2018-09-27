@@ -71,19 +71,22 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 */
 
-
-
+import java.util.Date;
+import java.util.ArrayList;
 
 
 public class Person {
 
+
+
+    // Class variables
     private Name name;
     private int id;
     private  Address address;
     private String phoneNumber;
 
     
-    
+    // Class enumeration 
     public enum Status {
         Registered, Enrolled, InActive, Archived;
     }
@@ -117,16 +120,45 @@ public class Person {
    // Main method to test out all classes 
    public static void main(String[] args) {
 
+
+        // Setting up name and address objects
         Name myName = new Name("Nick", "Martinez");
         Address myAddress = new Address(); 
 
+
+        // Setting up composite object consisting of name and address objects
         Person myPerson = new Person(myName, 9999, myAddress, "818-999-9999");
-        
 
+        // Setting myStudent with constructor args of status and if he has done homework
+        Student myStudent = new Student(Status.Registered, true);
 
-        Student myStudent = new Student();
+        // Setting up Staff object with blank constructor but setting using class methods
         Staff myStaff = new Staff();
-        
+
+        // Creating a Date object to send to myStaff for get method
+        Date myDate = new Date();
+
+        // Using 'safer' setter method
+        if (myStaff.setHireDate(myDate)) {
+        System.out.println("Hire date set");
+        } 
+        else {
+        System.out.println("Hire date failed to set");
+        }
+
+
+        // Setting administrator properties
+        Administrator myAdmin = new Administrator();
+        myAdmin.setPosition("Director Of Operations");
+
+        myAdmin.setDept("Human Resources");
+
+
+        // Setting administrators   
+        Faculty myFaculty = new Faculty();
+
+        ArrayList<String> myAL = new ArrayList<String>();
+        myFaculty.setCourses(myAL);
 
 
     }

@@ -118,7 +118,6 @@ public class Address {
         System.out.println("This is an Address constructor with arguments");
 
         this.addressLine1 = line1;
-        this(p.status, p.homework);
         this.addressLine2 = line2;
 
 
