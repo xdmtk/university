@@ -1,7 +1,7 @@
-import java.io;
+import java.lang.Math;
 import java.util.Scanner;
 
-public class Triangle extends GeometricObject {
+public class Triangle  {
 
     // Required class data members
     private double side1;
@@ -13,9 +13,14 @@ public class Triangle extends GeometricObject {
     
     
     // Some extras for special implementations 
-    private double base = null;
+    private double base;
+    private double height;
+    
     private static Scanner scanner = new Scanner(System.in);
-
+    
+    private double theta1;
+    private double theta2;
+    private double theta3;
 
 
 
@@ -76,7 +81,7 @@ public class Triangle extends GeometricObject {
         System.out.println("Side 1: "  + this.side1);
         System.out.println("Side 2: " + this.side2);
         System.out.println("Side 3: " + this.side3);
-        System.out.println("Color: " this.color);
+        System.out.println("Color: " + this.color);
         System.out.println("Filled: " + this.filled);
 
     }
@@ -98,9 +103,9 @@ public class Triangle extends GeometricObject {
     public void setSide2(double s2) { this.side2 = s2; }
     public void setSide3(double s3) { this.side3 = s3; }
 
-    public double getSide1() { return this.side1 };
-    public double getSide2() { return this.side2 };
-    public double getSide3() { return this.side3 };
+    public double getSide1() { return this.side1; };
+    public double getSide2() { return this.side2; };
+    public double getSide3() { return this.side3; };
 
 
 
@@ -122,7 +127,7 @@ public class Triangle extends GeometricObject {
     
     public double getBase() {
        
-       double choice;
+       int choice;
        System.out.println("\n\nWhich side would you like to set as the base?");
         
         System.out.println("----------------------------------------");
@@ -137,7 +142,7 @@ public class Triangle extends GeometricObject {
 
             // Gets base choice from user using scanner and nextDouble()
             // method from scanner class
-            choice = scanner.nextDouble();
+            choice = scanner.nextInt();
 
             // Shows user choice of base made
             System.out.print("The base you chose for this Triangle object is ");
@@ -145,14 +150,14 @@ public class Triangle extends GeometricObject {
             // Sets choice to the chosen side for base
             switch (choice) {
                 case 1: 
-                    choice = this.side1;
-                    break;
+                    this.base = this.side1;
+                    return this.base;
                 case 2: 
-                    choice = this.side2;
-                    break;
+                    this.base = this.side2;
+                    return this.base;
                 case 3:
-                    choice = this.side3;
-                    break;
+                    this.base = this.side3;
+                    return this.base;
 
 
                 // Unless choice wasn't a listed option
@@ -162,7 +167,6 @@ public class Triangle extends GeometricObject {
                     return -1;
                     
             }
-            System.out.println(choice);
 
         }
 
@@ -171,15 +175,13 @@ public class Triangle extends GeometricObject {
            of invalid choice
         */
 
-        catch (InputMismatchException e) {
+        catch (Exception e) {
             System.out.println("Sorry, the input you entered was not valid");
 
             // Return -1 on error
             return -1;
         }
         
-        this.base = choice;
-        return choice; 
     } 
 
 
@@ -200,17 +202,39 @@ public class Triangle extends GeometricObject {
 
     public double getHeight() {
         
-
-        // In order to get the heigh of the triangle, the base must be set. 
-        if (this.base == null) {
+        int baseSideNo;
+        double[] sides = {
+            this.side1,
+            this.side2,
+            this.side3
+        };
+        // In order to get the heigh of the triangle, the base must be set and two sides must be set
+        if ( (this.base == 0) || (this.side1 == 0) || (this.side2 == 0) || (this.side3 == 0) ){
             System.out.print("You must set the base side of the Triangle before you can get ");
             System.out.println("the height!");
             
             // Return -1 on error
-            return -1
+            return -1;
+        }
+        
+        // Use law of cosines to find theta's
+        this.theta1 = Math.toDegrees(Math.acos(    (( ((Math.pow(this.side2,2)) + (Math.pow(this.side3,2))) - (Math.pow(this.side1,2))))/(2*this.side2*this.side3)   ));
+        this.theta2 = Math.toDegrees(Math.acos(    (( ((Math.pow(this.side3,2)) + (Math.pow(this.side1,2))) - (Math.pow(this.side2,2))))/(2*this.side3*this.side1)   ));
+        this.theta3 = Math.toDegrees(Math.acos(    (( ((Math.pow(this.side1,2)) + (Math.pow(this.side2,2))) - (Math.pow(this.side3,2))))/(2*this.side1*this.side2)   ));
+
+        // Figure out which side is the base
+        if (this.base == this.side1) {
+            baseSideNo = 1;
+        }
+        else if (this.base == this.side2) {
+            baseSideNo = 2;
+        }
+        else {
+            baseSideNo = 3;
         }
 
 
+        
 
 
 
@@ -222,6 +246,8 @@ public class Triangle extends GeometricObject {
 
 
 
+
+        return this.height;
     }
 
 }
