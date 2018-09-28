@@ -73,6 +73,16 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         Write a test program that prompts the user to enter two complex numbers and
         displays the result of their addition, subtraction, multiplication, division, and abso-
         lute value. Here is a sample run:
+    
+    
+            Enter the first complex number: 3.5 5.5
+            Enter the second complex number: -3.5 1
+                
+                (3.5 + 5.5i) + (-3.5 + 1.0i) = 0.0 + 6.5i
+                (3.5 + 5.5i) - (-3.5 + 1.0i) = 7.0 + 4.5i
+                (3.5 + 5.5i) * (-3.5 + 1.0i) = -17.75 + -13.75i
+                (3.5 + 5.5i) / (-3.5 + 1.0i) = -0.5094 + -1.7i
+                |(3.5 + 5.5i)| = 6.519202405202649
 
 
 
@@ -84,6 +94,52 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 import java.lang.Math;
 
 public class Complex {
+
+    private double a,b;
+
+ 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    /* * * * * * * * * * * * * * * * * * * * |
+    /                                       /|
+    /   All constructors + overloads for    /|
+    /   Complex class go here               /|
+    /                                       /|
+    /* * * * * * * * * * * * * * * * * * * * |
+    *///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+    public Complex() { this.a = this.b = 0;}
+
+    /*
+     * @params:
+     *      x : a of (a + bi)
+     */
+
+    public Complex(double x) {
+        this.a = x;
+        this.b = 0;
+    }
+
+
+
+    /*
+     * @params:
+     *      x : a of (a + bi)
+     *      y : b of (a + bi)
+     */
+
+    public Complex(double x, double y) {
+        this.a = x;
+        this.b = y;
+    }
+
+
+
+
+
+
+
+
+
 
 
 
