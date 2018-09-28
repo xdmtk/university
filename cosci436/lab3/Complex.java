@@ -136,6 +136,89 @@ public class Complex {
 
 
 
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    /* * * * * * * * * * * * * * * * * * * * |
+    /                                       /|
+    /   Gets on real and imaginary parts    /|
+    /   Complex class go here               /|
+    /                                       /|
+    /* * * * * * * * * * * * * * * * * * * * |
+    *///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+    public double getRealPart() { return this.a; }
+    public double getImaginaryPart() { return this.b; }
+
+
+
+
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    /* * * * * * * * * * * * * * * * * * * * |
+    /                                       /|
+    /   All arthimetic operations on the    /|
+    /   Complex object here                 /|
+    /                                       /|
+    /* * * * * * * * * * * * * * * * * * * * |
+    *///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+    public Complex add(double x, double y) {
+        
+        // Create new complex instance as result of addition
+        // operation on current instance
+        this.a += x;
+        this.b += y;
+
+        Complex result = new Complex(this.a, this.b);
+        return result;
+    }
+
+
+    public Complex subtract(double x, double y) {
+        
+        // Create new complex instance as result of addition
+        // operation on current instance
+        this.a -= x;
+        this.b -= y;
+
+        Complex result = new Complex(this.a, this.b);
+        return result;
+    }
+
+
+    public Complex multiply(double x, double y) {
+        
+        // Create new complex instance as result of multiplication
+        // operation on current instance
+        
+        // (this.a + this.b*i)(x + y*i) == ax + bxi + ayi + by*-1
+
+        double imagine = this.b*x + this.a*y;
+        double real = this.a*x + this.b*y*(-1);
+
+        Complex result = new Complex(real, imagine);
+        return result;
+    }
+
+
+
+    public Complex divide(double x, double y) {
+        
+        // Leaving this implementation blank for now
+        return new Complex();    
+    }
+    
+
+    @Override 
+    public String toString() {
+        return "Imaginary number is : " + this.a + " + " + this.b + "i \n";
+    }
+
+
+
+}
+        
 
 
 
@@ -143,3 +226,6 @@ public class Complex {
 
 
 
+
+
+            
