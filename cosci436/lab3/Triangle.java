@@ -202,12 +202,6 @@ public class Triangle  {
 
     public double getHeight() {
         
-        int baseSideNo;
-        double[] sides = {
-            this.side1,
-            this.side2,
-            this.side3
-        };
         // In order to get the heigh of the triangle, the base must be set and two sides must be set
         if ( (this.base == 0) || (this.side1 == 0) || (this.side2 == 0) || (this.side3 == 0) ){
             System.out.print("You must set the base side of the Triangle before you can get ");
@@ -216,38 +210,47 @@ public class Triangle  {
             // Return -1 on error
             return -1;
         }
-        
-        // Use law of cosines to find theta's
-        this.theta1 = Math.toDegrees(Math.acos(    (( ((Math.pow(this.side2,2)) + (Math.pow(this.side3,2))) - (Math.pow(this.side1,2))))/(2*this.side2*this.side3)   ));
-        this.theta2 = Math.toDegrees(Math.acos(    (( ((Math.pow(this.side3,2)) + (Math.pow(this.side1,2))) - (Math.pow(this.side2,2))))/(2*this.side3*this.side1)   ));
-        this.theta3 = Math.toDegrees(Math.acos(    (( ((Math.pow(this.side1,2)) + (Math.pow(this.side2,2))) - (Math.pow(this.side3,2))))/(2*this.side1*this.side2)   ));
+       
 
+
+
+
+        double thetaSide, thetaHeight, sideSide, sideHeight;
+
+        // Use law of cosines to find theta's
+        this.theta1 = Math.acos(    (( ((Math.pow(this.side2,2)) + (Math.pow(this.side3,2))) - (Math.pow(this.side1,2))))/(2*this.side2*this.side3)   );
+        this.theta2 = Math.acos(    (( ((Math.pow(this.side3,2)) + (Math.pow(this.side1,2))) - (Math.pow(this.side2,2))))/(2*this.side3*this.side1)   );
+        this.theta3 = Math.acos(    (( ((Math.pow(this.side1,2)) + (Math.pow(this.side2,2))) - (Math.pow(this.side3,2))))/(2*this.side1*this.side2)   );
+
+        
         // Figure out which side is the base
         if (this.base == this.side1) {
-            baseSideNo = 1;
+            thetaSide = this.theta2;
+            thetaHeight = this.theta3;
+            sideSide = this.side2;
+            sideHeight = this.side3;
+
         }
         else if (this.base == this.side2) {
-            baseSideNo = 2;
+            thetaSide = this.theta1
+            thetaHeight = this.theta3;
+            sideSide = this.side1;
+            sideHeight = this.side3;
         }
         else {
-            baseSideNo = 3;
+            thetaSide = this.theta2;
+            thetaHeight = this.theta1;
+            sideSide = this.side2;
+            sideHeight = this.side1;
         }
 
+        // Use of law of sins to return the altitude
+        this.height = Math.sin(thetaHeight)*sideSide;
+        
+        return this.height;
 
         
 
-
-
-
-
-
-
-
-
-
-
-
-        return this.height;
     }
 
 }
