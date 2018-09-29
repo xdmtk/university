@@ -210,6 +210,20 @@ public class Complex implements Cloneable {
     }
     
 
+
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    /* * * * * * * * * * * * * * * * * * * * |
+    /                                       /|
+    /   Here are the overrides of the       /|
+    /   methods toString and clone          /|
+    /    both of the object Class.          /|
+    /                                       /|
+    /* * * * * * * * * * * * * * * * * * * * |
+    *///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+
+
+
     @Override 
     public String toString() {
         return "Imaginary number is : " + this.a + " + " + this.b + "i \n";
