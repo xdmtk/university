@@ -91,9 +91,8 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
-import java.lang.Math;
 
-public class Complex {
+public class Complex implements Cloneable {
 
     private double a,b;
 
@@ -204,9 +203,10 @@ public class Complex {
 
 
     public Complex divide(double x, double y) {
-        
-        // Leaving this implementation blank for now
-        return new Complex();    
+       
+        // (this.a/x + this.b/y) 
+        Complex result = new Complex(this.a/x,this.b/y);
+        return result;
     }
     
 
@@ -214,6 +214,12 @@ public class Complex {
     public String toString() {
         return "Imaginary number is : " + this.a + " + " + this.b + "i \n";
     }
+
+    @Override 
+    public Complex clone() { 
+        return new Complex(this.a,this.b);
+    }
+
 
 
 
