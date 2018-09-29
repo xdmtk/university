@@ -94,6 +94,62 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 public class Complex implements Cloneable {
 
+    public static void main(String[] args) {
+
+        Complex myComplex = new Complex(3,6);
+        System.out.print("Initial value of Complex object: ");
+        System.out.println(myComplex.toString());
+
+
+
+        // Test program to demonstrate available 
+        // methods
+        System.out.print("Adding 7 and -3: ");
+        myComplex = myComplex.add(7,-3);
+        System.out.println(myComplex.toString());
+
+
+        System.out.print("Subtracting 2 and 3: ");
+        myComplex = myComplex.subtract(2,3);
+        System.out.println(myComplex.toString());
+
+
+        System.out.print("Multiplying 7 and 1: ");
+        myComplex = myComplex.multiply(7,1);
+        System.out.println(myComplex.toString());
+
+
+        System.out.print("Dividing 7 and 1: ");
+        myComplex = myComplex.divide(7,1);
+        System.out.println(myComplex.toString());
+
+
+        /*
+            Output:
+
+
+        Initial value of Complex object: Imaginary number is : 3.0 + 6.0i 
+
+        Adding 7 and -3: Imaginary number is : 10.0 + 3.0i 
+
+        Subtracting 2 and 3: Imaginary number is : 8.0 + 0.0i 
+
+        Multiplying 7 and 1: Imaginary number is : 56.0 + 8.0i 
+
+        Dividing 7 and 1: Imaginary number is : 8.0 + 8.0i 
+
+
+        */
+
+
+
+
+
+    }
+
+
+
+
     private double a,b;
 
  
