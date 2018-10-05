@@ -35,7 +35,10 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
             Upload the Triangle class created during lecture.
+            
 
+
+            ** NOTE: Compiles but with a couple warnings about unused variables
 */
 
 
@@ -274,7 +277,7 @@ public class Triangle  {
 
         }
         else if (this.base == this.side2) {
-            thetaSide = this.theta1
+            thetaSide = this.theta1;
             thetaHeight = this.theta3;
             sideSide = this.side1;
             sideHeight = this.side3;
@@ -313,7 +316,8 @@ public class Triangle  {
     *///~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 
-    @Override
+    // @Override
+    // These would be overrides if the class GeometricObject was included with the assignment
     public double getArea() {
 
         // In order to get the area of the Triangle, the base and height must be set
@@ -328,7 +332,8 @@ public class Triangle  {
         return ((1/2)*(this.base)*(this.height));
     }
 
-    @Override
+    // @Override
+    // These would be overrides if the class GeometricObject was included with the assignment
     public double getPerimeter() {
 
         // In order to get the perimeter of the Triangle, all sides must be set
