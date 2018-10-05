@@ -81,7 +81,7 @@ public class GenericStackArray<E> {
    
 
     public static void main(String[] args){
-        GenericStackArray<String> test = new GenericStackArray();
+        GenericStackArray<String> test = new GenericStackArray<String>();
 
 
         System.out.println(test.toString());
@@ -94,16 +94,16 @@ public class GenericStackArray<E> {
         System.out.println("Size of stack: " + test.getSize());
         System.out.println("Top of stack: " + test.peek());
         
-        String o = test.pop();
+        String o = (String) test.pop();
         System.out.println("After one Pop: \n" + test.toString());
         
-        o = test.pop();
-        o = test.pop();
+        o = (String) test.pop();
+        o = (String) test.pop();
         
         if (test.isEmpty()) { 
             System.out.println("Is stack empty:" + test.isEmpty());}
         else {
-            o = test.pop(); 
+            o = (String) test.pop(); 
             System.out.println("Element left was: " + o);
         }
         System.out.println("Is stack empty:" + test.isEmpty());
@@ -206,9 +206,28 @@ public class GenericStackArray<E> {
             this.stack[++this.currentSize] = obj;
         }
     }
+    
+    public boolean isEmpty() {
+        if (this.currentSize == 0) {
+            return true;
+        }
+        return false;
+    }
+
 
 
     @Override
+    public String toString() {
+        String output = "";
+        output.concat("Stack contents: {\n");
+        for (int i = 0; i < this.maxSize; i++) {
+            output.concat("\t");
+            output.concat(this.stack[i].toString());
+            output.concat("\n");
+        }
+        output.concat("}");
+        return output;
+    }
 
 
 
