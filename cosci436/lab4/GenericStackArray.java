@@ -246,13 +246,13 @@ public class GenericStackArray<E> {
     @Override
     public String toString() {
         String output = "";
-        output.concat("Stack contents: {\n");
+        output = output.concat("Stack contents: {\n");
         for (int i = 0; i < this.currentSize; i++) {
-            output.concat("\t");
-            output.concat(this.stack[i].toString());
-            output.concat("\n");
+            output = output.concat("\t");
+            output = output.concat(this.stack[i].toString());
+            output = output.concat("\n");
         }
-        output.concat("}");
+        output = output.concat("}");
         return output;
     }
 
