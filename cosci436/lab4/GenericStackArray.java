@@ -246,13 +246,21 @@ public class GenericStackArray<E> {
     @Override
     public String toString() {
         String output = "";
+
+	// For each concatentation, must reassign the String
+	// because Strings are immutable objects, once assigned
+	// their content cannot be changed
+	output = output.concat("Object Description\n");
+	output = output.concat("-----------------------\n");
         output = output.concat("Stack contents: {\n");
         for (int i = 0; i < this.currentSize; i++) {
-            output = output.concat("\t");
+
+            output = output.concat("\t" + (i+1) + ". ");
             output = output.concat(this.stack[i].toString());
             output = output.concat("\n");
+
         }
-        output = output.concat("}");
+        output = output.concat("}\n\n");
         return output;
     }
 
