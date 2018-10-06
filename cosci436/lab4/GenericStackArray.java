@@ -111,9 +111,40 @@ public class GenericStackArray<E> {
 
 
 
+	/* ------> Program Output
+	 *
+		Object Description
+		-----------------------
+		Stack contents: {
+		}
 
 
+		Object Description
+		-----------------------
+		Stack contents: {
+			1. One
+			2. Two
+			3. Three
+			4. Four
+		}
 
+
+		Size of stack: 4
+		Top of stack: Four
+		After one Pop: 
+		Object Description
+		-----------------------
+		Stack contents: {
+			1. One
+			2. Two
+			3. Three
+		}
+
+
+		Element left was: One
+		Is stack empty:true
+
+	*/
 
 
 
