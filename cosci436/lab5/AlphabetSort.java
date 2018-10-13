@@ -70,6 +70,11 @@ public class AlphabetSort {
             System.out.println("File path given does not exist: " + args[0]);
             return;
         }
+        
+        if (!wl.parseFile()) {
+            System.out.println("Failed to parse file");
+            return;
+        }
 
 
 
@@ -103,12 +108,25 @@ public class AlphabetSort {
             System.out.println("File path must be set before parsing");
             return false;
         }
-        
-        Scanner r = new Scanner(this.filePath);
-        while (r.hasNext()) {
-            this.wordList.add(r.next());
+       
+        try {
+            File p = new File(this.filePath);
+            Scanner r = new Scanner(p);
+            if (!r.hasNext()) {
+                System.out.println("File is empty");
+                return false;
+            }
+            
+            while (r.hasNext()) {
+                String t = r.next();
+                System.out.println(t);
+                this.wordList.add(t);
+            }
+            return true;
         }
-        return true;
+        catch (Exception e) {
+            return false;
+        }
 
     }
     
