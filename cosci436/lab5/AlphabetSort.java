@@ -57,6 +57,32 @@ public class AlphabetSort {
     private String filePath; 
     private boolean fpSet = false;
 
+    
+    public static void main(String[] args) {
+        
+        if (args.length != 1) {
+            System.out.println("AlphabetSort requires one argument - Arguments given: " + args.length);
+            return;
+        }
+
+        AlphabetSort wl = new AlphabetSort();
+        if (!wl.setFilePath(args[0])) {
+            System.out.println("File path given does not exist: " + args[0]);
+            return;
+        }
+
+
+
+
+
+
+
+
+        return;
+    }
+
+
+
 
     public boolean setFilePath(String fp) {
         
@@ -84,7 +110,17 @@ public class AlphabetSort {
         }
         return true;
 
-    } 
+    }
+    
+
+    public boolean sortList() {
+
+        if (!this.wordList.isEmpty()) {
+            java.util.Collections.sort(this.wordList); 
+            return true;
+        }
+        return false;
+    }
      
     
 
