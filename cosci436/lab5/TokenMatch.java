@@ -52,7 +52,7 @@ import java.io.File;
 
 public class TokenMatch {
 
-    private List<String> wl = new ArrayList<String>();
+    private List<Character> wordList = new ArrayList<Character>();
     private String filePath; 
     private boolean fpSet = false;
 
@@ -66,6 +66,33 @@ public class TokenMatch {
             return;
         }
         
+        // If input file supplied, continue with object creation
+        TokenMatch wl = new TokenMatch();
+
+        // Use the path supplied by argument to set objects path
+        if (!wl.setFilePath(args[0])) {
+
+            // Error check for invalid paths
+            System.out.println("File path given does not exist: " + args[0]);
+            return;
+        }
+       
+        // Parse file word by word
+        if (!wl.parseFile()) {
+
+            // Error checking on parse file
+            System.out.println("Failed to parse file");
+            return;
+        }
+
+        if (!wl.determineMatching()) {
+            System.out.println("No match");
+        }
+        else {
+            System.out.println("Parenthesis match");
+        }
+
+
     }
 
 
@@ -73,21 +100,22 @@ public class TokenMatch {
 
     public boolean determineMatching() {
         int oParen, cParen, oBrack, cBrack, oBrace, cBrace;
+        oParen = cParen = oBrack = cBrack = oBrace = cBrace = 0;
 
-        for (String word : this.wordList) {
+        for (char c : this.wordList) {
             
-            switch (word) {
-                case "(":
+            switch (c) {
+                case '(':
                     oParen++;
-                case ")":
+                case ')':
                     cParen++;
-                case "{":
+                case '{':
                     oBrace++;
-                case "}":
+                case '}':
                     cBrace++;
-                case "[":
+                case '[':
                     oBrack++;
-                case "(":
+                case ']':
                     cBrack++; 
             }
         }
@@ -117,9 +145,9 @@ public class TokenMatch {
         
 
 
-    // The TokenMatch implementation of parseFile() is identical to the
-    // AlphabetSort implementation, the program will use an ArrayList to
-    // determine matching tokens
+    // The TokenMatch implementation of parseFile() is almost identical to the
+    // AlphabetSort implementation, except instead of parsing full words, it will
+    // read the file character by character
     public boolean parseFile() {
         
         // Make sure file path is set before attempting read
@@ -148,7 +176,10 @@ public class TokenMatch {
             // Continue to grab tokens (words) until file is empty
             while (r.hasNext()) {
                 String t = r.next();
-                this.wordList.add(t);
+                for (char c : t.toCharArray() ){
+                    this.wordList.add(c);
+                }
+
             }
             return true;
         }
