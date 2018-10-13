@@ -49,10 +49,13 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 import java.util.Scanner;
 import java.util.*;
 import java.io.File;
+import java.util.ArrayDeque;
+import java.lang.Throwable;
 
 public class TokenMatch {
 
     private List<Character> wordList = new ArrayList<Character>();
+    private List<Character> tokenList = new ArrayList<Character>();
     private String filePath; 
     private boolean fpSet = false;
 
@@ -85,11 +88,12 @@ public class TokenMatch {
             return;
         }
 
+        // Run function to check number of tokens
         if (!wl.determineMatching()) {
-            System.out.println("No match");
+            System.out.println("Tokens Mismatched");
         }
         else {
-            System.out.println("Parenthesis match");
+            System.out.println("Tokens Match");
         }
 
 
@@ -99,45 +103,78 @@ public class TokenMatch {
 
 
     public boolean determineMatching() {
-        int oParen, cParen, oBrack, cBrack, oBrace, cBrace;
-        oParen = cParen = oBrack = cBrack = oBrace = cBrace = 0;
+        char current, match;
 
+        // Iterates through characters in file and 
+        // pushes tokens in order onto Stack
         for (char c : this.wordList) {
-            
-            switch (c) {
-                case '(':
-                    oParen++;
-                    break;
-                case ')':
-                    cParen++;
-                    break;
-                case '{':
-                    oBrace++;
-                    break;
-                case '}':
-                    cBrace++;
-                    break;
-                case '[':
-                    oBrack++;
-                    break;
-                case ']':
-                    cBrack++; 
-                    break;
+            if (isToken(c) == true) {
+                this.tokenList.add(c);
             }
         }
-        System.out.println("Total token count:\n-----------------------");
-        System.out.println("Open Parenthesis: " + oParen);
-        System.out.println("Close Parenthesis: " + cParen);
-        System.out.println("Open Brace: " + oBrace);
-        System.out.println("Close Brace: " + cBrace);
-        System.out.println("Open Bracket: " + oBrack);
-        System.out.println("Close Bracket: " + cBrack);
 
-        if ( (oParen == cParen) && (oBrace == cBrace) && (oBrack == cBrack) ) {
+        // If the amount of tokens found in input is odd, must be a
+        // mismatched token somewhere
+        if ( ( this.tokenList.size() % 2 ) != 0 ) {
+            return false;
+        }
+
+        while (this.tokenList.size() > 0) {
+            match = returnMatching(this.tokenList.get(0));
+            for (int x=1; ; ++x) {
+                if (isClose(this.tokenList.get(x))) {
+
+                    if (this.tokenList.get(x) == match) {
+                        this.tokenList.remove(x);
+                        this.tokenList.remove(0);
+                        break;
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                if (this.tokenList.size() <= 0) {
+                    break;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+
+
+
+    // Determines whether the incoming character is a valid
+    // java grouping token
+    public boolean isToken(char c) {
+        if ( (c == '(') || (c == ')') || (c == '[') || (c == ']')
+            || (c == '{') || (c == '}') ) {
             return true;
         }
         return false;
     }
+
+
+    public boolean isClose(char c) {
+        if (c == ']') { return true; }
+        if (c == '}') { return true; }
+        if (c == ')') { return true; }
+        
+        return false;
+    } 
+
+    public char returnMatching(char c) {
+        if (c == '(') { return ')'; }
+        if (c == '[') { return ']'; }
+        if (c == '{') { return '}'; }
+        
+        System.out.println("Mismatched tokens");
+        System.exit(0);
+        return 0xFF;
+    }
+
 
 
 
