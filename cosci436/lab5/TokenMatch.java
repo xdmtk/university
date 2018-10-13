@@ -107,18 +107,32 @@ public class TokenMatch {
             switch (c) {
                 case '(':
                     oParen++;
+                    break;
                 case ')':
                     cParen++;
+                    break;
                 case '{':
                     oBrace++;
+                    break;
                 case '}':
                     cBrace++;
+                    break;
                 case '[':
                     oBrack++;
+                    break;
                 case ']':
                     cBrack++; 
+                    break;
             }
         }
+        System.out.println("Total token count:\n-----------------------");
+        System.out.println("Open Parenthesis: " + oParen);
+        System.out.println("Close Parenthesis: " + cParen);
+        System.out.println("Open Brace: " + oBrace);
+        System.out.println("Close Brace: " + cBrace);
+        System.out.println("Open Bracket: " + oBrack);
+        System.out.println("Close Bracket: " + cBrack);
+
         if ( (oParen == cParen) && (oBrace == cBrace) && (oBrack == cBrack) ) {
             return true;
         }
