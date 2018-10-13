@@ -76,7 +76,10 @@ public class AlphabetSort {
             return;
         }
 
+        System.out.println("Before sort:\n" + wl.toString());
+        wl.sortList();
 
+        System.out.println("\n\nAfter sort:\n" + wl.toString());
 
 
 
@@ -119,7 +122,6 @@ public class AlphabetSort {
             
             while (r.hasNext()) {
                 String t = r.next();
-                System.out.println(t);
                 this.wordList.add(t);
             }
             return true;
@@ -141,7 +143,13 @@ public class AlphabetSort {
     }
      
     
+    @Override
+    public String toString() {
 
+        String output = "Object description:\n--------------------------\n";
+        output = output.concat(this.wordList.toString());
+        return output;
+    }
 
 
 
