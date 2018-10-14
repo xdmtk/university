@@ -133,9 +133,13 @@ public class ExpressionEval {
         // Return the result
         return operandStack.pop();
     }
+
+
     /** Process one operator: Take an operator from operatorStack and
 
     * apply it on the operands in the operandStack */
+
+
     public static void processAnOperator(
     Stack<Integer> operandStack, Stack<Character> operatorStack) {
         char op = operatorStack.pop();
@@ -151,6 +155,8 @@ public class ExpressionEval {
         else if (op == '/')
             operandStack.push(op2 / op1);
     }
+
+
     public static String insertBlanks(String s) {
         String result = "";
         for (int i = 0; i < s.length(); i++) {
