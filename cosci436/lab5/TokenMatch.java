@@ -58,6 +58,7 @@ public class TokenMatch {
     private List<Character> tokenList = new ArrayList<Character>();
     private String filePath; 
     private boolean fpSet = false;
+    private char current,match,last;
 
     
     public static void main(String[] args) {
@@ -103,7 +104,6 @@ public class TokenMatch {
 
 
     public boolean determineMatching() {
-        char current, match;
 
         // Iterates through characters in file and 
         // pushes tokens in order onto Stack
@@ -119,14 +119,34 @@ public class TokenMatch {
             return false;
         }
 
-        while (this.tokenList.size() > 0) {
-            match = returnMatching(this.tokenList.get(0));
-            for (int x=1; ; ++x) {
-                if (isClose(this.tokenList.get(x))) {
 
-                    if (this.tokenList.get(x) == match) {
+        // Iterate through tokens list untill all tokens have been removed
+        while (this.tokenList.size() > 0) {
+
+            // Get the closing token for the first token read
+            this.match = returnMatching(this.tokenList.get(0));
+           
+            // Start iterating after first token, to find matching token
+            for (int x=1; ; ++x) {
+
+                // Set the next token to current
+                this.current = this.tokenList.get(x);
+
+                // Check for closing token
+                if (isClose(this.current)) {
+                    
+                    // If the closing token matches, remove both tokens from list
+                    if (this.current == this.match) {
+
                         this.tokenList.remove(x);
                         this.tokenList.remove(0);
+
+                        // Start iterating again from 0
+                        break;
+                    }
+                    else if (this.current == returnMatching(this.tokenList.get(x-1))) {
+                        this.tokenList.remove(x-1);
+                        this.tokenList.remove(x-1);
                         break;
                     }
                     else {
