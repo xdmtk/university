@@ -35,7 +35,7 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
-   20.1 - Display words in ascending alphabetical order): Write a program that reads
+   20.1 - Display words in ascending alphabetical order: Write a program that reads
            words from a text file and displays all the words (duplicates allowed) in ascend-
            ing alphabetical order. The words must start with a letter. The text file is passed
            as a command-line argumen
@@ -144,15 +144,22 @@ public class TokenMatch {
                         // Start iterating again from 0
                         break;
                     }
+                    
+                    // If the closing token is actually a closing token for its preceding member
+                    // then qualify as valid and remove both from List
                     else if (this.current == returnMatching(this.tokenList.get(x-1))) {
                         this.tokenList.remove(x-1);
                         this.tokenList.remove(x-1);
                         break;
                     }
+
+                    // If neither condition matches, definite illegal use of tokens
                     else {
                         return false;
                     }
                 }
+
+                // If tokenList size is able to come to 0, break successfully and return true
                 if (this.tokenList.size() <= 0) {
                     break;
                 }
@@ -177,6 +184,8 @@ public class TokenMatch {
     }
 
 
+
+    // Quick function to verify whether arg is a closing token
     public boolean isClose(char c) {
         if (c == ']') { return true; }
         if (c == '}') { return true; }
@@ -185,13 +194,18 @@ public class TokenMatch {
         return false;
     } 
 
+
+    // Quick function to return the corresponding token for the arg supplied
     public char returnMatching(char c) {
         if (c == '(') { return ')'; }
         if (c == '[') { return ']'; }
         if (c == '{') { return '}'; }
-        
+       
+        // If a token is not passed to this function, some parsing went wrong (should never happen)
         System.out.println("Mismatched tokens");
         System.exit(0);
+
+        // Needs arbitrary return since System.exit() should kill the main thread
         return 0xFF;
     }
 
