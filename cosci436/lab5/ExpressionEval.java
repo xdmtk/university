@@ -168,9 +168,9 @@ public class ExpressionEval {
         else if (op == '/')
             operandStack.push(op2 / op1);
         else if (op == '^')
-            operandStack.push(Math.pow(op1, op2));
+            operandStack.push((int)Math.pow((double) op1, (double) op2));
         else if (op == '%')
-            operandStack.push(Math.(op1, op2));
+            operandStack.push((op1 % op2));
     }
 
 
