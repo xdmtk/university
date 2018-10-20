@@ -90,6 +90,8 @@ public class ExpressionEval {
                                 operatorStack.peek() == '-' ||
                                 operatorStack.peek() == '*' ||
                                 operatorStack.peek() == '/' ||
+
+                                // New additions: Not from book
                                 operatorStack.peek() == '^' ||
                                 operatorStack.peek() == '%' )) {
 
@@ -101,7 +103,7 @@ public class ExpressionEval {
             }
             else if (token.charAt(0) == '^' || token.charAt(0) == '%') {
 
-                // Process all *, / in the top of the operator stack
+                // New addition, not from book. Process ^ and % as top priority operators
                 while (!operatorStack.isEmpty() &&
                         (operatorStack.peek() == '^' ||
                                 operatorStack.peek() == '%')) {
@@ -168,6 +170,8 @@ public class ExpressionEval {
             operandStack.push(op2 * op1);
         else if (op == '/')
             operandStack.push(op2 / op1);
+
+            // Include the math operations corresponding to the operator
         else if (op == '^')
             operandStack.push((int)Math.pow((double) op2, (double) op1));
         else if (op == '%')
@@ -181,6 +185,8 @@ public class ExpressionEval {
             if (s.charAt(i) == '(' || s.charAt(i) == ')' ||
                     s.charAt(i) == '+' || s.charAt(i) == '-' ||
                     s.charAt(i) == '*' || s.charAt(i) == '/' ||
+
+                    // Include new operators 
                     s.charAt(i) == '%' || s.charAt(i) == '^')
                 result += " " + s.charAt(i) + " ";
             else
