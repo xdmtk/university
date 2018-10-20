@@ -44,16 +44,39 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         
 */
 
+import java.util.*;
+import java.util.Scanner;
+import java.io.File;
+
+
 public class CountKeywords {
 
-    private List<Character> lineList  = new ArrayList<Character>();
+    private List<String> lineList  = new ArrayList<String>();
     private String filePath; 
     private boolean fpSet = false;
-    private char current,match,last;
 
     
+    
+    private List<String> keywords = Arrays.asList( "abstract",
+        "assert", "boolean", "break",
+        "byte",    "case",    "catch",   "char",
+        "class",   "const",   "continue",    "default",
+        "do",  "double",  "else",    "enum",
+        "extends", "final",   "finally", "float",
+        "for", "goto",    "if",  "implements",
+        "import",  "instanceof",  "int", "interface",
+        "long",    "native",  "new", "package",
+        "private", "protected",   "public",  "return",
+        "short",   "static",  "strictfp",    "super",
+        "switch",  "synchronized",    "this",    "throw",
+        "throws",  "transient",   "try", "void",
+        "volatile",    "while",    "true",    "false",
+        "null");
+
+
     public static void main(String[] args) {
        
+        CountKeywords kl = new CountKeywords();
 
         // Error check for number of command line args
         if (args.length != 1) {
@@ -63,7 +86,7 @@ public class CountKeywords {
         
         // If input file supplied, continue with object creation
         // Use the path supplied by argument to set objects path
-        if (!wl.setFilePath(args[0])) {
+        if (!kl.setFilePath(args[0])) {
 
             // Error check for invalid paths
             System.out.println("File path given does not exist: " + args[0]);
@@ -75,6 +98,8 @@ public class CountKeywords {
 
 
 
+    public int countKeywordsInLine() {
+        
 
 
 
