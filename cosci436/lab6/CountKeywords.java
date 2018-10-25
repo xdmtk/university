@@ -53,9 +53,8 @@ public class CountKeywords {
 
     private List<String> lineList  = new ArrayList<String>();
     private String filePath; 
-    private boolean fpSet = false;
-
-    
+    private boolean strSet, mLcom;
+    private int keywordCount;
     
     private List<String> keywords = Arrays.asList( "abstract",
         "assert", "boolean", "break",
@@ -72,6 +71,12 @@ public class CountKeywords {
         "throws",  "transient",   "try", "void",
         "volatile",    "while",    "true",    "false",
         "null");
+
+    public CountKeywords() {
+        this.mLcom = this.strSet = false;
+        this.keywordCount = 0;
+
+    }
 
 
     public static void main(String[] args) {
@@ -99,6 +104,36 @@ public class CountKeywords {
 
 
     public int countKeywordsInLine() {
+
+        int a = 0;
+        // Parse line from line list
+        for (String line : lineList) {
+
+
+            // Scan conditions on whether to include found keywords
+            // based on strings, or comments
+            ( this.mLcom == true ) ? continue : a=a;
+            ( line.contains("//") ) ? continue; : a=a;
+            ( line.contains("/*") ) ? this.mLcom = true; : a=a;
+            ( line.contains("*/") ) ? this.mLcom = false; : a=a;
+            ( line.contains("\"") ) ? specialCount(line); continue; : a=a;
+
+            for (String word : line) {
+                if ( keywords.contains(word) ) {
+                    this.keywordCount++;
+                }
+
+
+
+
+
+
+
+
+
+            
+
+
         
 
 
