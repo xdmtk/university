@@ -51,12 +51,9 @@ import java.io.File;
 
 public class CountKeywords {
 
-    private List<String> lineList  = new ArrayList<String>();
-    private String filePath; 
-    private boolean strSet, mLcom;
-    private int keywordCount;
-    
-    private List<String> keywords = Arrays.asList( "abstract",
+    private List<String> lineList;
+    private Map<String,Integer> keyMap; 
+    private List<String> keyList = Arrays.asList( "abstract",
         "assert", "boolean", "break",
         "byte",    "case",    "catch",   "char",
         "class",   "const",   "continue",    "default",
@@ -72,7 +69,14 @@ public class CountKeywords {
         "volatile",    "while",    "true",    "false",
         "null");
 
+    private String filePath; 
+    private boolean strSet, mLcom, fpSet;
+    private int keywordCount;
+
+
     public CountKeywords() {
+        this.lineList = new ArrayList<String>();
+        this.keyMap = new HashMap<String,Integer>();
         this.mLcom = this.strSet = false;
         this.keywordCount = 0;
 
@@ -112,32 +116,15 @@ public class CountKeywords {
 
             // Scan conditions on whether to include found keywords
             // based on strings, or comments
-            ( this.mLcom == true ) ? continue : a=a;
-            ( line.contains("//") ) ? continue; : a=a;
-            ( line.contains("/*") ) ? this.mLcom = true; : a=a;
-            ( line.contains("*/") ) ? this.mLcom = false; : a=a;
-            ( line.contains("\"") ) ? specialCount(line); continue; : a=a;
-
-            for (String word : line) {
-                if ( keywords.contains(word) ) {
-                    this.keywordCount++;
-                }
+            if ( this.mLcom == true ) { continue; } 
+            if ( line.contains("//") ) { continue; } 
+            if ( line.contains("/*") ) { this.mLcom = true; }
+            if ( line.contains("*/") ) { this.mLcom = false; } 
+            if ( line.contains("\"") ) { specialCount(line);  continue; }
+        }
 
 
-
-
-
-
-
-
-
-            
-
-
-        
-
-
-
+    }
 
     // Create file object for path
     public boolean setFilePath(String fp) {
