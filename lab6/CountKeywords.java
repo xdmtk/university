@@ -71,14 +71,13 @@ public class CountKeywords {
 
     private String filePath; 
     private boolean strSet, mLcom, fpSet;
-    private int keywordCount;
 
 
     public CountKeywords() {
         this.lineList = new ArrayList<String>();
-        this.keyMap = new HashMap<String,Integer>();
         this.mLcom = this.strSet = false;
-        this.keywordCount = 0;
+
+        this.keyMap = new HashMap<String,Integer>();
 
     }
 
@@ -101,6 +100,11 @@ public class CountKeywords {
             System.out.println("File path given does not exist: " + args[0]);
             return;
         }
+
+        kl.countKeywordsInLine();
+        System.out.println(kl.keyMap.toString());
+
+        return;
        
 
     }
@@ -109,22 +113,46 @@ public class CountKeywords {
 
     public int countKeywordsInLine() {
 
-        int a = 0;
         // Parse line from line list
         for (String line : lineList) {
-
 
             // Scan conditions on whether to include found keywords
             // based on strings, or comments
             if ( this.mLcom == true ) { continue; } 
             if ( line.contains("//") ) { continue; } 
-            if ( line.contains("/*") ) { this.mLcom = true; }
+            if ( line.contains("/*") ) { this.mLcom = true; continue; }
             if ( line.contains("*/") ) { this.mLcom = false; } 
             if ( line.contains("\"") ) { specialCount(line);  continue; }
+
+            String[] words = line.split("\\s+");
+            for (String word : words) {
+                if (this.keyList.contains(word)) {
+                    if (!this.keyMap.containsKey(word)) {
+                        this.keyMap.put(word,1);
+                    }
+                    else {
+                        int c = this.keyMap.get(word);
+                        this.keyMap.put(word,c+1);
+                    }
+                }
+            }
         }
-
-
+        return 0;
     }
+
+    void specialCount(String line) {
+        int sPos = line.indexOf("\"");
+        int fPos = line.indexOf("\"", sPos+1);
+        String trimmed = line.substring(0,sPos) + line.substring(fPos, line.length());
+        System.out.println(trimmed);
+
+        return;
+    }
+
+
+
+
+
 
     // Create file object for path
     public boolean setFilePath(String fp) {
