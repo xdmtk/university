@@ -101,9 +101,12 @@ public class CountKeywords {
             return;
         }
 
-        kl.countKeywordsInLine();
-        System.out.println(kl.keyMap.toString());
+        if (!kl.parseFile()) {
+            System.out.println("Failed to parse file");
+            return;
+        }
 
+        kl.countKeywordsInLine();
         return;
        
 
@@ -112,9 +115,9 @@ public class CountKeywords {
 
 
     public int countKeywordsInLine() {
-
+    
         // Parse line from line list
-        for (String line : lineList) {
+        for (String line : this.lineList) {
 
             // Scan conditions on whether to include found keywords
             // based on strings, or comments
@@ -125,6 +128,8 @@ public class CountKeywords {
             if ( line.contains("\"") ) { specialCount(line);  continue; }
 
             String[] words = line.split("\\s+");
+            System.out.println(words.toString());
+            System.out.println(line);
             for (String word : words) {
                 if (this.keyList.contains(word)) {
                     if (!this.keyMap.containsKey(word)) {
@@ -201,7 +206,7 @@ public class CountKeywords {
            
             // Continue to grab tokens (words) until file is empty
             while (r.hasNextLine()) {
-                lineList.add(r.nextLine());
+                this.lineList.add(r.nextLine());
             }
             return true;
         }
