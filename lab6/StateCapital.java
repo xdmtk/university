@@ -131,7 +131,7 @@ public class StateCapital {
             input = input.trim();
 
             // Compare the corresponding value from key to check if correct
-            if (foo.stateMap.get(foo.stateList[i+1]).equals(input)) {
+            if (foo.stateMap.get(foo.stateList[i+1]).toLowerCase().equals(input.toLowerCase())) {
                 System.out.println("Congrats, you got it correct");
                 foo.score++;
             }
@@ -139,10 +139,30 @@ public class StateCapital {
                 System.out.println("You got it wrong");
             }
         }
-        System.out.println("Your final score: " + this.score);
+        System.out.println("Your final score: " + foo.score);
         
     }
 }
+
+
+
+/* Sample output 
+
+
+    xdmtk@DMT~/prog/fall2018/lab6 (master)
+    └─ $ ▶ j StateCapital
+        What is the capital of Alabama?
+        >> Montgomery
+        Congrats, you got it correct
+        What is the capital of Alaska?
+        >> juneau
+        Congrats, you got it correct
+        What is the capital of Arizona?
+        >> d
+        You got it wrong
+        What is the capital of Arkansas?
+
+*/
 
 
 
