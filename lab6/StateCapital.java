@@ -52,9 +52,9 @@ import java.io.File;
 
 
 public class StateCapital {
-
+    private int score = 0;
     private Map<String,String> stateMap; 
-    private List<String> stateList = Arrays.asList(
+    private String[] stateList = {
         "Montgomery",  "Alabama",
         "Juneau",  "Alaska",
         "Phoenix", "Arizona",
@@ -83,7 +83,7 @@ public class StateCapital {
         "Helena",  "Montana",
         "Lincoln", "Nebraska",
         "Carson City", "Nevada",
-        "Concord" "New Hampshire",
+        "Concord", "New Hampshire",
         "Trenton", "New Jersey",
         "Santa Fe",    "New Mexico",
         "Albany",  "New York",
@@ -105,24 +105,41 @@ public class StateCapital {
         "Charleston",  "West Virginia",
         "Madison", "Wisconsin",
         "Cheyenne", "Wyoming"
-    )
+    };
 
-    public StateCapitals() {
+    public StateCapital() {
         
         // Populate state/capital map
-        for (int i=0; i < stateList.length(); ++i) {
-            stateMap.put(stateList[i+1], stateList[i]);
+        for (int i=0; i < this.stateList.length; i+=2) {
+            this.stateMap.put(this.stateList[i+1], this.stateList[i]);
         }
     }
 
 
     public static void main(String[] args) {
+    
+        StateCapital foo = new StateCapital();
+        // Get input from command line
+        Scanner r = new Scanner(System.in);
+        
+        for (int i=0; i < foo.stateList.length; i+=2) {
+            System.out.println("What is the capital of " + foo.stateList[i+1] + "?");
+            System.out.print(">> ");
 
-
-
-
-
+            // Get input
+            String input = r.next();
+            
+            if (foo.stateMap.get(foo.stateList[i+1]) == input) {
+                System.out.println("Congrats, you got it correct");
+                foo.score++;
+            }
+            else {
+                System.out.println("You got it wrong");
+            }
+        }
+        
     }
+}
 
 
 
