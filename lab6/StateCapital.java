@@ -130,7 +130,7 @@ public class StateCapital {
             String input = r.next();
             input = input.trim();
 
-            if (foo.stateMap.get(foo.stateList[i+1]) == input) {
+            if (foo.stateMap.get(foo.stateList[i+1]).equals(input)) {
                 System.out.println("Congrats, you got it correct");
                 foo.score++;
             }
