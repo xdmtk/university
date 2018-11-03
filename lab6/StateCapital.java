@@ -53,7 +53,7 @@ import java.io.File;
 
 public class StateCapital {
     private int score = 0;
-    private Map<String,String> stateMap; 
+    private Map<String,String> stateMap = new HashMap<String,String>();
     private String[] stateList = {
         "Montgomery",  "Alabama",
         "Juneau",  "Alaska",
@@ -108,7 +108,7 @@ public class StateCapital {
     };
 
     public StateCapital() {
-        
+
         // Populate state/capital map
         for (int i=0; i < this.stateList.length; i+=2) {
             this.stateMap.put(this.stateList[i+1], this.stateList[i]);
