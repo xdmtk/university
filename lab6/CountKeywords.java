@@ -115,21 +115,20 @@ public class CountKeywords {
 
 
     public int countKeywordsInLine() {
-    
+        
+
         // Parse line from line list
         for (String line : this.lineList) {
 
             // Scan conditions on whether to include found keywords
             // based on strings, or comments
-            if ( this.mLcom == true ) { continue; } 
             if ( line.contains("//") ) { continue; } 
             if ( line.contains("/*") ) { this.mLcom = true; continue; }
             if ( line.contains("*/") ) { this.mLcom = false; } 
             if ( line.contains("\"") ) { specialCount(line);  continue; }
+            if ( this.mLcom == true ) { continue; } 
 
             String[] words = line.split("\\s+");
-            System.out.println(words.toString());
-            System.out.println(line);
             for (String word : words) {
                 if (this.keyList.contains(word)) {
                     if (!this.keyMap.containsKey(word)) {
@@ -142,6 +141,7 @@ public class CountKeywords {
                 }
             }
         }
+        System.out.println(this.keyMap.toString());
         return 0;
     }
 
@@ -149,7 +149,21 @@ public class CountKeywords {
         int sPos = line.indexOf("\"");
         int fPos = line.indexOf("\"", sPos+1);
         String trimmed = line.substring(0,sPos) + line.substring(fPos, line.length());
-        System.out.println(trimmed);
+        
+        String[] words = trimmed.split("\\s+");
+
+        for (String word : words) {
+            if (this.keyList.contains(word)) {
+                if (!this.keyMap.containsKey(word)) {
+                    this.keyMap.put(word,1);
+                }
+                else {
+                    int c = this.keyMap.get(word);
+                    this.keyMap.put(word,c+1);
+                }
+            }
+        }
+
 
         return;
     }
