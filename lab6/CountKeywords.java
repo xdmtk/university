@@ -110,6 +110,8 @@ public class CountKeywords {
 
         // Begin adding keywords to the map
         kl.countKeywordsInLine();
+        
+        kl.toString();
         return;
        
 
@@ -164,12 +166,19 @@ public class CountKeywords {
 
     void keyMapAdd(String[] words) {
 
+        // For each on each word
         for (String word : words) {
+
+            // Check if word is keyword
             if (this.keyList.contains(word)) {
                 if (!this.keyMap.containsKey(word)) {
+                    
+                    // Start with value of 1 (seen once) if not in map
                     this.keyMap.put(word,1);
                 }
                 else {
+                    
+                    // Otherwise get current value of key and increment
                     int c = this.keyMap.get(word);
                     this.keyMap.put(word,c+1);
                 }
@@ -239,6 +248,26 @@ public class CountKeywords {
     }
     
 
+    
+
+   @Override
+   public String toString() {
+        System.out.println("Contents of Map - Keywords in File");
+        System.out.println("{");
+        
+        // Iterate through map contents
+        for (Map.Entry<String,Integer> e : this.keyMap.entrySet()) {
+            System.out.println("\t" + e.getKey() + " -> " + e.getValue());
+        }
+        
+        System.out.println("}");
+       
+       // Dont return anything since String contents already being printed
+       return "";
+    }
+
+
+
      
    
 
@@ -251,7 +280,36 @@ public class CountKeywords {
 }
 
 
+/* 
 
+    Sample output for this source file 
+
+    xdmtk@DMT~/prog/fall2018/lab6 (master)
+    └─ $ ▶ j CountKeywords CountKeywords.java 
+
+    Contents of Map - Keywords in File
+    {
+        new -> 6
+        private -> 5
+        static -> 1
+        void -> 3
+        import -> 3
+        for -> 3
+        while -> 1
+        int -> 4
+        boolean -> 3
+        public -> 7
+        else -> 1
+        true -> 1
+        try -> 1
+        catch -> 1
+        class -> 1
+        if -> 11
+        return -> 8
+    }
+
+
+*/
 
 
 
