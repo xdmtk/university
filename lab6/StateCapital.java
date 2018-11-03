@@ -130,6 +130,7 @@ public class StateCapital {
             String input = r.next();
             input = input.trim();
 
+            // Compare the corresponding value from key to check if correct
             if (foo.stateMap.get(foo.stateList[i+1]).equals(input)) {
                 System.out.println("Congrats, you got it correct");
                 foo.score++;
@@ -138,6 +139,7 @@ public class StateCapital {
                 System.out.println("You got it wrong");
             }
         }
+        System.out.println("Your final score: " + this.score);
         
     }
 }
