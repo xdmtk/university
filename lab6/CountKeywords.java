@@ -101,11 +101,14 @@ public class CountKeywords {
             return;
         }
 
+
+        // Parse words in file individually, error check if not
         if (!kl.parseFile()) {
             System.out.println("Failed to parse file");
             return;
         }
 
+        // Begin adding keywords to the map
         kl.countKeywordsInLine();
         return;
        
@@ -128,29 +131,38 @@ public class CountKeywords {
             if ( line.contains("\"") ) { specialCount(line);  continue; }
             if ( this.mLcom == true ) { continue; } 
 
+            // If line passed above checks, split line into individual words
             String[] words = line.split("\\s+");
-            for (String word : words) {
-                if (this.keyList.contains(word)) {
-                    if (!this.keyMap.containsKey(word)) {
-                        this.keyMap.put(word,1);
-                    }
-                    else {
-                        int c = this.keyMap.get(word);
-                        this.keyMap.put(word,c+1);
-                    }
-                }
-            }
+
+            // For each on each word, check whether keyword list contains the given word
+            // if so add it to the map
+            keyMapAdd(words);
         }
-        System.out.println(this.keyMap.toString());
         return 0;
     }
 
     void specialCount(String line) {
+
+        // For lines with strings in them, count only the words outside of the
+        // string
         int sPos = line.indexOf("\"");
         int fPos = line.indexOf("\"", sPos+1);
+
+        // Does this by splitting the string from the beginning to the first quote,
+        // and concatenating the end quote to the end of the string
         String trimmed = line.substring(0,sPos) + line.substring(fPos, line.length());
-        
+       
+
         String[] words = trimmed.split("\\s+");
+
+        // Use same implementation to add words to the map
+        keyMapAdd(words);
+
+        return;
+    }
+
+
+    void keyMapAdd(String[] words) {
 
         for (String word : words) {
             if (this.keyList.contains(word)) {
@@ -163,12 +175,8 @@ public class CountKeywords {
                 }
             }
         }
-
-
         return;
     }
-
-
 
 
 
