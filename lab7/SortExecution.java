@@ -48,107 +48,45 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         
 */
 
-
+import java.util.Random;
 
 public class SortExecution {
 
-    public long myInsertionSort(int[] list) {
-        long startTime, endTime, execTime;
-        startTime = System.nanoTime();
-
-        for (int i=1; i < list.length; ++i) {
-            int currentElement = list[i];
-            int k;
-            for (k = i-1; k >= 0 && list[k] > currentElement; k--) {
-                list[k+1] = list[k];
-            }
-            list[k+1] = currentElement;
-        }
-
-        endTime = System.nanoTime();
-        execTime = endTime - startTime;
-        
-        return execTime;
-    }
 
 
-    public long myBubbleSort(int[] list) {
-        long startTime, endTime, execTime;
-        startTime = System.nanoTime();
+
+    public static void main(String[] args) {
     
-        boolean needNextPass = true;
-        for (int k=1; k < list.length && needNextPass; k++) {
+        int quantity = 100;
+        int[] list = new int[quantity];
 
-            needNextPass = false;
-            for (int i=0; i < list.length - k; i++) {
-                if (list[i] > list[i+1]) {
-
-                    // XOR swap
-                    list[i] ^= list[i+1];
-                    list[i+1] ^= list[i];
-                    list[i] ^= list[i+1];
-
-                    needNextPass = true;
-                }
-            }
-        }
-        endTime = System.nanoTime();
-        execTime = endTime - startTime;
+        SortExecution s = new SortExecution();
+        s.generateData(list,quantity);
+        s.myQuickSort(list,0,quantity-1);
         
-        return execTime;
+        int c=0;
+        
+        while (c < quantity) {
+            System.out.println(list[c++]);
+        }
+
+
+        return;
+
     }
 
+    public void generateData(int[] list, int quantity) {
+    
+        Random r = new Random();
+        int c = 0;
 
-    public long myMergeSort(int[] list) {
-            long startTime, endTime, execTime;
-            startTime = System.nanoTime();
-           
-            if (list.length > 1) {
-                int [] firstHalf = new int[list.length/2];
-                System.arraycopy(list,0,firstHalf,0,list.length/2);
-                mergeSort(firstHalf);
-
-                int secondHalfLength = list.length - (list.length/2);
-                int[] secondHalf = new int[secondHalfLength];
-
-                System.arraycopy(list,list.length/2, secondHalf, 0 
-                    secondHalfLength);
-                mergeSort(secondHalf);
-
-                merge(firstHalf,secondHalf,list);
-            }
-
-            
-            endTime = System.nanoTime();
-            execTime = endTime - startTime;
-            
-            return execTime;
-        }
-
-
-    public void myMerge(int[] list1, int[] list2, int[] temp) {
-        int current1,current2,current3;
-        current1 = current2 = current3 = 0;
-
-        while (current1 < list1.length && current2 < list2.length) {
-            if (list1[current1] < list2[current2]) {
-                temp[current3++] = list1[current1++];
-            }
-            else {
-                temp[current3++] = list2[current2++];
-            }
-        }
-
-        while (current1 < list1.length) {
-            temp[current3++] = list1[current1++];
-        }
-
-        while (current2 < list2.length) {
-            temp[current3++] = list2[current2++];
+        while (c < quantity) {
+            list[c++] = r.nextInt();
         }
 
 
     }
+
 
 
     public long myQuickSort(int[] list, int first, int last) {
@@ -157,8 +95,8 @@ public class SortExecution {
                 
             if (last > first) {
                 int pivotIndex = partition(list, first, last);
-                quickSort(list, first, pivotIndex - 1);
-                quickSort(list, pivotIndex + 1, last);
+                myQuickSort(list, first, pivotIndex - 1);
+                myQuickSort(list, pivotIndex + 1, last);
             } 
             
             endTime = System.nanoTime();
@@ -190,15 +128,15 @@ public class SortExecution {
             }
             while (high > first && list[high] >= pivot)
                 high--;
-                // Swap pivot with list[high]
-                if (pivot > list[high]) {
-                    list[first] = list[high];
-                    list[high] = pivot;
-                    return high;
-                }
-                else {
-                    return first;
-                }
+            // Swap pivot with list[high]
+            if (pivot > list[high]) {
+                list[first] = list[high];
+                list[high] = pivot;
+                return high;
+            }
+            else {
+                return first;
+            }
         }
     
 }
@@ -214,4 +152,3 @@ public class SortExecution {
 
 
 
-}
