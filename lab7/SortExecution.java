@@ -42,6 +42,86 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
        not as shown in the example)
          
 
+        SAMPLE OUTPUT:
+
+
+            └─ $ ▶ java SortExecution 
+            QuickSort Algorithm on 50000 elements
+            ------------------------------------------------
+
+            Trial 1 - Execution time: 16893167
+            Trial 2 - Execution time: 11687327
+            Trial 3 - Execution time: 10270868
+            Trial 4 - Execution time: 10240783
+            Trial 5 - Execution time: 11894012
+
+            -> Average exeution time for QuickSort Algorithm on 50000 elements: 12197231
+
+
+
+            QuickSort Algorithm on 100000 elements
+            ------------------------------------------------
+
+            Trial 1 - Execution time: 21683682
+            Trial 2 - Execution time: 23238403
+            Trial 3 - Execution time: 22615259
+            Trial 4 - Execution time: 22218576
+            Trial 5 - Execution time: 22415118
+
+            -> Average exeution time for QuickSort Algorithm on 100000 elements: 22434207
+
+
+
+            QuickSort Algorithm on 150000 elements
+            ------------------------------------------------
+
+            Trial 1 - Execution time: 34892178
+            Trial 2 - Execution time: 33598847
+            Trial 3 - Execution time: 34471787
+            Trial 4 - Execution time: 34943795
+            Trial 5 - Execution time: 34587946
+
+            -> Average exeution time for QuickSort Algorithm on 150000 elements: 34498910
+
+
+
+            QuickSort Algorithm on 200000 elements
+            ------------------------------------------------
+
+            Trial 1 - Execution time: 51871560
+            Trial 2 - Execution time: 46288448
+            Trial 3 - Execution time: 45431604
+            Trial 4 - Execution time: 46103804
+            Trial 5 - Execution time: 46334363
+
+            -> Average exeution time for QuickSort Algorithm on 200000 elements: 47205955
+
+
+
+            QuickSort Algorithm on 250000 elements
+            ------------------------------------------------
+
+            Trial 1 - Execution time: 57860944
+            Trial 2 - Execution time: 57158346
+            Trial 3 - Execution time: 57484411
+            Trial 4 - Execution time: 57013168
+            Trial 5 - Execution time: 57451514
+
+            -> Average exeution time for QuickSort Algorithm on 250000 elements: 57393676
+
+
+
+            QuickSort Algorithm on 300000 elements
+            ------------------------------------------------
+
+            Trial 1 - Execution time: 68646372
+            Trial 2 - Execution time: 67532898
+            Trial 3 - Execution time: 70098561
+            Trial 4 - Execution time: 68053311
+            Trial 5 - Execution time: 68207363
+
+            -> Average exeution time for QuickSort Algorithm on 300000 elements: 68507701
+
 
 
 
@@ -57,20 +137,37 @@ public class SortExecution {
 
     public static void main(String[] args) {
 
+        long sortAvg, currentSort;
+
         // Generate new object
         SortExecution s = new SortExecution();
-       
+      
+
         // Begin executing tests on input
         for (int quantity = 50000; quantity <= 300000; quantity += 50000) {
        
             // Generate new array with given size
             int[] list = new int[quantity];
-           
-           
-            s.generateData(list,quantity);
-            System.out.println("Execution time for " + quantity + " elements:" +
-                + s.myQuickSort(list,0,quantity-1) + "ms");
+            
+            System.out.println("QuickSort Algorithm on " + quantity + " elements");
+            System.out.println("------------------------------------------------\n");
+            sortAvg=0;
+            for (int x=0; x<5; ++x) {
 
+                // Generate random data
+                s.generateData(list,quantity);
+               
+                // Get execution time for current round
+                currentSort = s.myQuickSort(list,0,quantity-1);
+
+                // Show execution time for current round
+                System.out.println("\tTrial " + (x+1) + " - Execution time: " + currentSort);
+               
+                // Add to averages
+                sortAvg += currentSort;
+            }
+            System.out.println("\n\t-> Average exeution time for QuickSort Algorithm on " + quantity
+                + " elements: " + (sortAvg/5) + "\n\n\n");
 
         }
 
