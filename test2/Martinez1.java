@@ -41,6 +41,64 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         can have duplicates. The union of two prority queues may have duplicates.
 
 
+        SAMPLE OUTPUT 
+
+        \
+        └─ $ ▶ java Martinez1 
+        Priority Queue 1
+        ---------------------------------
+        Boysenberries
+        Grape
+        Dragonfruit
+        Pineapple
+        Pear
+        Quamquat
+        Mango
+
+
+
+        Priority Queue 2
+        ---------------------------------
+        Blueberries
+        Cantaloupe
+        Dragonfruit
+        Pineapple
+        Pomegranite
+        Watermelon
+
+
+
+        Priority Queue 1 Difference
+        ( Elements in PQ1 not contained in PQ2 )
+        ----------------------------------------
+
+        Boysenberries
+        Grape
+        Pear
+        Quamquat
+        Mango
+
+
+
+        Priority Queue 2 Difference
+        ( Elements in PQ2 not contained in PQ1 )
+        ----------------------------------------
+
+        Blueberries
+        Cantaloupe
+        Pomegranite
+        Watermelon
+
+
+
+        Priority Queue 1  and 2 Intersection
+        ( Elements in both PQ1 and PQ2 )
+        ----------------------------------------
+
+        Dragonfruit
+        Pineapple
+
+
 
         
 */
@@ -48,14 +106,14 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 import java.util.*;
 
 
-public class Test21 {
+public class Martinez1 {
 
 
 
 
     public static void main(String[] args) {
         
-        Test21 foo = new Test21();
+        Martinez1 foo = new Martinez1();
         foo.first();
 
 
