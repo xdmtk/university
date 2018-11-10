@@ -106,7 +106,7 @@ public class Martinez3 {
 
 
 
-        // Display union of two prioriy queues
+        // Display union of two LinkedHashSet
         
         Iterator<Integer> it1 = s1.iterator();
         Iterator<Integer> it2 = s2.iterator();
@@ -116,9 +116,7 @@ public class Martinez3 {
 
             int n = it1.next();
             
-            if ((s2.contains(n) )) {
-                System.out.println(n);
-            }
+            System.out.println(n);
         }
 
         System.out.println("\n\n");
@@ -126,9 +124,7 @@ public class Martinez3 {
         while (it2.hasNext()) {
             int n = it2.next();
             
-            if (s1.contains(n)) {
-                System.out.println(n);
-            }
+            System.out.println(n);
         }
 
         System.out.println("\n\n");
@@ -181,7 +177,7 @@ public class Martinez3 {
                 System.out.println(n);
             }
 
-        } while (it1.hasNext());
+        } while (it2.hasNext());
         System.out.println("\n\n");
 
 

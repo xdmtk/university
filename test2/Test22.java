@@ -177,7 +177,7 @@ public class Test22 {
                 System.out.println(n);
             }
 
-        } while (it1.hasNext());
+        } while (it2.hasNext());
         System.out.println("\n\n");
 
 
