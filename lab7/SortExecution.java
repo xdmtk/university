@@ -57,20 +57,23 @@ public class SortExecution {
 
     public static void main(String[] args) {
 
-        // Just a test main fuction, will revise later
-
-        int quantity = 100;
-        int[] list = new int[quantity];
-
+        // Generate new object
         SortExecution s = new SortExecution();
-        s.generateData(list,quantity);
-        s.myQuickSort(list,0,quantity-1);
+       
+        // Begin executing tests on input
+        for (int quantity = 50000; quantity < 300000; quantity += 50000) {
+       
+            // Generate new array with given size
+            int[] list = new int[quantity];
+           
+           
+            s.generateData(list,quantity);
+            System.out.println("Execution time for " + quantity + " elements:" +
+                + s.myQuickSort(list,0,quantity-1) + "ms");
 
-        int c=0;
 
-        while (c < quantity) {
-            System.out.println(list[c++]);
         }
+
 
 
         return;
