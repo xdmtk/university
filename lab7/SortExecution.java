@@ -61,7 +61,7 @@ public class SortExecution {
         SortExecution s = new SortExecution();
        
         // Begin executing tests on input
-        for (int quantity = 50000; quantity < 300000; quantity += 50000) {
+        for (int quantity = 50000; quantity <= 300000; quantity += 50000) {
        
             // Generate new array with given size
             int[] list = new int[quantity];
