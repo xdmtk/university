@@ -40,6 +40,57 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
         Upload java source code named your Lastname.java (ex. Samplewala.java) and the run/result, fir the above 3 sub modules.
 
+                └─ $ ▶ java Martinez3 
+                LinkedHashSet 1
+                ---------------------------------
+                53
+                42
+                65
+                91
+                87
+                471993
+
+
+
+                LinkedHashSet 2
+                ---------------------------------
+                65
+                93
+                42
+                67
+                87
+                35
+
+
+
+                LinkedHashSet 1 Difference
+                ( Elements in s1 not contained in s2 )
+                ----------------------------------------
+
+                53
+                91
+                471993
+
+
+
+                LinkedHashSet 2 Difference
+                ( Elements in s2 not contained in s1 )
+                ----------------------------------------
+
+                93
+                67
+                35
+
+
+
+                LinkedHashSet 1  and 2 Intersection
+                ( Elements in both s1 and s2 )
+                ----------------------------------------
+
+                42
+                65
+                87
+
         
 */
 

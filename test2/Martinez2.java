@@ -35,6 +35,40 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
         Create a method Second(), that modifies the first(), to print the list of fruits beginning with letter b.
+                
+                
+                └─ $ ▶ java Martinez2 
+                Priority Queue 1
+                ---------------------------------
+                Boysenberries
+
+
+
+                Priority Queue 2
+                ---------------------------------
+                Blueberries
+
+
+
+                Priority Queue 1 Difference
+                ( Elements in PQ1 not contained in PQ2 )
+                ----------------------------------------
+
+                Boysenberries
+
+
+
+                Priority Queue 2 Difference
+                ( Elements in PQ2 not contained in PQ1 )
+                ----------------------------------------
+
+                Blueberries
+
+
+
+                Priority Queue 1  and 2 Intersection
+                ( Elements in both PQ1 and PQ2 )
+                ----------------------------------------
 
 
         
@@ -43,14 +77,14 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 import java.util.*;
 
 
-public class Test22 {
+public class Martinez2 {
 
 
 
 
     public static void main(String[] args) {
         
-        Test22 foo = new Test22();
+        Martinez2 foo = new Martinez2();
         foo.second();
 
 
