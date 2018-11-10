@@ -46,6 +46,8 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 */
 
 
+
+
 public class Test21 {
 
 
@@ -66,6 +68,18 @@ public class Test21 {
         PriorityQueue<String> pq1 = new PriorityQueue();
         PriorityQueue<String> pq2 = new PriorityQueue();
 
+        pq1.add("Pineapple");
+        pq1.add("Pear");
+        pq1.add("Quamquat");
+        pq1.add("Grape");
+        pq1.add("Dragonfruit");
+        pq1.add("Boysenberries");
+
+        pq2.add("Pineapple");
+        pq2.add("Cantaloupe");
+        pq2.add("Dragonfruit");
+        pq2.add("Blueberries");
+        pq2.add("Pomegranite");
 
 
 
