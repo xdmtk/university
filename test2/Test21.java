@@ -198,7 +198,7 @@ public class Test21 {
 
             String n = it1.next();
             
-            if (!pq2.contains(n)) {
+            if (pq2.contains(n)) {
                 System.out.println(n);
             }
 
