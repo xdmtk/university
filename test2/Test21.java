@@ -97,6 +97,7 @@ public class Test21 {
 
 
         // Display union of two prioriy queues
+        
         Iterator<String> it1 = pq1.iterator();
         Iterator<String> it2 = pq2.iterator();
 
@@ -109,6 +110,41 @@ public class Test21 {
         while (it2.hasNext()) {
             System.out.println(it2.next());
         }
+
+
+        
+
+    
+        // Display difference of two prioriy queues
+
+
+        Iterator<String> it1 = pq1.iterator();
+        Iterator<String> it2 = pq2.iterator();
+
+        System.out.println("Priority Queue 1 Difference");
+        System.out.println("( Elements in PQ1 not contained in PQ2 )");
+        System.out.println("----------------------------------------\n");
+        
+        while (it1.hasNext()) {
+
+            String n = it1.next();
+            
+            if (!pq2.contains(n)) {
+                System.out.println(n);
+            }
+
+        }
+
+        System.out.println("Priority Queue 2\n---------------------------------");
+        while (it2.hasNext()) {
+            System.out.println(it2.next());
+        }
+
+
+
+
+
+
 
     }
 
