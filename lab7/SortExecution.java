@@ -112,13 +112,13 @@ public class SortExecution {
    
 			
 			// Set timers
-			long startTime, endTime, execTime;
+	    long startTime, endTime, execTime;
             startTime = System.nanoTime();
                 
-			// Since calls to this function will be recursive, based on the continous 
-			// updates on the index of the pivot number, this condition ( last > first ) 
-			// will eventually fail when the subset cannot be further split into more arrays
-			//
+	       // Since calls to this function will be recursive, based on the continous 
+	       // updates on the index of the pivot number, this condition ( last > first ) 
+	       // will eventually fail when the subset cannot be further split into more arrays
+	       //
 
             if (last > first) {
                 int pivotIndex = partition(list, first, last);
