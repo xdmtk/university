@@ -98,7 +98,17 @@ public class Test21 {
 
         // Display union of two prioriy queues
         Iterator<String> it1 = pq1.iterator();
+        Iterator<String> it2 = pq2.iterator();
 
+        System.out.println("Priority Queue 1\n---------------------------------");
+        while (it1.hasNext()) {
+            System.out.println(it1.next());
+        }
+
+        System.out.println("Priority Queue 2\n---------------------------------");
+        while (it2.hasNext()) {
+            System.out.println(it2.next());
+        }
 
     }
 
