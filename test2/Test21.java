@@ -45,7 +45,7 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         
 */
 
-
+import java.util.*;
 
 
 public class Test21 {
@@ -65,8 +65,14 @@ public class Test21 {
 
     public void first() {
         
-        PriorityQueue<String> pq1 = new PriorityQueue();
-        PriorityQueue<String> pq2 = new PriorityQueue();
+        PriorityQueue<String> pq1 = new PriorityQueue<String>();
+        PriorityQueue<String> pq2 = new PriorityQueue<String>();
+
+
+        /////////////////////////////////////
+        // Create two priorities queues and add requested elements
+
+
 
         pq1.add("Pineapple");
         pq1.add("Pear");
@@ -81,11 +87,17 @@ public class Test21 {
         pq2.add("Blueberries");
         pq2.add("Pomegranite");
 
+        /////////////////////////////////////
+        // Add green skin fruit to list 1
+        // And favorite fruit to list 2
+
+        pq1.add("Mango");
+        pq2.add("Watermelon");
 
 
 
-
-
+        // Display union of two prioriy queues
+        Iterator<String> it1 = pq1.iterator();
 
 
     }
