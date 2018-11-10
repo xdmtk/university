@@ -117,11 +117,13 @@ public class Test21 {
             System.out.println(it1.next());
         }
 
+        System.out.println("\n\n");
         System.out.println("Priority Queue 2\n---------------------------------");
         while (it2.hasNext()) {
             System.out.println(it2.next());
         }
 
+        System.out.println("\n\n");
 
        
 
@@ -147,7 +149,7 @@ public class Test21 {
         System.out.println("( Elements in PQ1 not contained in PQ2 )");
         System.out.println("----------------------------------------\n");
         
-        while (it1.hasNext()) {
+        do{
 
             String n = it1.next();
             
@@ -155,15 +157,15 @@ public class Test21 {
                 System.out.println(n);
             }
 
-        }
-
+        } while (it1.hasNext());
+        System.out.println("\n\n");
 
 
         System.out.println("Priority Queue 2 Difference");
         System.out.println("( Elements in PQ2 not contained in PQ1 )");
         System.out.println("----------------------------------------\n");
         
-        while (it1.hasNext()) {
+        do  {
 
             String n = it2.next();
             
@@ -171,7 +173,8 @@ public class Test21 {
                 System.out.println(n);
             }
 
-        }
+        } while (it1.hasNext());
+        System.out.println("\n\n");
 
 
 
