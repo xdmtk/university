@@ -55,7 +55,8 @@ public class Test21 {
 
     public static void main(String[] args) {
         
-        
+        Test21 foo = new Test21();
+        foo.first();
 
 
 
@@ -139,8 +140,8 @@ public class Test21 {
         // Display difference of two prioriy queues
 
 
-        Iterator<String> it1 = pq1.iterator();
-        Iterator<String> it2 = pq2.iterator();
+        it1 = pq1.iterator();
+        it2 = pq2.iterator();
 
         System.out.println("Priority Queue 1 Difference");
         System.out.println("( Elements in PQ1 not contained in PQ2 )");
@@ -187,8 +188,8 @@ public class Test21 {
         // Display intersection of two prioriy queues
 
 
-        Iterator<String> it1 = pq1.iterator();
-        Iterator<String> it2 = pq2.iterator();
+        it1 = pq1.iterator();
+        it2 = pq2.iterator();
 
         System.out.println("Priority Queue 1  and 2 Intersection");
         System.out.println("( Elements in both PQ1 and PQ2 )");
