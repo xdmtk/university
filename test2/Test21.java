@@ -34,7 +34,11 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
   _____________________\///_______\/////////________\/////////______________________
 
 
-
+        Write a method first() that creates two priority queues, {"Pineapple", "Pear", "Quamquat", 
+        "Grape", "Dragon Fruit", "Boysenberries"} and {"Pineapple", "Cantaloupe", "Dragon Fruit", 
+        "Blueberries", "Pomegrante"}. Add to the first list a green skin fruit. Add your favorite fruit 
+        to the second list. Display their union, difference, and intersection. Note that priority queue 
+        can have duplicates. The union of two prority queues may have duplicates.
 
 
 
@@ -42,12 +46,30 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 */
 
 
-public class Test2-1 {
+public class Test21 {
 
 
 
 
     public static void main(String[] args) {
+        
+        
+
+
+
+    }
+
+
+
+    public void first() {
+        
+        PriorityQueue<String> pq1 = new PriorityQueue();
+        PriorityQueue<String> pq2 = new PriorityQueue();
+
+
+
+
+
 
 
 
