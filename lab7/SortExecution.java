@@ -44,83 +44,330 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
         SAMPLE OUTPUT:
 
-
-            └─ $ ▶ java SortExecution 
             QuickSort Algorithm on 50000 elements
             ------------------------------------------------
 
-            Trial 1 - Execution time: 16893167
-            Trial 2 - Execution time: 11687327
-            Trial 3 - Execution time: 10270868
-            Trial 4 - Execution time: 10240783
-            Trial 5 - Execution time: 11894012
+                Trial 1 - Execution time: 15271232
+                Trial 2 - Execution time: 10144374
+                Trial 3 - Execution time: 10349257
+                Trial 4 - Execution time: 10399185
+                Trial 5 - Execution time: 10178036
 
-            -> Average exeution time for QuickSort Algorithm on 50000 elements: 12197231
+                -> Average exeution time for QuickSort Algorithm on 50000 elements: 11268416
 
 
 
             QuickSort Algorithm on 100000 elements
             ------------------------------------------------
 
-            Trial 1 - Execution time: 21683682
-            Trial 2 - Execution time: 23238403
-            Trial 3 - Execution time: 22615259
-            Trial 4 - Execution time: 22218576
-            Trial 5 - Execution time: 22415118
+                Trial 1 - Execution time: 21319281
+                Trial 2 - Execution time: 21103715
+                Trial 3 - Execution time: 21115558
+                Trial 4 - Execution time: 21179632
+                Trial 5 - Execution time: 21303292
 
-            -> Average exeution time for QuickSort Algorithm on 100000 elements: 22434207
+                -> Average exeution time for QuickSort Algorithm on 100000 elements: 21204295
 
 
 
             QuickSort Algorithm on 150000 elements
             ------------------------------------------------
 
-            Trial 1 - Execution time: 34892178
-            Trial 2 - Execution time: 33598847
-            Trial 3 - Execution time: 34471787
-            Trial 4 - Execution time: 34943795
-            Trial 5 - Execution time: 34587946
+                Trial 1 - Execution time: 32251555
+                Trial 2 - Execution time: 42782264
+                Trial 3 - Execution time: 33317457
+                Trial 4 - Execution time: 32539364
+                Trial 5 - Execution time: 32743147
 
-            -> Average exeution time for QuickSort Algorithm on 150000 elements: 34498910
+                -> Average exeution time for QuickSort Algorithm on 150000 elements: 34726757
 
 
 
             QuickSort Algorithm on 200000 elements
             ------------------------------------------------
 
-            Trial 1 - Execution time: 51871560
-            Trial 2 - Execution time: 46288448
-            Trial 3 - Execution time: 45431604
-            Trial 4 - Execution time: 46103804
-            Trial 5 - Execution time: 46334363
+                Trial 1 - Execution time: 43734122
+                Trial 2 - Execution time: 43603415
+                Trial 3 - Execution time: 43952493
+                Trial 4 - Execution time: 43673711
+                Trial 5 - Execution time: 44075003
 
-            -> Average exeution time for QuickSort Algorithm on 200000 elements: 47205955
+                -> Average exeution time for QuickSort Algorithm on 200000 elements: 43807748
 
 
 
             QuickSort Algorithm on 250000 elements
             ------------------------------------------------
 
-            Trial 1 - Execution time: 57860944
-            Trial 2 - Execution time: 57158346
-            Trial 3 - Execution time: 57484411
-            Trial 4 - Execution time: 57013168
-            Trial 5 - Execution time: 57451514
+                Trial 1 - Execution time: 55300732
+                Trial 2 - Execution time: 56115756
+                Trial 3 - Execution time: 55340107
+                Trial 4 - Execution time: 55128006
+                Trial 5 - Execution time: 54956479
 
-            -> Average exeution time for QuickSort Algorithm on 250000 elements: 57393676
+                -> Average exeution time for QuickSort Algorithm on 250000 elements: 55368216
 
 
 
             QuickSort Algorithm on 300000 elements
             ------------------------------------------------
 
-            Trial 1 - Execution time: 68646372
-            Trial 2 - Execution time: 67532898
-            Trial 3 - Execution time: 70098561
-            Trial 4 - Execution time: 68053311
-            Trial 5 - Execution time: 68207363
+                Trial 1 - Execution time: 68098576
+                Trial 2 - Execution time: 67433894
+                Trial 3 - Execution time: 69418826
+                Trial 4 - Execution time: 66916896
+                Trial 5 - Execution time: 70552004
 
-            -> Average exeution time for QuickSort Algorithm on 300000 elements: 68507701
+                -> Average exeution time for QuickSort Algorithm on 300000 elements: 68484039
+
+
+
+            MergeSort Algorithm on 50000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 19331292
+                Trial 2 - Execution time: 17513524
+                Trial 3 - Execution time: 20316356
+                Trial 4 - Execution time: 15616841
+                Trial 5 - Execution time: 15442966
+
+                -> Average exeution time for MergeSort Algorithm on 50000 elements: 17644195
+
+
+
+            MergeSort Algorithm on 100000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 35301795
+                Trial 2 - Execution time: 37058821
+                Trial 3 - Execution time: 34158453
+                Trial 4 - Execution time: 31579660
+                Trial 5 - Execution time: 39870456
+
+                -> Average exeution time for MergeSort Algorithm on 100000 elements: 35593837
+
+
+
+            MergeSort Algorithm on 150000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 52883628
+                Trial 2 - Execution time: 54471009
+                Trial 3 - Execution time: 52530302
+                Trial 4 - Execution time: 50028868
+                Trial 5 - Execution time: 52537333
+
+                -> Average exeution time for MergeSort Algorithm on 150000 elements: 52490228
+
+
+
+            MergeSort Algorithm on 200000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 64923796
+                Trial 2 - Execution time: 71279182
+                Trial 3 - Execution time: 87541389
+                Trial 4 - Execution time: 98057285
+                Trial 5 - Execution time: 65190800
+
+                -> Average exeution time for MergeSort Algorithm on 200000 elements: 77398490
+
+
+
+            MergeSort Algorithm on 250000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 82913955
+                Trial 2 - Execution time: 85754642
+                Trial 3 - Execution time: 82521992
+                Trial 4 - Execution time: 82490203
+                Trial 5 - Execution time: 86166041
+
+                -> Average exeution time for MergeSort Algorithm on 250000 elements: 83969366
+
+
+
+            MergeSort Algorithm on 300000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 114626231
+                Trial 2 - Execution time: 114423379
+                Trial 3 - Execution time: 104213845
+                Trial 4 - Execution time: 103091788
+                Trial 5 - Execution time: 100243459
+
+                -> Average exeution time for MergeSort Algorithm on 300000 elements: 107319740
+
+
+
+            BubbleSort Algorithm on 50000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 5687892622
+                Trial 2 - Execution time: 5712382239
+                Trial 3 - Execution time: 4889039168
+                Trial 4 - Execution time: 4916207543
+                Trial 5 - Execution time: 4903826460
+
+                -> Average exeution time for BubbleSort Algorithm on 50000 elements: 5221869606
+
+
+
+            BubbleSort Algorithm on 100000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 19979891241
+                Trial 2 - Execution time: 20054689797
+                Trial 3 - Execution time: 20175092346
+                Trial 4 - Execution time: 20808897867
+                Trial 5 - Execution time: 20609978361
+
+                -> Average exeution time for BubbleSort Algorithm on 100000 elements: 20325709922
+
+
+
+            BubbleSort Algorithm on 150000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 46958171010
+                Trial 2 - Execution time: 46433126734
+                Trial 3 - Execution time: 45489231882
+                Trial 4 - Execution time: 45975776140
+                Trial 5 - Execution time: 46635599710
+
+                -> Average exeution time for BubbleSort Algorithm on 150000 elements: 46298381095
+
+
+
+            BubbleSort Algorithm on 200000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 82686298224
+                Trial 2 - Execution time: 78998808696
+                Trial 3 - Execution time: 82232177742
+                Trial 4 - Execution time: 82145728243
+                Trial 5 - Execution time: 81859616955
+
+                -> Average exeution time for BubbleSort Algorithm on 200000 elements: 81584525972
+
+
+
+            BubbleSort Algorithm on 250000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 128120362035
+                Trial 2 - Execution time: 128157341153
+                Trial 3 - Execution time: 128165246650
+                Trial 4 - Execution time: 127572651290
+                Trial 5 - Execution time: 127786420671
+
+                -> Average exeution time for BubbleSort Algorithm on 250000 elements: 127960404359
+
+
+
+            BubbleSort Algorithm on 300000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 185058119907
+                Trial 2 - Execution time: 183635400324
+                Trial 3 - Execution time: 184056374635
+                Trial 4 - Execution time: 183573573144
+                Trial 5 - Execution time: 185660903381
+
+                -> Average exeution time for BubbleSort Algorithm on 300000 elements: 184396874278
+
+
+
+            InsertionSort Algorithm on 50000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 315238836
+                Trial 2 - Execution time: 309235857
+                Trial 3 - Execution time: 397065173
+                Trial 4 - Execution time: 390984319
+                Trial 5 - Execution time: 385479293
+
+                -> Average exeution time for InsertionSort Algorithm on 50000 elements: 359600695
+
+
+
+            InsertionSort Algorithm on 100000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 1574174794
+                Trial 2 - Execution time: 1579462614
+                Trial 3 - Execution time: 1577252117
+                Trial 4 - Execution time: 1596730180
+                Trial 5 - Execution time: 1587750809
+
+                -> Average exeution time for InsertionSort Algorithm on 100000 elements: 1583074102
+
+
+
+            InsertionSort Algorithm on 150000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 3554821265
+                Trial 2 - Execution time: 3610294099
+                Trial 3 - Execution time: 3617296036
+                Trial 4 - Execution time: 3612717299
+                Trial 5 - Execution time: 3600550914
+
+                -> Average exeution time for InsertionSort Algorithm on 150000 elements: 3599135922
+
+
+
+            InsertionSort Algorithm on 200000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 6442297377
+                Trial 2 - Execution time: 6462336715
+                Trial 3 - Execution time: 6485365535
+                Trial 4 - Execution time: 6633178401
+                Trial 5 - Execution time: 6650599800
+
+                -> Average exeution time for InsertionSort Algorithm on 200000 elements: 6534755565
+
+
+
+            InsertionSort Algorithm on 250000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 10405526715
+                Trial 2 - Execution time: 10590419652
+                Trial 3 - Execution time: 10448009480
+                Trial 4 - Execution time: 10423282132
+                Trial 5 - Execution time: 10330094103
+
+                -> Average exeution time for InsertionSort Algorithm on 250000 elements: 10439466416
+
+
+
+            InsertionSort Algorithm on 300000 elements
+            ------------------------------------------------
+
+                Trial 1 - Execution time: 14855169669
+                Trial 2 - Execution time: 14868051484
+                Trial 3 - Execution time: 15050907934
+                Trial 4 - Execution time: 15044008203
+                Trial 5 - Execution time: 14735364837
+
+                -> Average exeution time for InsertionSort Algorithm on 300000 elements: 14910700425
+
+
+
+
+
+            Algorithms in Comparison:
+            ------------------------------
+            Quicksort Average: 68484039
+
+            BubbleSort Average: 184396874278
+
+            MergeSort Average: 107319740
+
+            InsertionSort Average: 14910700425
+
 
 
 
@@ -322,6 +569,14 @@ public class SortExecution {
                 + " elements: " + insSortTotal + "\n\n\n");
 
         }
+
+
+
+        System.out.println("\n\nAlgorithms in Comparison:\n------------------------------");
+        System.out.println("Quicksort Average: " + qSortTotal + "\n");
+        System.out.println("BubbleSort Average: " + bubSortTotal + "\n");
+        System.out.println("MergeSort Average: " + mrgSortTotal + "\n");
+        System.out.println("InsertionSort Average: " + insSortTotal + "\n");
 
 
         return;
