@@ -137,11 +137,25 @@ public class SortExecution {
 
     public static void main(String[] args) {
 
-        long sortAvg, currentSort;
+        long sortAvg, currentSort, qSortTotal, mrgSortTotal, bubSortTotal, insSortToal;
 
         // Generate new object
         SortExecution s = new SortExecution();
-      
+        
+
+        // NOTE: Because I'm implementing the additional algorithms and execs times
+        // quick and dirty, the code may a little longer than necessary
+
+
+        //////////////////////////////////////////////////////
+        ////
+        //
+        //      QuickSort Execution Times
+        //
+        //
+        ////
+        //////////////////////////////////////////////////////
+
 
         // Begin executing tests on input
         for (int quantity = 50000; quantity <= 300000; quantity += 50000) {
@@ -165,12 +179,102 @@ public class SortExecution {
                
                 // Add to averages
                 sortAvg += currentSort;
+
+                qSortTotal = sortAvg/5;
             }
             System.out.println("\n\t-> Average exeution time for QuickSort Algorithm on " + quantity
-                + " elements: " + (sortAvg/5) + "\n\n\n");
+                + " elements: " + qSortTotal + "\n\n\n");
 
         }
 
+
+
+
+
+
+
+        //////////////////////////////////////////////////////
+        ////
+        //
+        //      MergeSort Execution Times
+        //
+        //
+        ////
+        //////////////////////////////////////////////////////
+
+
+
+        // Begin executing tests on input
+        for (int quantity = 50000; quantity <= 300000; quantity += 50000) {
+       
+            // Generate new array with given size
+            int[] list = new int[quantity];
+            
+            System.out.println("MergeSort Algorithm on " + quantity + " elements");
+            System.out.println("------------------------------------------------\n");
+            sortAvg=0;
+            for (int x=0; x<5; ++x) {
+
+                // Generate random data
+                s.generateData(list,quantity);
+               
+                // Get execution time for current round
+                currentSort = s.mergeSort(list);
+
+                // Show execution time for current round
+                System.out.println("\tTrial " + (x+1) + " - Execution time: " + currentSort);
+               
+                // Add to averages
+                sortAvg += currentSort;
+                mrgSortTotal = sortAvg/5;
+            }
+            System.out.println("\n\t-> Average exeution time for MergeSort Algorithm on " + quantity
+                + " elements: " + mrgSortTotal + "\n\n\n");
+
+        }
+
+
+
+        //////////////////////////////////////////////////////
+        ////
+        //
+        //        BubbleSort Execution Times
+        //
+        //
+        ////
+        //////////////////////////////////////////////////////
+
+
+
+
+        // Begin executing tests on input
+        for (int quantity = 50000; quantity <= 300000; quantity += 50000) {
+       
+            // Generate new array with given size
+            int[] list = new int[quantity];
+            
+            System.out.println("BubbleSort Algorithm on " + quantity + " elements");
+            System.out.println("------------------------------------------------\n");
+            sortAvg=0;
+            for (int x=0; x<5; ++x) {
+
+                // Generate random data
+                s.generateData(list,quantity);
+               
+                // Get execution time for current round
+                currentSort = s.bubbleSort(list);
+
+                // Show execution time for current round
+                System.out.println("\tTrial " + (x+1) + " - Execution time: " + currentSort);
+               
+                // Add to averages
+                sortAvg += currentSort;
+                bubSortTotal = sortAvg/5;
+            }
+            System.out.println("\n\t-> Average exeution time for BubbleSort Algorithm on " + quantity
+                + " elements: " + bubSortTotal + "\n\n\n");
+
+        }
 
 
         return;
@@ -180,6 +284,51 @@ public class SortExecution {
 
 
 
+        //////////////////////////////////////////////////////
+        ////
+        //
+        //        InsertionSort Execution Times
+        //
+        //
+        ////
+        //////////////////////////////////////////////////////
+
+
+
+
+        // Begin executing tests on input
+        for (int quantity = 50000; quantity <= 300000; quantity += 50000) {
+       
+            // Generate new array with given size
+            int[] list = new int[quantity];
+            
+            System.out.println("InsertionSort Algorithm on " + quantity + " elements");
+            System.out.println("------------------------------------------------\n");
+            sortAvg=0;
+            for (int x=0; x<5; ++x) {
+
+                // Generate random data
+                s.generateData(list,quantity);
+               
+                // Get execution time for current round
+                currentSort = s.insertionSort(list);
+
+                // Show execution time for current round
+                System.out.println("\tTrial " + (x+1) + " - Execution time: " + currentSort);
+               
+                // Add to averages
+                sortAvg += currentSort;
+                insSortTotal = sortAvg/5;
+            }
+            System.out.println("\n\t-> Average exeution time for InsertionSort Algorithm on " + quantity
+                + " elements: " + insSortTotal + "\n\n\n");
+
+        }
+
+
+        return;
+
+    }
 
     // Function to generate random integers to be stored in the supplied array
     public void generateData(int[] list, int quantity) {
@@ -392,7 +541,7 @@ public class SortExecution {
 
 
 
-    public void insertionSort(int[] list) {
+    public long insertionSort(int[] list) {
 
         long startTime, endTime, execTime;
         startTime = System.nanoTime();
@@ -421,7 +570,7 @@ public class SortExecution {
 
     }
 
-    public void bubbleSort(int[] list) {
+    public long bubbleSort(int[] list) {
         long startTime, endTime, execTime;
         startTime = System.nanoTime();
         
@@ -447,14 +596,10 @@ public class SortExecution {
     }
 
     /** Merge two sorted lists */
-    public static void merge(int[]
-    int current1 = 0; // Current
-    int current2 = 0; // Current
-    int current3 = 0; // Current
-    list1, int[] list2, int[] temp) {
-        index in list1
-        index in list2
-        index in temp
+    public static void merge(int[] list1, int[] list2, int[] temp) {
+        int current1 = 0; // Current
+        int current2 = 0; // Current
+        int current3 = 0; // Current
         while (current1 < list1.length && current2 < list2.length) {
             if (list1[current1] < list2[current2])
                 temp[current3++] = list1[current1++];
@@ -468,7 +613,12 @@ public class SortExecution {
     }
 
 
-    public void mergeSort(int[] list) {
+    public long mergeSort(int[] list) {
+        long startTime, endTime, execTime;
+        startTime = System.nanoTime();
+
+
+
        if (list.length > 1) {
            // Merge sort the first half
            int[] firstHalf = new int[list.length / 2];
@@ -483,21 +633,13 @@ public class SortExecution {
            // Merge firstHalf with secondHalf into list
            merge(firstHalf, secondHalf, list);
        }
+        endTime = System.nanoTime();
+        execTime = endTime - startTime;
+
+        return execTime;
     }
 
 
-
-
-    public static <E extends Comparable<E>> void heapSort(E[] list) {
-        // Create a Heap of integers
-        Heap<E> heap = new Heap<>();
-        // Add elements to the heap
-        for (int i = 0; i < list.length; i++)
-            heap.add(list[i]);
-            // Remove elements from the heap
-        for (int i = list.length - 1; i >= 0; i--)
-            list[i] = heap.remove();
-    }
 
 
 
