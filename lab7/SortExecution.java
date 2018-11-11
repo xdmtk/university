@@ -137,7 +137,8 @@ public class SortExecution {
 
     public static void main(String[] args) {
 
-        long sortAvg, currentSort, qSortTotal, mrgSortTotal, bubSortTotal, insSortToal;
+        long sortAvg, currentSort, qSortTotal, mrgSortTotal, bubSortTotal, insSortTotal;
+        sortAvg = currentSort = qSortTotal = mrgSortTotal = bubSortTotal = insSortTotal = 0;
 
         // Generate new object
         SortExecution s = new SortExecution();
@@ -277,9 +278,6 @@ public class SortExecution {
         }
 
 
-        return;
-
-    }
 
 
 
