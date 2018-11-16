@@ -48,15 +48,14 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 */
 
-import java.util.Random;
 
 public class PatternMatch  {
 
 
     public static void main(String[] args) {
-    
-        System.out.println(PatternMatch.mySubStr("this is a test", "test"));
-        
+
+        System.out.println(PatternMatch.mySubStr("this is a test", "d"));
+
 
 
 
@@ -64,9 +63,9 @@ public class PatternMatch  {
 
 
     public static boolean mySubStr(String s1Str, String s2Str) {
-       
 
-        // Only begin if string 2 is less than or equal to 
+
+        // Only begin if string 2 is less than or equal to
         // string 1, otherwise cannot possibly be a substring of string 1
         int sizeS1 = s1Str.length(); int sizeS2 = s2Str.length();
         if (sizeS2 > sizeS1) { return false; }
@@ -78,13 +77,14 @@ public class PatternMatch  {
         char[] s1 = s1Str.toCharArray(); char[] s2= s2Str.toCharArray();
 
         // Forward and backwords index for matching string 2
-        int x, f, b;
+        int x, f, b, bc;
         boolean match;
-        for (x=f=0, b=sizeS2-1 ; x < sizeS1; ++x) {
+        for (x=f=0, b=sizeS2-1, bc=b ; x < sizeS1; ++x) {
 
-            match = false;  
-            if ( ( s1[x] == s2[f] ) && ((x+b) <= sizeS1)  && ( s1[x+b] == s2[b] ) ) {
-                match = true;   
+            match = false;
+            if ( ( s1[x] == s2[f] ) && ((x+bc) <= sizeS1-1)  && ( s1[x+bc] == s2[b] ) ) {
+                match = true;
+                bc-=2;
                 if (++f >= --b) {
                     endTime = System.nanoTime();
                     System.out.println("Total Execution Time: " + (endTime-startTime) );
@@ -95,11 +95,12 @@ public class PatternMatch  {
             if (match == false) {
                 f=0;
                 b=sizeS2-1;
+                bc=b;
             }
 
-                
+
         }
-        
+
         endTime = System.nanoTime();
         System.out.println("Total Execution Time: " + (endTime-startTime) );
         return false;
@@ -114,13 +115,6 @@ public class PatternMatch  {
 
 
 }
-
-
-
-
-
-
-
 
 
 
