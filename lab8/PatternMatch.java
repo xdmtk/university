@@ -44,6 +44,61 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         program:
 
 
+        Sample output:
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "test"
+            String 1: this is a test of the string matching algorithm
+            String 2: test
+            Matched at index: 10
+            Total Execution Time: 114567
+            String 2 is a substring of String 1
+            
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "testf"
+            String 1: this is a test of the string matching algorithm
+            String 2: testf
+            Total Execution Time: 6830
+            No match
+            
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "alg"
+            String 1: this is a test of the string matching algorithm
+            String 2: alg
+            Matched at index: 38
+            Total Execution Time: 70182
+            String 2 is a substring of String 1
+            
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "algbbbbb"
+            String 1: this is a test of the string matching algorithm
+            String 2: algbbbbb
+            Total Execution Time: 10129
+            No match
+            
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "t"
+            String 1: this is a test of the string matching algorithm
+            String 2: t
+            Matched at index: 1
+            Total Execution Time: 63160
+            String 2 is a substring of String 1
+            
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "m"
+            String 1: this is a test of the string matching algorithm
+            String 2: m
+            Matched at index: 29
+            Total Execution Time: 57143
+            String 2 is a substring of String 1
+            
+            xdmtk@DMT~/prog/fall2018/lab8 (master)
+            └─ $ ▶ java PatternMatch "this is a test of the string matching algorithm" "z"
+            String 1: this is a test of the string matching algorithm
+            String 2: z
+            Total Execution Time: 7764
+            No match
+            
+
 
 
 */
@@ -64,7 +119,11 @@ public class PatternMatch  {
 
 
         System.out.println("String 1: " + s1 + "\nString 2: " + s2);
-        PatternMatch.mySubStr(s1, s2);
+        if (PatternMatch.mySubStr(s1, s2)) {
+            System.out.println("String 2 is a substring of String 1");
+        } else  {
+            System.out.println("No match");
+        }
 
 
 
@@ -131,9 +190,8 @@ public class PatternMatch  {
                 // point have matched, and SubString is indeed a sub-string of String 1
                 if (++f >= --b) {
                     
-                    // Display matching index by adding 2 ( 1 for 0-based index and another
-                    // 1 since st represents the last matching character )  to st
-                    System.out.println("Matched at index: " + (st+2));
+                    // Display matching index by adding 1 since st represents the last matching character )  to st
+                    System.out.println("Matched at index: " + (st+1));
 
                     // Mark the time
                     endTime = System.nanoTime();
