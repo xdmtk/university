@@ -49,6 +49,23 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
     The following code is directly from the book: Only minor modifications were made
     to use MinHeap
 
+    The areas where you see this in the code:
+    /******************************************************/
+/*  
+    Are areas where I have edited the code to make it a min heap
+
+
+    Output before modificaiton: 
+        xdmtk@DMT~/prog/fall2018/lab8 (master)
+        └─ $ ▶ java MinHeap 
+        -44 -5 -4 -3 0 1 1 2 3 3 4 5 53 
+
+    Output after modification
+        dmtk@DMT~/prog/fall2018/lab8 (master)
+        └─ $ ▶ java MinHeap 
+        53 5 4 3 3 2 1 1 0 -3 -4 -5 -44 
+
+
 */
 
 public class MinHeap<E extends Comparable<E>> {
@@ -87,8 +104,13 @@ public class MinHeap<E extends Comparable<E>> {
         while (currentIndex > 0) {
             int parentIndex = (currentIndex - 1) / 2;
 
-            // Swap if the current object is greater than its parent
-            if (list.get(currentIndex).compareTo(list.get(parentIndex)) > 0) {
+
+/******************************************************/
+
+            // Swap if the current object is LESS than its parent
+            if (list.get(currentIndex).compareTo(list.get(parentIndex)) < 0) {
+
+/******************************************************/
             
                 E temp = list.get(currentIndex);
                 list.set(currentIndex, list.get(parentIndex));
@@ -120,13 +142,22 @@ public class MinHeap<E extends Comparable<E>> {
             int maxIndex = leftChildIndex;
             if (rightChildIndex < list.size()) {
 
-                if (list.get(maxIndex).compareTo(list.get(rightChildIndex)) < 0) {
+/******************************************************/
+
+                if (list.get(maxIndex).compareTo(list.get(rightChildIndex)) > 0) {
+
+/******************************************************/
                     maxIndex = rightChildIndex;
                 }
             }
 
             // Swap if the current node is less than the maximum
-            if (list.get(currentIndex).compareTo(list.get(maxIndex)) < 0) {
+
+/******************************************************/
+
+            if (list.get(currentIndex).compareTo(list.get(maxIndex)) > 0) {
+
+/******************************************************/
                 E temp = list.get(maxIndex);
                 list.set(maxIndex, list.get(currentIndex));
                 list.set(currentIndex, temp);
