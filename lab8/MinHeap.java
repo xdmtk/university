@@ -125,4 +125,18 @@ public class MinHeap<E extends Comparable<E>> {
     public int getSize() {
         return list.size();
     }
-}
+
+	
+	
+	 3 public static <E extends Comparable<E>> void heapSort(E[] list) {
+ 4 // Create a Heap of integers
+ 5 Heap<E> heap = new Heap<>(); 
+  7 // Add elements to the heap
+ 8 for (int i = 0; i < list.length; i++)
+ 9 heap.add(list[i]);
+10
+11 // Remove elements from the heap
+12 for (int i = list.length - 1; i >= 0; i--)
+13 l
+
+	}
