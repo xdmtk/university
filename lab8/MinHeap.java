@@ -45,10 +45,28 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
+
+    The following code is directly from the book: Only minor modifications were made
+    to use MinHeap
+
 */
 
 public class MinHeap<E extends Comparable<E>> {
     private java.util.ArrayList<E> list = new java.util.ArrayList<>();
+    
+
+    /** A test method */
+    public static void main(String[] args) {
+        Integer[] list = {-44, -5, -3, 3, 3, 1, -4, 0, 1, 2, 4, 5, 53};
+        heapSort(list);
+
+        for (int i = 0; i < list.length; i++)
+            System.out.print(list[i] + " ");
+    }
+
+
+
+
 
     /** Create a default heap */
     public MinHeap() {
@@ -128,15 +146,16 @@ public class MinHeap<E extends Comparable<E>> {
 
 	
 	
-	 3 public static <E extends Comparable<E>> void heapSort(E[] list) {
- 4 // Create a Heap of integers
- 5 Heap<E> heap = new Heap<>(); 
-  7 // Add elements to the heap
- 8 for (int i = 0; i < list.length; i++)
- 9 heap.add(list[i]);
-10
-11 // Remove elements from the heap
-12 for (int i = list.length - 1; i >= 0; i--)
-13 l
+    public static <E extends Comparable<E>> void heapSort(E[] list) {
+        // Create a Heap of integers
+        MinHeap<E> heap = new MinHeap<>(); 
+        
+        // Add elements to the heap
+        for (int i = 0; i < list.length; i++)
+            heap.add(list[i]);
 
-	}
+        // Remove elements from the heap
+        for (int i = list.length - 1; i >= 0; i--)
+            list[i] = heap.remove(); 
+    }
+}
