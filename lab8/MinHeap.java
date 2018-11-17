@@ -6,7 +6,7 @@
     !   Instructor:     Milan Samplewala                                         #
     #   Date:           11/16/2018                                               !
     !                                                                            #
-    #          LAB 8 - Pattern Matching                                          !
+    #          LAB 8 - Min Heap                                                  !
     !                                                                            #
     #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 
