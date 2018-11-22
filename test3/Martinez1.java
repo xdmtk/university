@@ -49,7 +49,7 @@ public class Martinez1 {
 
     public static void main(String[] args) {
        
-       Martinez1.questionOne();
+       Martinez1.questionTwo();
 
 
 
@@ -63,7 +63,7 @@ public class Martinez1 {
         Perform selection sort for a list of integers. Assume the list 
         is to be sorted in the descending order. Show each of the steps in detail.
 
-        Output of Question 1:
+        Output of Question 2:
             
             xdmtk@DMT~/prog/fall2018/test3 (master)
             └─ $ ▶ java Martinez1 
@@ -77,7 +77,7 @@ public class Martinez1 {
     */
 
 
-    public static void questionOne() {
+    public static void questionTwo() {
 
    
         // Generate new array with given size
@@ -91,14 +91,23 @@ public class Martinez1 {
         list[6] = 76;
         list[7] = 33;
        
-        // Get execution time for current round
-        System.out.println("Test 3 - Question 1:\n----------------------");   
+        System.out.println("Test 3 - Question 2:\n----------------------");   
+        
+        
+        // Begin insertion sort
         for (int i = 1; i < list.length; i++) {
-            /** Insert list[i] into a sorted sublist list[0..i-1] so that
-            list[0..i] is sorted. */
+
+            // Set counting index 'k' and current element value index 'currentElement'
             int currentElement = list[i];
             int k;
+
+            // Notice 'i' starts at 1, this allows `k` to see 1 element behind 
+            // for comparison against the current element `list[i]`
             for (k = i - 1; k >= 0 && list[k] < currentElement; k--) {
+
+                // A swap occurs in this case for descending order, whether
+                // the current element at index `k` (one behind `i`)
+                // is less than the current element at `list[i]`
                 list[k + 1] = list[k];
             }
             // Insert the current element into list[k + 1]
@@ -106,6 +115,8 @@ public class Martinez1 {
         }
 
         
+
+        // Print the sorted list
         for (int i = 0; i < list.length; i++) {
             System.out.print(list[i] + " ");
         }
