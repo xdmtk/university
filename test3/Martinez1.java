@@ -321,7 +321,17 @@ public class Martinez1 {
             33 76 
             33 62 76 89 
             2 10 23 33 45 62 76 89 
+            
 
+        In this output you can view each step mergesort takes
+        to get the values in ascending order
+
+        Recursively splitting the array in half until single values are
+        fed to the merge() function, which compare and sort them accordingly
+
+        Each half goes through this process and are recursively 'merged' back
+        together until all 'halves' have been merged back to the original array
+        except they have been sorted
 
             
     */
@@ -330,6 +340,8 @@ public class Martinez1 {
     static int[] q4list = new int[8];
     
     public static void questionFour(int[] q4list) {
+
+        // Some hacky sorcery to set and display values only once
         if (!banner) {
             System.out.println("Test 3 - Question 4:\n----------------------");   
             q4list[0] = 23;
@@ -401,6 +413,24 @@ public class Martinez1 {
     }
 
 
+
+
+
+
+
+
+/* 
+        Output of Question 5:
+
+
+            
+    */
+    
+    public static void questionFive() {
+
+
+
+    }
 
 }
 
