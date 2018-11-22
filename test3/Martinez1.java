@@ -36,6 +36,17 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+     THIS PORTION OF THE TEST CONTAINS SOURCE CODE FOR QUESTIONS 1 - 5 
+
         
 */
 
@@ -49,9 +60,10 @@ public class Martinez1 {
 
     public static void main(String[] args) {
        
-       //Martinez1.questionTwo();
-       //Martinez1.questionThree();
+       Martinez1.questionTwo();
+       Martinez1.questionThree();
        Martinez1.questionFour(q4list);
+       Martinez1.questionFive();
 
 
 
@@ -419,18 +431,142 @@ public class Martinez1 {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /* 
         Output of Question 5:
+            
+            xdmtk@DMT~/prog/fall2018/test3 (master)
+            └─ $ ▶ java Martinez1 
+            Test 3 - Question 5:
+            ----------------------
+            89 45 76 33 23 10 62 2 
+
+
 
 
             
     */
     
+    private static java.util.ArrayList<Integer> list = new java.util.ArrayList<>();
     public static void questionFive() {
 
+        System.out.println("Test 3 - Question 5:\n----------------------");   
+        int[] q5list = new int[8];
+            q5list[0] = 23;
+            q5list[1] = 45;
+            q5list[2] = 10;
+            q5list[3] = 2;
+            q5list[4] = 89;
+            q5list[5] = 62;
+            q5list[6] = 76;
+            q5list[7] = 33;
+
+        // Create a Heap of integers
+        Martinez1 heap = new Martinez1(); 
+        
+        // Add elements to the heap
+        for (int i = 0; i < q5list.length; i++)
+            heap.add(q5list[i]);
 
 
+        // Print elements in heap
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print(list.get(i) + " ");
+        }
+    
+        System.out.println("\n");
     }
+
+
+
+    
+
+
+
+    /** Add a new object into the heap */
+    public void add(int newObject) {
+        list.add(newObject); // Append to the heap
+        int currentIndex = list.size() - 1; // The index of the last node
+
+        while (currentIndex > 0) {
+            int parentIndex = (currentIndex - 1) / 2;
+
+
+
+            // Swap if the current object is LESS than its parent
+            if (list.get(currentIndex).compareTo(list.get(parentIndex)) > 0) {
+
+            
+                int temp = list.get(currentIndex);
+                list.set(currentIndex, list.get(parentIndex));
+                list.set(parentIndex, temp);
+            }
+            else
+                break; // The tree is a heap now
+
+            currentIndex = parentIndex;
+        }
+    }
+
+    /** Remove the root from the heap */
+    public int remove() {
+        if (list.size() == 0) return 0;
+
+        int removedObject = list.get(0);
+        list.set(0, list.get(list.size() - 1));
+        list.remove(list.size() - 1);
+
+        int currentIndex = 0;
+        while (currentIndex < list.size()) {
+            int leftChildIndex = 2 * currentIndex + 1;
+            int rightChildIndex = 2 * currentIndex + 2;
+
+            // Find the maximum between two children
+            if (leftChildIndex >= list.size()) break; // The tree is a heap
+            
+            int maxIndex = leftChildIndex;
+            if (rightChildIndex < list.size()) {
+
+
+                if (list.get(maxIndex).compareTo(list.get(rightChildIndex)) < 0) {
+
+                    maxIndex = rightChildIndex;
+                }
+            }
+
+            // Swap if the current node is less than the maximum
+
+
+            if (list.get(currentIndex).compareTo(list.get(maxIndex)) < 0) {
+
+                int temp = list.get(maxIndex);
+                list.set(maxIndex, list.get(currentIndex));
+                list.set(currentIndex, temp);
+                currentIndex = maxIndex;
+            }
+            else
+                break; // The tree is a heap
+        }
+
+        return removedObject;
+    }
+
+    /** Get the number of nodes in the tree */
+    public int getSize() {
+        return list.size();
+    }
+
+
 
 }
 
