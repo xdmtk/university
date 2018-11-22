@@ -6,7 +6,7 @@
     !   Instructor:     Milan Samplewala                                         #
     #   Date:           11/16/2018                                               !
     !                                                                            #
-    #          LAB 8 - Pattern Matching                                          !
+    #          LAB 8 - Min Heap                                                  !
     !                                                                            #
     #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!
 
@@ -45,10 +45,45 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
 
 
 
+
+    The following code is directly from the book: Only minor modifications were made
+    to use MinHeap
+
+    The areas where you see this in the code:
+    /******************************************************/
+/*  
+    Are areas where I have edited the code to make it a min heap
+
+
+    Output before modificaiton: 
+        xdmtk@DMT~/prog/fall2018/lab8 (master)
+        └─ $ ▶ java MinHeap 
+        -44 -5 -4 -3 0 1 1 2 3 3 4 5 53 
+
+    Output after modification
+        dmtk@DMT~/prog/fall2018/lab8 (master)
+        └─ $ ▶ java MinHeap 
+        53 5 4 3 3 2 1 1 0 -3 -4 -5 -44 
+
+
 */
 
 public class MinHeap<E extends Comparable<E>> {
     private java.util.ArrayList<E> list = new java.util.ArrayList<>();
+    
+
+    /** A test method */
+    public static void main(String[] args) {
+        Integer[] list = {-44, -5, -3, 3, 3, 1, -4, 0, 1, 2, 4, 5, 53};
+        heapSort(list);
+
+        for (int i = 0; i < list.length; i++)
+            System.out.print(list[i] + " ");
+    }
+
+
+
+
 
     /** Create a default heap */
     public MinHeap() {
@@ -69,8 +104,13 @@ public class MinHeap<E extends Comparable<E>> {
         while (currentIndex > 0) {
             int parentIndex = (currentIndex - 1) / 2;
 
-            // Swap if the current object is greater than its parent
-            if (list.get(currentIndex).compareTo(list.get(parentIndex)) > 0) {
+
+/******************************************************/
+
+            // Swap if the current object is LESS than its parent
+            if (list.get(currentIndex).compareTo(list.get(parentIndex)) < 0) {
+
+/******************************************************/
             
                 E temp = list.get(currentIndex);
                 list.set(currentIndex, list.get(parentIndex));
@@ -102,13 +142,22 @@ public class MinHeap<E extends Comparable<E>> {
             int maxIndex = leftChildIndex;
             if (rightChildIndex < list.size()) {
 
-                if (list.get(maxIndex).compareTo(list.get(rightChildIndex)) < 0) {
+/******************************************************/
+
+                if (list.get(maxIndex).compareTo(list.get(rightChildIndex)) > 0) {
+
+/******************************************************/
                     maxIndex = rightChildIndex;
                 }
             }
 
             // Swap if the current node is less than the maximum
-            if (list.get(currentIndex).compareTo(list.get(maxIndex)) < 0) {
+
+/******************************************************/
+
+            if (list.get(currentIndex).compareTo(list.get(maxIndex)) > 0) {
+
+/******************************************************/
                 E temp = list.get(maxIndex);
                 list.set(maxIndex, list.get(currentIndex));
                 list.set(currentIndex, temp);
@@ -124,5 +173,20 @@ public class MinHeap<E extends Comparable<E>> {
     /** Get the number of nodes in the tree */
     public int getSize() {
         return list.size();
+    }
+
+	
+	
+    public static <E extends Comparable<E>> void heapSort(E[] list) {
+        // Create a Heap of integers
+        MinHeap<E> heap = new MinHeap<>(); 
+        
+        // Add elements to the heap
+        for (int i = 0; i < list.length; i++)
+            heap.add(list[i]);
+
+        // Remove elements from the heap
+        for (int i = list.length - 1; i >= 0; i--)
+            list[i] = heap.remove(); 
     }
 }
