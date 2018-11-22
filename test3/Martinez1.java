@@ -50,7 +50,8 @@ public class Martinez1 {
     public static void main(String[] args) {
        
        //Martinez1.questionTwo();
-       Martinez1.questionThree();
+       //Martinez1.questionThree();
+       Martinez1.questionFour(q4list);
 
 
 
@@ -293,50 +294,82 @@ public class Martinez1 {
 
 
 
+/* 
 
-    public static void questionFour() {
-        static boolean banner = false;
+        Show the steps that merge sort takes when sorting the following list of 
+        integers. Assume the list is to be sorted in the ascending order.
+
+
+        Output of Question 4:
+
+            xdmtk@DMT~/prog/fall2018/test3 (master)
+            └─ $ ▶ java Martinez1 
+            Test 3 - Question 4:
+            ----------------------
+            23 
+            45 
+            23 45 
+            10 
+            2 
+            2 10 
+            2 10 23 45 
+            89 
+            62 
+            62 89 
+            76 
+            33 
+            33 76 
+            33 62 76 89 
+            2 10 23 33 45 62 76 89 
+
+
+            
+    */
+
+    static boolean banner = false;
+    static int[] q4list = new int[8];
+    
+    public static void questionFour(int[] q4list) {
         if (!banner) {
             System.out.println("Test 3 - Question 4:\n----------------------");   
-            int[] list = new int[8];
-            list[0] = 23;
-            list[1] = 45;
-            list[2] = 10;
-            list[3] = 2;
-            list[4] = 89;
-            list[5] = 62;
-            list[6] = 76;
-            list[7] = 33;
+            q4list[0] = 23;
+            q4list[1] = 45;
+            q4list[2] = 10;
+            q4list[3] = 2;
+            q4list[4] = 89;
+            q4list[5] = 62;
+            q4list[6] = 76;
+            q4list[7] = 33;
             banner = true;
         }
 
 
-       if (list.length > 1) {
+       if (q4list.length > 1) {
            
            // Merge sort the first half
-           int[] firstHalf = new int[list.length / 2];
-           System.arraycopy(list, 0, firstHalf, 0, list.length / 2);
+           int[] firstHalf = new int[q4list.length / 2];
+           System.arraycopy(q4list, 0, firstHalf, 0, q4list.length / 2);
            questionFour(firstHalf);
        
        
            // Merge sort the second half
-           int secondHalfLength = list.length - list.length / 2;
+           int secondHalfLength = q4list.length - q4list.length / 2;
            int[] secondHalf = new int[secondHalfLength];
            
-           System.arraycopy(list, list.length / 2,
+           System.arraycopy(q4list, q4list.length / 2,
            secondHalf, 0, secondHalfLength);
            questionFour(secondHalf);
            
            
            // Merge firstHalf with secondHalf into list
-           questionFourMerge(firstHalf, secondHalf, list);
+           questionFourMerge(firstHalf, secondHalf, q4list);
        }
        // Print the sorted list
-        for (int i = 0; i < list.length; i++) {
-            System.out.print(list[i] + " ");
+        for (int i = 0; i < q4list.length; i++) {
+            System.out.print(q4list[i] + " ");
         }
     
-        System.out.println("\n");
+        System.out.println("");
         
 
 
@@ -369,19 +402,18 @@ public class Martinez1 {
 
 
 
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
