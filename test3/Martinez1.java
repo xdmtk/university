@@ -143,6 +143,15 @@ public class Martinez1 {
             ----------------------
             10 23 33 2 45 62 76 89 
 
+
+        Notice in this output, since we are using 45 as the pivot,
+        and we are only going through one round of partitioning,
+        we see all of the elements on the right of 45 are larger than
+        45, and all elements to the left of 45 are less than 45
+
+        If we recursively went through this partitioning function
+        as the QuickSort algorithm  does, we would continue to 
+        partition elements by halves until all subsets are sorted
             
     */
 
