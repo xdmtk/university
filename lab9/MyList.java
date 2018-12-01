@@ -73,29 +73,31 @@ import java.util.*;
 
 public class MyList<E> extends MyArrayList<E> {
 
-    private E[] mlist = (E[]) new Object[16];
+    private Object[] mlist = new Object[16];
 
 
     public static void main(String[] args) {
-
-
-
 
     }
 
 
 
+    /** Adds the elements in otherList to this list.
+    * Returns true if this list changed as a result of the call */
+
     public boolean addAll(MyList<E> otherList) {
             
-        int otherLen = otherList.size();
+        int otherLen = otherList.mlist.length;
         if (otherLen == 0) {
             return false;
         }
         
-        E[] temp = (E[]) new Object[mlist.length+otherLen];
+        Object[] temp = new Object[mlist.length+otherLen];
         
         System.arraycopy(mlist,0,temp,0,mlist.length);
-        System.arraycopy(temp,mlist.length,otherList,0,otherLen);
+
+
+        System.arraycopy(otherList.mlist,0,temp,mlist.length,otherLen);
         mlist = temp;
 
         return true;
@@ -103,7 +105,15 @@ public class MyList<E> extends MyArrayList<E> {
 
 
 
-
+    @Override
+    public String toString() {
+        System.out.print("\n");
+        for (int i=0; i < mlist.length; ++i) {
+            System.out.println(mlist[i]);
+        }
+        System.out.print("\n");
+        return "";
+    }
 
 
 

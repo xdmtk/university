@@ -190,17 +190,6 @@ public class MyArrayList<AnyType> implements Iterable<AnyType>
     /**
     * Returns a String representation of this collection.
     */
-    public String toString( )
-    {
-        StringBuilder sb = new StringBuilder( "[ " );
-
-        for( AnyType x : this )
-        sb.append( x + " " );
-        sb.append( "]" );
-
-        return new String( sb );
-    }
-
     /**
     * This is the implementation of the ArrayListIterator.
     * It maintains a notion of a current position and of
