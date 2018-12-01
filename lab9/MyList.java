@@ -69,7 +69,7 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         
 
 */
-import java.util.*;
+|import java.util.*;
 
 public class MyList<E> extends MyArrayList<E> {
 
@@ -105,11 +105,61 @@ public class MyList<E> extends MyArrayList<E> {
 
 
 
+    /** Removes all the elements in otherList from this list
+    * Returns true if this list changed as a result of the call */
+    
+    public boolean removeAll(MyList<E> otherList) {
+
+        int otherLen = otherList.mlist.length;
+        if (otherLen == 0) {
+            return false;
+        }
+
+        for (int i=0; i < mlist.length; ++i) {
+            for (int x=0; x < otherList.mlist.length; ++x) {
+                if (mlist[i] == otherList.mlist[x]) {
+                    mlist[i] = null;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+
+
+
+    /** Retains the elements in this list that are also in otherList
+    * Returns true if this list changed as a result of the call */
+    
+    public boolean retainAll(MyList<E> otherList) {
+
+        int otherLen = otherList.mlist.length;
+        if (otherLen == 0) {
+            return false;
+        }
+
+        for (int i=0; i < mlist.length; ++i) {
+            for (int x=0; x < otherList.mlist.length; ++x) {
+                if (mlist[i] != otherList.mlist[x]) {
+                    mlist[i] = null;
+                }
+            }
+        }
+        return true;
+
+    }
+
+
+
     @Override
     public String toString() {
         System.out.print("\n");
         for (int i=0; i < mlist.length; ++i) {
-            System.out.println(mlist[i]);
+            if (mlist[i] != null) {
+                System.out.println(mlist[i]);
+            }
         }
         System.out.print("\n");
         return "";
