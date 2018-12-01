@@ -33,7 +33,7 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
    ____________________\/\\\____\///\\\\\\\\\/____\///\\\\\\\\\/______________________
   _____________________\///_______\/////////________\/////////______________________
 
-
+        Exercise 24.1:
 
 
         (Add set operations in MyList ) Define the following methods in MyList and
@@ -69,9 +69,11 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         
 
 */
+import java.util.*;
 
+public class MyList<E> extends MyArrayList<E> {
 
-public class MyList {
+    private E[] mlist = (E[]) new Object[16];
 
 
     public static void main(String[] args) {
@@ -83,5 +85,33 @@ public class MyList {
 
 
 
-    
+    public boolean addAll(MyList<E> otherList) {
+            
+        int otherLen = otherList.size();
+        if (otherLen == 0) {
+            return false;
+        }
+        
+        E[] temp = (E[]) new Object[mlist.length+otherLen];
+        
+        System.arraycopy(mlist,0,temp,0,mlist.length);
+        System.arraycopy(temp,mlist.length,otherList,0,otherLen);
+        mlist = temp;
+
+        return true;
+    }
+
+
+
+
+
+
+
+
+
 }
+    
+
+
+
+    
