@@ -81,6 +81,14 @@ public class MyList<E> extends MyArrayList<E> {
     }
 
 
+    public MyList(Object[] init) {
+        
+        for 
+
+
+
+    }
+
 
     /** Adds the elements in otherList to this list.
     * Returns true if this list changed as a result of the call */
