@@ -69,7 +69,7 @@ _______\/////////_______\/////_________\///////////___________\/////////__\/////
         
 
 */
-|import java.util.*;
+import java.util.*;
 
 public class MyList<E> extends MyArrayList<E> {
 
@@ -77,17 +77,39 @@ public class MyList<E> extends MyArrayList<E> {
 
 
     public static void main(String[] args) {
+        MyList list1 = new MyList();
+        MyList list2 = new MyList();
 
-    }
-
-
-    public MyList(Object[] init) {
+        list1.mlist[0] = "Tom";
+        list1.mlist[1] = "George";
+        list1.mlist[2] = "Peter";
+        list1.mlist[3] = "Jean";
+        list1.mlist[4] = "Jane";
         
-        for 
+        list2.mlist[0] = "Tom";
+        list2.mlist[1] = "George";
+        list2.mlist[2] = "Michael";
+        list2.mlist[3] = "Michelle";
+        list2.mlist[4] = "Daniel";
+
+
+        list1.addAll(list2);
+        list1.toString();
+
+        list1.removeAll(list2);
+        list1.toString();
+        list2.toString();
+
+
+        list1.retainAll(list2);
+        list1.toString();
+        list2.toString();
 
 
 
     }
+
+
 
 
     /** Adds the elements in otherList to this list.
