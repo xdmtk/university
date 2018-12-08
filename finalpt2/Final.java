@@ -34,13 +34,45 @@ ____________________\/\\\____\///\\\\\\\\\/____\///\\\\\\\\\/___________________
 _____________________\///_______\/////////________\/////////______________________
 
 
-Write an algorithm to convert a decimal number to binary number. Provide the Big O analysis. (5 points)
+    Write an algorithm to convert a decimal number to binary number. Provide the Big O analysis. (5 points)
 
-Then write a java program to implement the algorithm,  name the file  FinalExam.java. (5 points)
+    Then write a java program to implement the algorithm,  name the file  FinalExam.java. (5 points)
 
-Provide the main() method to test your program. (5 points)
+    Provide the main() method to test your program. (5 points)
 
-Do not forget to run your program and show the results.
+    Do not forget to run your program and show the results.
+
+
+
+
+    OUTPUT: 
+        
+        
+        xdmtk@DMT~/prog/fall2018/finalpt2 (master)
+        └─▶ $ java Final 
+        (2^2) + (2^0)  = 5
+        0101
+
+        (2^0)  = 1
+        1
+
+        0 in Binary is just 0
+
+        (2^11) + (2^10) + (2^7) + (2^5) + (2^2) + (2^1)  = 3238
+        0110010100110
+
+        (2^6)  = 64
+        1000000
+
+        (2^3) + (2^1)  = 10
+        01010
+
+        (2^8) + (2^5) + (2^3) + (2^2)  = 300
+        0100101100
+
+        (2^8) + (2^7) + (2^3) + (2^0)  = 393
+        0110001001
+
 */
 import java.lang.Math;
 import java.util.*;
@@ -52,7 +84,14 @@ public class Final {
     public static void main(String[] args) {
 
 
-        System.out.println(Final.convertToBinaryString(3) + "\n");
+        System.out.println(Final.convertToBinaryString(5) + "\n");
+        System.out.println(Final.convertToBinaryString(1) + "\n");
+        System.out.println(Final.convertToBinaryString(0) + "\n");
+        System.out.println(Final.convertToBinaryString(3238) + "\n");
+        System.out.println(Final.convertToBinaryString(64) + "\n");
+        System.out.println(Final.convertToBinaryString(10) + "\n");
+        System.out.println(Final.convertToBinaryString(300) + "\n");
+        System.out.println(Final.convertToBinaryString(393) + "\n");
 
 
 
@@ -64,6 +103,13 @@ public class Final {
 
 
     public static String convertToBinaryString(double num) {
+        
+        // Add zero case
+        if (num == 0) {
+            return "0 in Binary is just 0";
+        }
+
+
 
         // Initialize empty string for output
         String output = "";
