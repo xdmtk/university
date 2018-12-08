@@ -52,10 +52,7 @@ public class Final {
     public static void main(String[] args) {
 
         
-        System.out.println(Final.convertToBinaryString(10));
-        System.out.println(Final.convertToBinaryString(100));
-        System.out.println(Final.convertToBinaryString(64));
-        System.out.println(Final.convertToBinaryString(36));
+        System.out.println(Final.convertToBinaryString(3) + "\n");
 
 
 
@@ -70,7 +67,7 @@ public class Final {
 
         // Initialize empty string for output
         String output = "";
-
+        String analysis = "";  
         /* First determine maximum 2^n power for input number,
          * this way we can determine the limit at which to start
          * outputting binary digits
@@ -112,7 +109,7 @@ public class Final {
          * those 3 hits mean we have a binary digit '1' in position 0,1, and 2
          * resulting in the binary number '111'
          */
-
+        double numSave = num;
         for (base=2; n >= 0; n--) {
 
             // Divide the input number by the current 2^n power
@@ -126,6 +123,7 @@ public class Final {
                 // In order to accurately perform this operation for the next numbr
                 // we have to subtract the result of that 2^n from the input number
                 num -= Math.pow(base,n);
+                analysis += " (2^" + (int) n + ") +";
             }
             else {
 
@@ -135,6 +133,8 @@ public class Final {
             }
         }
 
+        
+        System.out.println(analysis.substring(0,analysis.length()-1) + " = " + (int) numSave);
 
         // After the following algorithm has taken place, we have our binary
         // number in String form, if we really want to, we can convert this number
