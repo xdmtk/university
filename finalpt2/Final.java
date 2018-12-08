@@ -43,8 +43,30 @@ _____________________\///_______\/////////________\/////////____________________
     Do not forget to run your program and show the results.
 
 
+-------------------------------------------
+    ALGORITHM: 
+
+        First we need to find the highest 2^n that does not exceed our
+        input number. We do this by testing 2^n over and over until 
+        we exceed the input number
+
+        Next we decrement n, so we can have the highest 2^n that is still divisible with
+        a result greater than 1 into the input number. 
+
+        Now we can start subtracting from our input number each and every 2^n that
+        gets us a greater than 1 divisble result, as this would indicate that the binary
+        digit at position n is 1. 
+
+        If we do not get a result greater than 1,  we know that the binary digit at
+        position n is 0.
+
+        We do this continually until we hit n^0, and after this is complete, we will 
+        have formed a string that contains all the correct binary digits for
+        the corresponding number
 
 
+
+-------------------------------------------
     OUTPUT: 
         
         
@@ -72,6 +94,24 @@ _____________________\///_______\/////////________\/////////____________________
 
         (2^8) + (2^7) + (2^3) + (2^0)  = 393
         0110001001
+
+
+
+
+-------------------------------------------
+    Big O: 
+
+        The Big O notation for this algorithm  would be O(2n-1), 
+        since we must iterate up to n twice, except in the second
+        iteration, we have decremented n, and so we will start from 
+        n-1
+
+        So n + n -1 = O(2n-1) 
+
+
+
+
+
 
 */
 import java.lang.Math;
