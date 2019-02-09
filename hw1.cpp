@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstring>
 #include <cstdio>
 #include <cassert>
 
@@ -10,9 +11,10 @@ unsigned factorial(unsigned n);
 unsigned comb(unsigned n, unsigned k);
 unsigned perm(unsigned n, unsigned k);
 unsigned combABC(unsigned n);
-int get_comb_val(unsigned char * p_map, std::vector<int> * v_map, int n);
+int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n);
 int pow(int n,int k);
 void inc_base_n(unsigned char * perm_map, int pos);
+void dealloc_comb_vec(std::vector<unsigned char *> * v_map);
 
 
 
@@ -63,7 +65,7 @@ unsigned combABC(unsigned n) {
     int score = 0;
     int rounds = 0;
     unsigned char * perm_map = (unsigned char *) calloc(n,sizeof(unsigned char));
-    std::vector<int> val_map;
+    std::vector<unsigned char *> val_map;
 
     // Initialize counting
     for (int i=0; i < n; ++i) {
@@ -95,6 +97,7 @@ unsigned combABC(unsigned n) {
     }
     while (rounds < pow(3,n)); // TODO: Pow 3
     perm_map ? free(perm_map) : free(NULL);
+    dealloc_comb_vec(&val_map);
     return score;
 
 }
@@ -107,19 +110,42 @@ int pow(int n,int k) {
     return n;
 }
 
-int get_comb_val(unsigned char * p_map, std::vector<int> * v_map, int n) {
+void dealloc_comb_vec(std::vector<unsigned char *> * v_map) {
+    for (int g=0; g < v_map->size(); ++g) {
+        free((&v_map[g]));
+    }
+}
+
+
+int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n) {
 
     int score = 0;
-    // Return value of combination array 
-    for (int i=0; i < n; ++i) {
-        score += (int) p_map[i];
+    
+    unsigned char counts[] = {0x0,0x0,0x0,0x0};
+
+    for (int x=0; x < n; ++x) {
+        unsigned char val = p_map[x];
+        switch (val) {
+            case 'A':
+                counts[0]++; break;
+            case 'B':
+                counts[1]++; break;
+            case 'C':
+                counts[2]++; break;
+        }
+    }
+    unsigned char * comb_str = (unsigned char *) calloc(4, sizeof(unsigned char));
+    for (int r=0; r<3; ++r) {
+        memcpy(comb_str+r,&counts[r],1);
     }
     
     // Check if value is in value array
-    if (std::find(v_map->begin(), v_map->end(), score) != v_map->end()) {
-       return 0;
+    for (int g=0; g < v_map->size(); ++g) {
+        if (!strcmp((const char *) comb_str, (const char *) v_map->at(g))) {
+            return 0;
+        }
     }
-    v_map->push_back(score);
+    v_map->push_back(comb_str);
     return 1;
 }
 
