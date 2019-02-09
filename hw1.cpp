@@ -73,26 +73,17 @@ unsigned combABC(unsigned n) {
     }
     
     do {
-        score += get_comb_val(perm_map, &val_map, n);
-        printf("%s\n", perm_map);
+        if (get_comb_val(perm_map, &val_map, n)) {
+            score++;
+            printf("%s\n", perm_map);
+        }
+
         if (perm_map[0] != 'C') {
             perm_map[0]++;
         }
         else {
             inc_base_n(perm_map, 0);
         }
-        /*
-        for (int z=0; z < n; ++z) {
-            if (perm_map[z] != 'C') {
-                perm_map[z]++;
-                break;
-            }
-            else {
-                perm_map[z] = 'A';
-                break;
-            }
-        }
-        */
         rounds++;
     }
     while (rounds < pow(3,n)); // TODO: Pow 3
