@@ -1,36 +1,40 @@
 /*
- * ████████▄   ▄█     ▄████████  ▄████████    ▄████████    ▄████████     ███        ▄████████
-███   ▀███ ███    ███    ███ ███    ███   ███    ███   ███    ███ ▀█████████▄   ███    ███
-███    ███ ███▌   ███    █▀  ███    █▀    ███    ███   ███    █▀     ▀███▀▀██   ███    █▀
-███    ███ ███▌   ███        ███         ▄███▄▄▄▄██▀  ▄███▄▄▄         ███   ▀  ▄███▄▄▄
-███    ███ ███▌ ▀███████████ ███        ▀▀███▀▀▀▀▀   ▀▀███▀▀▀         ███     ▀▀███▀▀▀
-███    ███ ███           ███ ███    █▄  ▀███████████   ███    █▄      ███       ███    █▄
-███   ▄███ ███     ▄█    ███ ███    ███   ███    ███   ███    ███     ███       ███    ███
-████████▀  █▀    ▄████████▀  ████████▀    ███    ███   ██████████    ▄████▀     ██████████
-                                          ███    ███
+ *
+ *       ████████▄   ▄█     ▄████████  ▄████████    ▄████████    ▄████████     ███        ▄████████
+ *      ███   ▀███ ███    ███    ███ ███    ███   ███    ███   ███    ███ ▀█████████▄   ███    ███
+ *      ███    ███ ███▌   ███    █▀  ███    █▀    ███    ███   ███    █▀     ▀███▀▀██   ███    █▀
+ *      ███    ███ ███▌   ███        ███         ▄███▄▄▄▄██▀  ▄███▄▄▄         ███   ▀  ▄███▄▄▄
+ *      ███    ███ ███▌ ▀███████████ ███        ▀▀███▀▀▀▀▀   ▀▀███▀▀▀         ███     ▀▀███▀▀▀
+ *      ███    ███ ███           ███ ███    █▄  ▀███████████   ███    █▄      ███       ███    █▄
+ *      ███   ▄███ ███     ▄█    ███ ███    ███   ███    ███   ███    ███     ███       ███    ███
+ *      ████████▀  █▀    ▄████████▀  ████████▀    ███    ███   ██████████    ▄████▀     ██████████
+ *                                                ███    ███
 
-   ▄████████     ███        ▄████████ ███    █▄   ▄████████     ███     ███    █▄     ▄████████    ▄████████    ▄████████ 
-  ███    ███ ▀█████████▄   ███    ███ ███    ███ ███    ███ ▀█████████▄ ███    ███   ███    ███   ███    ███   ███    ███ 
-  ███    █▀     ▀███▀▀██   ███    ███ ███    ███ ███    █▀     ▀███▀▀██ ███    ███   ███    ███   ███    █▀    ███    █▀  
-  ███            ███   ▀  ▄███▄▄▄▄██▀ ███    ███ ███            ███   ▀ ███    ███  ▄███▄▄▄▄██▀  ▄███▄▄▄       ███        
-▀███████████     ███     ▀▀███▀▀▀▀▀   ███    ███ ███            ███     ███    ███ ▀▀███▀▀▀▀▀   ▀▀███▀▀▀     ▀███████████ 
-         ███     ███     ▀███████████ ███    ███ ███    █▄      ███     ███    ███ ▀███████████   ███    █▄           ███ 
-   ▄█    ███     ███       ███    ███ ███    ███ ███    ███     ███     ███    ███   ███    ███   ███    ███    ▄█    ███ 
- ▄████████▀     ▄████▀     ███    ███ ████████▀  ████████▀     ▄████▀   ████████▀    ███    ███   ██████████  ▄████████▀  
-                           ███    ███                                                ███    ███   /     
--!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
-#
-#   CoSCi 542 - Discrete Structures 
-#   Instructor: Bob Hart
-#
-#   --->>
-#       
-#   Name: Nicholas Martinez
-#   Date: 02/08/18
-#    
-#
-#
-*/
+ *         ▄████████     ███        ▄████████ ███    █▄   ▄████████     ███     ███    █▄     ▄████████    ▄████████    ▄████████ 
+ *        ███    ███ ▀█████████▄   ███    ███ ███    ███ ███    ███ ▀█████████▄ ███    ███   ███    ███   ███    ███   ███    ███ 
+ *        ███    █▀     ▀███▀▀██   ███    ███ ███    ███ ███    █▀     ▀███▀▀██ ███    ███   ███    ███   ███    █▀    ███    █▀  
+ *        ███            ███   ▀  ▄███▄▄▄▄██▀ ███    ███ ███            ███   ▀ ███    ███  ▄███▄▄▄▄██▀  ▄███▄▄▄       ███        
+ *      ▀███████████     ███     ▀▀███▀▀▀▀▀   ███    ███ ███            ███     ███    ███ ▀▀███▀▀▀▀▀   ▀▀███▀▀▀     ▀███████████ 
+ *               ███     ███     ▀███████████ ███    ███ ███    █▄      ███     ███    ███ ▀███████████   ███    █▄           ███ 
+ *         ▄█    ███     ███       ███    ███ ███    ███ ███    ███     ███     ███    ███   ███    ███   ███    ███    ▄█    ███ 
+ *       ▄████████▀     ▄████▀     ███    ███ ████████▀  ████████▀     ▄████▀   ████████▀    ███    ███   ██████████  ▄████████▀  
+ *                                 ███    ███                                                ███    ███   /     
+ *
+ *
+ *
+ -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
+ #
+ #   CoSCi 542 - Discrete Structures 
+ #   Instructor: Bob Hart
+ #
+ #   --->>
+ #       
+ #   Name: Nicholas Martinez
+ #   Date: 02/08/18
+ #    
+ #
+ #
+ */
 
 
 #include <cstdlib>
@@ -41,11 +45,15 @@
 #include <vector>
 #include <algorithm>
 
-//typedef unsigned int unsigned;
+
+/* HW Functions */
 unsigned factorial(unsigned n);
 unsigned comb(unsigned n, unsigned k);
 unsigned perm(unsigned n, unsigned k);
 unsigned combABC(unsigned n);
+
+
+/* Helper Functions */
 int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n);
 int pow(int n,int k);
 void inc_base_n(unsigned char * perm_map, int pos);
@@ -68,41 +76,65 @@ int main() {
     printf("Comb ABC for 7: %d\n", x);
     return 0;
 
-
-
-    
 }
 
+
+/* Factorial function */
 unsigned factorial(unsigned n) {
+
+    // For any factorial, even 0, return at least 1
     unsigned ret=1;
     for(int i=n; i>0; --i){
+
+       // For each iteration/decrement, multiply
+       // to simulate factorial
        ret *= i;
     }
     return ret;
 }
 
+
+/* Function for combinations:
+ *
+ *      n!/(k!(n-k)!)
+ */
 unsigned comb(unsigned n, unsigned k) {
     return factorial(n)/(factorial(k)*factorial(n-k));
 }
 
+
+/* Function for permutations:
+ *
+ *      n!/((n-k)!)
+ */
 unsigned perm(unsigned n, unsigned k) {
     return factorial(n)/factorial(n-k);
 }
 
-/*
- * combABC outputs each combination of n letters, where each letter is A, B, or C. 
- * For example, combABC 4) would output 15 lines:
+
+/* Function for combinations among letters 'A', 'B', and 'C'
+ *
+ * `combABC outputs each combination of n letters, where each letter is A, B, or C. 
+ * For example, combABC 4) would output 15 lines:`
  *
  */
-
 unsigned combABC(unsigned n) {
-    
+
+    // Score will keep track of total non duplicate combinations of 'A', 'B', and 'C'
     int score = 0;
+    
+    // The maximum combinations ( duplicate included ) for a three character system ( base 3 )
+    // will be 3^n, rounds will keep track of total iterations, to stay under limit
     int rounds = 0;
+
+    // perm_map will hold all letter combinations, heap allocated once and continously
+    // mutated
     unsigned char * perm_map = (unsigned char *) calloc(n,sizeof(unsigned char));
+
+    // val_amp will store unique combinations seen in generation phase
     std::vector<unsigned char *> val_map;
 
-    // Initialize counting
+    // Initialize perm_map with all 'A''s
     for (int i=0; i < n; ++i) {
         perm_map[i] = 'A';
     }
