@@ -112,7 +112,7 @@ int pow(int n,int k) {
 
 void dealloc_comb_vec(std::vector<unsigned char *> * v_map) {
     for (int g=0; g < v_map->size(); ++g) {
-        free((&v_map[g]));
+        free((v_map->at(g)));
     }
 }
 
