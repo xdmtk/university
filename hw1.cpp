@@ -112,7 +112,7 @@ int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, in
 
     int score = 0;
     
-    unsigned char counts[] = {0x0,0x0,0x0,0x0};
+    unsigned char counts[] = {0x1,0x1,0x1,0x1};
 
     for (int x=0; x < n; ++x) {
         unsigned char val = p_map[x];
@@ -129,7 +129,9 @@ int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, in
     for (int r=0; r<3; ++r) {
         memcpy(comb_str+r,&counts[r],1);
     }
-    
+    if (!strcmp((const char *) comb_str, "")) {
+        int deb = 0;
+    }
     // Check if value is in value array
     for (int g=0; g < v_map->size(); ++g) {
         if (!strcmp((const char *) comb_str, (const char *) v_map->at(g))) {
