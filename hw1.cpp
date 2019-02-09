@@ -1,14 +1,16 @@
 #include <cstdlib>
-#include <vector>
 #include <cstdio>
 #include <cassert>
 
+#include <vector>
+#include <algorithm>
 
 //typedef unsigned int unsigned;
 unsigned factorial(unsigned n);
 unsigned comb(unsigned n, unsigned k);
 unsigned perm(unsigned n, unsigned k);
 unsigned combABC(unsigned n);
+int get_comb_val(unsigned char * p_map, std::vector<int> * v_map, int n);
 
 
 
@@ -53,6 +55,7 @@ unsigned perm(unsigned n, unsigned k) {
 unsigned combABC(unsigned n) {
     
     int score = 0;
+    int rounds = 0;
     unsigned char * perm_map = (unsigned char *) calloc(n,sizeof(unsigned char));
     std::vector<int> val_map;
 
@@ -61,37 +64,48 @@ unsigned combABC(unsigned n) {
         perm_map[i] = 'A';
     }
     
-    score = get_comb_val(perm_map, &val_map);
-    
-    
-    
-    AAA
-    BAA
-    CAA
-    ABA
-    BBA
-    CBA
-    ACA
-    BCA
-    CCA
-    AAB
-    BAB
-    CAB
-    ABB
-    BBB
-    CBB
-    ACB
-    BCB
-    CCB
-    AAC
-    BAC
-    CAC
-    ABC
-    BBC
-    CBC
-    ACC
-    BCC
-    CCC
-
+    do {
+        score += get_comb_val(perm_map, &val_map, n);
+        for (int z=0; z < n; ++z) {
+            if (perm_map[z] != 'C') {
+                perm_map[z]++;
+                break;
+            }
+            else {
+                perm_map[z] = 'A';
+                perm_map[++z]++;
+            }
+        }
+        rounds++;
+    }
+    while (rounds < 3); // TODO: Pow 3
+    perm_map ? free(perm_map) : free(NULL);
+    return score;
 
 }
+
+int get_comb_val(unsigned char * p_map, std::vector<int> * v_map, int n) {
+
+    int score = 0;
+    // Return value of combination array 
+    for (int i=0; i < n; ++i) {
+        score += (int) p_map[i];
+    }
+    
+    // Check if value is in value array
+    if (std::find(v_map->begin(), v_map->end(), score) != v_map->end()) {
+       return 1;
+    }
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
