@@ -52,10 +52,12 @@ unsigned comb(unsigned n, unsigned k);
 unsigned perm(unsigned n, unsigned k);
 unsigned combABC(unsigned n);
 unsigned permABC(unsigned n);
+unsigned f(unsigned a, unsigned b, unsigned c);
 
 
 /* Helper Functions */
-int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n);
+int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n, 
+        int a_count=0, int b_count=0, int c_count=0);
 int pow(int n,int k);
 void inc_base_n(unsigned char * perm_map, int pos);
 void dealloc_comb_vec(std::vector<unsigned char *> * v_map);
@@ -78,6 +80,9 @@ int main() {
 
     x = permABC(2);
     printf("Perm ABC for 2: %d\n\n", x);
+    
+    x = f(1,2,1);
+    printf("Perm ABC for 1,2,1: %d\n\n", x);
     
     return 0;
 
@@ -254,6 +259,57 @@ unsigned permABC(unsigned n) {
  *
  */
 
+unsigned f(unsigned a, unsigned b, unsigned c) {
+
+    int score , rounds, n;
+    rounds = score = 0;
+
+    // Because a b and c are the 'digits' in the string, the total number should
+    // be our 'n' for how many digits to begin permutations/combinations
+    n = a+b+c;
+
+    // perm_map will hold all letter permutations, heap allocated once and continously
+    // mutated
+    unsigned char * perm_map = (unsigned char *) calloc(n,sizeof(unsigned char));
+    
+    // Initialze with A's
+    for (int i=0; i < n; ++i) {
+        perm_map[i] = 'A';
+    }
+
+    do {
+        if (get_comb_val(perm_map, NULL, n, a, b, c)) {
+            printf("%s\n", perm_map);
+            score++;
+        }
+        
+        // Here we implement a 'psuedo' base 3 system, by checking for 'C'
+        // on the first digit of perm_map, if it is not yet C, we can increment it
+        if (perm_map[0] != 'C') {
+            perm_map[0]++;
+        }
+        else {
+            // Otherwise call inc_base_n, which properly increment the string in base 3
+            // see function for details
+            inc_base_n(perm_map, 0);
+        }
+
+        // Count the total iterations for incrementing
+        rounds++;
+    }
+    // We can't possibly have more iterations than 3^n, as 3^n 
+    // represents the largest value in an 'n' digit number in base 3
+    while (rounds < pow(3,n)); 
+
+
+    // When finished, make sure comb_map is still a valid pointer, a free it
+    perm_map ? free(perm_map) : free(NULL);
+
+    return score;
+
+
+
+}
 
 
 
@@ -263,7 +319,7 @@ unsigned permABC(unsigned n) {
 // Or if optionally called with the default parameters, determines whether the given
 // permutation/combination supplied contains the amount of A's B's and C's specified
 int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n, 
-        int a_count=0, int b_count=0, int c_count=0) {
+        int a_count, int b_count, int c_count) {
 
     // We create here an array of values that will be used to reperesent
     // the occurances of each character in the perm_map string, null terminated at pos 3
@@ -286,7 +342,13 @@ int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, in
 
     // If called with a,b, or c count values, no need to enter unique entries
     // just return true or false if count[] values match specified values
-    if 
+    if (a_count || b_count || c_count) {
+        if ((counts[0] == a_count+1) && (counts[1] == b_count+1) 
+            && (counts[2] == c_count+1)) {
+            return 1;
+        }
+        return 0;
+    }
 
 
     // Allocate a new combination string off the heap to store in our vector v_map
