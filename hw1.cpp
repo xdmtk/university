@@ -51,6 +51,7 @@ unsigned factorial(unsigned n);
 unsigned comb(unsigned n, unsigned k);
 unsigned perm(unsigned n, unsigned k);
 unsigned combABC(unsigned n);
+unsigned permABC(unsigned n);
 
 
 /* Helper Functions */
@@ -67,13 +68,17 @@ int main() {
     printf("Factorial 4: %d\n", x);
 
     x = comb(5,2);
-    printf("Combinations for 5,2: %d\n", x);
+    printf("Combinations for 5,2: %d\n\n", x);
 
     x = perm(5,2);
-    printf("Permuatations for 5,2: %d\n", x);
+    printf("Permuatations for 5,2: %d\n\n", x);
     
-    x = combABC(7);
-    printf("Comb ABC for 7: %d\n", x);
+    x = combABC(4);
+    printf("Comb ABC for 4: %d\n\n", x);
+
+    x = permABC(2);
+    printf("Perm ABC for 2: %d\n\n", x);
+    
     return 0;
 
 }
@@ -127,29 +132,90 @@ unsigned combABC(unsigned n) {
     // will be 3^n, rounds will keep track of total iterations, to stay under limit
     int rounds = 0;
 
-    // perm_map will hold all letter combinations, heap allocated once and continously
+    // comb_map will hold all letter combinations, heap allocated once and continously
     // mutated
-    unsigned char * perm_map = (unsigned char *) calloc(n,sizeof(unsigned char));
+    unsigned char * comb_map = (unsigned char *) calloc(n,sizeof(unsigned char));
 
     // val_amp will store unique combinations seen in generation phase
     std::vector<unsigned char *> val_map;
 
-    // Initialize perm_map with all 'A''s
+    // Initialize comb_map with all 'A''s
     for (int i=0; i < n; ++i) {
-        perm_map[i] = 'A';
+        comb_map[i] = 'A';
     }
     
 
     do {
-        // get_comb_val is given the perm_map string 'AAA...', the val_map vector, and 
+        // get_comb_val is given the comb_map string 'AAA...', the val_map vector, and 
         // 'n', which is the specified amount of letters, and determines whether the
-        // combination in perm_map is unique or not, if so the function returns true
+        // combination in comb_map is unique or not, if so the function returns true
         // and increments score and prints the string
-        if (get_comb_val(perm_map, &val_map, n)) {
+        if (get_comb_val(comb_map, &val_map, n)) {
             score++;
-            printf("%s\n", perm_map);
+            printf("%s\n", comb_map);
         }
 
+        
+        // Here we implement a 'psuedo' base 3 system, by checking for 'C'
+        // on the first digit of comb_map, if it is not yet C, we can increment it
+        if (comb_map[0] != 'C') {
+            comb_map[0]++;
+        }
+        else {
+            // Otherwise call inc_base_n, which properly increment the string in base 3
+            // see function for details
+            inc_base_n(comb_map, 0);
+        }
+
+        // Count the total iterations for incrementing
+        rounds++;
+    }
+    // We can't possibly have more iterations than 3^n, as 3^n 
+    // represents the largest value in an 'n' digit number in base 3
+    while (rounds < pow(3,n)); 
+
+    // When finished, make sure comb_map is still a valid pointer, a free it
+    comb_map ? free(comb_map) : free(NULL);
+
+    // We also need to free all of the generated pointers contained in the val_map
+    // vector
+    dealloc_comb_vec(&val_map);
+
+    // Now return the number of unique combinations
+    return score;
+
+}
+
+
+/*
+ *  unsigned permABC(unsigned n);
+ *  permABC outputs each permutation of n letters, where each letter is A, B, or C. 
+ *  For example, permABC(2) would output 9 lines:
+ *
+ *  This function is very similar to the previous function, except that because order 
+ *  now matters, we don't have to determine whether the combination is unique,
+ *  and simply increment like a base 3 system. So our function can very simply return 3^n
+ *  for the number of permutations, and print out the permutations without calling
+ *  get_comb_val()
+ *
+ */
+
+unsigned permABC(unsigned n) {
+    
+    int score , rounds;
+    rounds = score = 0;
+    // perm_map will hold all letter permutations, heap allocated once and continously
+    // mutated
+    unsigned char * perm_map = (unsigned char *) calloc(n,sizeof(unsigned char));
+    
+    // Initialze with A's
+    for (int i=0; i < n; ++i) {
+        perm_map[i] = 'A';
+    }
+
+    do {
+        printf("%s\n", perm_map);
+        score++;
         
         // Here we implement a 'psuedo' base 3 system, by checking for 'C'
         // on the first digit of perm_map, if it is not yet C, we can increment it
@@ -169,21 +235,35 @@ unsigned combABC(unsigned n) {
     // represents the largest value in an 'n' digit number in base 3
     while (rounds < pow(3,n)); 
 
-    // When finished, make sure perm_map is still a valid pointer, a free it
+
+    // When finished, make sure comb_map is still a valid pointer, a free it
     perm_map ? free(perm_map) : free(NULL);
 
-    // We also need to free all of the generated pointers contained in the val_map
-    // vector
-    dealloc_comb_vec(&val_map);
-
-    // Now return the number of unique combinations
     return score;
+
+
 
 }
 
 
+/*
+ *  unsigned f(unsigned a, unsigned b, unsigned c);
+ *  Compute and return the number of strings of a A's, b B's, and c C's. 
+ *  For example, f(1, 2, 1) returns 12 because there are 12 strings made 
+ *  up of 1 A, 2 B's, and 1 C:
+ *
+ */
+
+
+
+
+
+
 // This function determines whether the given combination 'AAA...' has been seen before
-int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n) {
+// Or if optionally called with the default parameters, determines whether the given
+// permutation/combination supplied contains the amount of A's B's and C's specified
+int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, int n, 
+        int a_count=0, int b_count=0, int c_count=0) {
 
     // We create here an array of values that will be used to reperesent
     // the occurances of each character in the perm_map string, null terminated at pos 3
@@ -203,6 +283,11 @@ int get_comb_val(unsigned char * p_map, std::vector<unsigned char *> * v_map, in
                 counts[2]++; break;
         }
     }
+
+    // If called with a,b, or c count values, no need to enter unique entries
+    // just return true or false if count[] values match specified values
+    if 
+
 
     // Allocate a new combination string off the heap to store in our vector v_map
     unsigned char * comb_str = (unsigned char *) calloc(4, sizeof(unsigned char));
