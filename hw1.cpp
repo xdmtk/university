@@ -16,6 +16,8 @@
  #
  #   CoSCi 542 - Discrete Structures 
  #   Instructor: Bob Hart
+ #   Section: 21566
+ #   W - 5:45PM - 10:00PM
  #
  #   --->>
  #       
@@ -320,6 +322,11 @@ unsigned f(unsigned a, unsigned b, unsigned c) {
         // Here we call get_comb_val with the required counts for a,b and c
         // which will return 1 (true) if we have passed it a string ( perm_map ) 
         // that contains the specified counts of A B and C characters
+        //
+        // We are also passing NULL to our vector parameter that was used in previous
+        // functions to store unique combinations of 'A' 'B' and 'C', since it is not
+        // required for this function f()
+        //
         if (get_comb_val(perm_map, NULL, n, a, b, c)) {
             printf("%s\n", perm_map);
             score++;
@@ -331,7 +338,7 @@ unsigned f(unsigned a, unsigned b, unsigned c) {
             perm_map[0]++;
         }
         else {
-            // Otherwise call inc_base_n, which properly increment the string in base 3
+            // Otherwise call inc_base_n, which properly increments the string in base 3
             // see function for details
             inc_base_n(perm_map, 0);
         }
