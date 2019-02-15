@@ -71,56 +71,136 @@
 
 #include <cstdio>
 #include <cstdlib>
-
+#include <cstring>
 #define F 0
 #define I 1
 #define L 2
 #define N 3
 #define T 4
 
-#define ERROR
+#define ERROR -1
 
-#define FILNT_CHECK 0xFF
-#define NUM_CHECK 0xEE
+#define FILNT_CHECK 1
+#define NUM_CHECK 1.1
 
-int main(char * argv[], int argc) {
+
+int parse_args(char * argv[], int argc, double vals[]);
+double validate_args(double mode, const char * arg);
+int validate_args(int mode, const char * arg);
+
+
+const char * usage_str = "\n\nUsage: ./{executable} [ filnt ] [ value 1 ]"
+                            " [ filnt ] [ value 2 ] [ filnt ] [ value 3 ]\n"
+                            "* * * * * * * * * * * * * * * * * * * * * * * * \n"
+                            "\n"
+                            "Example: ./{executable} t 3.6 f 1.1 L 1.3   <<-- Translation:\n"
+                            "\n"
+                            "Arithmatic sequence totaling 3.6, first term 1.1 and last term "
+                            "is 1.3.\n";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+int main(int argc, char * argv[]) {
     
     double vals[5];
-    parse_args(argv,argc,vals);
+    if ((parse_args(argv,argc,vals) == ERROR) || (argc < 7)) {
+        if (argc < 7) {
+            printf("\nPlease enter 3 values for F I L N T");
+        }
+        printf(usage_str);
+        exit(1);
+    }
 
 
 
 }
 
-void parse_args(char * argv[], int argc, double vals[]) {
+int parse_args(char * argv[], int argc, double vals[]) {
 
-    for (int x=0; x < argc; ++x) {
-        int res = validate_args(FILNT_CHECK, argv[x], null);
-        switch (res) {
+    for (int x=1; x < argc; x += 2) {
+         
+        int res_alpha = validate_args(FILNT_CHECK, argv[x]);
+        double res_num = validate_args(NUM_CHECK, argv[x+1]);
+        
+        if ((res_alpha == ERROR) || (res_num == ERROR)) {
+            printf("\nError in argument %d - Please enter arguments correctly", x);
+            return ERROR;
+        }
+
+        switch (res_alpha) {
             case F:
+                vals[F] = res_num;
+                break;
+            case I:
+                vals[I] = res_num;
+                break;
+            case L:
+                vals[L] = res_num;
+                break;
+            case N:
+                vals[N] = res_num;
+                break;
+            case T:
+                vals[T] = res_num;
+                break;
         }
     }
 
 }
 
 
-void validate_args(int mode, unsigned char * arg, double num_arg) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+int validate_args(int mode, const char * arg) {
     
     if (mode == FILNT_CHECK) {
         // Determine valid 'filnt' argument given
-        unsigned char valid_args[] = { "f", "i", "l", "n", "t" };
+        const char * valid_args[] = { "f", "i", "l", "n", "t" };
+        const char * valid_args_upper[] = { "F", "I", "L", "N", "T" };
+
         for (int x=0; x < 5; ++x) {
-            if (!(std::strcmp(std::tolower(arg), valid_args[x])) {
+            if (!(strcmp(arg, valid_args[x])) || (!(strcmp(arg, valid_args_upper[x])))) {
                     return x;
             }
         }
         // Otherwise error
         return ERROR;
     }
-    else if (mode == NUM_CHECK) {
+}
+
+double validate_args(double mode, const char * arg) {
+    // Determine valid numerical argument following alpha argument
+    if (mode == NUM_CHECK) {
         double res;
         try {
-            res = std::stod(arg);
+            res = atof(arg);
+            if (!res) {
+                return ERROR;
+            }
             return res;
         } 
         catch (int e) {
