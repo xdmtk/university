@@ -1,80 +1,97 @@
-/*
- *
- *  ·▄▄▄▄  ▪  .▄▄ ·  ▄▄· ▄▄▄  ▄▄▄ .▄▄▄▄▄▄▄▄ .
- *  ██▪ ██ ██ ▐█ ▀. ▐█ ▌▪▀▄ █·▀▄.▀·•██  ▀▄.▀·
- *  ▐█· ▐█▌▐█·▄▀▀▀█▄██ ▄▄▐▀▀▄ ▐▀▀▪▄ ▐█.▪▐▀▀▪▄
- *  ██. ██ ▐█▌▐█▄▪▐█▐███▌▐█•█▌▐█▄▄▌ ▐█▌·▐█▄▄▌
- *  ▀▀▀▀▀• ▀▀▀ ▀▀▀▀ ·▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀  ▀▀▀
- *
- *  .▄▄ · ▄▄▄▄▄▄▄▄  ▄• ▄▌ ▄▄· ▄▄▄▄▄▄• ▄▌▄▄▄  ▄▄▄ ..▄▄ ·
- *  ▐█ ▀. •██  ▀▄ █·█▪██▌▐█ ▌▪•██  █▪██▌▀▄ █·▀▄.▀·▐█ ▀.
- *  ▄▀▀▀█▄ ▐█.▪▐▀▀▄ █▌▐█▌██ ▄▄ ▐█.▪█▌▐█▌▐▀▀▄ ▐▀▀▪▄▄▀▀▀█▄
- *  ▐█▄▪▐█ ▐█▌·▐█•█▌▐█▄█▌▐███▌ ▐█▌·▐█▄█▌▐█•█▌▐█▄▄▌▐█▄▪▐█
- *   ▀▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀ ·▀▀▀  ▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀▀
- *
+/*!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-/
+ *                                                          !
+ *  ·▄▄▄▄  ▪  .▄▄ ·  ▄▄· ▄▄▄  ▄▄▄ .▄▄▄▄▄▄▄▄ .               !
+ *  ██▪ ██ ██ ▐█ ▀. ▐█ ▌▪▀▄ █·▀▄.▀·•██  ▀▄.▀·               !
+ *  ▐█· ▐█▌▐█·▄▀▀▀█▄██ ▄▄▐▀▀▄ ▐▀▀▪▄ ▐█.▪▐▀▀▪▄               !
+ *  ██. ██ ▐█▌▐█▄▪▐█▐███▌▐█•█▌▐█▄▄▌ ▐█▌·▐█▄▄▌               !
+ *  ▀▀▀▀▀• ▀▀▀ ▀▀▀▀ ·▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀  ▀▀▀                !
+ *                                                          !
+ *  .▄▄ · ▄▄▄▄▄▄▄▄  ▄• ▄▌ ▄▄· ▄▄▄▄▄▄• ▄▌▄▄▄  ▄▄▄ ..▄▄ ·     !
+ *  ▐█ ▀. •██  ▀▄ █·█▪██▌▐█ ▌▪•██  █▪██▌▀▄ █·▀▄.▀·▐█ ▀.     !
+ *  ▄▀▀▀█▄ ▐█.▪▐▀▀▄ █▌▐█▌██ ▄▄ ▐█.▪█▌▐█▌▐▀▀▄ ▐▀▀▪▄▄▀▀▀█▄    !
+ *  ▐█▄▪▐█ ▐█▌·▐█•█▌▐█▄█▌▐███▌ ▐█▌·▐█▄█▌▐█•█▌▐█▄▄▌▐█▄▪▐█    !
+ *   ▀▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀ ·▀▀▀  ▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀▀     !
+ *                                                          !
+ *                                                          !
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
- #
- #   CoSCi 542 - Discrete Structures 
- #   Instructor: Bob Hart
- #   Section: 21566
- #   W - 5:45PM - 10:00PM
- #
- #   --->>
- #       
- #   Name: Nicholas Martinez
- #   Date: 02/08/18
- #    
- #   --->> 
- #
- #
- #   Sample Output:
- #          [~/school/discr] (master) >>> run
- #      Factorial 4: 24
- #     Combinations for 5,2: 10
- #
- #      Permuatations for 5,2: 20
- # 
- #      AAAA
- #      BAAA
- #      CAAA
- #      BBAA
- #      CBAA
- #      CCAA
- #      BBBA
- #      CBBA
- #      CCBA
- #      CCCA
- #      BBBB
- #      CBBB
- #      CCBB
- #      CCCB
- #      CCCC
- #      Comb ABC for 4: 15
- #
- #      AA
- #      BA
- #      CA
- #      AB
- #      BB
- #      CB
- #      AC
- #      BC
- #      CC
- #      Perm ABC for 2: 9
- #
- #      CBBA
- #      BCBA
- #      BBCA
- #      CBAB
- #      BCAB
- #      CABB
- #      ACBB
- #      BACB
- #      ABCB
- #      BBAC
- #      BABC
- #      ABBC
- #      Perm ABC for 1,2,1: 12
+ -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
+ -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
+ *
+ *   CoSCi 542 - Discrete Structures 
+ *   Instructor: Bob Hart
+ *   Section: 21566
+ *   W - 5:45PM - 10:00PM
+ *
+ *   --->>
+ *       
+ *   Name: Nicholas Martinez
+ *   Date: 02/08/18
+ *    
+ *   --->> 
+ *
+ *   **Compiled successfully with g++ 6.3.0 on Debian Stretch**
+ *   
+ *   Quick note about this assignment, I'm not a very strong C/C++ programmer,
+ *   but out of the two I am far more familiar with writing C. You'll probably see
+ *   a lot of mixed C/C++ code in here, which I realize is bad practice, but the code
+ *   does work. Also at the moment I don't own a Windows machine so I have not compiled 
+ *   it using a Microsoft C++ compiler, but it compiles sucessfully with g++ and clang++ 
+ *   on a Linux machine and I see no reason why it shouldn't on a Windows machine. 
+ *
+ *
+ *   I have included the output of the program below
+ *
+ *   --->> 
+ *
+ *   Sample Output:
+ *
+ *      [~/school/discr] (master) >>> run
+ *      Factorial 4: 24
+ *      Combinations for 5,2: 10
+ *
+ *      Permuatations for 5,2: 20
+ * 
+ *      AAAA
+ *      BAAA
+ *      CAAA
+ *      BBAA
+ *      CBAA
+ *      CCAA
+ *      BBBA
+ *      CBBA
+ *      CCBA
+ *      CCCA
+ *      BBBB
+ *      CBBB
+ *      CCBB
+ *      CCCB
+ *      CCCC
+ *      Comb ABC for 4: 15
+ *
+ *      AA
+ *      BA
+ *      CA
+ *      AB
+ *      BB
+ *      CB
+ *      AC
+ *      BC
+ *      CC
+ *      Perm ABC for 2: 9
+ *
+ *      CBBA
+ *      BCBA
+ *      BBCA
+ *      CBAB
+ *      BCAB
+ *      CABB
+ *      ACBB
+ *      BACB
+ *      ABCB
+ *      BBAC
+ *      BABC
+ *      ABBC
+ *      Perm ABC for 1,2,1: 12
 */
 
 #include <cstdlib>
@@ -111,10 +128,9 @@ int main() {
 
     x = comb(5,2);
     printf("Combinations for 5,2: %d\n\n", x);
-
     x = perm(5,2);
     printf("Permuatations for 5,2: %d\n\n", x);
-    
+     
     x = combABC(4);
     printf("Comb ABC for 4: %d\n\n", x);
 
