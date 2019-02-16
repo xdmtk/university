@@ -174,20 +174,17 @@ void calculate_master(double vals[]) {
         exit(1);
     }
     switch (initial_comb) {
+        case FIT: find_l(vals, initial_comb, false, mode_global); break;
         case FLI:
-        case FLN: find_i(vals, FNT, false, mode_global); break;
-        case FLT: find_i(vals, FNT, false, mode_global); break;
-        case FIN: 
-        case FNT: find_i(vals, FNT, false, mode_global); break;
-        case LIN: find_f(vals, LIN, false, mode_global); break;
-        case LIT: find_f(vals, LIT, false, mode_global); break;
-        case LNT: find_f(vals, LNT, false, mode_global); break;
-        case INT: find_f(vals, INT, false, mode_global); break;
-
-
-
-
-
+        case FIN: find_t(vals, initial_comb, false, mode_global); break; 
+        case FLN:
+        case FLT:
+        case FNT: find_i(vals, initial_comb, false, mode_global); break;
+        case LIN:
+        case LIT:
+        case LNT:
+        case INT: find_f(vals, initial_comb, false, mode_global); break;
+    }
 }
 
 /* F Combinations For arithmatic 
@@ -197,15 +194,14 @@ void calculate_master(double vals[]) {
  * NIT - Invalid - {1, 2, 3} , N=3, I=1, T=6 -> F= NEED L 
  * NTL - Valid - {1, 2, 3} , N=3, T=6, L=3 -> F= NEED I
  */
-double find_f(double vals[], int combination, unsigned char second_pass, int mode) {
+void find_f(double vals[], int combination, unsigned char second_pass, int mode) {
 
     // Find the missing 4th value
-    if (!second_pass) {
-        if (mode_global == (MODE_ARITH)) {
+    if (mode_global == (MODE_ARITH)) {
+        if (!second_pass) {
             switch (combination) {
                 case LIT:
                     find_n(vals, ILT, false, MODE_ARITH);
-                    // Now we have 4 values, solve for F
                     vals[F] = vals[L] - ((vals[N]*vals[I])+1);
                     return;
                 case LIN:
@@ -215,12 +211,14 @@ double find_f(double vals[], int combination, unsigned char second_pass, int mod
                 case LNT:
                     find_i(vals, LNT, false, MODE_ARITH);
                     vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                    break;
+                    return;
                 case INT:
-                    find_l(vals, INT, true, MODE_ARITH);
+                    find_l(vals, INT, false, MODE_ARITH);
                     vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                    break;
+                    return;
             }
+            vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+            return;
         }
     }
 }
@@ -229,29 +227,84 @@ double find_f(double vals[], int combination, unsigned char second_pass, int mod
     
 
 
-double find_i(double vals[], int combination, unsigned char second_pass, int mode) {
+void find_i(double vals[], int combination, unsigned char second_pass, int mode) {
     
-    if (!second_pass) {
-        if (mode_global == (MODE_ARITH)) {
+    if (mode_global == (MODE_ARITH)) {
+        if (!second_pass) {
             switch (combination) {
                 case FLN:
+                    vals[I] = vals[L]/vals[N];
+                    find_t(vals, FLN, true, MODE_ARITH);
                     return;
                 case FNT:
+                    find_l(vals,FNT, false, MODE_ARITH);
+                    vals[I] = vals[L]/vals[N];
                     return;
                 case FLT:
-                    break;
+                    find_n(vals, FLT, false, MODE_ARITH);a
+                    vals[I] = vals[L]/vals[N];
+                    return;
+                case LNT:
+                    vals[I] = vals[L]/vals[N];
+                    return;
+
             }
         }
+        vals[I] = vals[L]/vals[N];
+        return;
     }
 }
 
 
 double find_l(double vals[], int combination, unsigned char second_pass, int mode) {
-    
+
+    if (mode_global == (MODE_ARITH)) {
+        if (!second_pass) {
+            switch (combination) {
+                case FIT:
+                    for (int x=vals[F], int terms=1; x < vals[T]; x += vals[I]) {
+                        terms++;
+                    }
+                    vals[N] = terms;
+                    vals[L] = x;
+                    return;
+                case FNT:
+                    while (true) {
+                        for (int x=vals[F], int t=0, int i=1, int n=1; n < vals[N]; n++) {
+                            x += i;
+                            t += x;
+                            if (t == vals[T]) {
+                                vals[L] = x;
+                                vals[I] = i;
+                                return;
+                            }
+                        }
+                    }
+            }
+        }
+    }
 }
+    
 
 
 double find_n(double vals[], int combination, unsigned char second_pass, int mode) {
+    
+    if (mode_global == (MODE_ARITH)) {
+        if (!second_pass) {
+            switch (combination) {
+                case LIT:
+                    while (true) {
+                        int i=vals[I];
+                        int l=vals[L];
+                        int t=vals[T];
+                        // TODO : continue
+                        return;
+                    }
+            }
+        }
+        vals[I] = vals[L]/vals[N];
+        return;
+    }
 
 
 }
