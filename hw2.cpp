@@ -98,7 +98,8 @@
 
 #define FILNT_CHECK 1
 #define NUM_CHECK 1.1
-
+#define true 1
+#define false 0
 
 int validate_args(int mode_val, const char * arg);
 double validate_args(double mode_val, const char * arg);
@@ -172,17 +173,16 @@ void calculate_master(double vals[]) {
         printf(usage_str);
         exit(1);
     }
-//    f l i, f l n, f l t, f i n, f i t, f n t, l i n, l i t, l n t, i n t
     switch (initial_comb) {
         case FLI:
-        case FLN:
-        case FLT:
-        case FIN:
-        case FNT:
-        case LIN: find_f(vals, LIN, 0, mode_global); break;
-        case LIT: find_f(vals, LIT, 0, mode_global); break;
-        case LNT: find_f(vals, LNT, 0, mode_global); break;
-        case INT: find_f(vals, INT, 0, mode_global); break;
+        case FLN: find_i(vals, FNT, false, mode_global); break;
+        case FLT: find_i(vals, FNT, false, mode_global); break;
+        case FIN: 
+        case FNT: find_i(vals, FNT, false, mode_global); break;
+        case LIN: find_f(vals, LIN, false, mode_global); break;
+        case LIT: find_f(vals, LIT, false, mode_global); break;
+        case LNT: find_f(vals, LNT, false, mode_global); break;
+        case INT: find_f(vals, INT, false, mode_global); break;
 
 
 
@@ -193,17 +193,56 @@ void calculate_master(double vals[]) {
 /* F Combinations For arithmatic 
  * 
  * ILN - Valid - {1, 2, 3} , I=1 L=3, N=3, ->  F= L-((N*I)+1)
- * ILT - Invalid - {1 2 3} , I=1 L=3 T=6 ->  F= NEED N
+ * ILT - Valid - {1 2 3} , I=1 L=3 T=6 ->  Find N -> (L-I)+(L-I)...==T iterations is N
  * NIT - Invalid - {1, 2, 3} , N=3, I=1, T=6 -> F= NEED L 
  * NTL - Valid - {1, 2, 3} , N=3, T=6, L=3 -> F= NEED I
  */
 double find_f(double vals[], int combination, unsigned char second_pass, int mode) {
-    
+
+    // Find the missing 4th value
+    if (!second_pass) {
+        if (mode_global == (MODE_ARITH)) {
+            switch (combination) {
+                case LIT:
+                    find_n(vals, ILT, false, MODE_ARITH);
+                    // Now we have 4 values, solve for F
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    return;
+                case LIN:
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    find_t(vals, ILN, true, MODE_ARITH);
+                    return;
+                case LNT:
+                    find_i(vals, LNT, false, MODE_ARITH);
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    break;
+                case INT:
+                    find_l(vals, INT, true, MODE_ARITH);
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    break;
+            }
+        }
+    }
 }
 
 
-double find_i(double vals[], int combination, unsigned char second_pass, int mode) {
+    
 
+
+double find_i(double vals[], int combination, unsigned char second_pass, int mode) {
+    
+    if (!second_pass) {
+        if (mode_global == (MODE_ARITH)) {
+            switch (combination) {
+                case FLN:
+                    return;
+                case FNT:
+                    return;
+                case FLT:
+                    break;
+            }
+        }
+    }
 }
 
 
@@ -238,7 +277,6 @@ int combination_dictionary(double vals[]) {
             }
         }
     }
-//    f l i, f l n, f l t, f i n, f i t, f n t, l i n, l i t, l n t, i n t
     if (f && l && i) {  return FLI; };
     if (f && l && n) {  return FLN; };
     if (f && l && t) {  return FLT; };
