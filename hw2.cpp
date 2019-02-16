@@ -93,23 +93,41 @@
 
 #define ERROR -1
 
+#define MODE_ARITH 0xEEFF
+#define MODE_GEOM 0xEE00
+
 #define FILNT_CHECK 1
 #define NUM_CHECK 1.1
 
 
-int parse_args(char * argv[], int argc, double vals[]);
-double validate_args(double mode, const char * arg);
 int validate_args(int mode, const char * arg);
+double validate_args(double mode, const char * arg);
+int parse_args(char * argv[], int argc, double vals[]);
 
 
+int combination_dictionary(double vals[]);
+
+double find_t(double vals[], int combination, unsigned char second_pass, int mode);
+double find_n(double vals[], int combination, unsigned char second_pass, int mode);
+double find_l(double vals[], int combination, unsigned char second_pass, int mode);
+double find_i(double vals[], int combination, unsigned char second_pass, int mode);
+double find_f(double vals[], int combination, unsigned char second_pass, int mode);
+
+
+int mode=0;
 // How to use program, give input via CLI
-const char * usage_str = "\n\nUsage: ./{executable} [ filnt ] [ value 1 ]"
+const char * usage_str = "\n\nUsage: ./{executable} [ mode ] [ filnt ] [ value 1 ]"
                             " [ filnt ] [ value 2 ] [ filnt ] [ value 3 ]\n"
                             "* * * * * * * * * * * * * * * * * * * * * * * * \n"
                             "\n"
-                            "Example: ./{executable} t 3.6 f 1.1 L 1.3   <<-- Translation:\n"
+                            "Example: ./{executable} arithmatic t 3.6 f 1.1 L 1.3   <<-- Translation:\n"
                             "\n"
                             "Arithmatic sequence totaling 3.6, first term 1.1 and last term "
+                            "is 1.3.\n"
+                            "\n\n"
+                            "Example: ./{executable} geometric L 9 I 3 F 3   <<-- Translation:\n"
+                            "\n"
+                            "Geometric sequence with first term 3, last term 9, and incremented"
                             "is 1.3.\n";
 
 
@@ -119,9 +137,9 @@ int main(int argc, char * argv[]) {
     double vals[] = {0, 0, 0, 0, 0};
 
     // Parse arguments and make sure correct amount of arguments given 
-    // Should be 7, program name + 3 of FILNT and 3 of numbers for FILNT
-    if ((parse_args(argv,argc,vals) == ERROR) || (argc != 7)) {
-        if (argc != 7) {
+    // Should be 8, program name + 3 of FILNT and 3 of numbers for FILNT
+    if ((parse_args(argv,argc,vals) == ERROR) || (argc != 8)) {
+        if (argc != 8) {
             printf("\nPlease enter 3 values for F I L N T");
         }
         printf(usage_str);
@@ -146,7 +164,7 @@ int main(int argc, char * argv[]) {
  */ 
 
 void calculate_master(double vals[]) {
-    initial_comb = combination_dictionary(vals);
+    int initial_comb = combination_dictionary(vals);
 
 
 
@@ -154,27 +172,37 @@ void calculate_master(double vals[]) {
 
 }
 
-/* F Combinations: 
+/* F Combinations For arithmatic 
  * 
  * ILN - Valid - {1, 2, 3} , I=1 L=3, N=3, ->  F= L-((N*I)+1)
  * ILT - Invalid - {1 2 3} , I=1 L=3 T=6 ->  F= NEED N
  * NIT - Invalid - {1, 2, 3} , N=3, I=1, T=6 -> F= NEED L 
  * NTL - Valid - {1, 2, 3} , N=3, T=6, L=3 -> F= NEED I
  */
-double find_f(double vals[], int combination) {
+double find_f(double vals[], int combination, unsigned char second_pass, int mode) {
     
+}
 
 
+double find_i(double vals[], int combination, unsigned char second_pass, int mode) {
+
+}
 
 
+double find_l(double vals[], int combination, unsigned char second_pass, int mode) {
+    
+}
 
+
+double find_n(double vals[], int combination, unsigned char second_pass, int mode) {
 
 
 }
 
 
+double find_t(double vals[], int combination, unsigned char second_pass, int mode) {
 
-
+}
 
 // Returns macro based on combination found for initial values
 int combination_dictionary(double vals[]) {
@@ -193,18 +221,16 @@ int combination_dictionary(double vals[]) {
         }
     }
 //    f l i, f l n, f l t, f i n, f i t, f n t, l i n, l i t, l n t, i n t
-    switch (true) {
-        case (f && l && i): return FLI;
-        case (f && l && n): return FLN;
-        case (f && l && t): return FLT;
-        case (f && i && n): return FIN;
-        case (f && i && t): return FIT;
-        case (f && n && t): return FNT;
-        case (l && i && n): return LIN;
-        case (l && i && t): return LIT;
-        case (l && n && t): return LNT;
-        case (i && n && t): return INT;
-    }
+    if (f && l && i) {  return FLI; };
+    if (f && l && n) {  return FLN; };
+    if (f && l && t) {  return FLT; };
+    if (f && i && n) {  return FIN; };
+    if (f && i && t) {  return FIT; };
+    if (f && n && t) {  return FNT; };
+    if (l && i && n) {  return LIN; };
+    if (l && i && t) {  return LIT; };
+    if (l && n && t) {  return LNT; };
+    if (i && n && t) {  return INT; };
     return ERROR;
 }
 
@@ -263,9 +289,23 @@ double validate_args(double mode, const char * arg) {
 
 // Get command line arguments and parse correspdonding values
 int parse_args(char * argv[], int argc, double vals[]) {
+        
+    // Check mode, arithmetic or geometric 
+    if (!(strcmp(argv[1], "arithmetic"))) {
+        mode = MODE_ARITH;
+    }
+    else if (!(strcmp(argv[1], "geometric"))) {
+        mode = MODE_GEOM;
+    }
+    else {
+        printf("\nInvalid mode specified '%s'", argv[1]);
+        return ERROR;
+    }
+
+
 
     // Iterate through args
-    for (int x=1; x < argc; x += 2) {
+    for (int x=2; x < argc; x += 2) {
         
         // Get the alpha argument (filnt) and the numerical argument ( number that follows filnt) 
         int res_alpha = validate_args(FILNT_CHECK, argv[x]);
