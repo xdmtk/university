@@ -100,11 +100,12 @@
 #define NUM_CHECK 1.1
 
 
-int validate_args(int mode, const char * arg);
-double validate_args(double mode, const char * arg);
+int validate_args(int mode_val, const char * arg);
+double validate_args(double mode_val, const char * arg);
 int parse_args(char * argv[], int argc, double vals[]);
 
 
+void calculate_master(double vals[]);
 int combination_dictionary(double vals[]);
 
 double find_t(double vals[], int combination, unsigned char second_pass, int mode);
@@ -114,7 +115,7 @@ double find_i(double vals[], int combination, unsigned char second_pass, int mod
 double find_f(double vals[], int combination, unsigned char second_pass, int mode);
 
 
-int mode=0;
+int mode_global=0;
 // How to use program, give input via CLI
 const char * usage_str = "\n\nUsage: ./{executable} [ mode ] [ filnt ] [ value 1 ]"
                             " [ filnt ] [ value 2 ] [ filnt ] [ value 3 ]\n"
@@ -145,7 +146,8 @@ int main(int argc, char * argv[]) {
         printf(usage_str);
         exit(1);
     }
-
+    
+    calculate_master(vals);
 
 
 
@@ -165,6 +167,22 @@ int main(int argc, char * argv[]) {
 
 void calculate_master(double vals[]) {
     int initial_comb = combination_dictionary(vals);
+    if (initial_comb == ERROR) {
+        printf("\nDuplicate values detected.. please enter only one of each filnt value");
+        printf(usage_str);
+        exit(1);
+    }
+//    f l i, f l n, f l t, f i n, f i t, f n t, l i n, l i t, l n t, i n t
+    switch (initial_comb) {
+        case FLI:
+        case FLN:
+        case FLT:
+        case FIN:
+        case FNT:
+        case LIN: find_f(vals, LIN, 0, mode_global); break;
+        case LIT: find_f(vals, LIT, 0, mode_global); break;
+        case LNT: find_f(vals, LNT, 0, mode_global); break;
+        case INT: find_f(vals, INT, 0, mode_global); break;
 
 
 
@@ -213,8 +231,8 @@ int combination_dictionary(double vals[]) {
         if (vals[x]) {
             switch (x) {
                 case 0: f++; break;
-                case 1: l++; break;
-                case 2: i++; break;
+                case 1: i++; break;
+                case 2: l++; break;
                 case 3: n++; break;
                 case 4: t++; break;
             }
@@ -242,9 +260,9 @@ int combination_dictionary(double vals[]) {
 
 
 // Overloaded validation for string/char arguments
-int validate_args(int mode, const char * arg) {
+int validate_args(int mode_val, const char * arg) {
     
-    if (mode == FILNT_CHECK) {
+    if (mode_val == FILNT_CHECK) {
         // Determine valid 'filnt' argument given, both upper and lowercase
         // supported
         const char * valid_args[] = { "f", "i", "l", "n", "t" };
@@ -264,9 +282,9 @@ int validate_args(int mode, const char * arg) {
 
 
 // Overloaded validation for numerical arguments
-double validate_args(double mode, const char * arg) {
+double validate_args(double mode_val, const char * arg) {
     // Determine valid numerical argument following alpha argument
-    if (mode == NUM_CHECK) {
+    if (mode_val == NUM_CHECK) {
         double res;
         try {
             // Make sure following argument from filnt is numerical
@@ -292,10 +310,10 @@ int parse_args(char * argv[], int argc, double vals[]) {
         
     // Check mode, arithmetic or geometric 
     if (!(strcmp(argv[1], "arithmetic"))) {
-        mode = MODE_ARITH;
+        mode_global = MODE_ARITH;
     }
     else if (!(strcmp(argv[1], "geometric"))) {
-        mode = MODE_GEOM;
+        mode_global = MODE_GEOM;
     }
     else {
         printf("\nInvalid mode specified '%s'", argv[1]);
