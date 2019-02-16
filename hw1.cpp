@@ -126,8 +126,8 @@ int main() {
     unsigned x = factorial(4);
     printf("Factorial 4: %d\n", x);
 
-    x = comb(5,2);
-    printf("Combinations for 5,2: %d\n\n", x);
+    x = comb(4,3);
+    printf("Combinations for 4,3: %d\n\n", x);
     x = perm(5,2);
     printf("Permuatations for 5,2: %d\n\n", x);
      

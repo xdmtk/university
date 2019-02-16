@@ -70,8 +70,21 @@
 */
 
 #include <cstdio>
+#include <cctype>
 #include <cstdlib>
 #include <cstring>
+
+#define FLI 0xFF0
+#define FLN 0xFF1
+#define FLT 0xFF2
+#define FIN 0xFF3
+#define FIT 0xFF4
+#define FNT 0xFF5
+#define LIN 0xFF6
+#define LIT 0xFF7
+#define LNT 0xFF8
+#define INT 0xFF9
+
 #define F 0
 #define I 1
 #define L 2
@@ -89,6 +102,7 @@ double validate_args(double mode, const char * arg);
 int validate_args(int mode, const char * arg);
 
 
+// How to use program, give input via CLI
 const char * usage_str = "\n\nUsage: ./{executable} [ filnt ] [ value 1 ]"
                             " [ filnt ] [ value 2 ] [ filnt ] [ value 3 ]\n"
                             "* * * * * * * * * * * * * * * * * * * * * * * * \n"
@@ -99,25 +113,15 @@ const char * usage_str = "\n\nUsage: ./{executable} [ filnt ] [ value 1 ]"
                             "is 1.3.\n";
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main(int argc, char * argv[]) {
     
-    double vals[5];
-    if ((parse_args(argv,argc,vals) == ERROR) || (argc < 7)) {
-        if (argc < 7) {
+    // Initialize an array for FILNT values
+    double vals[] = {0, 0, 0, 0, 0};
+
+    // Parse arguments and make sure correct amount of arguments given 
+    // Should be 7, program name + 3 of FILNT and 3 of numbers for FILNT
+    if ((parse_args(argv,argc,vals) == ERROR) || (argc != 7)) {
+        if (argc != 7) {
             printf("\nPlease enter 3 values for F I L N T");
         }
         printf(usage_str);
@@ -126,39 +130,82 @@ int main(int argc, char * argv[]) {
 
 
 
+
+
 }
 
-int parse_args(char * argv[], int argc, double vals[]) {
 
-    for (int x=1; x < argc; x += 2) {
-         
-        int res_alpha = validate_args(FILNT_CHECK, argv[x]);
-        double res_num = validate_args(NUM_CHECK, argv[x+1]);
-        
-        if ((res_alpha == ERROR) || (res_num == ERROR)) {
-            printf("\nError in argument %d - Please enter arguments correctly", x);
-            return ERROR;
-        }
+/*
+ * F - First term of sequences
+ * I - Incremental value
+ * L - Last term of sequence
+ * N - Number of terms
+ * T - Total sum value of terms
+ *
+ * 
+ */ 
 
-        switch (res_alpha) {
-            case F:
-                vals[F] = res_num;
-                break;
-            case I:
-                vals[I] = res_num;
-                break;
-            case L:
-                vals[L] = res_num;
-                break;
-            case N:
-                vals[N] = res_num;
-                break;
-            case T:
-                vals[T] = res_num;
-                break;
+void calculate_master(double vals[]) {
+    initial_comb = combination_dictionary(vals);
+
+
+
+
+
+}
+
+/* F Combinations: 
+ * 
+ * ILN - Valid - {1, 2, 3} , I=1 L=3, N=3, ->  F= L-((N*I)+1)
+ * ILT - Invalid - {1 2 3} , I=1 L=3 T=6 ->  F= NEED N
+ * NIT - Invalid - {1, 2, 3} , N=3, I=1, T=6 -> F= NEED L 
+ * NTL - Valid - {1, 2, 3} , N=3, T=6, L=3 -> F= NEED I
+ */
+double find_f(double vals[], int combination) {
+    
+
+
+
+
+
+
+
+}
+
+
+
+
+
+// Returns macro based on combination found for initial values
+int combination_dictionary(double vals[]) {
+    
+    int f,i,l,n,t;
+    f=i=l=n=t=0;
+    for (int x=0; x<5; ++x) {
+        if (vals[x]) {
+            switch (x) {
+                case 0: f++; break;
+                case 1: l++; break;
+                case 2: i++; break;
+                case 3: n++; break;
+                case 4: t++; break;
+            }
         }
     }
-
+//    f l i, f l n, f l t, f i n, f i t, f n t, l i n, l i t, l n t, i n t
+    switch (true) {
+        case (f && l && i): return FLI;
+        case (f && l && n): return FLN;
+        case (f && l && t): return FLT;
+        case (f && i && n): return FIN;
+        case (f && i && t): return FIT;
+        case (f && n && t): return FNT;
+        case (l && i && n): return LIN;
+        case (l && i && t): return LIT;
+        case (l && n && t): return LNT;
+        case (i && n && t): return INT;
+    }
+    return ERROR;
 }
 
 
@@ -168,21 +215,18 @@ int parse_args(char * argv[], int argc, double vals[]) {
 
 
 
-
-
-
-
-
-
-
+// Overloaded validation for string/char arguments
 int validate_args(int mode, const char * arg) {
     
     if (mode == FILNT_CHECK) {
-        // Determine valid 'filnt' argument given
+        // Determine valid 'filnt' argument given, both upper and lowercase
+        // supported
         const char * valid_args[] = { "f", "i", "l", "n", "t" };
         const char * valid_args_upper[] = { "F", "I", "L", "N", "T" };
 
         for (int x=0; x < 5; ++x) {
+            // If the argument matches anything in filnt or FILNT, return the #define 
+            // constant FILNT for the argument position
             if (!(strcmp(arg, valid_args[x])) || (!(strcmp(arg, valid_args_upper[x])))) {
                     return x;
             }
@@ -192,20 +236,78 @@ int validate_args(int mode, const char * arg) {
     }
 }
 
+
+// Overloaded validation for numerical arguments
 double validate_args(double mode, const char * arg) {
     // Determine valid numerical argument following alpha argument
     if (mode == NUM_CHECK) {
         double res;
         try {
-            res = atof(arg);
-            if (!res) {
-                return ERROR;
+            // Make sure following argument from filnt is numerical
+            for (int x=0; x < strlen(arg); ++x) {
+                if (isalpha(arg[x])) {
+                    return ERROR;
+                }
             }
+            // Convert to float
+            res = atof(arg);
             return res;
         } 
         catch (int e) {
+            // Return error for exception
             return ERROR;
         }
     }
+}
+
+
+// Get command line arguments and parse correspdonding values
+int parse_args(char * argv[], int argc, double vals[]) {
+
+    // Iterate through args
+    for (int x=1; x < argc; x += 2) {
+        
+        // Get the alpha argument (filnt) and the numerical argument ( number that follows filnt) 
+        int res_alpha = validate_args(FILNT_CHECK, argv[x]);
+        double res_num = validate_args(NUM_CHECK, argv[x+1]);
+       
+        // Any issues with parsing, stop at first argument error deteted
+        if ((res_alpha == ERROR) || (res_num == ERROR)) {
+            printf("\nError in argument %d - Please enter arguments correctly", x);
+            return ERROR;
+        }
+    
+
+        // Otherwise store argument values in appropriate position 
+        // of vals[], using FILNT macros
+        switch (res_alpha) {
+            case F:
+                vals[F] = res_num;
+                break;
+            case I:
+                vals[I] = res_num;
+                // We want I to be nonzero, check
+                if (!res_num) { 
+                    printf("\nValue for I must be nonzero\n");
+                    return ERROR;
+                }
+                break;
+            case L:
+                vals[L] = res_num;
+                break;
+            case N:
+                vals[N] = res_num;
+                // We want N to be greater than 1
+                if (res_num <= 1) {
+                    printf("\nValue for N must be greater than 1\n");
+                    return ERROR;
+                }
+                break;
+            case T:
+                vals[T] = res_num;
+                break;
+        }
+    }
+
 }
 
