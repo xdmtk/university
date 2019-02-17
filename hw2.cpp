@@ -116,6 +116,7 @@ void find_i(double vals[], int combination, unsigned char second_pass, int mode)
 void find_f(double vals[], int combination, unsigned char second_pass, int mode);
 
 
+double pow(double base, double power);
 int mode_global=0;
 // How to use program, give input via CLI
 const char * usage_str = "\n\nUsage: ./{executable} [ mode ] [ filnt ] [ value 1 ]"
@@ -123,14 +124,12 @@ const char * usage_str = "\n\nUsage: ./{executable} [ mode ] [ filnt ] [ value 1
                             "* * * * * * * * * * * * * * * * * * * * * * * * \n"
                             "\n"
                             "Example: ./{executable} arithmatic t 3.6 f 1.1 L 1.3   <<-- Translation:\n"
-                            "\n"
                             "Arithmatic sequence totaling 3.6, first term 1.1 and last term "
                             "is 1.3.\n"
                             "\n\n"
                             "Example: ./{executable} geometric L 9 I 3 F 3   <<-- Translation:\n"
-                            "\n"
                             "Geometric sequence with first term 3, last term 9, and incremented"
-                            "is 1.3.\n";
+                            "is 1.3.\n\n";
 
 
 int main(int argc, char * argv[]) {
@@ -204,9 +203,20 @@ void find_f(double vals[], int combination, unsigned char second_pass, int mode)
                         return;
                     }
                     else if (mode_global == (MODE_GEOM)) {
-                         
-                         
-
+                        double f,i,l,n,t,k,count;
+                        f=0.1;
+                        while (true) {
+                            for (l=vals[L], i=vals[I], t=0, k=0, count=0;
+                                    t < vals[T]; count++) {
+                                t += f*(pow(i,k));
+                                if (t == vals[T]) {
+                                    vals[F] = f;
+                                    vals[N] = count;
+                                    return;
+                                }
+                            }
+                            f += .1;
+                        }     
                     }
                 }
                 case LIN: {
@@ -215,6 +225,22 @@ void find_f(double vals[], int combination, unsigned char second_pass, int mode)
                         find_t(vals, LIN, true, MODE_ARITH);
                         return;
                     }
+                    else if (mode_global == (MODE_GEOM)) {
+                        double f,i,l,n,t,k,count;
+                        f=0.1;
+                        while (true) {
+                            for (l=vals[L], i=vals[I], t=0, k=0, count=0;
+                                    count < vals[N]; count++) {
+                                t += f*(pow(i,k));
+                                if (l == vals[L]) {
+                                    vals[F] = f;
+                                    vals[T] = t;
+                                    return;
+                                }
+                            }
+                            f += .1;
+                        }     
+                    }
                 }
                 case LNT: {
                     if (mode_global == (MODE_ARITH)) {
@@ -222,12 +248,44 @@ void find_f(double vals[], int combination, unsigned char second_pass, int mode)
                         vals[F] = vals[L] - ((vals[N]*vals[I])+1);
                         return;
                     }
+                    else if (mode_global == (MODE_GEOM)) {
+                        double f,i,l,n,t,k,count;
+                        f=0.1;
+                        while (true) {
+                            for (l=vals[L], i=vals[I], t=0, k=0, count=0;
+                                    count < vals[N]; count++) {
+                                t += f*(pow(i,k));
+                                if (l == vals[L]) {
+                                    vals[F] = f;
+                                    vals[T] = t;
+                                    return;
+                                }
+                            }
+                            f += .1;
+                        }     
+                    }
                 }
                 case INT: {
                     if (mode_global == (MODE_ARITH)) {
                         find_l(vals, INT, false, MODE_ARITH);
                         vals[F] = vals[L] - ((vals[N]*vals[I])+1);
                         return;
+                    }
+                    else if (mode_global == (MODE_GEOM)) {
+                        double f,i,l,n,t,k,count;
+                        f=0.1;
+                        while (true) {
+                            for (l=vals[L], i=vals[I], t=0, k=0, count=0;
+                                    count < vals[N]; count++) {
+                                t += f*(pow(i,k));
+                                if (l == vals[L]) {
+                                    vals[F] = f;
+                                    vals[T] = t;
+                                    return;
+                                }
+                            }
+                            f += .1;
+                        }     
                     }
                 }
             }
@@ -272,6 +330,53 @@ void find_i(double vals[], int combination, unsigned char second_pass, int mode)
         vals[I] = (vals[L] - vals[F])/(vals[N]-1);
         return;
     }
+    else if (mode_global == (MODE_GEOM)) {
+        switch (combination) {
+            case FLN: {
+                double gp = vals[L]/vals[N];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                vals[I] = x;
+                vals[T] = vals[L]*vals[N]/vals[I];
+                return;
+            }
+            case FNT: {
+                double gp = vals[L]/vals[N];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                vals[I] = x;
+                vals[T] = vals[L]*vals[N]/vals[I];
+                return;
+            }
+            case FLT: {
+                double gp = vals[L]/vals[N];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                vals[I] = x;
+                vals[T] = vals[L]*vals[N]/vals[I];
+                return;
+            }
+            case LNT: {
+                double gp = vals[L]/vals[N];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                vals[I] = x;
+                vals[T] = vals[L]*vals[N]/vals[I];
+                return;
+            }
+
+        }
+    }
+    vals[I] = (vals[L] - vals[F])/(vals[N]-1);
+    return;
 }
 
 
@@ -306,9 +411,29 @@ void find_l(double vals[], int combination, unsigned char second_pass, int mode)
             }
         }
     }
+    else if (mode_global == MODE_GEOM) {
+        switch (combination) {
+            case FIT: {
+                vals[L] = vals[F]/vals[T];
+                vals[N] = vals[I]/vals[T];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                return;
+            }
+            case FNT: {
+                double gp = vals[F]/vals[N];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                vals[L] = vals[F]/vals[N];
+                return;
+            }
+        }
+    }
 }
-    
-
 
 void find_n(double vals[], int combination, unsigned char second_pass, int mode) {
     
@@ -334,6 +459,26 @@ void find_n(double vals[], int combination, unsigned char second_pass, int mode)
             }
         }
     }
+    else if (mode_global == MODE_GEOM) {
+        switch (combination) {
+            case LIT: {
+                double l,t,count;
+                for (t=vals[L], count=1, l=vals[L]; t < vals[T]; count++) {
+                    l -= vals[I];
+                    t += l;
+                    if (t == vals[T]) {
+                        vals[N] = count;
+                        vals[F] = l;
+                        return;
+                    }
+                }
+            }
+            case FLT: {
+                vals[N] = (vals[T]*2)/(vals[F] + vals[L]);
+                return;
+            }
+        }
+    }
     return;
 }
 
@@ -341,8 +486,8 @@ void find_n(double vals[], int combination, unsigned char second_pass, int mode)
 
 
 void find_t(double vals[], int combination, unsigned char second_pass, int mode) {
-    if (mode_global == MODE_ARITH) {
-        if (!second_pass) {
+    if (mode_global == MODE_ARITH || mode_global == MODE_GEOM) {
+        if ((!second_pass) || (mode_global == MODE_GEOM)) {
             switch (combination) {
                 case FLI: {
                     double t=0;
@@ -527,3 +672,14 @@ int parse_args(char * argv[], int argc, double vals[]) {
 
 }
 
+
+double pow(double base, double power) {
+    int b = base;
+    if (!power) {
+        return 1;
+    }
+    for (int x=0; x < power; ++x) {
+        base *= b;
+    }
+    return base;
+}
