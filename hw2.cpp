@@ -314,10 +314,13 @@ void find_n(double vals[], int combination, unsigned char second_pass, int mode)
                         }
                     }
                 }
+                case FLT: {
+                    vals[N] = (vals[T]*2)/(vals[F] + vals[L]);
+                    return;
+                }
             }
         }
     }
-    vals[I] = vals[L]/vals[N];
     return;
 }
 
