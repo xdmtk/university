@@ -140,7 +140,7 @@ int main(int argc, char * argv[]) {
 
     // Parse arguments and make sure correct amount of arguments given 
     // Should be 8, program name + 3 of FILNT and 3 of numbers for FILNT
-    if ((parse_args(argv,argc,vals) == ERROR) || (argc != 8)) {
+    if ((argc != 8) || (parse_args(argv,argc,vals) == ERROR))  {
         if (argc != 8) {
             printf("\nPlease enter 3 values for F I L N T");
         }
@@ -149,9 +149,7 @@ int main(int argc, char * argv[]) {
     }
     
     calculate_master(vals);
-
-
-
+    printf("\nF: %.2f I: %.2f L: %.2f N: %.2f T: %.2f\n", vals[F], vals[I], vals[L], vals[N], vals[T]);
 
 }
 
@@ -441,7 +439,7 @@ double validate_args(double mode_val, const char * arg) {
 
 // Get command line arguments and parse correspdonding values
 int parse_args(char * argv[], int argc, double vals[]) {
-        
+            
     // Check mode, arithmetic or geometric 
     if (!(strcmp(argv[1], "arithmetic"))) {
         mode_global = MODE_ARITH;
