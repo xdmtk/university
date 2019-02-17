@@ -149,7 +149,7 @@ int main(int argc, char * argv[]) {
     }
     
     calculate_master(vals);
-    printf("\nF: %.2f I: %.2f L: %.2f N: %.2f T: %.2f\n", vals[F], vals[I], vals[L], vals[N], vals[T]);
+    printf("\nF: %.2f \nI: %.2f \nL: %.2f \nN: %.2f \nT: %.2f\n", vals[F], vals[I], vals[L], vals[N], vals[T]);
 
 }
 
@@ -235,28 +235,28 @@ void find_i(double vals[], int combination, unsigned char second_pass, int mode)
         if (!second_pass) {
             switch (combination) {
                 case FLN: {
-                    vals[I] = vals[L]/vals[N];
+                    vals[I] = (vals[L] - vals[F])/(vals[N]-1);
                     find_t(vals, FLN, true, MODE_ARITH);
                     return;
                 }
                 case FNT: {
                     find_l(vals,FNT, false, MODE_ARITH);
-                    vals[I] = vals[L]/vals[N];
+                    vals[I] = (vals[L] - vals[F])/(vals[N]-1);
                     return;
                 }
                 case FLT: {
                     find_n(vals, FLT, false, MODE_ARITH);
-                    vals[I] = vals[L]/vals[N];
+                    vals[I] = (vals[L] - vals[F])/(vals[N]-1);
                     return;
                 }
                 case LNT: {
-                    vals[I] = vals[L]/vals[N];
+                    vals[I] = (vals[L] - vals[F])/(vals[N]-1);
                     return;
                 }
 
             }
         }
-        vals[I] = vals[L]/vals[N];
+        vals[I] = (vals[L] - vals[F])/(vals[N]-1);
         return;
     }
 }
@@ -268,7 +268,7 @@ void find_l(double vals[], int combination, unsigned char second_pass, int mode)
         if (!second_pass) {
             switch (combination) {
                 case FIT: {
-                    int x,terms;
+                    double x,terms;
                     for (x=vals[F], terms=1; x < vals[T]; x += vals[I]) {
                         terms++;
                     }
@@ -278,7 +278,7 @@ void find_l(double vals[], int combination, unsigned char second_pass, int mode)
                 }
                 case FNT: {
                     while (true) {
-                        int x,t,i,n;
+                        double x,t,i,n;
                         for (x=vals[F], t=0, i=1, n=1; n < vals[N]; n++) {
                             x += i;
                             t += x;
@@ -303,7 +303,7 @@ void find_n(double vals[], int combination, unsigned char second_pass, int mode)
         if (!second_pass) {
             switch (combination) {
                 case LIT: {
-                    int l,t,count;
+                    double l,t,count;
                     for (t=vals[L], count=1, l=vals[L]; t < vals[T]; count++) {
                         l -= vals[I];
                         t += l;
@@ -332,9 +332,9 @@ void find_t(double vals[], int combination, unsigned char second_pass, int mode)
         if (!second_pass) {
             switch (combination) {
                 case FLI: {
-                    int t=0;
-                    int count=1;
-                    for (int f=vals[F]; f < vals[L]; f += vals[I]) {
+                    double t=0;
+                    double count=1;
+                    for (double f=vals[F]; f < vals[L]; f += vals[I]) {
                         t += f;
                         count++;
                     }
@@ -343,8 +343,8 @@ void find_t(double vals[], int combination, unsigned char second_pass, int mode)
                     return;
                 }
                 case FIN: {
-                    int f,t=0;
-                    int l,count=1;
+                    double f,t=0;
+                    double l,count=1;
                     for (f=vals[F]; count < vals[N]; count++) {
                         f += vals[I];
                         t += f;
@@ -355,6 +355,16 @@ void find_t(double vals[], int combination, unsigned char second_pass, int mode)
                 }
             }
         }
+
+        double f,t=0;
+        double l,count=1;
+        for (f=vals[F]; count < vals[N]; count++) {
+            f += vals[I];
+            t += f;
+        }
+        vals[T] = t+1;
+        return;
+
     }
 }
 
