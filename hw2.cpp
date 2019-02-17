@@ -195,34 +195,47 @@ void calculate_master(double vals[]) {
 void find_f(double vals[], int combination, unsigned char second_pass, int mode) {
 
     // Find the missing 4th value
-    if (mode_global == (MODE_ARITH)) {
         if (!second_pass) {
             switch (combination) {
                 case LIT: {
-                    find_n(vals, LIT, false, MODE_ARITH);
-                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                    return;
+                    if (mode_global == (MODE_ARITH)) {
+                        find_n(vals, LIT, false, MODE_ARITH);
+                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                        return;
+                    }
+                    else if (mode_global == (MODE_GEOM)) {
+                         
+                         
+
+                    }
                 }
                 case LIN: {
-                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                    find_t(vals, LIN, true, MODE_ARITH);
-                    return;
+                    if (mode_global == (MODE_ARITH)) {
+                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                        find_t(vals, LIN, true, MODE_ARITH);
+                        return;
+                    }
                 }
                 case LNT: {
-                    find_i(vals, LNT, false, MODE_ARITH);
-                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                    return;
+                    if (mode_global == (MODE_ARITH)) {
+                        find_i(vals, LNT, false, MODE_ARITH);
+                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                        return;
+                    }
                 }
                 case INT: {
-                    find_l(vals, INT, false, MODE_ARITH);
-                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                    return;
+                    if (mode_global == (MODE_ARITH)) {
+                        find_l(vals, INT, false, MODE_ARITH);
+                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                        return;
+                    }
                 }
             }
-            vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-            return;
+            if (mode_global == (MODE_ARITH)) {
+                vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                return;
+            }
         }
-    }
 }
 
 
