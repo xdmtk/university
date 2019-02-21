@@ -218,17 +218,37 @@ void find_f(double vals[], int combination, unsigned char second_pass, int mode)
                     return;
                 }
             }
-            if (mode_global == (MODE_ARITH)) {
-                vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                return;
+        }
+        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+        return;
+    }
+`   else if (mode == MODE_GEOM) {
+        if (!second_pass) {
+            switch (combination) {
+                case LIT: {
+                    find_n(vals, LIT, false, MODE_GEOM);
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    return;
+                }
+                case LIN: {
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    find_t(vals, LIN, true, MODE_GEOM);
+                    return;
+                }
+                case LNT: {
+                    find_i(vals, LNT, false, MODE_GEOM);
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    return;
+                }
+                case INT: {
+                    find_l(vals, INT, false, MODE_GEOM);
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    return;
+                }
             }
         }
-    }
-    else if (mode == MODE_GEOM) {
-
-
-
-
+        vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+        return;
     }
 }
 
@@ -270,24 +290,24 @@ void find_i(double vals[], int combination, unsigned char second_pass, int mode)
         if (!second_pass) {
             switch (combination) {
                 case FLN: {
-                    vals[I] = root(vals[L]/vals[F]);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
                     find_t(vals,FLN, true, MODE_GEOM);
                     return;
                 }
                 case FNT: {
                     find_l(vals,FNT, false, MODE_GEOM):
-                    vals[I] = root(vals[L]/vals[F]);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
                     return;
 
                 }
                 case FLT: {
                     find_n(vals, FLT, false, MODE_GEOM);
-                    vals[I] = root(vals[L]/vals[F]);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
                     return;
                 }
                 case LNT: {
                     find_f(vals, LNT, false, MODE_GEOM);
-                    vals[I] = root(vals[L]/vals[F]);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
                     return;
                 }
 
