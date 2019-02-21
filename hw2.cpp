@@ -464,11 +464,20 @@ void find_t(double vals[], int combination, unsigned char second_pass, int mode)
         if (!second_pass) {
             switch (combination) {
                 case FLN: {
+                    find_i(vals, FLN, false, MODE_GEOM);
+                    vals[T] = vals[F]*((1 - pow(vals[I],vals[N]))/(1 - vals[I]));
+                    return;
+                }
+                case FIN: {
+                    vals[T] = vals[F]*((1 - pow(vals[I],vals[N]))/(1 - vals[I]));
+                    find_l(vals, FIN, true, MODE_GEOM);
+                    return;
                 }
             }
         }
+        vals[T] = vals[F]*((1 - pow(vals[I],vals[N]))/(1 - vals[I]));
+        return;
     }
-
 }
 
 // Returns macro based on combination found for initial values
