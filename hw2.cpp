@@ -398,26 +398,23 @@ void find_n(double vals[], int combination, unsigned char second_pass, int mode)
         }
     }
     else if (mode_global == MODE_GEOM) {
-        switch (combination) {
-            case LIT: {
-                double l,t,count;
-                for (t=vals[L], count=1, l=vals[L]; t < vals[T]; count++) {
-                    l -= vals[I];
-                    t += l;
-                    if (t == vals[T]) {
-                        vals[N] = count;
-                        vals[F] = l;
-                        return;
-                    }
+        if (!second_pass) {
+            switch (combination) {
+                case LIT: {
+                    find_f(vals, LIT, false, MODE_GEOM);
+                    vals[N] = ((log(vals[L]/vals[F]))/log(vals[I]));
+                    return;
+                }
+                case FLT: {
+                    find_i(vals, FLT, false, MODE_GEOM);
+                    vals[N] = ((log(vals[L]/vals[F]))/log(vals[I]));
+                    return;
                 }
             }
-            case FLT: {
-                vals[N] = (vals[T]*2)/(vals[F] + vals[L]);
-                return;
-            }
         }
+        vals[N] = ((log(vals[L]/vals[F]))/log(vals[I]));
+        return;
     }
-    return;
 }
 
 
