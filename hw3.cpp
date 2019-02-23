@@ -81,6 +81,7 @@ unsigned evens(const std::set<int> & s);
 unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n));
 bool testFunctor(int n);
 bool subset(const std::set<int> & little, const std::set<int> & big);
+std::set<int> Union(const std::set<int> & s0, const std::set<int> & s1);
 
 
 
@@ -89,7 +90,9 @@ int main(int argc, char * argv[]) {
     std::set<int> foo;
     std::set<int> fooBig;
     for (int y=0; y < 50; ++y) {
-        foo.insert(y);
+        if (y % 2) {
+            foo.insert(y);
+        }
     }
     for (int y=0; y < 100; ++y) {
         fooBig.insert(y);
@@ -98,7 +101,7 @@ int main(int argc, char * argv[]) {
     evens(foo);
     howManyInteresting(foo,testFunctor);
     subset(foo, fooBig);
-    
+    Union(foo,fooBig); 
 
 }
 
@@ -172,6 +175,21 @@ bool subset(const std::set<int> & little, const std::set<int> & big) {
     }
     printf("\nAll elements in 'little' set are in 'big' set\n");
     return true;
+}
+ 
+// (The name of this function is spelled with a capital U.)
+// create and return the set that is the union of s0 and s1.
+std::set<int> Union(const std::set<int> & s0, const std::set<int> & s1) {
 
+    std::set<int>::iterator it;
+    std::set<int> res;
 
+    for (it = s0.begin(); it != s0.end(); ++it) {
+        if (s1.find(*it) != s1.end()) {
+            res.insert(*it);
+        }
+    }
+    printf("\nResulting union set:");
+    show(res);
+    return res;
 }
