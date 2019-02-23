@@ -76,29 +76,102 @@
 #include <iterator>
 
 
+void show(const std::set<int> & s);
+unsigned evens(const std::set<int> & s);
+unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n));
+bool testFunctor(int n);
+bool subset(const std::set<int> & little, const std::set<int> & big);
+
+
+
+int main(int argc, char * argv[]) {
+    
+    std::set<int> foo;
+    std::set<int> fooBig;
+    for (int y=0; y < 50; ++y) {
+        foo.insert(y);
+    }
+    for (int y=0; y < 100; ++y) {
+        fooBig.insert(y);
+    }
+    show(foo); 
+    evens(foo);
+    howManyInteresting(foo,testFunctor);
+    subset(foo, fooBig);
+    
+
+}
 
 
 
 
-
-
-void show(const set<int> & s) }{
+// Output the #'s in s with whatever formatting pleases you.
+void show(const std::set<int> & s) {
     printf("\nSet output:\n");
 
-    set<int>::iterator it;
-    for (it = s.begin(); it != s.end(); it++) {
+    std::set<int>::iterator it;
+    for (it = s.begin(); it != s.end();) {
         for (int x=0; x < 5; ++x) {
-            printf("%d\t", *it);
+            printf("%d\t", *it++);
         }
+        printf("\n");
     }
+    printf("\n\n");
 }
         
 
+// Return the number of even numbers in s.
+unsigned evens(const std::set<int> & s) {
+
+    unsigned count = 0;
+    std::set<int>::iterator it;
+
+    for (it = s.begin(); it != s.end(); ++it) {
+        if (!(*it % 2)) {
+            count++;
+        }
+    }
+    printf("\nTotal even numbers: %d\n", count);
+    return count;
+}
 
 
+// Return the number of interesting numbers in s, according to the function whose pointer we pass as the second arg.
+unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n)) {
+   
+    unsigned count = 0;
+    std::set<int>::iterator it;
+
+    for (it = s.begin(); it != s.end(); ++it) {
+        if (interesting(*it)) {
+            count++;
+        }
+    }
+    printf("\nTotal interesting numbers: %d\n", count);
+    return count;
+}
 
 
+bool testFunctor(int n) {
+    if (!(n % 3)) {
+        return false;
+    }
+    return true;
+}
+
+// Return whether all the elements in little also appear in big.
+bool subset(const std::set<int> & little, const std::set<int> & big) {
+    
+    std::set<int>::iterator it;
+
+    for (it = little.begin(); it != little.end(); ++it) {
+        if (big.find(*it) == big.end()) {
+            printf("\nElement %d is in little set but not in 'big' set\n", *it);
+            return false;
+        }
+    }
+    printf("\nAll elements in 'little' set are in 'big' set\n");
+    return true;
 
 
-
-
+}
