@@ -95,6 +95,7 @@ int main(int argc, char * argv[]) {
     std::set<int> little;
     std::set<int> big;
 
+    printf("SINGLE SET TESTS\n* * * ** * * ** * * ** * * ** * * ** * * ** * * ** * * ** * * *\n");
     // Set limit on test runs for single set tests
     for (int lim = 0; lim < 5; ++lim) {
         int set_size = (rand() % 100);
@@ -106,7 +107,9 @@ int main(int argc, char * argv[]) {
         evens(little);
         howManyInteresting(little, is_three_mutiple);
     }
-    
+   
+    printf("DUAL SET TESTS\n* * * ** * * ** * * ** * * ** * * ** * * ** * * ** * * ** * * *\n");
+
     // Set limit on test runs for double set tests
     for (int lim = 0; lim < 5; ++lim) {
         int big_set_size;
@@ -136,7 +139,8 @@ int main(int argc, char * argv[]) {
 // Output the #'s in s with whatever formatting pleases you.
 void show(const std::set<int> & s) {
     printf("\nSet output:\n");
-
+    
+    // Iterate through set
     std::set<int>::iterator it;
     for (it = s.begin(); it != s.end();) {
         for (int x=0; x < 5; ++x) {
@@ -153,8 +157,9 @@ unsigned evens(const std::set<int> & s) {
 
     unsigned count = 0;
     std::set<int>::iterator it;
-
+    
     for (it = s.begin(); it != s.end(); ++it) {
+        // Iterate through set, test modulus 2 for odd/even
         if (!(*it % 2)) {
             count++;
         }
@@ -169,8 +174,9 @@ unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n))
    
     unsigned count = 0;
     std::set<int>::iterator it;
-
+    
     for (it = s.begin(); it != s.end(); ++it) {
+        // Pass functor as test, increment interesting count on pass
         if (interesting(*it)) {
             count++;
         }
@@ -180,6 +186,8 @@ unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n))
 }
 
 
+
+// Example functor, returns numbers are multiple of 3
 bool is_three_mutiple(int n) {
     if (!(n % 3)) {
         return false;
@@ -192,8 +200,11 @@ bool is_three_mutiple(int n) {
 bool subset(const std::set<int> & little, const std::set<int> & big) {
     
     std::set<int>::iterator it;
-
+    
     for (it = little.begin(); it != little.end(); ++it) {
+
+        // Iterate through little, exec find() against 'it' value, if found
+        // will not return end()
         if (big.find(*it) == big.end()) {
             printf("\nElement %d is in 'little' set but not in 'big' set\n", *it);
             return false;
@@ -211,12 +222,21 @@ std::set<int> Union(const std::set<int> & s0, const std::set<int> & s1) {
     std::set<int> res;
     std::set<int>::iterator it0, it1;
     int i, size = std::max(s0.size(), s1.size());
+    
 
+    // Iterate on the count of the highest count on set s0 and s1, only accessing
+    // iterator if count not exceeded, determined by increments on 'it' up till end()
     for (it0 = s0.begin(), it1 = s1.begin(), i = 0; i < size; ++i, ++it0, ++it1) {
         if (it0 != s0.end()) {
-            res.insert(*it0);
+            // For union set, add members from each set only if not already found in resulting set
+            if (res.find(*it0) == res.end()) {
+                res.insert(*it0);
+            }
         }
         if (it1 != s1.end()) {
+            if (res.find(*it1) == res.end()) {
+                res.insert(*it1);
+            }
             res.insert(*it1);
         }
     }
@@ -230,7 +250,8 @@ std::set<int> intersection(const std::set<int> & s0, const std::set<int> & s1) {
 
     std::set<int>::iterator it;
     std::set<int> res;
-
+    
+    // Iterate against set and find only common values
     for (it = s0.begin(); it != s0.end(); ++it) {
         if (s1.find(*it) != s1.end()) {
             res.insert(*it);
@@ -250,7 +271,8 @@ std::set<int> complement(const std::set<int> & s, const std::set<int> & universe
 
     std::set<int>::iterator it;
     std::set<int> res;
-
+    
+    // Same check as above except reversed, != to ==
     for (it = universe.begin(); it != universe.end(); ++it) {
         if (s.find(*it) == s.end()) {
             res.insert(*it);
@@ -271,6 +293,7 @@ std::set<int> difference(const std::set<int> & a, const std::set<int> & b) {
     std::set<int>::iterator it;
     std::set<int> res;
 
+    // Similar to above but run only one way, a to b
     for (it = a.begin(); it != a.end(); ++it) {
         if (b.find(*it) == b.end()) {
             res.insert(*it);
@@ -287,11 +310,13 @@ std::set<int> difference(const std::set<int> & a, const std::set<int> & b) {
 // The symmetric difference of sets a and b is defined as the set 
 // containing all the elements of a that don't appear in b, together 
 // with all the elements of b that don't appear in a.
+//
 std::set<int> symmetricDifference(const std::set<int> & a, const std::set<int> & b) {
 
     std::set<int>::iterator it;
     std::set<int> res;
-
+    
+    // Similar to above but now run both ways
     for (it = a.begin(); it != a.end(); ++it) {
         if (b.find(*it) == b.end()) {
             res.insert(*it);
