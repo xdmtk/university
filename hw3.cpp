@@ -80,7 +80,7 @@ std::set<int> intersection(const std::set<int> & s0, const std::set<int> & s1) {
 void show(const std::set<int> & s);
 unsigned evens(const std::set<int> & s);
 unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n));
-bool testFunctor(int n);
+bool is_three_mutiple(int n);
 bool subset(const std::set<int> & little, const std::set<int> & big);
 std::set<int> Union(const std::set<int> & s0, const std::set<int> & s1);
 std::set<int> intersection(const std::set<int> & s0, const std::set<int> & s1);
@@ -92,22 +92,41 @@ std::set<int> symmetricDifference(const std::set<int> & a, const std::set<int> &
 
 int main(int argc, char * argv[]) {
     
-    std::set<int> foo;
-    std::set<int> fooBig;
-    for (int y=0; y < 50; ++y) {
-        if (y % 2) {
-            foo.insert(y);
+    std::set<int> little;
+    std::set<int> big;
+
+    // Set limit on test runs for single set tests
+    for (int lim = 0; lim < 5; ++lim) {
+        int set_size = (rand() % 100);
+        little.clear();
+        for (int x = 0; x < set_size; ++x) {
+            little.insert(rand() % 100);
         }
+        show(little); 
+        evens(little);
+        howManyInteresting(little, is_three_mutiple);
     }
-    for (int y=500; y < 505; ++y) {
-        fooBig.insert(y);
+    
+    // Set limit on test runs for double set tests
+    for (int lim = 0; lim < 5; ++lim) {
+        int big_set_size;
+        int little_set_size = (rand() % 50);
+        do {
+            big_set_size = (rand() % 100);
+        } while (big_set_size < little_set_size);
+
+
+        for (int x = 0; x < little_set_size; ++x) {
+            little.insert(rand() % 100);
+        }
+        for (int x = 0; x < little_set_size; ++x) {
+            big.insert(rand() % 100);
+        }
+        subset(little, big);
+        Union(little,big); 
+        intersection(little,big);
+
     }
-    show(foo); 
-    evens(foo);
-    howManyInteresting(foo,testFunctor);
-    subset(foo, fooBig);
-    Union(foo,fooBig); 
-    intersection(foo,fooBig);
 
 }
 
@@ -161,7 +180,7 @@ unsigned howManyInteresting(const std::set<int> & s, bool (*interesting)(int n))
 }
 
 
-bool testFunctor(int n) {
+bool is_three_mutiple(int n) {
     if (!(n % 3)) {
         return false;
     }
@@ -233,7 +252,7 @@ std::set<int> complement(const std::set<int> & s, const std::set<int> & universe
     std::set<int> res;
 
     for (it = universe.begin(); it != universe.end(); ++it) {
-        if (s.find(*it) == s1.end()) {
+        if (s.find(*it) == s.end()) {
             res.insert(*it);
         }
     }
