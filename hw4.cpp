@@ -107,6 +107,7 @@ OP makeOP(unsigned first, unsigned second);
 OP add(const OP & a, const OP & b);
 void show(const SOP & sop);
 bool elementOf(const OP & op, const SOP & sop);
+bool firstFound(unsigned first, const SOP & sop);
 
 
 
@@ -132,12 +133,6 @@ int main(int argc, char * argv[]) {
     show(foosop);
 
 
-    if (elementOf(foo4, foosop)) {
-        printf("true");
-    }
-    else { 
-        printf("false");
-    }
 }
 
 
@@ -179,6 +174,7 @@ void show(const SOP & sop) {
     SOP::iterator it;
     printf("\nSet size: %d - Show set:\n", sop.size());
     for (it = sop.begin(); it != sop.end(); it++) { 
+        // For each OP in SOP, pass it to show overloaded for OP type
         show(*it);
     }
 }
@@ -186,11 +182,33 @@ void show(const SOP & sop) {
 
 // ElementOf's job is to return whether op is an element of sop.
 bool elementOf(const OP & op, const SOP & sop) {
+
     SOP::iterator it;
     for (it = sop.begin(); it != sop.end(); it++) { 
+        // Iterate through SOP and use == operator to determine
+        // equivalence 
         if (op == *it) {
             return true;
         }
     }
     return false;
 }
+
+
+// firstFound's job is to return whether the number in first 
+// appears as the first member of any OP in sop.
+bool firstFound(unsigned first, const SOP & sop) {
+
+    SOP::iterator it;
+    for (it = sop.begin(); it != sop.end(); it++) { 
+
+        // Similar to above except only test against 'first' member
+        // of it's pointed OP
+        if (first == it->first) {
+            return true;
+        }
+    }
+    return false;
+} 
+
+
