@@ -108,6 +108,7 @@ OP add(const OP & a, const OP & b);
 void show(const SOP & sop);
 bool elementOf(const OP & op, const SOP & sop);
 bool firstFound(unsigned first, const SOP & sop);
+bool secondFound(unsigned second, const SOP & sop);
 
 
 
@@ -212,3 +213,17 @@ bool firstFound(unsigned first, const SOP & sop) {
 } 
 
 
+// secondFound's job is to return whether the number in second appears 
+// as the second member of any OP in sop.
+bool secondFound(unsigned second, const SOP & sop) {
+    
+    SOP::iterator it;
+    for (it = sop.begin(); it != sop.end(); it++) { 
+
+        //  Exactly the same as above except for member 'second'
+        if (second == it->second) {
+            return true;
+        }
+    }
+    return false;
+}
