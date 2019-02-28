@@ -109,6 +109,7 @@ void show(const SOP & sop);
 bool elementOf(const OP & op, const SOP & sop);
 bool firstFound(unsigned first, const SOP & sop);
 bool secondFound(unsigned second, const SOP & sop);
+bool eitherFound(unsigned n, const SOP & sop);
 
 
 
@@ -226,4 +227,23 @@ bool secondFound(unsigned second, const SOP & sop) {
         }
     }
     return false;
+}
+
+
+// eitherFound's job is to return whether n appears in either position of any OP in sop.
+// (It's always fine your functions to call your other functions if you want to.)
+bool eitherFound(unsigned n, const SOP & sop) {
+
+    SOP::iterator it;
+    for (it = sop.begin(); it != sop.end(); it++) { 
+
+        // Call the previous two functions to check for first or second 
+        // finds in the given SOP
+        if ((firstFound(n, sop) || (secondFound(n, sop)) {
+            return true;
+        }
+    }
+    return false;
+
+
 }
