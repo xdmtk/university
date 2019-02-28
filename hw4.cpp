@@ -94,6 +94,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cassert>
 
 #include <utility>
 #include <set>
@@ -104,6 +105,8 @@ typedef std::set<OP> SOP;
 void show(const OP & op);
 OP makeOP(unsigned first, unsigned second);
 OP add(const OP & a, const OP & b);
+void show(const SOP & sop);
+bool elementOf(const OP & op, const SOP & sop);
 
 
 
@@ -112,25 +115,35 @@ int main(int argc, char * argv[]) {
 
 
     // Testing show(), makeOP() and add()
-    OP foo, foo2;
+    OP foo, foo2, foo4;
     foo.first = 3; foo.second = 7;
     foo2 = makeOP(3,7);
+    foo4 = makeOP(3,9);
 
     OP foo3 = add(foo,foo2);
 
     // Should print Show pair: (6, 14)
     show(foo3);
 
+    SOP foosop;
+    foosop.insert(foo);
+    foosop.insert(foo2);
+    foosop.insert(foo3);
+    show(foosop);
+
+
+    if (elementOf(foo4, foosop)) {
+        printf("true");
+    }
+    else { 
+        printf("false");
+    }
 }
-
-
-
-
 
 
 // Prints out the given pair
 void show(const OP & op) {
-    printf("Show pair: (%d, %d)\n\n", op.first, op.second);
+    printf("Show pair: (%d, %d)\n", op.first, op.second);
 }
 
 
@@ -155,4 +168,29 @@ OP add(const OP & a, const OP & b) {
 
     // Returns pair to be copied into receiving stack variable
     return ret;
+}
+
+
+
+// Show's job is to output all the ordered pairs in sop by passing 
+// each one to your previous show function.
+void show(const SOP & sop) { 
+   
+    SOP::iterator it;
+    printf("\nSet size: %d - Show set:\n", sop.size());
+    for (it = sop.begin(); it != sop.end(); it++) { 
+        show(*it);
+    }
+}
+
+
+// ElementOf's job is to return whether op is an element of sop.
+bool elementOf(const OP & op, const SOP & sop) {
+    SOP::iterator it;
+    for (it = sop.begin(); it != sop.end(); it++) { 
+        if (op == *it) {
+            return true;
+        }
+    }
+    return false;
 }
