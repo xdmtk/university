@@ -87,6 +87,139 @@
  *      Union's job is to create and return (by value) a set that is the union of the two sets passed to it.
  *
  *
+ *                  TEST OUTPUT
+ *
+ *
+                TESTING SHOW FUNCTION:
+                * * * * * * * * * * * * * *
+                Show pair: (5, 6)
+                Show pair: (6, 8)
+                Show pair: (8, 2)
+                Show pair: (6, 0)
+                Show pair: (1, 4)
+
+
+                TESTING MAKE PAIR + SHOW FUNCTION:
+                * * * * * * * * * * * * * *
+                Show pair: (4, 8)
+                Show pair: (3, 3)
+                Show pair: (7, 0)
+                Show pair: (7, 8)
+                Show pair: (6, 5)
+
+
+                TESTING MAKE PAIR + ADD + SHOW FUNCTION:
+                * * * * * * * * * * * * * *
+                Show pair: (15, 5)
+                Show pair: (16, 10)
+                Show pair: (5, 13)
+                Show pair: (6, 10)
+                Show pair: (12, 12)
+
+
+                TESTING MAKE PAIR + ADD + SHOW + ELEMENTOF :
+                * * * * * * * * * * * * * *
+                Generated SOP:
+
+                Set size: 5 - Show set:
+                Show pair: (4, 5)
+                Show pair: (7, 7)
+                Show pair: (9, 12)
+                Show pair: (12, 7)
+                Show pair: (14, 4)
+
+                Generated OP:
+                Show pair: (6, 6)
+
+                Element of result:
+                OP is not a member of SOP
+
+                Generated SOP:
+
+                Set size: 5 - Show set:
+                Show pair: (3, 0)
+                Show pair: (7, 13)
+                Show pair: (9, 8)
+                Show pair: (9, 18)
+                Show pair: (11, 5)
+
+                Generated OP:
+                Show pair: (12, 14)
+
+                Element of result:
+                OP is not a member of SOP
+
+
+
+                TESTING FIRST FOUND + SECOND FOUND + EITHER FOUND:
+                * * * * * * * * * * * * * *
+                Generated SOP:
+
+                Set size: 5 - Show set:
+                Show pair: (4, 13)
+                Show pair: (6, 3)
+                Show pair: (8, 13)
+                Show pair: (12, 11)
+                Show pair: (13, 12)
+                6 was found as the first member of an element in SOP
+                6 was not found as the second member of an element in SOP
+                6 was found as the either member of an element in SOP
+                Generated SOP:
+
+                Set size: 5 - Show set:
+                Show pair: (7, 3)
+                Show pair: (11, 6)
+                Show pair: (11, 11)
+                Show pair: (12, 13)
+                Show pair: (17, 9)
+                0 was not found as the first member of an element in SOP
+                0 was not found as the second member of an element in SOP
+                0 was not found as the either member of an element in SOP
+
+
+                TESTING UNION:
+                * * * * * * * * * * * * * *
+                SHOWING TEST SOP 0
+                Set size: 5 - Show set:
+                Show pair: (3, 10)
+                Show pair: (7, 7)
+                Show pair: (10, 14)
+                Show pair: (12, 9)
+                Show pair: (14, 12)
+
+
+                SHOWING TEST SOP 1
+                Set size: 5 - Show set:
+                Show pair: (0, 9)
+                Show pair: (3, 9)
+                Show pair: (8, 12)
+                Show pair: (10, 5)
+                Show pair: (10, 11)
+
+
+                SHOWING UNION OF TEST SOP 0 and TEST SOP 1
+                Set size: 0 - Show set:
+                SHOWING TEST SOP 0
+                Set size: 5 - Show set:
+                Show pair: (7, 10)
+                Show pair: (9, 14)
+                Show pair: (12, 9)
+                Show pair: (12, 14)
+                Show pair: (14, 12)
+
+
+                SHOWING TEST SOP 1
+                Set size: 5 - Show set:
+                Show pair: (6, 10)
+                Show pair: (7, 13)
+                Show pair: (8, 7)
+                Show pair: (9, 12)
+                Show pair: (10, 10)
+
+
+                SHOWING UNION OF TEST SOP 0 and TEST SOP 1
+                Set size: 0 - Show set:
+ *
  *
  *
 */
@@ -196,10 +329,83 @@ int main(int argc, char * argv[]) {
 
         // Then string should either say OP is a member of SOP or OP is not a member of SOP
         std::cout << "OP is " << res_str << " a member of SOP\n" << std::endl;
-
-
     }
+    printf("\n\n");
 
+    
+    
+    printf("TESTING FIRST FOUND + SECOND FOUND + EITHER FOUND:\n* * * * * * * * * * * * * *\n");
+    for (int x=0; x < 2; x++) {
+        
+        // Generate a SOP
+        SOP test_sop;
+        for (int x=0; x < 5; x++) {
+
+            // The randomly generated OPS come from two makeOP() calls and
+            // adding the result with an add() call
+            test_sop.insert(add(makeOP(rand() % 10, rand() % 10), 
+                    makeOP(rand() % 10, rand() % 10)));
+        }
+
+        // Show the SOP
+        printf("Generated SOP:\n");
+        show(test_sop);
+       
+        // Generate a random value
+        int random_val = rand() % 10;
+       
+        
+        // Does the same tests as above, except this time tests firstFound(), secondFound()
+        // and eitherFound()
+        std::string res_str = "\b";
+        firstFound(random_val, test_sop) ? res_str += "" : res_str += " not";
+        std::cout << random_val << " was " << res_str << " found as the first member of an" 
+            << " element in SOP" << std::endl;
+        
+        res_str = "\b";
+        secondFound(random_val, test_sop) ? res_str += "" : res_str += " not";
+        std::cout << random_val << " was " << res_str << " found as the second member of an"
+            << " element in SOP" << std::endl;
+
+        res_str = "\b";
+        eitherFound(random_val, test_sop) ? res_str += "" : res_str += " not";
+        std::cout << random_val << " was " << res_str << " found as the either member of an"
+            << " element in SOP" << std::endl;
+    }
+    printf("\n\n");
+
+    
+    
+    
+    
+    printf("TESTING UNION:\n* * * * * * * * * * * * * *\n");
+    for (int x=0; x < 2; x++) {
+        
+        // Generate a two SOP's
+        SOP test_sop0, test_sop1;
+        for (int x=0; x < 5; x++) {
+
+            // The randomly generated OPS come from two makeOP() calls and
+            // adding the result with an add() call
+            test_sop0.insert(add(makeOP(rand() % 10, rand() % 10), 
+                    makeOP(rand() % 10, rand() % 10)));
+
+            test_sop1.insert(add(makeOP(rand() % 10, rand() % 10), 
+                    makeOP(rand() % 10, rand() % 10)));
+        }
+
+        // Show both SOPS
+        printf("SHOWING TEST SOP 0");
+        show(test_sop0);
+
+        printf("\n\n");
+        printf("SHOWING TEST SOP 1");
+        show(test_sop1);
+
+        // Show the UNION of the SOPS
+        printf("\n\nSHOWING UNION OF TEST SOP 0 and TEST SOP 1");
+        show(Union(test_sop0, test_sop1));
+    }
 }
 
 
