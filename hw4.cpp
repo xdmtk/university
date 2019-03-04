@@ -162,23 +162,39 @@ int main(int argc, char * argv[]) {
     // Test case for elementOf()
     printf("TESTING MAKE PAIR + ADD + SHOW + ELEMENTOF :\n* * * * * * * * * * * * * *\n");
     for (int x=0; x < 2; x++) {
+
+        // Decalare and fill a SOP with randomly generated OPS
         SOP test_sop;
         for (int x=0; x < 5; x++) {
+
+            // The randomly generated OPS come from two makeOP() calls and
+            // adding the result with an add() call
             test_sop.insert(add(makeOP(rand() % 10, rand() % 10), 
                     makeOP(rand() % 10, rand() % 10)));
         }
+
+        // Show the generated SOP
         printf("Generated SOP:\n");
         show(test_sop);
 
+        // Make a random OP
         OP add_res = add(makeOP(rand() % 10, rand() % 10), 
                 makeOP(rand() % 10, rand() % 10));
+
+        // Show it
         printf("\nGenerated OP:\n");
         show(add_res);
 
+        // Show if is an element
         printf("\nElement of result:\n");
+
+        // Star result string with backspace escape
         std::string res_str = "\b";
+
+        // If elementOf returns true, add ' not' to the string, otherwise keep as it
         (elementOf(add_res, test_sop)) ? res_str += "" : res_str += " not";
 
+        // Then string should either say OP is a member of SOP or OP is not a member of SOP
         std::cout << "OP is " << res_str << " a member of SOP\n" << std::endl;
 
 
