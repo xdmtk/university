@@ -176,49 +176,68 @@
                 0 was not found as the second member of an element in SOP
                 0 was not found as the either member of an element in SOP
 
-
                 TESTING UNION:
                 * * * * * * * * * * * * * *
                 SHOWING TEST SOP 0
                 Set size: 5 - Show set:
-                Show pair: (3, 10)
-                Show pair: (7, 7)
-                Show pair: (10, 14)
-                Show pair: (12, 9)
-                Show pair: (14, 12)
+                Show pair: (6, 9)
+                Show pair: (12, 11)
+                Show pair: (13, 9)
+                Show pair: (15, 7)
+                Show pair: (16, 16)
 
 
                 SHOWING TEST SOP 1
                 Set size: 5 - Show set:
-                Show pair: (0, 9)
-                Show pair: (3, 9)
-                Show pair: (8, 12)
-                Show pair: (10, 5)
-                Show pair: (10, 11)
+                Show pair: (8, 11)
+                Show pair: (9, 13)
+                Show pair: (11, 16)
+                Show pair: (12, 3)
+                Show pair: (13, 5)
 
 
                 SHOWING UNION OF TEST SOP 0 and TEST SOP 1
-                Set size: 0 - Show set:
+                Set size: 10 - Show set:
+                Show pair: (6, 9)
+                Show pair: (8, 11)
+                Show pair: (9, 13)
+                Show pair: (11, 16)
+                Show pair: (12, 3)
+                Show pair: (12, 11)
+                Show pair: (13, 5)
+                Show pair: (13, 9)
+                Show pair: (15, 7)
+                Show pair: (16, 16)
                 SHOWING TEST SOP 0
                 Set size: 5 - Show set:
-                Show pair: (7, 10)
-                Show pair: (9, 14)
-                Show pair: (12, 9)
-                Show pair: (12, 14)
-                Show pair: (14, 12)
+                Show pair: (1, 6)
+                Show pair: (5, 2)
+                Show pair: (10, 1)
+                Show pair: (11, 8)
+                Show pair: (15, 9)
 
 
                 SHOWING TEST SOP 1
                 Set size: 5 - Show set:
-                Show pair: (6, 10)
-                Show pair: (7, 13)
+                Show pair: (7, 10)
                 Show pair: (8, 7)
-                Show pair: (9, 12)
-                Show pair: (10, 10)
+                Show pair: (9, 4)
+                Show pair: (9, 16)
+                Show pair: (16, 12)
 
 
                 SHOWING UNION OF TEST SOP 0 and TEST SOP 1
-                Set size: 0 - Show set:
+                Set size: 10 - Show set:
+                Show pair: (1, 6)
+                Show pair: (5, 2)
+                Show pair: (7, 10)
+                Show pair: (8, 7)
+                Show pair: (9, 4)
+                Show pair: (9, 16)
+                Show pair: (10, 1)
+                Show pair: (11, 8)
+                Show pair: (15, 9)
+                Show pair: (16, 12)
  *
  *
  *
@@ -526,11 +545,17 @@ bool eitherFound(unsigned n, const SOP & sop) {
 // is the union of the two sets passed to it.
 SOP Union(const SOP & sop0, const SOP & sop1) {
     
-    SOP::iterator it;
+    SOP::iterator it0, it1;
     SOP union_set;
-    for (it = sop0.begin(); it != sop0.end(); it++) { 
-        if (sop1.find(*it) != sop1.end()) {
-            union_set.insert(*it);
+    for (it0 = sop0.begin(), it1 = sop1.begin(); it1 != sop1.end() && it0 != sop0.end();  ) {
+
+        // Add every member of every SOP to union set, set will only add each OP 
+        // one time as part of Set class rules
+        if (it0 != sop0.end()) {
+            union_set.insert(*it0++);
+        }
+        if (it1 != sop1.end()) {
+            union_set.insert(*it1++);
         }
     }
     return union_set;
