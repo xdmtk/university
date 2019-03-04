@@ -95,8 +95,11 @@
 #include <cstdlib>
 #include <cstring>
 #include <cassert>
+#include <ctime>
 
+#include <iostream>
 #include <utility>
+#include <string>
 #include <set>
 
 typedef std::pair<unsigned, unsigned> OP;
@@ -110,6 +113,7 @@ bool elementOf(const OP & op, const SOP & sop);
 bool firstFound(unsigned first, const SOP & sop);
 bool secondFound(unsigned second, const SOP & sop);
 bool eitherFound(unsigned n, const SOP & sop);
+SOP Union(const SOP & sop0, const SOP & sop1);
 
 
 
@@ -117,25 +121,73 @@ bool eitherFound(unsigned n, const SOP & sop);
 int main(int argc, char * argv[]) {
 
 
-    // Testing show(), makeOP() and add()
-    OP foo, foo2, foo4;
-    foo.first = 3; foo.second = 7;
-    foo2 = makeOP(3,7);
-    foo4 = makeOP(3,9);
+    srand(time(NULL));
 
-    OP foo3 = add(foo,foo2);
+    // Test case for show()
+    printf("TESTING SHOW FUNCTION:\n* * * * * * * * * * * * * *\n");
+    for (int x=0; x < 5; x++) {
+       
+        // Show a randomly generated OP
+        OP test_show((rand() % 10), (rand() % 10));
+        show(test_show);
+    }
+    printf("\n\n");
+   
+    
+    // Test case for makePair()
+    printf("TESTING MAKE PAIR + SHOW FUNCTION:\n* * * * * * * * * * * * * *\n");
+    for (int x=0; x < 5; x++) {
+       
+        // Same as above except use makeOP
+        OP test_mp = makeOP(rand() % 10, rand() % 10);
+        show(test_mp);
+    }
+    printf("\n\n");
+    
+    
+    // Test case for add()
+    printf("TESTING MAKE PAIR + ADD + SHOW FUNCTION:\n* * * * * * * * * * * * * *\n");
+    for (int x=0; x < 5; x++) {
+        
+        // Use make pair as params for add() to generated the resulting OP
+        OP add_res = add(makeOP(rand() % 10, rand() % 10), 
+                makeOP(rand() % 10, rand() % 10));
 
-    // Should print Show pair: (6, 14)
-    show(foo3);
+        // Then show
+        show(add_res);
+    }
+    printf("\n\n");
 
-    SOP foosop;
-    foosop.insert(foo);
-    foosop.insert(foo2);
-    foosop.insert(foo3);
-    show(foosop);
 
+    // Test case for elementOf()
+    printf("TESTING MAKE PAIR + ADD + SHOW + ELEMENTOF :\n* * * * * * * * * * * * * *\n");
+    for (int x=0; x < 2; x++) {
+        SOP test_sop;
+        for (int x=0; x < 5; x++) {
+            test_sop.insert(add(makeOP(rand() % 10, rand() % 10), 
+                    makeOP(rand() % 10, rand() % 10)));
+        }
+        printf("Generated SOP:\n");
+        show(test_sop);
+
+        OP add_res = add(makeOP(rand() % 10, rand() % 10), 
+                makeOP(rand() % 10, rand() % 10));
+        printf("\nGenerated OP:\n");
+        show(add_res);
+
+        printf("\nElement of result:\n");
+        std::string res_str = "\b";
+        (elementOf(add_res, test_sop)) ? res_str += "" : res_str += " not";
+
+        std::cout << "OP is " << res_str << " a member of SOP\n" << std::endl;
+
+
+    }
 
 }
+
+
+
 
 
 // Prints out the given pair
@@ -239,11 +291,32 @@ bool eitherFound(unsigned n, const SOP & sop) {
 
         // Call the previous two functions to check for first or second 
         // finds in the given SOP
-        if ((firstFound(n, sop) || (secondFound(n, sop)) {
+        if (firstFound(n, sop) || (secondFound(n, sop))) {
             return true;
         }
     }
     return false;
-
-
 }
+
+
+
+// Union's job is to create and return (by value) a set that 
+// is the union of the two sets passed to it.
+SOP Union(const SOP & sop0, const SOP & sop1) {
+    
+    SOP::iterator it;
+    SOP union_set;
+    for (it = sop0.begin(); it != sop0.end(); it++) { 
+        if (sop1.find(*it) != sop1.end()) {
+            union_set.insert(*it);
+        }
+    }
+    return union_set;
+}
+
+    
+
+
+
+
+
