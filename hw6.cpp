@@ -73,6 +73,7 @@
 #include <utility>
 #include <string>
 #include <set>
+#include <vector>
 
 typedef std::pair<unsigned, unsigned> OP;
 typedef std::set<OP> SOP;
@@ -81,6 +82,9 @@ void show(const OP & op);
 OP makeOP(unsigned first, unsigned second);
 void show(const SOP & sop);
 bool er(const SOP & sop, const std::set<unsigned> & univ);
+
+void assign_values(int *a, int n);
+bool nextCombination(int n, int r, int *a);
 
 
 
@@ -101,7 +105,7 @@ int main(int argc, char * argv[]) {
         universe.insert(test_mp.second);
     }
 
-
+    er(mySop, universe);
 }
 
 
@@ -111,9 +115,9 @@ int main(int argc, char * argv[]) {
  *  Transitivity: for any a, b, and c in the universal set, if (a, b) and (b, c) are in the relation, then (a, c) is also in the relation.
  */
 bool er(const SOP & sop, const std::set<unsigned> & univ) {
-    
+   /* 
     // Begin iterating the universe and applying tests to elements
-    std::set::iterator it = univ.begin();
+    std::set<unsigned>::iterator it = univ.begin();
 
     // Reflexivity test
     for ( ; it != univ.end(); ++it ) {
@@ -123,7 +127,7 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
 
         // Reflexive test , make OP (elem,elem) and test whether than OP 
         // is in the set `sop`
-        if (!sop.contains( makeOP( elem, elem ))) { 
+        if (sop.find( makeOP( elem, elem )) == sop.end()) { 
             return false;
         }
         // If OP (elem , elem) is in `sop`. continue with tests
@@ -135,21 +139,59 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
 
     for ( ; sopIt != sop.end(); ++sopIt ) {
         
-        // Get elements a and be from OP in `sop`
-        unsigned elemA = it->first;
-        unsigned elemB = it->second;
+        // Get elements a and b from OP in `sop`
+        unsigned elemA = sopIt->first;
+        unsigned elemB = sopIt->second;
 
         // Make an OP with `elemA` and `elemB` reversed and check
         // for existence in `sop`
-        
-        if (!sop.contains( makeOP( elemB , elemA ))) { 
+        if (sop.find( makeOP( elemB , elemA )) == sop.end()) { 
             return false;
         }
     }
 
+*/
+    // Transitivity test
+    // For this test, the pair making operation is a bit more expensive,
+    // as we must make (n!/(3! (n - 3)!)) OP's
+    std::vector<unsigned>(univ.begin(), univ.end());
+    int universe_len = univ.size()-1;
+    int a[] = {1,2,3}; // So the current subset is {1,2,3} of size 3.
+    int length = sizeof(a)/sizeof(*a);
+    int count = 0;
+    // The following example is C(7,3), start at {1,2,3}
+    do {
+        assign_values(a, length);
+        count++;
+    } while (nextCombination(9, length, a));
+    std::cout << "Total: " << count << '\n';
     
 
 
+}
+
+
+bool nextCombination(int n, int r, int *a) {
+    int lastNotEqualOffset = r-1;
+    while (a[lastNotEqualOffset] == n-r+(lastNotEqualOffset+1)) {
+        lastNotEqualOffset--;
+    }
+    if (lastNotEqualOffset < 0) {
+        std::cout << "the end\n";
+        return false;
+    }
+    a[lastNotEqualOffset]++;
+    for (int i = lastNotEqualOffset+1; i<r; i++) {
+        a[i] = a[lastNotEqualOffset]+(i-lastNotEqualOffset);
+    }
+    return true;
+}
+
+void assign_values(int *a, int n) {
+    for (int i = 0; i < n; i++) {
+        std::cout << a[i] << " ";
+    }
+    std::cout << '\n';
 }
 
 
