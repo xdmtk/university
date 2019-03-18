@@ -1,0 +1,8 @@
+In file included from /usr/include/c++/6/set:60:0,
+                 from hw6.cpp:75:
+/usr/include/c++/6/bits/stl_tree.h: In instantiation of ‘void std::_Rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::_M_insert_unique(_II, _II) [with _InputIterator = unsigned int; _Key = unsigned int; _Val = unsigned int; _KeyOfValue = std::_Identity<unsigned int>; _Compare = std::less<unsigned int>; _Alloc = std::allocator<unsigned int>]’:
+/usr/include/c++/6/bits/stl_set.h:538:4:   required from ‘void std::set<_Key, _Compare, _Alloc>::insert(_InputIterator, _InputIterator) [with _InputIterator = unsigned int; _Key = unsigned int; _Compare = std::less<unsigned int>; _Alloc = std::allocator<unsigned int>]’
+hw6.cpp:100:54:   required from here
+/usr/include/c++/6/bits/stl_tree.h:2250:29: error: invalid type argument of unary ‘*’ (have ‘unsigned int’)
+    _M_insert_unique_(end(), *__first, __an);
+                             ^~~~~~~~
