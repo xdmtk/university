@@ -115,7 +115,6 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
     // Begin iterating the universe and applying tests to elements
     std::set::iterator it = univ.begin();
 
-
     // Reflexivity test
     for ( ; it != univ.end(); ++it ) {
         
@@ -129,6 +128,25 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
         }
         // If OP (elem , elem) is in `sop`. continue with tests
     }
+
+
+    // Symmetry test
+    SOP::iterator sopIt = sop.begin();
+
+    for ( ; sopIt != sop.end(); ++sopIt ) {
+        
+        // Get elements a and be from OP in `sop`
+        unsigned elemA = it->first;
+        unsigned elemB = it->second;
+
+        // Make an OP with `elemA` and `elemB` reversed and check
+        // for existence in `sop`
+        
+        if (!sop.contains( makeOP( elemB , elemA ))) { 
+            return false;
+        }
+    }
+
     
 
 
