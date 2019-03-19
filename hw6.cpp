@@ -79,17 +79,18 @@ typedef std::pair<unsigned, unsigned> OP;
 typedef std::set<OP> SOP;
 
 void show(const OP & op);
+void show(std::set<unsigned> u);
 OP makeOP(unsigned first, unsigned second);
 void show(const SOP & sop);
 bool er(const SOP & sop, const std::set<unsigned> & univ);
 
-void assign_values(int *a, int n);
-bool nextCombination(int n, int r, int *a);
+void assign_values(int *arr, int n, unsigned *a, unsigned *b, unsigned *c);
+bool next_combination(int n, int r, int *a);
 
 
 
 int main(int argc, char * argv[]) {
-    
+    srand(time(NULL));    
     SOP mySop; 
     std::set<unsigned> universe;
     
@@ -98,7 +99,7 @@ int main(int argc, char * argv[]) {
     // 2. Insert each element into universal set `universe`
     for (int x=0; x < 5; x++) {
         
-        OP test_mp = makeOP((unsigned) rand() % 10, (unsigned) rand() % 10);
+        OP test_mp = makeOP((unsigned) rand() % 30, (unsigned) rand() % 30);
 
         mySop.insert(test_mp);
         universe.insert(test_mp.first);
@@ -154,52 +155,56 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
     // Transitivity test
     // For this test, the pair making operation is a bit more expensive,
     // as we must make (n!/(3! (n - 3)!)) OP's
-    std::vector<unsigned>(univ.begin(), univ.end());
-    int universe_len = univ.size()-1;
-    int a[] = {1,2,3}; // So the current subset is {1,2,3} of size 3.
-    int length = sizeof(a)/sizeof(*a);
-    int count = 0;
-    // The following example is C(7,3), start at {1,2,3}
+    //
+    show(univ);
+
+    // First we get the size `n` from the universal set
+    int universe_len = univ.size();
+
+    // Next since we only need a, b, and c values, we can give our
+    // choose_k array ( which will hold the combinations ) three members
+    int choose_k[] = {1,2,3}; 
+
+    // We declare our variables a b and c and pass them as pointers
+    // to be assign values from next_combination, (the first pass will have the values
+    // 1, 2, and 3,
+    unsigned a, b, c;
     do {
-        assign_values(a, length);
-        count++;
-    } while (nextCombination(9, length, a));
-    std::cout << "Total: " << count << '\n';
+        assign_values(choose_k, 3, &a, &b, &c);
+
+        // After the values are assigned, we can continue with the transitivity test
+        
+    } while (next_combination(universe_len, 3, choose_k));
     
 
 
 }
 
-
-bool nextCombination(int n, int r, int *a) {
-    int lastNotEqualOffset = r-1;
-    while (a[lastNotEqualOffset] == n-r+(lastNotEqualOffset+1)) {
-        lastNotEqualOffset--;
+// Generates the combinations for 3 values (a, b, and c,) (k) in the
+// universe set (n) , and assigns the values back to main() to execute
+// the transitivity test
+//  
+bool next_combination(int n, int r, int *a) {
+    int last_offset = r-1;
+    while (a[last_offset] == n-r+(last_offset+1)) {
+        last_offset--;
     }
-    if (lastNotEqualOffset < 0) {
-        std::cout << "the end\n";
+    if (last_offset < 0) {
         return false;
     }
-    a[lastNotEqualOffset]++;
-    for (int i = lastNotEqualOffset+1; i<r; i++) {
-        a[i] = a[lastNotEqualOffset]+(i-lastNotEqualOffset);
+    a[last_offset]++;
+    for (int i = last_offset+1; i<r; i++) {
+        a[i] = a[last_offset]+(i-last_offset);
     }
     return true;
 }
 
-void assign_values(int *a, int n) {
-    for (int i = 0; i < n; i++) {
-        std::cout << a[i] << " ";
-    }
-    std::cout << '\n';
-}
+void assign_values(int *arr, int n, unsigned *a, unsigned *b, unsigned *c) {
 
+    arr[0] = *a;
+    arr[1] = *b;
+    arr[2] = *c;
 
-
-
-// Prints out the given pair
-void show(const OP & op) {
-    printf("Show pair: (%d, %d)\n", op.first, op.second);
 }
 
 
@@ -212,6 +217,18 @@ OP makeOP(unsigned first, unsigned second) {
 }
 
 
+// To show the universe set
+void show(std::set<unsigned> u) {
+   
+    std::set<unsigned>::iterator it;
+    printf("\nSet size: %d - Show set:\n", u.size());
+    for (it = u.begin(); it != u.end(); it++) { 
+        printf("%d", *it);
+    }
+
+
+}
+
 // Show's job is to output all the ordered pairs in sop by passing 
 // each one to your previous show function.
 void show(const SOP & sop) { 
@@ -223,4 +240,11 @@ void show(const SOP & sop) {
         show(*it);
     }
 }
+
+
+// Prints out the given pair
+void show(const OP & op) {
+    printf("Show pair: (%d, %d)\n", op.first, op.second);
+}
+
 
