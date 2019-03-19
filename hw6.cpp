@@ -15,7 +15,7 @@
  *  ▐█▄▪▐█ ▐█▌·▐█•█▌▐█▄█▌▐███▌ ▐█▌·▐█▄█▌▐█•█▌▐█▄▄▌▐█▄▪▐█    !
  *   ▀▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀ ·▀▀▀  ▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀▀     !
  *                                                          !
- *                      Homework #4                         !
+ *                      Homework #6                         !
  *                                                          !
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
@@ -29,7 +29,7 @@
  *   --->>
  *       
  *   Name: Nicholas Martinez
- *   Date: 02/27/18
+ *   Date: 03/18/19
  *    
  *   --->> 
  *
@@ -116,7 +116,7 @@ int main(int argc, char * argv[]) {
  *  Transitivity: for any a, b, and c in the universal set, if (a, b) and (b, c) are in the relation, then (a, c) is also in the relation.
  */
 bool er(const SOP & sop, const std::set<unsigned> & univ) {
-   /* 
+    
     // Begin iterating the universe and applying tests to elements
     std::set<unsigned>::iterator it = univ.begin();
 
@@ -151,7 +151,7 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
         }
     }
 
-*/
+
     // Transitivity test
     // For this test, the pair making operation is a bit more expensive,
     // as we must make (n!/(3! (n - 3)!)) OP's
@@ -173,6 +173,17 @@ bool er(const SOP & sop, const std::set<unsigned> & univ) {
         assign_values(choose_k, 3, &a, &b, &c);
 
         // After the values are assigned, we can continue with the transitivity test
+        // Here we ask, are (a,b) and (b,c) both in the set?
+        if (sop.find(makeOP(a, b)) != sop.end() && sop.find(makeOP(b, c)) != sop.end()) {
+           
+            // Now we can ask, well is (a, c) in the set as well? And if not, return false
+            // and the set has failed the transivity test
+            if (sop.find(makeOP(a, c)) == sop.end()) {
+                return false;
+            }
+
+        }
+        
         
     } while (next_combination(universe_len, 3, choose_k));
     
