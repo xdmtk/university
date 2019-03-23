@@ -469,8 +469,25 @@ For the secondary conductor with a lower amount of turns, and thus a lower induc
 \draw[ultra thick, blue] (10,-.5) cos (11,0);    %% the real business in this line
 \draw[ultra thick, red] (11,0) sin (12,.5);    %% the real business in this line
 \end{tikzpicture}\\
+\vspace{5mm}\\
+With alternating current, we have a constant source of change in magnetic flux, thus the current will constantly flow through the inductors, and based on the inductance describes by the various derivations of Lenz's law and Faraday's law, the transformer is successfully able to step up or step down arbitrary voltage.
 
 
+\section{Common Questions}
+\paragraph{Why do Transformers sometimes hum loudly?} As we have learned in the previous section, a transformers principle operations rely on the fact the voltage supplied to it is constantly alternating from positive to negative voltage. And for each alternation,  there are two full instances on where the line goes from full voltage to zero voltage, and likewise since the magnetic field is directly proportional to that, the line also goes from full magnetized to not magnetized at all 2 times per cycle. 
+
+In Faraday's and Callan's early experiments with induction, the core was made of solid iron. In today's modern transformers, that design has been modified to account for the massive voltage passed through the transformers today that were simply not available in the 1800's. Instead of using a solid iron core, the core is made up of many layerings of steel sheets, which is designed to keep the voltage losses to a minimum by regulating the heat generated from the losses. If a typical solid iron core were to be implemented in a modern electrical grid transformer, the unit would rapidly overheat. 
+
+A property of magnetism called \textit{magnetostriction} results in the sheet ever so slightly expanding upon being magnetized. Likewise when the sheet is demagnetized, it contracts. Because the of rapid alternation of voltage and current on the steel sheets, the sheets find themselves expanding and contract very quickly in an oscillatory motion, which results in a fundamental frequency at a rate of twice the power line operating frequency. Thus if the operating frequency of a transformer is 60Hz, the transformer produces a sound at 120Hz. 
+
+This is in fact the result why many electrical devices running on alternating current produce a humming sound.
+
+
+\paragraph{Why do Transformers sometimes explode?} Another design element not present in the primitive transformers discussed previously is also due to the fact that modern day transformers handle extreme voltages far beyond what was available in the 1800's. An interesting fact is that most city grid transformers are filled with mineral oil to help with cooling the transformer under high load. Likewise, under heavy voltage, without proper electrical insulation, there is nothing stopping the incredible voltage differences from making the air gap and jumping from the primary inducting coil, directly to the secondary inducting coil, short circuiting the transformer. 
+
+There are a few situations that exploit these designs. First while transformers are generally heavily sealed and protected from weathering, over time it is possible for moisture to make its way into the oil stores for cooling in the transformers, which gradually increases its ability to conduct electricity. Too much of this and the high voltages can eventually wear away at the insulation and short out the transformer by conducting itself directly through the cooling oil, thus igniting the oil and causing an explosion.
+
+Though the most common reason transformers explode is due to extreme voltage overload, which is possible when a transformer is struck by lighting or a lightning strike is near by, temporarily creating a incredibly strong magnetic field which is converted to voltage on the input and output power lines, causing the voltage difference within the transformer to far exceed the maximum voltage limit for the insulation, and thus will make the jump through the insulation and short out the transformer, igniting the mineral oil and causing an explosion. 
 
 
 \end{document}
