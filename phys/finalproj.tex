@@ -3,6 +3,8 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{circuitikz}
+\usetikzlibrary{arrows,shapes,calc,positioning}
+
 
 \title{Electrical Applications - Transformer}
 \author{Nicholas Martinez}
@@ -159,7 +161,7 @@ We arrive at\\
 	\end{center}
 \end{center} 
 
-Going back to Callan's discovery of increased spark voltage based on the amount of wraps in the coil (${N}$), and the larger area of the coil (${A}$) , combined with the magnetic permeability  (${\mu}$),  which in this case Callan used iron, through these equations we can see that by increasing the area and wraps of the coil, Callan was create an inductor with higher \textit{inductance}, measured in the units of \textit{Henry} (${H}$). 
+Going back to Callan's discovery of increased spark voltage based on the amount of wraps in the coil (${N}$), and the larger area of the coil (${A}$) , combined with the magnetic permeability  (${\mu}$),  which in this case Callan used iron, through these equations we can see that by increasing the area and wraps of the coil, Callan had created an inductor with higher \textit{inductance}, measured in the units of \textit{Henry} (${H}$). 
 
 	\begin{center}
 		From Faraday's law we can see how inductance relates to voltage as the current diminishes over time\\
@@ -170,7 +172,7 @@ Going back to Callan's discovery of increased spark voltage based on the amount 
 			}\end {LARGE}
 	\end{center}
 
-As the inductance rises, the voltage must necessarily increase while the amperage decreases. Thus by giving an input voltage to an inductor with high inductance, the magnetic field generated as the result of that voltage is dependent on the inductance and stores energy in that magnetic field to a maximum point until the current stabilizes and the resistance from the inductor reaches 0. Though as soon as the source of current is removed, as when Callan removed the battery terminals from the circuit, or in the case of the above diagram, the switch is open, the high amount of energy stored in the induced magnetic field dependent on the inductance of the inductor is converted into voltage, which based on the inductance will be of much greater voltage than was initially supplied to the inductor in the first place!
+As the inductance of an inductor rises, the voltage must necessarily increase while the amperage decreases. Thus by giving an input voltage to an inductor with high inductance, the magnetic field generated as the result of that voltage is dependent on the inductance and stores energy in that magnetic field to a maximum point until the current stabilizes and the resistance from the inductor reaches 0. Though as soon as the source of current is removed, as when Callan removed the battery terminals from the circuit, or in the case of the above diagram, the switch is open, the high amount of energy stored in the induced magnetic field dependent on the inductance of the inductor is converted into voltage, which based on the inductance will be of much greater voltage than was initially supplied to the inductor in the first place!
 Thus the physics of inductance acts as a step up transformer in this case. 
 
 \begin{center}
@@ -201,7 +203,29 @@ Thus the physics of inductance acts as a step up transformer in this case.
 		
 	\end{circuitikz}
 \end{center}
-One thing to note before moving on to the next section is that in our diagram above, their is a capacitor facing the inductor and the switch. The reason for this capacitor is because when the energy is released from the rapidly collapsing magnetic field around the inductor, the electrons travel in both directions, which in one ( the initial direction of electrons flowing ) creates the spark across the air gap, or in Callan's case where the beginning of the coils of the inductor met, and the other ( the voltage that was resiting the change in the current which induced it ), also known the \textit{counter-electromotive force}, would end up burning out the terminals of the battery if there were no other route for it to take. With the capacitor in parallel to the battery, the counter-electromotive force instead is stored in the capacitor. 
+One thing to note before moving on to the next section is that in our diagram above, there is a capacitor facing the inductor and the switch. The reason for this capacitor is because when the energy is released from the rapidly collapsing magnetic field around the inductor, the electrons travel in both directions, which in one ( the initial direction of electrons flowing ) creates the spark across the air gap, or in Callan's case where the beginning of the coils of the inductor met, and the other ( the voltage that was resiting the change in the current which induced it ), also known the \textit{counter-electromotive force}, would end up burning out the terminals of the battery if there were no other route for it to take. With the capacitor in parallel to the battery, the counter-electromotive force instead is stored in the capacitor. 
+
+
+\section{Transformers}
+\paragraph{From the Induction Coil to the Modern Transformer} As we have just discovered in the previous section, the first induction coil ( a type of transformer ) laid the conceptual groundwork for creating a transformer that can both step up and step down voltage. Though one thing to note is that Callan's inductor coil operated only on direct current ( DC current ). Since nearly all standard household electric devices operate on alternating current ( AC current ), the type of every day transformer used in electric grid applications is engineered with this in mind. 
+
+Though we already have the two electromagnetic laws that make these devices possible, and the core concepts in an AC step down transformer are very similar to Callan's inductor coil, there are some major differences in the design. The key in creating a modern transformer relies on the inductance relationship between \textit{two} inducting coils, and is critically dependent on an alternating current. Lets reexamine Faraday's law of induction that we introduced in Section 2.  
+
+\begin{center}
+	\begin{huge}
+		\fbox{
+			\vspace{5mm}
+			$\mid{\varepsilon}\mid \hspace{2mm }= \left|{{\mathrm{d}\Phi_\text{B}} \over \mathrm{d}t}\right|$
+			\vspace{5mm}	
+		}
+	\end{huge}
+\end{center}
+\vspace{5mm}	
+When it was stated earlier that this equation is in a sense reflexive, we are referring directly to the functionality of a modern transformer. 
+\begin{center}
+
+\end{center}
+
 
 
 \end{document}
