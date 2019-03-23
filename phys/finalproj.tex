@@ -37,10 +37,11 @@ Furthering this experiment, he also observed a current induced on such coils whe
 
 \begin{center}
 \begin{huge}
-	
+	\fbox{
 	\vspace{5mm}
 	$\mid{\varepsilon}\mid \hspace{2mm }= \left|{{\mathrm{d}\Phi_\text{B}} \over \mathrm{d}t}\right|$
  	\vspace{5mm}	
+}
 \end{huge}
 \end{center}
 
@@ -53,10 +54,11 @@ Through further experiments, Callan was able to increase the intensity of the re
 
 \begin{center}
 	\begin{huge}
-		
+		\fbox{
 		\vspace{5mm}
 		${\varepsilon} \hspace{2mm }= -{{\partial\Phi_\text{B}} \over \partial t}$
 		\vspace{5mm}	
+	}
 	\end{huge}
 \end{center}
 
@@ -112,7 +114,94 @@ Where $\mathbf{L}$ = Inductance of the coil \break
 Where $\mathbf{R}$ = Total resistance of the circuit 
 \end{center}
 \begin{center}
-\begin{LARGE}$\mathbf{L} = \frac{N^2 \mu A}{l}$
-\end {LARGE}
+\begin{LARGE}
+	\fbox{
+		$\mathbf{L} = \frac{N^2 \mu A}{l}$
+	}\end {LARGE}
 \end{center}
+Above is the formula for the Inductance of a Coil from which we can derive using Lenz's Law. 
+
+\begin{center}
+	\begin{LARGE}
+	${\varepsilon} \hspace{2mm }= -{{\partial\Phi_\text{B}} \over \partial t}$	\end{LARGE}\\
+	\vspace{5mm}
+	For a fixed area and changing current, Faraday's law becomes\\
+	\vspace{5mm}
+	\begin{LARGE}
+		${\varepsilon} \hspace{2mm }= -A{{\partial B} \over \partial t}$
+	\end{LARGE}\\
+	\vspace{5mm}
+	For the magnetic field of a coil becomes\\
+	\vspace{5mm}
+	\begin{LARGE}
+		${B} = {\hspace{2mm } \mu{N} \over L} I$
+	\end{LARGE}\\
+	\vspace{5mm}
+	Which the \textit{emf} is then approximated by\\
+	\vspace{5mm}
+	\begin{LARGE}
+		${\varepsilon} = {\hspace{2mm } \mu{N^2} \over L} \hspace{2mm}{{\partial I} \over \partial t}$
+	\end{LARGE}\\
+	\vspace{5mm}
+	Using inductance from Faraday's Law\\
+	\vspace{5mm}
+	\begin{LARGE}
+		${\varepsilon} \hspace{2mm }= -L{{dI} \over dt}$
+	\end{LARGE}\\
+	\vspace{5mm}
+We arrive at\\
+\vspace{5mm}
+\begin{center}
+	\begin{LARGE}
+		\fbox{
+			$\mathbf{L} = \frac{N^2 \mu A}{l}$
+		}\end {LARGE}
+	\end{center}
+\end{center} 
+
+Going back to Callan's discovery of increased spark voltage based on the amount of wraps in the coil (${N}$), and the larger area of the coil (${A}$) , combined with the magnetic permeability  (${\mu}$),  which in this case Callan used iron, through these equations we can see that by increasing the area and wraps of the coil, Callan was create an inductor with higher \textit{inductance}, measured in the units of \textit{Henry} (${H}$). 
+
+	\begin{center}
+		From Faraday's law we can see how inductance relates to voltage as the current diminishes over time\\
+		\vspace{5mm}
+		\begin{LARGE}
+			\fbox{
+				$\mathbf{L} = \frac{V}{\frac{A}{t}}$
+			}\end {LARGE}
+	\end{center}
+
+As the inductance rises, the voltage must necessarily increase while the amperage decreases. Thus by giving an input voltage to an inductor with high inductance, the magnetic field generated as the result of that voltage is dependent on the inductance and stores energy in that magnetic field to a maximum point until the current stabilizes and the resistance from the inductor reaches 0. Though as soon as the source of current is removed, as when Callan removed the battery terminals from the circuit, or in the case of the above diagram, the switch is open, the high amount of energy stored in the induced magnetic field dependent on the inductance of the inductor is converted into voltage, which based on the inductance will be of much greater voltage than was initially supplied to the inductor in the first place!
+Thus the physics of inductance acts as a step up transformer in this case. 
+
+\begin{center}
+	\begin{circuitikz} \draw
+		(0,0) to[switch] (-2,0)
+		to[battery] (-4,0)
+		to[] (-4, 2)
+		to[american inductor] (2, 2)
+		to[] (2,0)
+		to[capacitor] (3,0)
+		to[] (3,-2)
+		to[] (0,-2)
+		to[] (0,0);
+		\draw (3,0)
+		to[short,*-] (3,2)
+		to[short,-*	] (2,2);
+		\draw (1,2) to[short,*-] (1,4)
+		to[short,-*] (-1,4);
+		
+		\draw (-2,4) to[short,*-] (-4,4)
+		to[short,-*] (-4,2);
+		\draw[dashed] (-2,2.5) to[] (0,2.5)
+		to[] (0,1.7) 
+		to[] (-2,1.7)
+		to[] (-2,2.5);
+		\draw (-1.7,2.3) to[] (-.3,2.3);	
+		\draw (-1.7,2.4) to[] (-.3,2.4);	
+		
+	\end{circuitikz}
+\end{center}
+One thing to note before moving on to the next section is that in our diagram above, their is a capacitor facing the inductor and the switch. The reason for this capacitor is because when the energy is released from the rapidly collapsing magnetic field around the inductor, the electrons travel in both directions, which in one ( the initial direction of electrons flowing ) creates the spark across the air gap, or in Callan's case where the beginning of the coils of the inductor met, and the other ( the voltage that was resiting the change in the current which induced it ), also known the \textit{counter-electromotive force}, would end up burning out the terminals of the battery if there were no other route for it to take. With the capacitor in parallel to the battery, the counter-electromotive force instead is stored in the capacitor. 
+
+
 \end{document}
