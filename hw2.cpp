@@ -30,45 +30,46 @@
  *    
  *   --->> 
  *
- *   * A. Arithmetic sequences
- *  You may do error checking with your program if you want, but it's not required.
+ *        * A. Arithmetic sequences
+ *        You may do error checking with your program if you want, but it's not required.
  *
- *  This program involves 5 numbers that are relevant in a (finite) arithmetic series.
- *  Suppose we are considering the series
- *  The 5 values we're interested in are
- *  F (the first term): 1.1
- *  I (the increment from one term to the next): 0.1
- *  L (the last term): 1.3
- *  N (the number of terms): 3
- *  T (the total of the terms): 3.6
+ *        This program involves 5 numbers that are relevant in a (finite) arithmetic series.
+ *        Suppose we are considering the series
+ *        The 5 values we're interested in are
+ *        F (the first term): 1.1
+ *        I (the increment from one term to the next): 0.1
+ *        L (the last term): 1.3
+ *        N (the number of terms): 3
+ *        T (the total of the terms): 3.6
  *
- *  Let's say that as far as this program is concerned, I has to be nonzero and N has to be > 1.
- *  (Then we don't have to worry about trivial cases.)
+ *        Let's say that as far as this program is concerned, I has to be nonzero and N has to be > 1.
+ *        (Then we don't have to worry about trivial cases.)
  *
- *  The idea here is that the user will input any 3 of these 5 values, and your program outputs the other 2.
- *  The user's input is a letter followed by a number, a letter, a number, a letter, and a number. The 3 letters 
- *  are case insensitive, all different, from FILNT; the numbers give the corresponding values.
+ *        The idea here is that the user will input any 3 of these 5 values, and your program outputs the other 2.
+ *        The user's input is a letter followed by a number, a letter, a number, a letter, and a number. The 3 letters 
+ *        are case insensitive, all different, from FILNT; the numbers give the corresponding values.
  *
- *  For example, still considering the example    , if the user types
- *      t  3.6  f  1.1  L  1.3
- *  then the user is saying to your program, "I'm thinking of an arithmetic sequence, whose total is 3.6, whose 
- *  first term is 1.1, and whose last term is 1.3. You tell me the other 2 things." Your program should then output
- *      I  0.1  N  3
- *  
- *      The user can pick any 3 of the 5 values to input, and can input them in any order.
- *  Your program can output the two other values in either order, labeled with the appropriate letters.
+ *        For example, still considering the example    , if the user types
+ *            t  3.6  f  1.1  L  1.3
+ *        then the user is saying to your program, "I'm thinking of an arithmetic sequence, whose total is 3.6, whose 
+ *        first term is 1.1, and whose last term is 1.3. You tell me the other 2 things." Your program should then output
+ *            I  0.1  N  3
+ *        
+ *            The user can pick any 3 of the 5 values to input, and can input them in any order.
+ *        Your program can output the two other values in either order, labeled with the appropriate letters.
  *
- *  You may recall that doubles can be problematic in that their answers are off by a tiny amount at hard-to-predict time.
- *  For instance, it would be a problem to say
- *      unsigned n = unsigned((first - last)/inc) + 1;
- *  even though that equations is mathematically correct.
- *  One way to get around that problem is to say
- *      double n = (first - last)/inc + 1;
- *  instead.
+ *        You may recall that doubles can be problematic in that their answers are off by a tiny amount at hard-to-predict time.
+ *        For instance, it would be a problem to say
+ *            unsigned n = unsigned((first - last)/inc) + 1;
+ *        even though that equations is mathematically correct.
+ *        One way to get around that problem is to say
+ *            double n = (first - last)/inc + 1;
+ *        instead.
  *
  *   --->> 
 */
 
+#include <cmath>
 #include <cstdio>
 #include <cctype>
 #include <cstdlib>
@@ -101,36 +102,44 @@
 #define true 1
 #define false 0
 
+
+// Argument parsing functions
 int validate_args(int mode_val, const char * arg);
 double validate_args(double mode_val, const char * arg);
 int parse_args(char * argv[], int argc, double vals[]);
 
-
+// Helper functions
 void calculate_master(double vals[]);
 int combination_dictionary(double vals[]);
+double root(double input, double n);
 
+// Find component functions
 void find_t(double vals[], int combination, unsigned char second_pass, int mode);
 void find_n(double vals[], int combination, unsigned char second_pass, int mode);
 void find_l(double vals[], int combination, unsigned char second_pass, int mode);
 void find_i(double vals[], int combination, unsigned char second_pass, int mode);
 void find_f(double vals[], int combination, unsigned char second_pass, int mode);
 
-
+// Mode global ( arithmatic / geometric ) 
 int mode_global=0;
-// How to use program, give input via CLI
+
+
+// Give input via CLI args
 const char * usage_str = "\n\nUsage: ./{executable} [ mode ] [ filnt ] [ value 1 ]"
                             " [ filnt ] [ value 2 ] [ filnt ] [ value 3 ]\n"
                             "* * * * * * * * * * * * * * * * * * * * * * * * \n"
                             "\n"
                             "Example: ./{executable} arithmatic t 3.6 f 1.1 L 1.3   <<-- Translation:\n"
-                            "\n"
                             "Arithmatic sequence totaling 3.6, first term 1.1 and last term "
                             "is 1.3.\n"
                             "\n\n"
                             "Example: ./{executable} geometric L 9 I 3 F 3   <<-- Translation:\n"
-                            "\n"
                             "Geometric sequence with first term 3, last term 9, and incremented"
-                            "is 1.3.\n";
+                            "is 1.3.\n\n";
+
+
+
+
 
 
 int main(int argc, char * argv[]) {
@@ -185,57 +194,65 @@ void calculate_master(double vals[]) {
     }
 }
 
-/* F Combinations For arithmatic 
- * 
- * ILN - Valid - {1, 2, 3} , I=1 L=3, N=3, ->  F= L-((N*I)+1)
- * ILT - Valid - {1 2 3} , I=1 L=3 T=6 ->  Find N -> (L-I)+(L-I)...==T iterations is N
- * NIT - Invalid - {1, 2, 3} , N=3, I=1, T=6 -> F= NEED L 
- * NTL - Valid - {1, 2, 3} , N=3, T=6, L=3 -> F= NEED I
- */
-void find_f(double vals[], int combination, unsigned char second_pass, int mode) {
 
-    // Find the missing 4th value
+void find_f(double vals[], int combination, unsigned char second_pass, int mode) {
+    
+    if (mode == MODE_ARITH) {
         if (!second_pass) {
             switch (combination) {
                 case LIT: {
-                    if (mode_global == (MODE_ARITH)) {
-                        find_n(vals, LIT, false, MODE_ARITH);
-                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                        return;
-                    }
-                    else if (mode_global == (MODE_GEOM)) {
-                         
-                         
-
-                    }
+                    find_n(vals, LIT, false, MODE_ARITH);
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    return;
                 }
                 case LIN: {
-                    if (mode_global == (MODE_ARITH)) {
-                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                        find_t(vals, LIN, true, MODE_ARITH);
-                        return;
-                    }
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    find_t(vals, LIN, true, MODE_ARITH);
+                    return;
                 }
                 case LNT: {
-                    if (mode_global == (MODE_ARITH)) {
-                        find_i(vals, LNT, false, MODE_ARITH);
-                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                        return;
-                    }
+                    find_i(vals, LNT, false, MODE_ARITH);
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    return;
                 }
                 case INT: {
-                    if (mode_global == (MODE_ARITH)) {
-                        find_l(vals, INT, false, MODE_ARITH);
-                        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                        return;
-                    }
+                    find_l(vals, INT, false, MODE_ARITH);
+                    vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+                    return;
                 }
             }
-            if (mode_global == (MODE_ARITH)) {
-                vals[F] = vals[L] - ((vals[N]*vals[I])+1);
-                return;
+        }
+        vals[F] = vals[L] - ((vals[N]*vals[I])+1);
+        return;
+    }
+    else if (mode == MODE_GEOM) {
+        if (!second_pass) {
+            switch (combination) {
+                case LIT: {
+                    find_n(vals, LIT, false, MODE_GEOM);
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    return;
+                }
+                case LIN: {
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    find_t(vals, LIN, true, MODE_GEOM);
+                    return;
+                }
+                case LNT: {
+                    find_i(vals, LNT, false, MODE_GEOM);
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    return;
+                }
+                case INT: {
+                    find_l(vals, INT, false, MODE_GEOM);
+                    vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+                    return;
+                }
             }
         }
+        vals[F] = (vals[L]/pow(vals[I],vals[N]-1));
+        return;
+    }
 }
 
 
@@ -272,6 +289,35 @@ void find_i(double vals[], int combination, unsigned char second_pass, int mode)
         vals[I] = (vals[L] - vals[F])/(vals[N]-1);
         return;
     }
+    else if (mode_global == (MODE_GEOM)) {
+        if (!second_pass) {
+            switch (combination) {
+                case FLN: {
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
+                    find_t(vals,FLN, true, MODE_GEOM);
+                    return;
+                }
+                case FNT: {
+                    find_l(vals,FNT, false, MODE_GEOM);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
+                    return;
+
+                }
+                case FLT: {
+                    find_n(vals, FLT, false, MODE_GEOM);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
+                    return;
+                }
+                case LNT: {
+                    find_f(vals, LNT, false, MODE_GEOM);
+                    vals[I] = root(vals[L]/vals[F],vals[N]-1);
+                    return;
+                }
+
+            }
+        }
+    }
+    return;
 }
 
 
@@ -306,9 +352,29 @@ void find_l(double vals[], int combination, unsigned char second_pass, int mode)
             }
         }
     }
+    else if (mode_global == MODE_GEOM) {
+        switch (combination) {
+            case FIT: {
+                vals[L] = vals[F]/vals[T];
+                vals[N] = vals[I]/vals[T];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                return;
+            }
+            case FNT: {
+                double gp = vals[F]/vals[N];
+                double x;
+                for (x=0; x < vals[N] ; x++) {
+                    x += 1;
+                }
+                vals[L] = vals[F]/vals[N];
+                return;
+            }
+        }
+    }
 }
-    
-
 
 void find_n(double vals[], int combination, unsigned char second_pass, int mode) {
     
@@ -334,7 +400,24 @@ void find_n(double vals[], int combination, unsigned char second_pass, int mode)
             }
         }
     }
-    return;
+    else if (mode_global == MODE_GEOM) {
+        if (!second_pass) {
+            switch (combination) {
+                case LIT: {
+                    find_f(vals, LIT, false, MODE_GEOM);
+                    vals[N] = ((log(vals[L]/vals[F]))/log(vals[I]));
+                    return;
+                }
+                case FLT: {
+                    find_i(vals, FLT, false, MODE_GEOM);
+                    vals[N] = ((log(vals[L]/vals[F]))/log(vals[I]));
+                    return;
+                }
+            }
+        }
+        vals[N] = ((log(vals[L]/vals[F]))/log(vals[I]));
+        return;
+    }
 }
 
 
@@ -368,6 +451,7 @@ void find_t(double vals[], int combination, unsigned char second_pass, int mode)
                 }
             }
         }
+        
 
         double f,t=0;
         double l,count=1;
@@ -378,6 +462,24 @@ void find_t(double vals[], int combination, unsigned char second_pass, int mode)
         vals[T] = t+1;
         return;
 
+    }
+    else if (mode_global == MODE_GEOM) {
+        if (!second_pass) {
+            switch (combination) {
+                case FLN: {
+                    find_i(vals, FLN, false, MODE_GEOM);
+                    vals[T] = vals[F]*((1 - pow(vals[I],vals[N]))/(1 - vals[I]));
+                    return;
+                }
+                case FIN: {
+                    vals[T] = vals[F]*((1 - pow(vals[I],vals[N]))/(1 - vals[I]));
+                    find_l(vals, FIN, true, MODE_GEOM);
+                    return;
+                }
+            }
+        }
+        vals[T] = vals[F]*((1 - pow(vals[I],vals[N]))/(1 - vals[I]));
+        return;
     }
 }
 
@@ -527,3 +629,6 @@ int parse_args(char * argv[], int argc, double vals[]) {
 
 }
 
+double root(double input, double n) {
+  return round(pow(input, 1.0/n));
+}
