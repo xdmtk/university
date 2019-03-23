@@ -2,7 +2,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage[latin1]{inputenc}
+\usepackage{circuitikz}
 
 \title{Electrical Applications - Transformer}
 \author{Nicholas Martinez}
@@ -24,14 +24,65 @@ Of the many revolutionary discoveries of humanity, the discovery and following a
 
 This device is known as a \textit{transformer}, and it is the primary reason that we are able enjoy the use of small scale electronic devices within the household, while also drawing from a power source of incredible energy that unfiltered would destroy any small electrical device connected to it. Simply stated, a transformer is a static electrical device that when supplied an electrical current input, is able to increase or decrease the input voltage and output a different voltage, also known as \textit{stepping up} or \textit{stepping down} voltage. 
 
+Transformers tend to be especially known when they occasionally explode, causing a bright blue flash of light that can be seen for miles from the source. Likewise, pedestrians often notice transformers when they can make an significant 'buzzing' noise. Both of these phenomena are directly related to the internal structure and physical laws governing the operation of these devices.
+
+\section{History}
+
+\paragraph{Conceptual Origins - Induction} 
+The core principle that governs the operations of an electrical transformer is the concept of \textit{electromagnetic induction}. The discovery of mutual magnetic induction between two coupled circuits is credited to the English physicist and chemist Micheal Faraday (1791-1867).
+
+Although Faraday never possessed a formal education, he began working as an assistant at the Royal Institution under the chemist Humphrey Davy at only 21 years old, in which he was able to conduct a number of experiments regarding electromagnetism. From his initial experiments on iron filings and their response to magnets, he coined the term \textit{line of force} to describe the movements of the filings when exposed to a magnet. This eventually evolved into discovering mutual magnetic induction by noting a current induced on one coil wound on a toroidal iron core when the current on another coil also wound on the core was rapidly fluctuated. 
+
+Furthering this experiment, he also observed a current induced on such coils when a magnet was placed and moved inside the space within the core of the wound coils. Faraday then was able to describe this phenomena and coined the term as the \textit{electromotive force}. This eventually culminated into what is now known as \textit{Faraday's law of induction}, described by the below equation. 
+
+\begin{center}
+\begin{huge}
+	
+	\vspace{5mm}
+	$\mid{\varepsilon}\mid \hspace{2mm }= \left|{{\mathrm{d}\Phi_\text{B}} \over \mathrm{d}t}\right|$
+ 	\vspace{5mm}	
+\end{huge}
+\end{center}
+
+Where $\mid{\varepsilon}\mid$ is the magnitude of the electromagnetic force in volts, and $\Phi_\text{B}$ is the magnetic flux through the circuit. This equation is reflexive in the sense that the electromagnetic force is induced by the magnetic flux that is produced by some electromagnetic force. This property of electromagnetism will be discussed more in depth in the following section.
 
 
+Though what Faraday had missed in his description of the electromotive force in his experiments on toroidal coils wound on an iron core is the special relationship between the two coils and how many turns ( or how many times it is wrapped around ) each coil possessed. This was later discovered in 1836 by Reverend Nicholas Callan (1799 - 1864). Inspired by Faraday, Callan had sought out a method to generate a higher voltage of electricity than what was currently available at the time. Similar to the experiments done by Faraday, Callan began constructing what is now known as an inductor coil, or a spark coil. By taking an iron bar and wrapping two coils around it, connecting the beginning of each coil to each other. When he had then connected a battery to the winding end of one coil, he noticed that upon disconnecting the battery terminals from the wire, a spark resulted at the end of the two coils.
+
+Through further experiments, Callan was able to increase the intensity of the resultant spark by increasing the size of the secondary coil, while using a battery of the same voltage. Callan had effectively created the first induction transformer, and had also created a practical demonstration of Lenz's law.
+
+\begin{center}
+	\begin{huge}
+		
+		\vspace{5mm}
+		${\varepsilon} \hspace{2mm }= -{{\partial\Phi_\text{B}} \over \partial t}$
+		\vspace{5mm}	
+	\end{huge}
+\end{center}
 
 
-Editing short documents online is free. View premium plans and pricing at
-\url{https://latexbase.com/static/pricing} to enjoy unlimited document editing
-(online or offline) and a variety of other useful features. Thanks for trying
-out our service and don't hesitate to get in touch at
-\href{mailto:support@latexbase.com}{support@latexbase.com}!
+\section{Induction Coils}
+\paragraph{Callan's Coil Explained} 
+The induction coil Callan had created in his experiments laid the beginning conceptual blueprints for the eventual engineering of the modern day transformer. 
+
+\begin{center}
+\begin{circuitikz} \draw
+	(0,0) to[switch] (-2,0)
+	to[battery] (-4,0)
+	to[] (-4, 2)
+	to[L] (2, 2)
+	to[] (2,0)
+	to[capacitor] (3,0)
+	\draw
+	to[] (6,0)
+	to[] (3,-2)
+	to[] (0,-2)
+	to[] (0,0)
+ 
+;
+\end{circuitikz}
+\end{center}
+
+
 
 \end{document}
