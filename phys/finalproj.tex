@@ -70,19 +70,49 @@ The induction coil Callan had created in his experiments laid the beginning conc
 	(0,0) to[switch] (-2,0)
 	to[battery] (-4,0)
 	to[] (-4, 2)
-	to[L] (2, 2)
+	to[american inductor] (2, 2)
 	to[] (2,0)
 	to[capacitor] (3,0)
-	\draw
-	to[] (6,0)
 	to[] (3,-2)
 	to[] (0,-2)
-	to[] (0,0)
- 
-;
+	to[] (0,0);
+	\draw (3,0)
+	to[short,*-] (3,2)
+	to[short,-*	] (2,2);
+	\draw (1,2) to[short,*-] (1,4)
+	to[short,-*] (-1,4);
+	
+	\draw (-2,4) to[short,*-] (-4,4)
+	to[short,-*] (-4,2);
+	\draw[dashed] (-2,2.5) to[] (0,2.5)
+	to[] (0,1.7) 
+	to[] (-2,1.7)
+	to[] (-2,2.5);
+	\draw (-1.7,2.3) to[] (-.3,2.3);	
+	\draw (-1.7,2.4) to[] (-.3,2.4);	
+	
 \end{circuitikz}
 \end{center}
 
+Above we have an electrical diagram for an inductor coil. As we know from Faraday's law of induction, the electromotive force generates a magnetic flux directly proportional to the current flowing through the inductor, and with Len'z law we see that this flux is proportionally opposed to that current when $\mathbf{t=0}$ ( at the moment the switch is closed ) by creating a voltage difference at the poles of the inductor, which reduces as the electromagnetic field stops expanding. As soon as this point is reached, the current passing through the inductor will reach its maximum value after $\mathbf{5T}$, or 5 time constants, where T is
 
-
+\begin{center}
+	\begin{huge}
+		\fbox{
+		\vspace{5mm}
+		$\mathbf{T = \frac{L}{R}}$
+		\vspace{5mm}	
+		}
+	\end{huge}
+\end{center}
+\noindent
+\begin{center}
+	
+Where $\mathbf{L}$ = Inductance of the coil \break
+Where $\mathbf{R}$ = Total resistance of the circuit 
+\end{center}
+\begin{center}
+\begin{LARGE}$\mathbf{L} = \frac{N^2 \mu A}{l}$
+\end {LARGE}
+\end{center}
 \end{document}
