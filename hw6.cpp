@@ -1,4 +1,4 @@
-/* Nicholas Martinez - COSCI 542 - Hart - March 18 2019
+/* Nicholas Martinez - COSCI 542 - Hart - March 18 2019 - HOMEWORK 6
 /
 /
 /!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-/
