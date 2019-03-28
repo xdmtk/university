@@ -75,9 +75,10 @@ bool is_valid(std::string s);
 
 int main(int argc, char *argv[]) {
 
+    
     std::string in = user_input();
-    if (is_valid(in)) {
-        printf("ok");
+    if (!is_valid(in)) {
+        exit(0);
     }
 
 
@@ -88,39 +89,52 @@ int main(int argc, char *argv[]) {
 
 
 
-
+// Get user input
 std::string user_input() {
     
     std::string in;
     char c;
+
+    // Append input characters to string until newline
     while ((c = getchar()) != '\n') {
         in.push_back(c);
     }
-    
+   
+    // Return the input
     return in;
 
 }
 
 
+
+// Basic input validation
 bool is_valid(std::string s) {
-    
-    bool valid;
+   
+    // Assume invalid input
+    bool valid = false;
     char accepted_tokens[] = { 
         '!', '&', '^', '|', 
         '(', ')', '0', '1', ' ' };
-     
+    
+    // Iterate through characters in input string
     for (int x = 0; x < s.length(); ++x) {
 
         valid = false;
         for (int y = 0; y < sizeof(accepted_tokens)/sizeof(char); ++y) {
+            
+            // If equivalent to at least one accepted token, validate character
             if (s[x] == accepted_tokens[y]) {
                 valid = true;
             }
         }
+    
+        // Return false immediately on first invalid character
         if (!valid) {
             return false;
         }
     }
+
+    // Return state of valid, 0 length strings (new line only) will return false
     return valid;
 }
 
