@@ -45,7 +45,7 @@
  *
  *
  *
- * ! ?& ^ | 
+ * ! & ^ | 
  *
  * Spaces will be tolerated and ignored
  *
@@ -64,14 +64,14 @@
 #include <ctime>
 
 #include <iostream>
-#include <utility>
 #include <string>
-#include <set>
-#include <vector>
+#include <stack>
 
 std::string user_input();
 bool is_valid(std::string s);
-
+bool evaluate(std::string in);
+bool is_lparen_or_unary(char c);
+int precision(char c);
 
 int main(int argc, char *argv[]) {
 
@@ -87,6 +87,62 @@ int main(int argc, char *argv[]) {
 
 }
 
+bool evaluate(std::string in) {
+
+    std::stack<int> operands;
+    std::stack<char> operators;
+
+    for (char t: in) {
+        if (isdigit(t)) {
+            operands.push(std::atoi(&t));
+        }
+        else if (is_lparen_or_unary(t)) {
+            operators.push(t);
+        }
+        else {
+            while (precision(operators.top() > precision(t) {
+                char op = operators.top();
+                operators.pop();
+                int rhs = operands.top();
+                operands.pop()
+                int lhs = INT_MAX;
+                lhs = operands.top();
+                if (is_lparen_or_unary(op)) {
+                    if (op == '!') {
+                        operands.push(!rhs);
+                        continue;
+                    }
+                }
+                else {
+                    operands.pop()
+                }
+                switch (so) {
+                    case '&':
+                        operands.push(rhs && lhs);
+                        break;
+                    case '^':
+                        operands.push(rhs ^ lhs);
+                        break;
+                    case '|':
+                        operands.push(rhs || lhs);
+                        break;
+                }
+            }
+            if (t == ')') {
+                operators.pop();
+            }
+            else {
+                operators.push(t);
+            }
+        }
+    }
+}
+
+
+
+
+
+
 
 
 // Get user input
@@ -99,7 +155,7 @@ std::string user_input() {
     while ((c = getchar()) != '\n') {
         in.push_back(c);
     }
-   
+    
     // Return the input
     return in;
 
@@ -138,11 +194,23 @@ bool is_valid(std::string s) {
     return valid;
 }
 
-
     
+bool is_lparen_or_unary(char c) {
+    if ((c == '(') || (c == '!')) {
+        return true;
+    }
+}
 
 
-
+int precision(char c) {
+    switch (c) {
+        case '!': return 4;
+        case '&': return 3;
+        case '^': return 2;
+        case '|': return 1;
+        default: return 0;
+    }
+}
 
 
 
