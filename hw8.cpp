@@ -80,6 +80,12 @@ int main(int argc, char *argv[]) {
     if (!is_valid(in)) {
         exit(0);
     }
+    if (evaluate(in)) {
+        printf("\ntrue\n");
+    }
+    else {
+        printf("\nfalse\n");
+    }
 
 
 
@@ -100,13 +106,12 @@ bool evaluate(std::string in) {
             operators.push(t);
         }
         else {
-            while (precision(operators.top() > precision(t) {
+            while (precision(operators.top()) > precision(t)) {
                 char op = operators.top();
                 operators.pop();
                 int rhs = operands.top();
-                operands.pop()
-                int lhs = INT_MAX;
-                lhs = operands.top();
+                operands.pop();
+                int lhs = operands.top();
                 if (is_lparen_or_unary(op)) {
                     if (op == '!') {
                         operands.push(!rhs);
@@ -114,9 +119,9 @@ bool evaluate(std::string in) {
                     }
                 }
                 else {
-                    operands.pop()
+                    operands.pop();
                 }
-                switch (so) {
+                switch (op) {
                     case '&':
                         operands.push(rhs && lhs);
                         break;
@@ -128,6 +133,7 @@ bool evaluate(std::string in) {
                         break;
                 }
             }
+
             if (t == ')') {
                 operators.pop();
             }
@@ -136,6 +142,7 @@ bool evaluate(std::string in) {
             }
         }
     }
+    return operands.top();
 }
 
 
