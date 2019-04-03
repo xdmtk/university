@@ -117,19 +117,26 @@ std::string user_input();
 bool is_valid(std::string s);
 bool evaluate(std::string in);
 bool is_lparen_or_unary(char c);
-int precision(char c);
+int precedence(char c);
 
 int main(int argc, char *argv[]) {
 
-    
+    // Get user input 
     std::string in = user_input();
+
+    // Validate input
     if (!is_valid(in)) {
         exit(0);
     }
+
+    // Send input to evaluate
     if (evaluate(in)) {
+
+        // If evaluate returns true, print true
         printf("\ntrue\n");
     }
     else {
+        // If evaluate returns false, print false
         printf("\nfalse\n");
     }
 
@@ -139,56 +146,113 @@ int main(int argc, char *argv[]) {
 
 }
 
+
+
 bool evaluate(std::string in) {
 
     std::stack<int> operands;
     std::stack<char> operators;
+    
 
+    // Iterate through characters of string
     for (char t: in) {
+
+        // Push numbers on operand stack
         if (isdigit(t)) {
+
+            // Convert ascii to integer type
             operands.push(std::atoi(&t));
         }
+
+        // If left parenthesis or unary operator, push on operators stack
         else if (is_lparen_or_unary(t)) {
             operators.push(t);
         }
+
+        // If binary operator or closing parenthesis, begin evaluating expression
         else {
-            while (precision(operators.top()) > precision(t)) {
+
+            // Evalaute all higher precedence operations first
+            while (precedence(operators.top()) > precedence(t)) {
+
+                // Get the operator from the stack
                 char op = operators.top();
+
+                // Discard operator
                 operators.pop();
+
+                // Get the right hand side of expression
                 int rhs = operands.top();
                 operands.pop();
+
+                // Define the lefthand side, but we may not need this
+                // if operator turns out to be unary ( ! )
                 int lhs;
                 if (is_lparen_or_unary(op)) {
+
+                    // If the operator is the 'not' operator,
+                    // skip rest of loop execution, and push the logical not
+                    // value of the right hand side operand on to the operand stack
+                    //
+                    // This effectively replaces the original operand that we popped intop
+                    // rhs, and executes a logical not, and pushes back on to the stack
+                    // to be used in other operations
                     if (op == '!') {
                         operands.push(!rhs);
                         continue;
                     }
                 }
+
+                // If its a binary operator ( all others than ! )
                 else {
+
+                    // Get the left hand side
                     lhs = operands.top();
+
+                    // And discard
                     operands.pop();
                 }
+
+                // Choose the appropriate operation for the operator
                 switch (op) {
+
+                    // Each logical operator is already defined in C++,
+                    // so just use the C++ operation and push result back on to 
+                    // operands stack
                     case '&':
+
+                        // Logical and
                         operands.push(rhs && lhs);
                         break;
                     case '^':
+
+                        // XOR operation should always work in this
+                        // program, since operands are only 0x0 and 0x1
                         operands.push(rhs ^ lhs);
                         break;
                     case '|':
+
+                        // Logical OR
                         operands.push(rhs || lhs);
                         break;
                 }
             }
-
+            
+            // If closing parenthesis
             if (t == ')') {
+
+                // Then discard of it, as operation has completed
                 operators.pop();
             }
             else {
+
+                // Otherwise push the operator
                 operators.push(t);
             }
         }
     }
+
+    // Final operand on stack should be the result
     return operands.top();
 }
 
@@ -253,6 +317,8 @@ bool is_valid(std::string s) {
 
     
 bool is_lparen_or_unary(char c) {
+
+    // Verifies left parenthesis or unary operator
     if ((c == '(') || (c == '!')) {
         return true;
     }
@@ -260,7 +326,9 @@ bool is_lparen_or_unary(char c) {
 }
 
 
-int precision(char c) {
+int precedence(char c) {
+
+    // Returns precedence value
     switch (c) {
         case '!': return 4;
         case '&': return 3;
