@@ -1,4 +1,4 @@
-/* Nicholas Martinez - COSCI 542 - Hart - March 18 2019 - HOMEWORK 6
+/* Nicholas Martinez - COSCI 542 - Hart - March 18 2019 - HOMEWORK 8
 /
 /
 /!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-/
@@ -15,7 +15,7 @@
  *  ▐█▄▪▐█ ▐█▌·▐█•█▌▐█▄█▌▐███▌ ▐█▌·▐█▄█▌▐█•█▌▐█▄▄▌▐█▄▪▐█    !
  *   ▀▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀ ·▀▀▀  ▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀▀     !
  *                                                          !
- *                      Homework #6                         !
+ *                      Homework #8                         !
  *                                                          !
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
@@ -29,7 +29,7 @@
  *   --->>
  *       
  *   Name: Nicholas Martinez
- *   Date: 03/18/19
+ *   Date: 04/2/19
  *    
  *   --->> 
  *
@@ -52,6 +52,52 @@
  * Your program will handle paren nesting to any depth
  *
  * Your program will terminate on blank line
+ *
+ * SAMPLE OUTPUT:
+       
+ 
+        [~/school/discr] (master) >>> run
+        
+        (1 & 0)
+
+        false
+        [~/school/discr] (master) >>> run
+        (1 & 1)
+
+        true
+        [~/school/discr] (master) >>> run
+        1
+
+        true
+        [~/school/discr] (master) >>> run
+        0
+
+        false
+        [~/school/discr] (master) >>> run
+        1 ^ 0
+
+        true
+        [~/school/discr] (master) >>> run
+        1 ^ 1
+
+        false
+        [~/school/discr] (master) >>> run
+        0 ^ 0
+
+        false
+        [~/school/discr] (master) >>> run
+        (!1 & 1) | 1
+
+        true
+        [~/school/discr] (master) >>> run
+        (!1 & 1) & 1
+
+        false
+        [~/school/discr] (master) >>> run
+        (1 ^ 0) & ( (!0 & 1) & 1 )
+
+        true
+
  *
  *
 */
@@ -111,7 +157,7 @@ bool evaluate(std::string in) {
                 operators.pop();
                 int rhs = operands.top();
                 operands.pop();
-                int lhs = operands.top();
+                int lhs;
                 if (is_lparen_or_unary(op)) {
                     if (op == '!') {
                         operands.push(!rhs);
@@ -119,6 +165,7 @@ bool evaluate(std::string in) {
                     }
                 }
                 else {
+                    lhs = operands.top();
                     operands.pop();
                 }
                 switch (op) {
@@ -157,12 +204,15 @@ std::string user_input() {
     
     std::string in;
     char c;
-
+    in.push_back('(');
     // Append input characters to string until newline
     while ((c = getchar()) != '\n') {
-        in.push_back(c);
+        if (c != ' ')  {
+            in.push_back(c);
+        }
     }
     
+    in.push_back(')');
     // Return the input
     return in;
 
@@ -177,7 +227,7 @@ bool is_valid(std::string s) {
     bool valid = false;
     char accepted_tokens[] = { 
         '!', '&', '^', '|', 
-        '(', ')', '0', '1', ' ' };
+        '(', ')', '0', '1'};
     
     // Iterate through characters in input string
     for (int x = 0; x < s.length(); ++x) {
@@ -206,6 +256,7 @@ bool is_lparen_or_unary(char c) {
     if ((c == '(') || (c == '!')) {
         return true;
     }
+    return false;
 }
 
 
