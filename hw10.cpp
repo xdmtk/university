@@ -92,25 +92,43 @@ int main(int argc, char *argv[]) {
     if (!is_valid(in)) {
         exit(0);
     }
-
-    // Send input to evaluate
-    if (evaluate(in)) {
-
-        // If evaluate returns true, print true
-        printf("\ntrue\n");
-    }
-    else {
-        // If evaluate returns false, print false
-        printf("\nfalse\n");
-    }
+    
 
 
-
-
-
+    // TODO: The idea here is that the evaluate function
+    // doesn't need to be changed at all. 
+    //
+    // Input method should get a total of all the variables,
+    // and use 2^n combinations of values for each variable
+    //
+    // For each set of values assigned to the variables
+    // send each expression, ( both sides ) to evaluate and 
+    // for equivalent expressions, every call to evaluate must
+    // return true
+    //  
+    // If even one returns false, the expressions are not equivalent
 }
 
 
+
+// TODO: Write a function to split the input on comma
+//
+//
+
+
+
+// TODO: Write a function to get all the variables, and 
+// begin assigning either 0 or 1 to each of them
+//
+//
+
+
+// TODO: Probably in the same function, we can pass them repeatedly to
+// evaluate, left expression first, store the result, then right express
+// and check whether they both evaluate to the same answer
+//
+//
+// Iterate through all possible value combinations
 
 bool evaluate(std::string in) {
 
