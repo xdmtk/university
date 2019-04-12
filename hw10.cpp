@@ -73,26 +73,25 @@
 #include <cassert>
 #include <ctime>
 
+#include <vector>
 #include <iostream>
 #include <string>
 #include <stack>
 
 std::string user_input();
-bool is_valid(std::string s);
 bool evaluate(std::string in);
 bool is_lparen_or_unary(char c);
 int precedence(char c);
+
+std::vector<std::string> split_expressions(std::string in);
 
 int main(int argc, char *argv[]) {
 
     // Get user input 
     std::string in = user_input();
+    split_expressions(in);
+    return 0;
 
-    // Validate input
-    if (!is_valid(in)) {
-        exit(0);
-    }
-    
 
 
     // TODO: The idea here is that the evaluate function
@@ -111,9 +110,24 @@ int main(int argc, char *argv[]) {
 
 
 
-// TODO: Write a function to split the input on comma
-//
-//
+std::vector<std::string> split_expressions(std::string in) {
+    
+    std::vector<std::string> out;
+    
+    // Splits the input expression into two expessions based on 
+    // the comma
+    out.push_back(in.substr(0, in.find_first_of(',')));
+    out.push_back(in.substr(in.find_first_of(',')+1, in.length()-1));
+    
+    std::cout << out[0] << " " << out[1] << std::endl;
+    
+    return out;
+}
+
+
+
+
+
 
 
 
@@ -253,8 +267,13 @@ std::string user_input() {
     in.push_back('(');
     // Append input characters to string until newline
     while ((c = getchar()) != '\n') {
-        if (c != ' ')  {
+        if (c != ' ' && c != ',')  {
             in.push_back(c);
+        }
+        if (c == ',') {
+            in.push_back(')');
+            in.push_back(',');
+            in.push_back('(');
         }
     }
     
@@ -265,37 +284,6 @@ std::string user_input() {
 }
 
 
-
-// Basic input validation
-bool is_valid(std::string s) {
-   
-    // Assume invalid input
-    bool valid = false;
-    char accepted_tokens[] = { 
-        '!', '&', '^', '|', 
-        '(', ')', '0', '1'};
-    
-    // Iterate through characters in input string
-    for (int x = 0; x < s.length(); ++x) {
-
-        valid = false;
-        for (int y = 0; y < sizeof(accepted_tokens)/sizeof(char); ++y) {
-            
-            // If equivalent to at least one accepted token, validate character
-            if (s[x] == accepted_tokens[y]) {
-                valid = true;
-            }
-        }
-    
-        // Return false immediately on first invalid character
-        if (!valid) {
-            return false;
-        }
-    }
-
-    // Return state of valid, 0 length strings (new line only) will return false
-    return valid;
-}
 
     
 bool is_lparen_or_unary(char c) {
