@@ -72,6 +72,7 @@
 #include <cstring>
 #include <cassert>
 #include <ctime>
+#include <cctype>
 
 #include <vector>
 #include <iostream>
@@ -125,16 +126,78 @@ std::vector<std::string> split_expressions(std::string in) {
 }
 
 
-
-
-
-
-
-
 // TODO: Write a function to get all the variables, and 
 // begin assigning either 0 or 1 to each of them
 //
 //
+bool master_evaluate(std::vector<std::string> in) {
+    
+    std::string expr1 = in[0];
+    std::string expr2 = in[1];
+
+    std::vector<char> vars;
+    std::vector<char> vals;
+
+    // Assume correct input and get variables of expression
+    // by iterating over either string
+    for (int x = 0; x < expr1.length(); ++x) {
+        
+        // Find all alpha variables in expression
+        if (std::isalpha(expr1[x])) {
+            
+            // Only if they're unique
+            if (std::find(vars.begin(), vars.end(), expr1[x]) != vars.end()) {
+
+                // Collect all unique variables
+                vars.push_back(expr1[x]);
+            }
+        }
+    }
+    
+
+    // We need 2^(amount of variables) combinations of 0's and 1's to
+    // assign to each variable and test in every situation if they are equiv
+    // Use base two bit counting to assign values to variables
+    //
+    // First we set out max by shifting right the amount of variables we have 
+    // giving us 2^vars.size() 
+    long long unsigned int total = 1 << vars.size();
+
+    // We also need a counter starting from 0, which will iterate through
+    // each bit combination
+    long long unsigned int counter = 0;
+    
+
+    // Begin executing combinations 
+    while (counter < total) {
+       
+        // For each var, we need to assign a value based on
+        // the current bits set in counter
+        for (int x = 0; x < vars.size(); ++x) {
+
+            // And each bit of counter with 0x1 to assign
+            // the actual bit value to val
+            char val = (counter & 0x1) + '0';
+
+            // Push val to vals vector
+            vals.push_back(val);
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+}
 
 
 // TODO: Probably in the same function, we can pass them repeatedly to
