@@ -78,13 +78,16 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <algorithm>
 
 std::string user_input();
 bool evaluate(std::string in);
 bool is_lparen_or_unary(char c);
 int precedence(char c);
+int index_of(char var, std::vector<char> vars);
 
 std::vector<std::string> split_expressions(std::string in);
+std::string replace_with_vals(std::string expr, std::vector<char> vals, std::vector<char> vars);
 
 int main(int argc, char *argv[]) {
 
@@ -170,33 +173,87 @@ bool master_evaluate(std::vector<std::string> in) {
 
     // Begin executing combinations 
     while (counter < total) {
-       
+        
+        int counter_t = counter;
         // For each var, we need to assign a value based on
         // the current bits set in counter
         for (int x = 0; x < vars.size(); ++x) {
 
             // And each bit of counter with 0x1 to assign
             // the actual bit value to val
-            char val = (counter & 0x1) + '0';
+            char val = (counter_t & 0x1) + '0';
 
             // Push val to vals vector
             vals.push_back(val);
-
+            
+            // Shift left counter value to get next bit
+            counter_t = counter_t >> 1;
         }
 
+        // Now we should have the vector vars with all letter 
+        // variables and a corresponding vector vals with 
+        // the combination of values to apply for each variable
+        //
+        // So no we we need to replace each variable in the expression
+        // with the corresponding values
+        
+        std::string new_expr1 = replace_with_vals(expr1, vals, vars);
+        std::string new_expr2 = replace_with_vals(expr2, vals, vars);
+       
+        
+        // Now we evaluate the boolean expressions individually and
+        // test whether they are equivalent. IF the expressions are truly equivalent
+        // this condition will never be true, and make it out
+        // of the while loop to return true. Otherwise master_evalaute will
+        // return false here
+        if (evaluate(new_expr1) != evaluate(new_expr2)) {
+
+            return false;
+        }
+
+        // Increment the counter for the next set of values
+        counter++;
+    }
+    
+    return true;
+}
 
 
 
+// Function to replace variables with values
+std::string replace_with_vals(std::string expr, std::vector<char> vals, std::vector<char> vars) {
+    for (int x = 0; x < expr.length(); ++x) {
+        
+        if (std::isalpha(expr[x])) {
+            
+            // Get the index of the variable found in the expression
+            int index = index_of(expr[x], vars);
 
+            // Assign 0 or 1 to variable in expression 
+            expr[x] = vals[index];
 
-
-
+        }
     }
 
+    // Return the value substitute expression
+    return expr;
+}
 
 
 
+int index_of(char var, std::vector<char> vars) {
+    
+    std::vector<char>::iterator it = vars.begin();
+    int index;
 
+    for (index = 0; index < vars.size(); ++index, ++it) {
+        
+        if (*it == var) {
+            return index;
+        }
+    }
+
+    throw "Index not found exception!";
 }
 
 
