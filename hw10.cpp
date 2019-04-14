@@ -88,14 +88,20 @@ int index_of(char var, std::vector<char> vars);
 
 std::vector<std::string> split_expressions(std::string in);
 std::string replace_with_vals(std::string expr, std::vector<char> vals, std::vector<char> vars);
+bool master_evaluate(std::vector<std::string> in);
 
 int main(int argc, char *argv[]) {
 
     // Get user input 
     std::string in = user_input();
-    split_expressions(in);
-    return 0;
+    std::vector<std::string> expressions = split_expressions(in);
 
+    if (master_evaluate(expressions)) {
+        printf("Expressions are equivalent\n");
+        return 0;
+    }
+
+    printf("Expressions are not equivalent\n");
 
 
     // TODO: The idea here is that the evaluate function
@@ -149,7 +155,7 @@ bool master_evaluate(std::vector<std::string> in) {
         if (std::isalpha(expr1[x])) {
             
             // Only if they're unique
-            if (std::find(vars.begin(), vars.end(), expr1[x]) != vars.end()) {
+            if (std::find(vars.begin(), vars.end(), expr1[x]) == vars.end()) {
 
                 // Collect all unique variables
                 vars.push_back(expr1[x]);
@@ -252,7 +258,7 @@ int index_of(char var, std::vector<char> vars) {
             return index;
         }
     }
-
+    printf("About to throw exception\n");
     throw "Index not found exception!";
 }
 
