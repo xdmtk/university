@@ -150,13 +150,20 @@ int main(int argc, char *argv[]) {
 
         // Get user input 
         std::string in = user_input();
+        
 
+        // Terminate on empty line
         if (!in.length()) {
             exit(0);
         }
-
+        
+        // Split the expressions by comma into a vector of two
+        // expressions
         std::vector<std::string> expressions = split_expressions(in);
+        
 
+        // Send expressions vector to master_evaulate which
+        // determines whether they are equivalent
         if (master_evaluate(expressions)) {
             printf("Expressions are equivalent\n");
         }
@@ -166,7 +173,7 @@ int main(int argc, char *argv[]) {
     }
 
 
-    // TODO: The idea here is that the evaluate function
+    // The idea here is that the evaluate function
     // doesn't need to be changed at all. 
     //
     // Input method should get a total of all the variables,
@@ -182,6 +189,8 @@ int main(int argc, char *argv[]) {
 
 
 
+// Function to split a comma seperated string into 
+// a vector with two string expressions
 std::vector<std::string> split_expressions(std::string in) {
     
     std::vector<std::string> out;
@@ -190,22 +199,29 @@ std::vector<std::string> split_expressions(std::string in) {
     // the comma
     out.push_back(in.substr(0, in.find_first_of(',')));
     out.push_back(in.substr(in.find_first_of(',')+1, in.length()-1));
-    
+   
+    // Print the expressions
     std::cout << out[0] << " " << out[1] << std::endl;
     
+    // Return the vector
     return out;
 }
 
 
-// TODO: Write a function to get all the variables, and 
-// begin assigning either 0 or 1 to each of them
-//
-//
+
+// This function determines whether the expressions are equivalent
+// by testing all possible values of the given variables and evaluating
+// each expression and comparing the results
 bool master_evaluate(std::vector<std::string> in) {
-    
+   
+
+    // Get the two expressions from the vector
     std::string expr1 = in[0];
     std::string expr2 = in[1];
+    
 
+    // We need a vector for all the variables and potential values
+    // to assign to those variables
     std::vector<char> vars;
     std::vector<char> vals;
 
@@ -279,7 +295,7 @@ bool master_evaluate(std::vector<std::string> in) {
         std::cout << new_expr1 << " -> " << evaluate(new_expr1) << std::endl;
         std::cout << new_expr2 << " -> " << evaluate(new_expr2) << "\n\n" << std::endl;
 
-
+        
         if (evaluate(new_expr1) != evaluate(new_expr2)) {
 
             return false;
@@ -287,9 +303,15 @@ bool master_evaluate(std::vector<std::string> in) {
 
         // Increment the counter for the next set of values
         counter++;
+
+        // Clear the vector of values for new assignment
         vals.clear();
     }
     
+
+    // If the function makes it passed the while loop, then
+    // every evaluation of each expression has been equal to eachother
+    // and thus the expressions are equivalent
     return true;
 }
 
@@ -315,14 +337,19 @@ std::string replace_with_vals(std::string expr, std::vector<char> vals, std::vec
 }
 
 
-
+// Function to return the index where the variable is at
+// in the vars vector
 int index_of(char var, std::vector<char> vars) {
     
+
+    // Get an iterator for the variables vector
     std::vector<char>::iterator it = vars.begin();
     int index;
 
     for (index = 0; index < vars.size(); ++index, ++it) {
         
+        // If the current iteration equals the variable supplied in
+        // var, return the index
         if (*it == var) {
             return index;
         }
