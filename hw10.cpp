@@ -62,6 +62,60 @@
  *  (blank line above terminates program.)
  *
  *
+ *      SAMPLE OUTPUT:
+ *
+         * [~/school/discr] (master) >>> g++ hw10.cpp -g
+        [~/school/discr] (master) >>> run
+        A & P | Z, A | P & Z
+        (A&P|Z) (A|P&Z)
+        Testing expression: (0&0|0) and: (0|0&0)
+        (0&0|0) -> 0
+        (0|0&0) -> 0
+
+
+        Testing expression: (1&0|0) and: (1|0&0)
+        (1&0|0) -> 0
+        (1|0&0) -> 1
+
+
+        Expressions are not equivalent
+        [~/school/discr] (master) >>> run
+        A & B, !(!A | !B)
+        (A&B) (!(!A|!B))
+        Testing expression: (0&0) and: (!(!0|!0))
+        (0&0) -> 0
+        (!(!0|!0)) -> 0
+
+
+        Testing expression: (1&0) and: (!(!1|!0))
+        (1&0) -> 0
+        (!(!1|!0)) -> 0
+
+
+        Testing expression: (0&1) and: (!(!0|!1))
+        (0&1) -> 0
+        (!(!0|!1)) -> 0
+
+
+        Testing expression: (1&1) and: (!(!1|!1))
+        (1&1) -> 1
+        (!(!1|!1)) -> 1
+
+
+        Expressions are equivalent
+        [~/school/discr] (master) >>> run
+        A ^ Z, A & Z | !A & !Z
+        (A^Z) (A&Z|!A&!Z)
+        Testing expression: (0^0) and: (0&0|!0&!0)
+        (0^0) -> 0
+        (0&0|!0&!0) -> 1
+
+
+        Expressions are not equivalent
+        [~/school/discr] (master) >>>
+
+
+ *
  *
  *
 */
@@ -92,16 +146,24 @@ bool master_evaluate(std::vector<std::string> in);
 
 int main(int argc, char *argv[]) {
 
-    // Get user input 
-    std::string in = user_input();
-    std::vector<std::string> expressions = split_expressions(in);
+    while (true) {
 
-    if (master_evaluate(expressions)) {
-        printf("Expressions are equivalent\n");
-        return 0;
+        // Get user input 
+        std::string in = user_input();
+
+        if (!in.length()) {
+            exit(0);
+        }
+
+        std::vector<std::string> expressions = split_expressions(in);
+
+        if (master_evaluate(expressions)) {
+            printf("Expressions are equivalent\n");
+        }
+        else {
+            printf("Expressions are not equivalent\n");
+        }
     }
-
-    printf("Expressions are not equivalent\n");
 
 
     // TODO: The idea here is that the evaluate function
@@ -188,7 +250,7 @@ bool master_evaluate(std::vector<std::string> in) {
             // And each bit of counter with 0x1 to assign
             // the actual bit value to val
             char val = (counter_t & 0x1) + '0';
-
+            
             // Push val to vals vector
             vals.push_back(val);
             
@@ -212,6 +274,12 @@ bool master_evaluate(std::vector<std::string> in) {
         // this condition will never be true, and make it out
         // of the while loop to return true. Otherwise master_evalaute will
         // return false here
+        //
+        std::cout << "Testing expression: " << new_expr1 << " and: " << new_expr2 << std::endl; 
+        std::cout << new_expr1 << " -> " << evaluate(new_expr1) << std::endl;
+        std::cout << new_expr2 << " -> " << evaluate(new_expr2) << "\n\n" << std::endl;
+
+
         if (evaluate(new_expr1) != evaluate(new_expr2)) {
 
             return false;
@@ -219,6 +287,7 @@ bool master_evaluate(std::vector<std::string> in) {
 
         // Increment the counter for the next set of values
         counter++;
+        vals.clear();
     }
     
     return true;
