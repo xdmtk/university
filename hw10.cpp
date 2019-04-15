@@ -486,6 +486,7 @@ std::string user_input() {
     
     std::string in;
     char c;
+    int input_counter = 0;
     in.push_back('(');
     // Append input characters to string until newline
     while ((c = getchar()) != '\n') {
@@ -497,10 +498,14 @@ std::string user_input() {
             in.push_back(',');
             in.push_back('(');
         }
+        input_counter++;
     }
     
     in.push_back(')');
     // Return the input
+    if (!input_counter) {
+        in.clear();
+    }
     return in;
 
 }
