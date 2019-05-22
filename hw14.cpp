@@ -103,6 +103,7 @@
 
 double monotonic(unsigned a, unsigned b);
 void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos);
+bool analyze_monotonic(unsigned int * sequence, int sequence_len);
 
 
 int main() {
@@ -172,7 +173,18 @@ void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos =
     increment_sequence(sequence, sequence_max_val, pos+1);
 }
 
-int analyze_monotonic(unsigned int * sequence, int sequence_len) {
+
+
+/**
+ * Analyzes the given sequence and returns whether the sequences
+ * is monotonic, ( both increasing or decreasing )
+ *
+ * @param sequence - Sequence to analyze
+ * @param sequence_len - Total length of sequence (b)
+ *
+ * @return bool - Whether the sequence is monotonic 
+ */
+bool analyze_monotonic(unsigned int * sequence, int sequence_len) {
 
     bool is_monotonic = false;
     
