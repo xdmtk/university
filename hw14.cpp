@@ -174,10 +174,32 @@ void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos =
 
 int analyze_monotonic(unsigned int * sequence, int sequence_len) {
 
-    '
+    bool is_monotonic = false;
+    
+    // Check increasing monotonic
+    for (int x = 0; x < sequence_len-1; ++x) {
+        if (sequence[x] <= sequence[x+1]) {
+            is_monotonic = true;
+        }
+        else {
+            if_monotonic = false;
+            break;
+        }
+    }
 
-
-
-
+    // Do not check decreasing if increasing monotonic is true
+    if (is_monotonic) {
+        return true;
+    }
+    
+    // Check decreasing monotonic
+    for (int x = 0; x < sequence_len-1; ++x) {
+        if (sequence[x] <= sequence[x+1]) {
+            is_monotonic = true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }
