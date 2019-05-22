@@ -125,11 +125,19 @@ double monotonic(unsigned a, unsigned b) {
     // Set limiter for increments
     int limit = pow(a, b);
     
+    // Init counter for monotonic sequences
+    int counter = 0;
+    
     // Begin constructing sequences
     for (int x = 0; x < limit; ++x) {
 
         // Increment the sequences as if it were base a
-        increment_sequence(sequence, a, 0);
+        increment_sequence(sequence, a);
+        
+        // Increment the counter if the sequence is monotonic 
+        counter += analyze_monotonic(sequence, b);
+        
+
 
         if (false) {
             for (int y = 0; y < b; ++y) {
@@ -142,7 +150,19 @@ double monotonic(unsigned a, unsigned b) {
 }
 
 
-void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos) {
+/**
+ * Increments sequence as if it were base 'sequence_max_val', starting from position 0
+ *
+ * Recursively called with increasing position parameter when reached 'sequence_max_val' 
+ * on particular digit
+ *
+ * @param sequence - Sequence of numbers
+ * @param sequence_max_val - Base of incremement
+ * @param pos - Position to start incrementing 
+ *
+ * @return void
+ */
+void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos = 0) {
 
     if (sequence[pos] < sequence_max_val-1) {
         sequence[pos]++;
@@ -150,5 +170,14 @@ void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos) 
     }
     sequence[pos] = 0;
     increment_sequence(sequence, sequence_max_val, pos+1);
+}
+
+int analyze_monotonic(unsigned int * sequence, int sequence_len) {
+
+    '
+
+
+
+
 
 }
