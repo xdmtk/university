@@ -1,4 +1,4 @@
-/* Nicholas Martinez - COSCI 542 - Hart - April 10 2019 - HOMEWORK 10
+/* Nicholas Martinez - COSCI 542 - Hart - May 22 2019 - HOMEWORK 14
 /
 /
 /!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-/
@@ -15,7 +15,7 @@
  *  ▐█▄▪▐█ ▐█▌·▐█•█▌▐█▄█▌▐███▌ ▐█▌·▐█▄█▌▐█•█▌▐█▄▄▌▐█▄▪▐█    !
  *   ▀▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀ ·▀▀▀  ▀▀▀  ▀▀▀ .▀  ▀ ▀▀▀  ▀▀▀▀     !
  *                                                          !
- *                      Homework #8                         !
+ *                      Homework #14                        !
  *                                                          !
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
  -!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!-!
@@ -105,6 +105,7 @@
 double monotonic(unsigned a, unsigned b);
 double strictly_monotonic(unsigned a, unsigned b);
 double ok_nesting(unsigned n);
+double duel(double a, double b);
 
 
 void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val);
@@ -116,6 +117,7 @@ void init_constants(std::map<std::string, double> & c_map);
 inline void exec_monotonic(std::map<std::string, double> constants);
 inline void exec_ok_nested(std::map<std::string, double> constants);
 inline void exec_strict_monotonic(std::map<std::string, double> constants);
+inline void exec_duel(std::map<std::string, double> constants);
 
 
 int main() {
@@ -127,6 +129,7 @@ int main() {
     exec_monotonic(c_map);
     exec_strict_monotonic(c_map);
     exec_ok_nested(c_map);
+    exec_duel(c_map);
 
     return 0;
 }
@@ -536,6 +539,21 @@ inline void exec_ok_nested(std::map<std::string, double> constants) {
 }
 
 
+inline void exec_duel(std::map<std::string, double> constants) {
+
+    // Trials for function 3 ok nested 
+    for (int x = 0; x < constants["trials"]; ++x) {
+        constants["duel_total"] += duel(constants["mr_a"], constants["mr_b"]);
+    }
+    
+    std::cout << "Average percentage of wins for Mr. A in a duel with probability range for Mr. A at %" 
+        << constants["mr_a"]*100 << " and probability range for Mr. B at %"
+        << constants["mr_b"] << " after 10 trials of 1,000,000 duels: %" 
+        << ((double)(constants["duel_total"]/(double)constants["trials"])*100) << std::endl;
+}
+
+
+
 /**
  *
  * Initializes map of constraints for executing trials
@@ -546,9 +564,12 @@ void init_constants(std::map<std::string, double>& c_map) {
     c_map["monotonic_total"] = 0;
     c_map["strict_monotonic_total"] = 0;
     c_map["nested_total"] = 0;
-    c_map["trials"] = 10;
+    c_map["duel_total"] = 0;
+    c_map["trials"] = 50;
     c_map["a"]  = 2;
     c_map["b"] = 3;
     c_map["nested_limit"] = 50;
+    c_map["mr_a"] = .43;
+    c_map["mr_b"] = .72;
 
 }
