@@ -143,39 +143,10 @@ int main() {
 
 }
 
-
-double strictly_monotonic(unsigned a, unsigned b) {
-    
-    // Allocate set of 'b' values for sequence
-    unsigned int * sequence = (unsigned int *) calloc(sizeof(unsigned int), b);
-    
-    // Set limiter for increments
-    int limit = 1000000;
-    
-    // Init counter for monotonic sequences
-    int counter = 0;
-    
-    // Begin constructing sequences
-    for (int x = 0; x < limit; ++x) {
-
-        // Increment the sequences as if it were base a
-        randomize_sequence(sequence, b, a);
-        
-        // Increment the counter if the sequence is monotonic 
-        counter += analyze_strict_monotonic(sequence, b);
-    }
-    
-    return (double)counter/(double)limit;
-}
-
-
-
-
-
-
-
-
 /**
+ * FUNCTION 1
+ *
+ *
  * Consider a sequence of b #'s, where each number 
  * is randomly chosen to be an int in [0, a). What is the probability 
  * that the sequence is monotonic? (That is, either (non-strictly) 
@@ -210,6 +181,60 @@ double monotonic(unsigned a, unsigned b) {
     
     return (double)counter/(double)limit;
 }
+
+
+/**
+ * FUNCTION 2
+ *
+ * 
+ * Just like the last problem, but now the sequence must be 
+ * strictly monotonic (no repeated numbers). (So, we'd expect 
+ * strictlyMonotonic(2, 3) to return 0.)
+ *
+ * Once again essentially a duplicate of the above, verbosity is 
+ * on purpose
+ *
+ * @param a - Base
+ * @param b - Sequence length
+ *
+ * @return - Returns percentage of monotonic sequences formed in a/b combination
+ */
+double strictly_monotonic(unsigned a, unsigned b) {
+    
+    // Allocate set of 'b' values for sequence
+    unsigned int * sequence = (unsigned int *) calloc(sizeof(unsigned int), b);
+    
+    // Set limiter for increments
+    int limit = 1000000;
+    
+    // Init counter for monotonic sequences
+    int counter = 0;
+    
+    // Begin constructing sequences
+    for (int x = 0; x < limit; ++x) {
+
+        // Increment the sequences as if it were base a
+        randomize_sequence(sequence, b, a);
+        
+        // Increment the counter if the sequence is monotonic 
+        counter += analyze_strict_monotonic(sequence, b);
+    }
+    
+    return (double)counter/(double)limit;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
