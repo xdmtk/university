@@ -98,12 +98,15 @@
 #include <string>
 #include <stack>
 #include <algorithm>
+#include <map>
 
 
 
 double monotonic(unsigned a, unsigned b);
+double strictly_monotonic(unsigned a, unsigned b);
 void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val);
 int analyze_monotonic(unsigned int * sequence, int sequence_len);
+int analyze_strict_monotonic(unsigned int * sequence, int sequence_len);
 
 
 int main() {
@@ -122,6 +125,36 @@ int main() {
 
 
 }
+
+
+double strictly_monotonic(unsigned a, unsigned b) {
+    
+    // Allocate set of 'b' values for sequence
+    unsigned int * sequence = (unsigned int *) calloc(sizeof(unsigned int), b);
+    
+    // Set limiter for increments
+    int limit = 1000000;
+    
+    // Init counter for monotonic sequences
+    int counter = 0;
+    
+    // Begin constructing sequences
+    for (int x = 0; x < limit; ++x) {
+
+        // Increment the sequences as if it were base a
+        randomize_sequence(sequence, b, a);
+        
+        // Increment the counter if the sequence is monotonic 
+        counter += analyze_strict_monotonic(sequence, b);
+    }
+    
+    return (double)counter/(double)limit;
+}
+
+
+
+
+
 
 
 
@@ -197,6 +230,61 @@ void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val) 
 int analyze_monotonic(unsigned int * sequence, int sequence_len) {
 
     bool is_monotonic = 0;
+    
+    // Check increasing monotonic
+    for (int x = 0; x < sequence_len-1; ++x) {
+        if (sequence[x] <= sequence[x+1]) {
+            is_monotonic = 1;
+        }
+        else {
+            is_monotonic = 0;
+            break;
+        }
+    }
+
+    // Do not check decreasing if increasing monotonic is true
+    if (is_monotonic) {
+        return true;
+    }
+    
+    // Check decreasing monotonic
+    for (int x = 0; x < sequence_len-1; ++x) {
+        if (sequence[x] >= sequence[x+1]) {
+            is_monotonic = 1;
+        }
+        else {
+            return 0;
+        }
+    }
+    return 1;
+
+}
+
+
+
+/**
+ * Analyzes the given sequence and returns whether the sequences
+ * is strictly monotonic, ( both increasing or decreasing )
+ *
+ * Very similar to analyze_monotonic, verbosity is on purpose
+ *
+ * @param sequence - Sequence to analyze
+ * @param sequence_len - Total length of sequence (b)
+ *
+ * @return bool - Whether the sequence is monotonic 
+ */
+int analyze_strict_monotonic(unsigned int * sequence, int sequence_len) {
+
+    bool is_monotonic = 0;
+
+    // Run duplicate check before analyzing monotonic
+    std::map<int,int> dupe_check;
+    for (int x = 0; x < sequence_len; ++x) {
+        dupe_check[sequence[x]]++;
+    }
+    std::map<int,int>::iterator it = dupe_check.begin();
+
+
     
     // Check increasing monotonic
     for (int x = 0; x < sequence_len-1; ++x) {
