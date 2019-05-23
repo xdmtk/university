@@ -112,14 +112,31 @@ int analyze_strict_monotonic(unsigned int * sequence, int sequence_len);
 int main() {
     
     double monotonic_total = 0;
+    double strict_monotonic_total = 0;
     int TRIALS = 10;
+    int a = 7;
+    int b = 5;
+    
+    
+    
     for (int x = 0; x < TRIALS; ++x) {
-        monotonic_total += monotonic(2,3);
+        monotonic_total += monotonic(a,b);
     }
 
-    std::cout << "Percentage of monotonic after 10 trials of 1,000,000 sequences: %" << ((monotonic_total/(double)TRIALS)*100) 
-        << std::endl;
+    std::cout << "Average percentage of monotonic for a(" << a << ") and b(" << b 
+        << ") after 10 trials of 1,000,000 sequences: %" 
+        << ((monotonic_total/(double)TRIALS)*100) << std::endl;
 
+
+
+
+    for (int x = 0; x < TRIALS; ++x) {
+        strict_monotonic_total += strictly_monotonic(a,b);
+    }
+    
+    std::cout << "Average percentage of strictly monotonic for a(" << a << ") and b(" << b 
+        << ") after 10 trials of 1,000,000 sequences: %" 
+        << ((strict_monotonic_total/(double)TRIALS)*100) << std::endl;
 
     return 0;
 
@@ -280,9 +297,21 @@ int analyze_strict_monotonic(unsigned int * sequence, int sequence_len) {
     // Run duplicate check before analyzing monotonic
     std::map<int,int> dupe_check;
     for (int x = 0; x < sequence_len; ++x) {
+        
+        // Enter values and seen types in map
         dupe_check[sequence[x]]++;
     }
+
+    // Iterate over map to find duplicate values ( map entries with over 1 as val )
     std::map<int,int>::iterator it = dupe_check.begin();
+    for ( ; it != dupe_check.end(); ++it) {
+        if (it->second > 1) {
+            //std::cout << "Found duplicate, not strictly monotonic" << std::endl;
+            return 0;
+        }
+    }
+
+
 
 
     
