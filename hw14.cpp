@@ -99,7 +99,7 @@
 #include <stack>
 #include <algorithm>
 #include <map>
-
+#include <thread>
 
 
 double monotonic(unsigned a, unsigned b);
@@ -112,54 +112,80 @@ int analyze_monotonic(unsigned int * sequence, int sequence_len);
 int analyze_strict_monotonic(unsigned int * sequence, int sequence_len);
 
 
+void init_constants(std::map<std::string, int> * c_map);
+inline void exec_monotonic(std::map<std::string, int> constants);
+inline void exec_ok_nested(std::map<std::string, int> constants);
+inline void exec_strict_monotonic(std::map<std::string, int> constants);
+
+
 int main() {
+
+    std::map<std::string, int> c_map;
+    init_constants(&c_map);
+
     
-    double monotonic_total = 0;
-    double strict_monotonic_total = 0;
-    double nested_total = 0;
-    int TRIALS = 10;
-    int a = 7;
-    int b = 5;
-    int nested_limit = 50;
-    
-   
-   /* 
-    for (int x = 0; x < TRIALS; ++x) {
-        monotonic_total += monotonic(a,b);
-    }
-
-    std::cout << "Average percentage of monotonic for a(" << a << ") and b(" << b 
-        << ") after 10 trials of 1,000,000 sequences: %" 
-        << ((monotonic_total/(double)TRIALS)*100) << std::endl;
-
-
-
-
-    for (int x = 0; x < TRIALS; ++x) {
-        strict_monotonic_total += strictly_monotonic(a,b);
-    }
-    
-    std::cout << "Average percentage of strictly monotonic for a(" << a << ") and b(" << b 
-        << ") after 10 trials of 1,000,000 sequences: %" 
-        << ((strict_monotonic_total/(double)TRIALS)*100) << std::endl;
-    */
-    
-
-    for (int x = 0; x < TRIALS; ++x) {
-        nested_total += ok_nesting(nested_limit);
-    }
-    
-    std::cout << "Average percentage of nested properly for n(" << nested_limit 
-        << ") after 10 trials of 1,000,000 sequences: %" 
-        << ((nested_total/(double)TRIALS)*100) << std::endl;
-
-
-
+    exec_monotonic(c_map);
+    exec_strict_monotonic(c_map);
+    exec_ok_nested(c_map);
 
     return 0;
 
 
 }
+
+
+inline void exec_ok_nested(std::map<std::string, int> constants) {
+    // Trials for function 3 ok nested 
+    for (int x = 0; x < constants["trials"]; ++x) {
+        constants["nested_total"] += ok_nesting(constants["nested_limit"]);
+    }
+    
+    std::cout << "Average percentage of nested properly for n(" << constants["nested_limit"]
+        << ") after 10 trials of 1,000,000 sequences: %" 
+        << ((constants["nested_total"]/(double)constants["trials"])*100) << std::endl;
+}
+
+
+
+inline void exec_strict_monotonic(std::map<std::string, int> constants) {
+    // Trials for function 2 strictly monotonic 
+    for (int x = 0; x < constants["trials"]; ++x) {
+        constants["strict_monotonic_total"] += strictly_monotonic(constants["a"],constants["b"]);
+    }
+    
+    std::cout << "Average percentage of strictly monotonic for a(" << constants["a"] << ") and b(" << constants["b"]
+        << ") after 10 trials of 1,000,000 sequences: %" 
+        << ((constants["strict_monotonic_total"] /(double)constants["trials"])*100) << std::endl;
+    
+}
+
+
+
+inline void exec_monotonic(std::map<std::string, int> constants) {
+    // Trials for function 1 monotonic 
+    for (int x = 0; x < constants["trials"]; ++x) {
+        constants["monotonic_total"] += monotonic(constants["a"], constants["b"]);
+    }
+
+    std::cout << "Average percentage of monotonic for a(" << constants["a"] << ") and b(" << constants["b"]
+        << ") after 10 trials of 1,000,000 sequences: %" 
+        << ((constants["monotonic_total"]/(double)constants["trials"])*100) << std::endl;
+}
+
+
+void init_constants(std::map<std::string, int> * c_map) {
+
+    c_map["monotonic_total"] = 0;
+    c_map["strict_monotonic_total"] = 0;
+    c_map["nested_total"] = 0;
+    c_map["trials"] = 10;
+    c_map["a"]  = 7;
+    c_map["b"] = 5;
+    c_map["nested_limit"] = 50;
+
+}
+
+
 
 /**
  * FUNCTION 1
