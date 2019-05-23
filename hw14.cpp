@@ -104,6 +104,9 @@
 
 double monotonic(unsigned a, unsigned b);
 double strictly_monotonic(unsigned a, unsigned b);
+double ok_nesting(unsigned n);
+
+
 void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val);
 int analyze_monotonic(unsigned int * sequence, int sequence_len);
 int analyze_strict_monotonic(unsigned int * sequence, int sequence_len);
@@ -113,12 +116,14 @@ int main() {
     
     double monotonic_total = 0;
     double strict_monotonic_total = 0;
+    double nested_total = 0;
     int TRIALS = 10;
     int a = 7;
     int b = 5;
+    int nested_limit = 50;
     
-    
-    
+   
+   /* 
     for (int x = 0; x < TRIALS; ++x) {
         monotonic_total += monotonic(a,b);
     }
@@ -137,6 +142,19 @@ int main() {
     std::cout << "Average percentage of strictly monotonic for a(" << a << ") and b(" << b 
         << ") after 10 trials of 1,000,000 sequences: %" 
         << ((strict_monotonic_total/(double)TRIALS)*100) << std::endl;
+    */
+    
+
+    for (int x = 0; x < TRIALS; ++x) {
+        nested_total += ok_nesting(nested_limit);
+    }
+    
+    std::cout << "Average percentage of nested properly for n(" << nested_limit 
+        << ") after 10 trials of 1,000,000 sequences: %" 
+        << ((nested_total/(double)TRIALS)*100) << std::endl;
+
+
+
 
     return 0;
 
@@ -178,7 +196,7 @@ double monotonic(unsigned a, unsigned b) {
         // Increment the counter if the sequence is monotonic 
         counter += analyze_monotonic(sequence, b);
     }
-    
+    free(sequence); 
     return (double)counter/(double)limit;
 }
 
@@ -220,11 +238,75 @@ double strictly_monotonic(unsigned a, unsigned b) {
         counter += analyze_strict_monotonic(sequence, b);
     }
     
+    free(sequence); 
     return (double)counter/(double)limit;
 }
 
 
 
+
+/**
+ * FUNCTION 3
+ *  Randomly shuffle 2n chars, where n of the chars are ( and n of the chars are ).
+ *  What is the probability that the parens will properly nest?
+ *  For example, with n == 2 we would have
+ *  (())    properly nested
+ *  ()()    properly nested
+ *  ())(    not properly nested
+ *  )(()    not properly nested
+ *  )()(    not properly nested
+ *  ))((    not properly nested
+ *
+ * @param n - Amount of chars
+ *
+ * @return - Returns percentage of monotonic sequences formed in a/b combination
+ */
+double ok_nesting(unsigned n) {
+    
+    // Seed random generator 
+    srand(time(NULL));
+
+    // Allocate 2n bytes space for parenthesis tokens and sequence to hold
+    char parens[] = { '(' , ')' };
+
+    int ok_nest = 0;
+    int TRIALS = 1000000;
+    
+    for (int y = 0; y < TRIALS; ++y) {
+
+        char * paren_sequence = (char *) calloc(sizeof(char), 2*n);
+        std::stack<char> paren_stack;
+        
+        // Fill parenthesis sequence with either ( or )
+        for (int x = 0; x < 2*n; ++x) {
+            paren_sequence[x] = parens[rand() % 2];
+        }
+
+        // Begin stack push/pop operations on parens
+        for (int x = 0; x < 2*n; ++x) {
+            
+            // Push first element, or push opening parens
+            if (!x || paren_sequence[x] == '(') {
+                paren_stack.push(paren_sequence[x]);
+                continue;
+            }
+
+            if (paren_sequence[x] == ')' && paren_stack.size() && paren_stack.top() == '(') {
+                paren_stack.pop();
+            }
+            else {
+                paren_stack.push(paren_sequence[x]);
+            }
+        }
+        if (!paren_stack.size()) {
+            ok_nest++;
+        }
+        free(paren_sequence);
+    }
+    
+    return (double)ok_nest/(double)TRIALS;
+
+}
 
 
 
