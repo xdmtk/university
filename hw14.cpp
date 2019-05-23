@@ -102,13 +102,20 @@
 
 
 double monotonic(unsigned a, unsigned b);
-void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos = 0);
+void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val);
 int analyze_monotonic(unsigned int * sequence, int sequence_len);
 
 
 int main() {
     
-    monotonic(2,3);
+    double monotonic_total = 0;
+    int TRIALS = 10;
+    for (int x = 0; x < TRIALS; ++x) {
+        monotonic_total += monotonic(2,3);
+    }
+
+    std::cout << "Percentage of monotonic after 10 trials of 1,000,000 sequences: %" << ((monotonic_total/(double)TRIALS)*100) 
+        << std::endl;
 
 
     return 0;
@@ -136,7 +143,7 @@ double monotonic(unsigned a, unsigned b) {
     unsigned int * sequence = (unsigned int *) calloc(sizeof(unsigned int), b);
     
     // Set limiter for increments
-    int limit = pow(a, b);
+    int limit = 1000000;
     
     // Init counter for monotonic sequences
     int counter = 0;
@@ -145,7 +152,7 @@ double monotonic(unsigned a, unsigned b) {
     for (int x = 0; x < limit; ++x) {
 
         // Increment the sequences as if it were base a
-        increment_sequence(sequence, a);
+        randomize_sequence(sequence, b, a);
         
         // Increment the counter if the sequence is monotonic 
         counter += analyze_monotonic(sequence, b);
@@ -167,16 +174,13 @@ double monotonic(unsigned a, unsigned b) {
  *
  * @return void
  */
-void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos) {
-    
-    if (sequence[pos] < sequence_max_val-1) {
-        sequence[pos]++;
-        return;
+void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val) {
+
+    srand(time(NULL)); 
+    for (int x = 0; x < sequence_len; ++x) {
+        sequence[x] = rand() % max_val;
     }
 
-    // If we are approaching the base value, reset to 0 and call recursively to inc next val
-    sequence[pos] = 0;
-    increment_sequence(sequence, sequence_max_val, pos+1);
 }
 
 
