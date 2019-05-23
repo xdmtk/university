@@ -102,13 +102,13 @@
 
 
 double monotonic(unsigned a, unsigned b);
-void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos);
-bool analyze_monotonic(unsigned int * sequence, int sequence_len);
+void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos = 0);
+int analyze_monotonic(unsigned int * sequence, int sequence_len);
 
 
 int main() {
     
-    monotonic(7,3);
+    monotonic(2,3);
 
 
     return 0;
@@ -139,14 +139,19 @@ double monotonic(unsigned a, unsigned b) {
         counter += analyze_monotonic(sequence, b);
         
 
-
+        // TODO: Remove debug
         if (false) {
             for (int y = 0; y < b; ++y) {
                 std::cout << sequence[y];
             }
-            std::cout << std::endl;
+            std::cout << " is monotinic ? : " << analyze_monotonic(sequence, b)  << std::endl;
         }
     }
+
+    std::cout << "Monotonic percentage for a(" << a << ")" 
+        << " and b(" << b << ") => %" << ((((double)counter/(double)limit)) 
+        * 100) << std::endl;
+    
 
 }
 
@@ -163,12 +168,14 @@ double monotonic(unsigned a, unsigned b) {
  *
  * @return void
  */
-void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos = 0) {
-
+void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos) {
+    
     if (sequence[pos] < sequence_max_val-1) {
         sequence[pos]++;
         return;
     }
+
+    // If we are approaching the base value, reset to 0 and call recursively to inc next val
     sequence[pos] = 0;
     increment_sequence(sequence, sequence_max_val, pos+1);
 }
@@ -184,17 +191,17 @@ void increment_sequence(unsigned int * sequence, int sequence_max_val, int pos =
  *
  * @return bool - Whether the sequence is monotonic 
  */
-bool analyze_monotonic(unsigned int * sequence, int sequence_len) {
+int analyze_monotonic(unsigned int * sequence, int sequence_len) {
 
-    bool is_monotonic = false;
+    bool is_monotonic = 0;
     
     // Check increasing monotonic
     for (int x = 0; x < sequence_len-1; ++x) {
         if (sequence[x] <= sequence[x+1]) {
-            is_monotonic = true;
+            is_monotonic = 1;
         }
         else {
-            if_monotonic = false;
+            is_monotonic = 0;
             break;
         }
     }
@@ -206,12 +213,13 @@ bool analyze_monotonic(unsigned int * sequence, int sequence_len) {
     
     // Check decreasing monotonic
     for (int x = 0; x < sequence_len-1; ++x) {
-        if (sequence[x] <= sequence[x+1]) {
-            is_monotonic = true;
+        if (sequence[x] >= sequence[x+1]) {
+            is_monotonic = 1;
         }
         else {
-            return false;
+            return 0;
         }
     }
+    return 1;
 
 }
