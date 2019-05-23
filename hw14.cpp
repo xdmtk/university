@@ -129,8 +129,6 @@ int main() {
     exec_ok_nested(c_map);
 
     return 0;
-
-
 }
 
 
@@ -288,7 +286,62 @@ double ok_nesting(unsigned n) {
 
 
 
+/**
+ * FUNCTION 4
+ *
+ *  Mr. A and Mr. B can’t reach an accord on the most pleasing way to format a C++ statement 
+ *  block, so they decide to fight a duel with pistols. The bullets are laced with cyanide, 
+ *  so the first hit will be fatal. Mr. A shoots first, and the duelists courteously take turns 
+ *  shooting. Mr. A hits his target with probability a, and Mr. B hits his target with probability b. 
+ *
+ *  They continue until someone is hit.
+ *  What is the probability that Mr. A wins the duel?
+ *
+ * @return - 
+ */
+double duel(double a, double b) {
+    
+    // First assert that a and b are percentages 
+    assert((a < 1) && (b < 1));
 
+    // Set duel win counters to 0
+    int a_win = 0;
+    int b_win = 0;
+    
+    // Bring percentage into number 0 - 100
+    a *= 100;
+    b *= 100;
+   
+
+    // Start 1 million trials
+    for (int x = 0; x < 1000000; ++x) {
+
+        // Generate a random integer and add a random double value between 0 - 1
+        // to simulate generating a random double between 0-100
+        double a_shot = (rand() % 100) + ((double)rand()/RAND_MAX);
+
+        // If the number generated falls within the range of 0 - probablity of a
+        // then Mr. A's shot has landed in the probable range of accuracy
+        if (a_shot <= a) {
+
+            // Thus Mr. A has won the duel
+            a_win++;
+        }
+
+        // Since Mr. A has won, no need to calculate Mr. B's shot
+        continue;
+        
+
+        // If Mr. A missed, then repeat the calculation with Mr. B and 
+        // the probable range of accuracy listed for Mr. B
+        double b_shot = (rand() % 100) + ((double)rand()/RAND_MAX);
+        if (b_shot <= b) {
+            b_win++;
+        }
+    }
+
+    return (double)a_win/1000000.0;
+}
 
 
 
@@ -442,20 +495,22 @@ int analyze_strict_monotonic(unsigned int * sequence, int sequence_len) {
  * 
  * @param constants - Map full of operating constraints for executing trials
  */
-inline void exec_ok_nested(std::map<std::string, double> constants) {
-    // Trials for function 3 ok nested 
+
+inline void exec_monotonic(std::map<std::string, double> constants) {
+
+    // Trials for function 1 monotonic 
     for (int x = 0; x < constants["trials"]; ++x) {
-        constants["nested_total"] += ok_nesting(constants["nested_limit"]);
+        constants["monotonic_total"] += monotonic(constants["a"], constants["b"]);
     }
-    
-    std::cout << "Average percentage of nested properly for n(" << constants["nested_limit"]
+
+    std::cout << "Average percentage of monotonic for a(" << constants["a"] << ") and b(" << constants["b"]
         << ") after 10 trials of 1,000,000 sequences: %" 
-        << ((double)(constants["nested_total"]/(double)constants["trials"])*100) << std::endl;
+        << (((double)constants["monotonic_total"]/(double)constants["trials"])*100) << std::endl;
 }
 
 
-
 inline void exec_strict_monotonic(std::map<std::string, double> constants) {
+
     // Trials for function 2 strictly monotonic 
     for (int x = 0; x < constants["trials"]; ++x) {
         constants["strict_monotonic_total"] += strictly_monotonic(constants["a"],constants["b"]);
@@ -468,18 +523,17 @@ inline void exec_strict_monotonic(std::map<std::string, double> constants) {
 }
 
 
+inline void exec_ok_nested(std::map<std::string, double> constants) {
 
-inline void exec_monotonic(std::map<std::string, double> constants) {
-    // Trials for function 1 monotonic 
+    // Trials for function 3 ok nested 
     for (int x = 0; x < constants["trials"]; ++x) {
-        constants["monotonic_total"] += monotonic(constants["a"], constants["b"]);
+        constants["nested_total"] += ok_nesting(constants["nested_limit"]);
     }
-
-    std::cout << "Average percentage of monotonic for a(" << constants["a"] << ") and b(" << constants["b"]
+    
+    std::cout << "Average percentage of nested properly for n(" << constants["nested_limit"]
         << ") after 10 trials of 1,000,000 sequences: %" 
-        << (((double)constants["monotonic_total"]/(double)constants["trials"])*100) << std::endl;
+        << ((double)(constants["nested_total"]/(double)constants["trials"])*100) << std::endl;
 }
-
 
 
 /**
