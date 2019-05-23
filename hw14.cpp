@@ -118,6 +118,18 @@ int main() {
 
 
 
+/**
+ * Consider a sequence of b #'s, where each number 
+ * is randomly chosen to be an int in [0, a). What is the probability 
+ * that the sequence is monotonic? (That is, either (non-strictly) 
+ * monotonically increasing or decreasing.)
+ * For instance, if a were 2 and b were 3, we'd have 2^3 == 8 possibilities:
+ *
+ * @param a - Base
+ * @param b - Sequence length
+ *
+ * @return - Returns percentage of monotonic sequences formed in a/b combination
+ */
 double monotonic(unsigned a, unsigned b) {
     
     // Allocate set of 'b' values for sequence
@@ -137,22 +149,9 @@ double monotonic(unsigned a, unsigned b) {
         
         // Increment the counter if the sequence is monotonic 
         counter += analyze_monotonic(sequence, b);
-        
-
-        // TODO: Remove debug
-        if (false) {
-            for (int y = 0; y < b; ++y) {
-                std::cout << sequence[y];
-            }
-            std::cout << " is monotinic ? : " << analyze_monotonic(sequence, b)  << std::endl;
-        }
     }
-
-    std::cout << "Monotonic percentage for a(" << a << ")" 
-        << " and b(" << b << ") => %" << ((((double)counter/(double)limit)) 
-        * 100) << std::endl;
     
-
+    return (double)counter/(double)limit;
 }
 
 
