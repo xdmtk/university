@@ -135,6 +135,7 @@ int main() {
     exec_ok_nested(c_map);
     exec_duel(c_map);
     exec_flip(c_map);
+    exec_pretty_lady(c_map);
 
     return 0;
 }
@@ -414,7 +415,7 @@ double pretty_lady(unsigned gridX, unsigned gridY, unsigned ladyX, unsigned lady
         int x = 0;
         int y = 0;
         while (x < gridX && y < gridY) {
-            if (rand % 2) {
+            if (rand() % 2) {
                 if (x < gridX) {
                     x++;
                     continue;
@@ -667,7 +668,7 @@ inline void exec_pretty_lady(std::map<std::string, double> constants) {
 
     // Trials for function 5 pretty_lady
     for (int x = 0; x < constants["trials"]; ++x) {
-        constants["p_lady_total"] += pretty_lady(contants["gridx"], contants["gridy"], 
+        constants["p_lady_total"] += pretty_lady(constants["gridx"], constants["gridy"], 
                                         constants["pladyx"], constants["pladyy"]);
     }
     
@@ -678,7 +679,7 @@ inline void exec_pretty_lady(std::map<std::string, double> constants) {
         << " with grid size x(" 
         << constants["gridx"]  << ")"
         <<  " and y("
-        << contants["gridy"] << ")"
+        << constants["gridy"] << ")"
         << " is " 
         << ((double)(constants["p_lady_total"]/(double)constants["trials"])*100) << std::endl;
 
