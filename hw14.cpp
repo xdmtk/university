@@ -85,7 +85,13 @@
 
 
         SAMPLE OUPUT:::::
-
+            [~/school/discr] (master) > run
+            Average percentage of wins for Mr. A in a duel with probability range for Mr. A at %43 and probability range for Mr. B at %0.72 after 10 trials of 1,000,000 duels: %43.452
+            Average percentage of strictly monotonic for a(2) and b(3) after 10 trials of 1,000,000 sequences: %0
+            Average percentage of monotonic for a(2) and b(3) after 10 trials of 1,000,000 sequences: %79.5441
+            Average percentage of passes on pretty lady with grid coords x(13) and y(9) with grid size x(20) and y(20) is 0
+            Average percentage of 7 heads with probability 0.72 and flips 20 : %0.05857
+            Average percentage of nested properly for n(50) after 10 trials of 1,000,000 sequences: %0.14992
 
  *
  *
