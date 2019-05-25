@@ -357,7 +357,8 @@ double duel(double a, double b) {
  */
 
 double flip(double p, unsigned n, unsigned k) {
-
+    
+    srand(time(NULL));
     const int trials = 1000000;
     const int p_prob = p*100;
     double main_count = 0;
@@ -402,11 +403,40 @@ double flip(double p, unsigned n, unsigned k) {
  *      So, I would expect prettyLady(2, 2, 1, 1) to return a number close to 0.667
 */
 double prettyLady(unsigned gridX, unsigned gridY, unsigned ladyX, unsigned ladyY) {
+    
+    srand(time(NULL));
+    const int trials = 1000000;
+    int passed_lady = 0;
+    
+    for (int rounds = 0; rounds < trials; ++rounds) {
+        int x = 0;
+        int y = 0;
+        while (x < gridX && y < gridY) {
+            if (rand % 2) {
+                if (x < gridX) {
+                    x++;
+                    continue;
+                }
+                if (y < gridY) {
+                    y++;
+                }
+            }
+            else {
+                if (y < gridY) {
+                    y++;
+                    continue;
+                }
+                if (x < gridX) {
+                    x++;
+                }
+            }
+            if (x == ladyX && y == ladyY) {
+                passed_lady++;
+            }
+        }
+    }
 
-
-
-
-
+    return (double)passed_lady/(double)trials;
 }
 
 
