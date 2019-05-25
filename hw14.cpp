@@ -671,13 +671,16 @@ inline void exec_pretty_lady(std::map<std::string, double> constants) {
                                         constants["pladyx"], constants["pladyy"]);
     }
     
-    std::cout << "Average percentage of " << constants["heads"] << " heads with probability " 
-        << constants["probability"] 
-        << " and flips "
-        << constants["flips"]
-        << " : %"
-        << ((double)(constants["flip_total"]/(double)constants["trials"])*100) << std::endl;
-       
+    std::cout << "Average percentage of passes on pretty lady with grid coords x(" 
+        << constants["pladyx"] << ")" 
+        << " and y("
+        << constants["pladyy"] << ")"
+        << " with grid size x(" 
+        << constants["gridx"]  << ")"
+        <<  " and y("
+        << contants["gridy"] << ")"
+        << " is " 
+        << ((double)(constants["p_lady_total"]/(double)constants["trials"])*100) << std::endl;
 
 }
 
