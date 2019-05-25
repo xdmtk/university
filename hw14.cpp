@@ -80,6 +80,13 @@
         So, I would expect prettyLady(2, 2, 1, 1) to return a number close to 0.667
 
         Write a main that calls the above 6 functions. main’s job is to convince you that your functions are probably right. You decide the details of your main.
+
+
+
+
+        SAMPLE OUPUT:::::
+
+
  *
  *
  *
@@ -129,7 +136,30 @@ int main() {
     std::map<std::string, double> c_map;
     init_constants(c_map);
 
-    
+    /**
+     * WARNING !!!!! THIS PROGRAM TAKES A VERY LONG TIME TO
+     * FINISH!! UNCOMMENT THE MULTITHREADING SECTION BELOW
+     * AND COMPILE WITH FLAG '-pthread' TO SPEED UP EXECUTION!!!
+     */
+    /*
+        std::thread t_monotonic(exec_monotonic, c_map);
+        std::thread t_strict_monotonic(exec_strict_monotonic, c_map);
+        std::thread t_ok_nested(exec_ok_nested, c_map);
+        std::thread t_duel(exec_duel, c_map);
+        std::thread t_flip(exec_flip, c_map);
+        std::thread t_plady(exec_pretty_lady, c_map);
+
+        t_monotonic.join();
+        t_strict_monotonic.join();
+        t_ok_nested.join();
+        t_duel.join();
+        t_flip.join();
+        t_plady.join();
+
+        return 0;
+    */
+
+
     exec_monotonic(c_map);
     exec_strict_monotonic(c_map);
     exec_ok_nested(c_map);
