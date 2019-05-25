@@ -106,6 +106,7 @@ double monotonic(unsigned a, unsigned b);
 double strictly_monotonic(unsigned a, unsigned b);
 double ok_nesting(unsigned n);
 double duel(double a, double b);
+double flip(double p, unsigned n, unsigned k);
 
 
 void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val);
@@ -118,6 +119,7 @@ inline void exec_monotonic(std::map<std::string, double> constants);
 inline void exec_ok_nested(std::map<std::string, double> constants);
 inline void exec_strict_monotonic(std::map<std::string, double> constants);
 inline void exec_duel(std::map<std::string, double> constants);
+inline void exec_flip(std::map<std::string, double> constants);
 
 
 int main() {
@@ -130,6 +132,7 @@ int main() {
     exec_strict_monotonic(c_map);
     exec_ok_nested(c_map);
     exec_duel(c_map);
+    exec_flip(c_map);
 
     return 0;
 }
@@ -347,7 +350,64 @@ double duel(double a, double b) {
 }
 
 
+/**
+ * We have a crooked coin that comes up heads with probability p
+ *  We flip the coin n times; what is the probability that we 
+ *  get exactly k heads?
+ */
 
+double flip(double p, unsigned n, unsigned k) {
+
+    const int trials = 1000000;
+    const int p_prob = p*100;
+    double main_count = 0;
+
+    for (int x = 0; x < trials; ++x) {
+        
+        int count = 0;
+
+        for (int y = 0; y < n; ++y) {
+            double flip = (rand() % 100) + ((double)rand()/RAND_MAX);
+            if (flip <= p_prob) {
+                count++;
+            }
+        }
+
+        if (count == k) {
+            main_count++;
+        }
+    }
+
+    return main_count/(double)trials;
+}
+
+
+
+
+/**
+ * 
+ * 
+ *  I need to travel from the origin to the point (gridX, gridY), 
+ *  following the integer grid lines. As usual, I require that my distance be 
+ *  minimum (which is gridX + gridY). Among all possible paths, I pick one at random and follow it.
+ *  Unknown to me, there is a pretty lady at the (ladyX, ladyY) intersection. 
+ *  What is the probability that I will pass her intersection on the way my (gridX, gridY) destination?
+ *      For example, if (gridX, gridY) were (2, 2) and (ladyX, ladyY) were (1,1), then I have 6 possible paths:
+ *          NNEE: no pretty lady
+ *          NENE: pretty lady
+ *          NEEN: pretty lady
+ *          ENNE: pretty lady
+ *          ENEN: pretty lady
+ *          EENN: no pretty lady
+ *      So, I would expect prettyLady(2, 2, 1, 1) to return a number close to 0.667
+*/
+double prettyLady(unsigned gridX, unsigned gridY, unsigned ladyX, unsigned ladyY) {
+
+
+
+
+
+}
 
 
 
@@ -553,6 +613,22 @@ inline void exec_duel(std::map<std::string, double> constants) {
 }
 
 
+inline void exec_flip(std::map<std::string, double> constants) {
+
+    // Trials for function 3 ok nested 
+    for (int x = 0; x < constants["trials"]; ++x) {
+        constants["flip_total"] += flip(constants["probability"], constants["flips"], constants["heads"]);
+    }
+    
+    std::cout << "Average percentage of " << constants["heads"] << " heads with probability " 
+        << constants["probability"] 
+        << " and flips "
+        << constants["flips"]
+        << " : %"
+        << ((double)(constants["flip_total"]/(double)constants["trials"])*100) << std::endl;
+       
+
+}
 
 /**
  *
@@ -565,11 +641,15 @@ void init_constants(std::map<std::string, double>& c_map) {
     c_map["strict_monotonic_total"] = 0;
     c_map["nested_total"] = 0;
     c_map["duel_total"] = 0;
+    c_map["flip_total"] = 0;
     c_map["trials"] = 50;
     c_map["a"]  = 2;
     c_map["b"] = 3;
     c_map["nested_limit"] = 50;
     c_map["mr_a"] = .43;
     c_map["mr_b"] = .72;
+    c_map["probability"] = .72;
+    c_map["flips"] = 20;
+    c_map["heads"] = 7;
 
 }
