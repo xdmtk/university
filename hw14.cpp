@@ -107,6 +107,7 @@ double strictly_monotonic(unsigned a, unsigned b);
 double ok_nesting(unsigned n);
 double duel(double a, double b);
 double flip(double p, unsigned n, unsigned k);
+double pretty_lady(unsigned gridX, unsigned gridY, unsigned ladyX, unsigned ladyY);
 
 
 void randomize_sequence(unsigned int * sequence, int sequence_len, int max_val);
@@ -120,6 +121,7 @@ inline void exec_ok_nested(std::map<std::string, double> constants);
 inline void exec_strict_monotonic(std::map<std::string, double> constants);
 inline void exec_duel(std::map<std::string, double> constants);
 inline void exec_flip(std::map<std::string, double> constants);
+inline void exec_pretty_lady(std::map<std::string, double> constants);
 
 
 int main() {
@@ -402,7 +404,7 @@ double flip(double p, unsigned n, unsigned k) {
  *          EENN: no pretty lady
  *      So, I would expect prettyLady(2, 2, 1, 1) to return a number close to 0.667
 */
-double prettyLady(unsigned gridX, unsigned gridY, unsigned ladyX, unsigned ladyY) {
+double pretty_lady(unsigned gridX, unsigned gridY, unsigned ladyX, unsigned ladyY) {
     
     srand(time(NULL));
     const int trials = 1000000;
@@ -645,9 +647,28 @@ inline void exec_duel(std::map<std::string, double> constants) {
 
 inline void exec_flip(std::map<std::string, double> constants) {
 
-    // Trials for function 3 ok nested 
+    // Trials for function 4 flip
     for (int x = 0; x < constants["trials"]; ++x) {
         constants["flip_total"] += flip(constants["probability"], constants["flips"], constants["heads"]);
+    }
+    
+    std::cout << "Average percentage of " << constants["heads"] << " heads with probability " 
+        << constants["probability"] 
+        << " and flips "
+        << constants["flips"]
+        << " : %"
+        << ((double)(constants["flip_total"]/(double)constants["trials"])*100) << std::endl;
+       
+
+}
+
+
+inline void exec_pretty_lady(std::map<std::string, double> constants) {
+
+    // Trials for function 5 pretty_lady
+    for (int x = 0; x < constants["trials"]; ++x) {
+        constants["p_lady_total"] += pretty_lady(contants["gridx"], contants["gridy"], 
+                                        constants["pladyx"], constants["pladyy"]);
     }
     
     std::cout << "Average percentage of " << constants["heads"] << " heads with probability " 
@@ -672,14 +693,28 @@ void init_constants(std::map<std::string, double>& c_map) {
     c_map["nested_total"] = 0;
     c_map["duel_total"] = 0;
     c_map["flip_total"] = 0;
+    c_map["p_lady_total"] = 0;
+   
     c_map["trials"] = 50;
+   
+    
     c_map["a"]  = 2;
     c_map["b"] = 3;
     c_map["nested_limit"] = 50;
+  
+    
     c_map["mr_a"] = .43;
     c_map["mr_b"] = .72;
+    
+    
     c_map["probability"] = .72;
     c_map["flips"] = 20;
     c_map["heads"] = 7;
+
+
+    c_map["gridx"] = 20;
+    c_map["gridy"] = 20;
+    c_map["pladyx"] = 13;
+    c_map["pladyy"] = 9;
 
 }
