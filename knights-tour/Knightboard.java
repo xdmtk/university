@@ -1,3 +1,9 @@
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 class KnightBoard {
     private int board[][];
     private int numRows, numCols;
@@ -18,11 +24,13 @@ class KnightBoard {
 
         // constructor -- data comes from a file
     public KnightBoard(String fileName) throws IOException {
+
         // This is how mine starts, just to give you an idea
         // Also, this is an exception to the rule about not changing
         // any of the code. If you are more comfortable accessing
         // the file and/or reading the data a different way, feel
         // free to do so.
+
         boolean inputError = false;
         int int1, int2;
         StringTokenizer input;
@@ -45,6 +53,7 @@ class KnightBoard {
         // output.
     }
     public String toString () {
+        return "Foo";
     }
     // For easy checking of your answers
     public String toString2 () {
@@ -62,11 +71,11 @@ class KnightBoard {
     // Check if this is a legal square to move to, i.e., is it actually on
     // the board and has it not been entered yet
     private boolean tryMove (Pair sq){
-
+        return true;
     }
     // The number of legal moves from this square
     private int moveCt (Pair sq){
-
+        return 0;
     }
 
     // sq is the square the knight is on. Update the square to its new
@@ -82,8 +91,9 @@ class KnightBoard {
         Pair curSpot = new Pair(start), nextMove;
         boolean done = false;
         while (!done) {
-
+            done = true;
         }
+
     }
 
         // Who are you? Put your name here.
