@@ -97,8 +97,16 @@ class KnightBoard {
     }
 
     public String toString () {
-        return "Foo";
+        StringBuilder res = new StringBuilder(" ");
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < numCols; col++) {
+                res.append(String.valueOf(board[row][col]));
+            }
+            res.append("\n ");
+        }
+        return res.toString();
     }
+
     // For easy checking of your answers
     public String toString2 () {
         String result = new String();
@@ -109,6 +117,9 @@ class KnightBoard {
         }
         return result;
     }
+
+
+
     // These are the 3 methods I use to get the job done. You do not have to use
     // these, but I found them useful. Ee sure to use the Pair class as much as
     // possible
