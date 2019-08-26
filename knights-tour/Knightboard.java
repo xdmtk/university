@@ -30,6 +30,8 @@ class KnightBoard {
         /* First we need to instantiate our BufferedReader object to begin parsing the file. */
         BufferedReader br = new BufferedReader(new FileReader(fileName));
 
+        this.move = new ArrayList<Pair>();
+
         /* Next we declare string buffer for line-by-line parsing */
         String currentLine;
 
@@ -59,6 +61,11 @@ class KnightBoard {
                          this.numCols = Integer.parseInt(st.nextToken());
                          this.numRows = Integer.parseInt(st.nextToken());
 
+                        /* We can now instantiate the board with all zeros */
+                        this.board = new int[numRows][numCols];
+                        for (int r = 0; r < 8; r++)
+                            for (int c = 0; c < 8; c++)
+                                this.board[r][c] = 0;
                          /* After parsing, we 'increment' our enum to the next line state */
                          rs = DataReadState.START_SQUARE;
                          break;
