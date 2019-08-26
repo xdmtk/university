@@ -27,18 +27,39 @@ class KnightBoard {
     // constructor -- data comes from a file
     public KnightBoard(String fileName) throws IOException {
 
+        /* First we need to instantiate our BufferedReader object to begin parsing the file. */
         BufferedReader br = new BufferedReader(new FileReader(fileName));
+
+        /* Next we declare string buffer for line-by-line parsing */
         String currentLine;
+
+        /* For extra verbosity, we set our enum value to the expected value of the given
+         * line, and declare our StringTokenizer object
+         */
         DataReadState rs = DataReadState.BOARD_SIZE;
         StringTokenizer st;
 
+        /* Now we can iterate through the file line by line, and exit when EOF is reached */
         while ((currentLine = br.readLine()) != null) {
+
+            /* Making some heavy assumptions about the input format, the first few lines are separated
+             * out by colons ( with the exception of the piece movement data, with the label on
+             * left side and the values on the right, so we can split the given string and take the
+             * right half to parse values
+             */
             if (currentLine.contains(":") && rs != DataReadState.PIECE_MOVEMENT){
+
+                /* Now we can read the tokens and assign them accordingly based on the
+                 * state of the DataReadState enum
+                 */
                 st = new StringTokenizer(currentLine.split(":")[1]);
                 switch (rs) {
+
                     case BOARD_SIZE:
                          this.numCols = Integer.parseInt(st.nextToken());
                          this.numRows = Integer.parseInt(st.nextToken());
+
+                         /* After parsing, we 'increment' our enum to the next line state */
                          rs = DataReadState.START_SQUARE;
                          break;
 
@@ -49,9 +70,14 @@ class KnightBoard {
                         break;
                 }
             }
+            /* Once we hit the PIECE_MOVEMENT state in our parsing enum, we can skip the initial
+             * colon labeled line and start parsing values directly line by line thereafter
+             */
             else {
                 if (currentLine.contains(":"))
                    continue;
+
+                /* With that data being appending to our ArrayList of legal moves */
                 st = new StringTokenizer(currentLine);
                 move.add(new Pair(Integer.parseInt(st.nextToken()),
                         Integer.parseInt(st.nextToken())));
