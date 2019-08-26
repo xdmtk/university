@@ -1,3 +1,4 @@
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.IOException;
@@ -9,6 +10,7 @@ class KnightBoard {
     private int numRows, numCols;
     private Pair start;
     private ArrayList<Pair> move;
+    private enum DataReadState {BOARD_SIZE, START_SQUARE, PIECE_MOVEMENT};
 
 
     // default constructor -- you might want to add a little to this
@@ -22,28 +24,43 @@ class KnightBoard {
         start = new Pair(-1, -1);
     }
 
-        // constructor -- data comes from a file
+    // constructor -- data comes from a file
     public KnightBoard(String fileName) throws IOException {
 
-        // This is how mine starts, just to give you an idea
-        // Also, this is an exception to the rule about not changing
-        // any of the code. If you are more comfortable accessing
-        // the file and/or reading the data a different way, feel
-        // free to do so.
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        String currentLine;
+        DataReadState rs = DataReadState.BOARD_SIZE;
+        StringTokenizer st;
 
-        boolean inputError = false;
-        int int1, int2;
-        StringTokenizer input;
-        BufferedReader inFile = new BufferedReader(new FileReader(fileName));
-        String lineStart;
-        String inputLine = inFile.readLine();
-        input = new StringTokenizer(inputLine);
-        lineStart = input.nextToken(); // read "board"
-        lineStart = input.nextToken(); // read "size:" numRows = Integer.parseInt(input.nextToken());
-        numCols = Integer.parseInt(input.nextToken());
+        while ((currentLine = br.readLine()) != null) {
+            if (currentLine.contains(":") && rs != DataReadState.PIECE_MOVEMENT){
+                st = new StringTokenizer(currentLine.split(":")[1]);
+                switch (rs) {
+                    case BOARD_SIZE:
+                         this.numCols = Integer.parseInt(st.nextToken());
+                         this.numRows = Integer.parseInt(st.nextToken());
+                         rs = DataReadState.START_SQUARE;
+                         break;
 
-        board = new int[numRows][numCols];
-    }
+                    case START_SQUARE:
+                        start = new Pair(Integer.parseInt(st.nextToken()),
+                                Integer.parseInt(st.nextToken()));
+                        rs = DataReadState.PIECE_MOVEMENT;
+                        break;
+                }
+            }
+            else {
+                if (currentLine.contains(":"))
+                   continue;
+                st = new StringTokenizer(currentLine);
+                move.add(new Pair(Integer.parseInt(st.nextToken()),
+                        Integer.parseInt(st.nextToken())));
+            }
+        }
+   }
+
+
+
     // Be sure to make a copy of everything. Do not have this KnightBoard
     // point to anything in b.
     public KnightBoard(KnightBoard b) {
@@ -52,6 +69,7 @@ class KnightBoard {
         // You must be sure the columns line up properly as they do in my
         // output.
     }
+
     public String toString () {
         return "Foo";
     }

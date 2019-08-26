@@ -5,6 +5,7 @@ import java.util.*;
 class Pair {
     private int row, col;
     // Constructor
+
     public Pair(int row, int col) {
         this.row = row;
         this.col = col;
