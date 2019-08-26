@@ -3,9 +3,10 @@ class KnightBoard {
     private int numRows, numCols;
     private Pair start;
     private ArrayList<Pair> move;
+
+
     // default constructor -- you might want to add a little to this
-//
-    and use it for debugging
+    // and use it for debugging
     public KnightBoard() {
         board = new int[8][8];
         for (int row = 0; row < 8; row++)
@@ -74,8 +75,8 @@ class KnightBoard {
 
     }
 
-        // Enter the knight's moves into the board array
-        // Here’s how mine begins. It would be nice if yours starts the same way.
+    // Enter the knight's moves into the board array
+    // Here’s how mine begins. It would be nice if yours starts the same way.
     public void solve () {
         int bestMove, i, bestMoveCt;
         Pair curSpot = new Pair(start), nextMove;
@@ -87,7 +88,7 @@ class KnightBoard {
 
         // Who are you? Put your name here.
     public static String myName () {
-        return "Sam Loyd";
+        return "Nicholas Martinez";
     }
 
 }
