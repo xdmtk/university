@@ -97,10 +97,16 @@ class KnightBoard {
     }
 
     public String toString () {
+        /* Pretty much the same as toString2 except we space
+         * and pad out the digit strings, and end each row with a
+         * new line character
+         */
         StringBuilder res = new StringBuilder(" ");
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
-                res.append(String.valueOf(board[row][col]));
+
+                String digitStr = String.valueOf(board[row][col]);
+                res.append((board[row][col] < 10 ? " " : "") + digitStr + " ");
             }
             res.append("\n ");
         }
