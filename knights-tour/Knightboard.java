@@ -144,9 +144,15 @@ class KnightBoard {
     // Check if this is a legal square to move to, i.e., is it actually on
     // the board and has it not been entered yet
     private boolean tryMove (Pair sq, Pair curSq){
+        int newRow = sq.getRow() + curSq.getRow();
+        int newCol = sq.getColumn() + curSq.getColumn();
 
-        return true;
+        if (newRow >= 0 && newRow < this.numRows) && (newCol >= 0 && newCol < this.numCols) {
+            return true;
+        }
+        return false;
     }
+
     // The number of legal moves from this square
     private int moveCt (Pair sq){
         return 0;
@@ -162,9 +168,9 @@ class KnightBoard {
     // Here’s how mine begins. It would be nice if yours starts the same way.
     public void solve () {
 
-        int bestMove, i, bestMoveCt;
+        int i = 1;
         Pair curSpot = new Pair(start), nextMove = null;
-        this.board[curSpot.getRow()][curSpot.getColumn()]
+        this.board[curSpot.getRow()][curSpot.getColumn()] = i;
 
         boolean done = false;
 
@@ -180,7 +186,11 @@ class KnightBoard {
             }
             if (nextMove != null) {
                 curSpot = makeMove(nextMove, curSpot);
-
+                this.board[curSpot.getRow()][curSpot.getColumn()] = i;
+                nextMove = null;
+            }
+            else {
+                done = true;
             }
         }
 
