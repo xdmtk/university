@@ -143,7 +143,8 @@ class KnightBoard {
     // possible
     // Check if this is a legal square to move to, i.e., is it actually on
     // the board and has it not been entered yet
-    private boolean tryMove (Pair sq){
+    private boolean tryMove (Pair sq, Pair curSq){
+
         return true;
     }
     // The number of legal moves from this square
@@ -153,18 +154,34 @@ class KnightBoard {
 
     // sq is the square the knight is on. Update the square to its new
     // location based on the move and update the board to reflect this new move
-    private void makeMove (Pair sq, Pair move){
+    private Pair makeMove (Pair sq, Pair move){
 
     }
 
     // Enter the knight's moves into the board array
     // Here’s how mine begins. It would be nice if yours starts the same way.
     public void solve () {
+
         int bestMove, i, bestMoveCt;
-        Pair curSpot = new Pair(start), nextMove;
+        Pair curSpot = new Pair(start), nextMove = null;
+        this.board[curSpot.getRow()][curSpot.getColumn()]
+
         boolean done = false;
+
+
         while (!done) {
-            done = true;
+            int moveCounter = Integer.MAX_VALUE;
+
+            for (Pair potentialMove : this.move) {
+                if (tryMove(potentialMove, curSpot) && moveCt(potentialMove) <= moveCounter)  {
+                    moveCounter = moveCt(potentialMove);
+                    nextMove = potentialMove;
+                }
+            }
+            if (nextMove != null) {
+                curSpot = makeMove(nextMove, curSpot);
+
+            }
         }
 
     }
