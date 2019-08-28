@@ -143,11 +143,10 @@ class KnightBoard {
     // possible
     // Check if this is a legal square to move to, i.e., is it actually on
     // the board and has it not been entered yet
-    private boolean tryMove (Pair sq, Pair curSq){
-        int newRow = sq.getRow() + curSq.getRow();
-        int newCol = sq.getColumn() + curSq.getColumn();
-
-        if (newRow >= 0 && newRow < this.numRows) && (newCol >= 0 && newCol < this.numCols) {
+    private boolean tryMove (Pair sq){
+        if (sq.getRow() >= 0 && sq.getRow() <this.numRows
+            && sq.getColumn() >= 0 && sq.getColumn() < this.numCols
+            && this.board[sq.getRow()][sq.getColumn()] == 0) {
             return true;
         }
         return false;
@@ -155,42 +154,69 @@ class KnightBoard {
 
     // The number of legal moves from this square
     private int moveCt (Pair sq){
-        return 0;
-    }
-
-    // sq is the square the knight is on. Update the square to its new
-    // location based on the move and update the board to reflect this new move
-    private Pair makeMove (Pair sq, Pair move){
-
+        int moveCounter = 0;
+        for (Pair followingMove : move) {
+            if (tryMove(new Pair(sq.getRow() + followingMove.getRow(), sq.getColumn() + followingMove.getColumn()))) {
+                moveCounter++;
+            }
+        }
+        return moveCounter;
     }
 
     // Enter the knight's moves into the board array
     // Here’s how mine begins. It would be nice if yours starts the same way.
     public void solve () {
 
+        /* We use i to mark our current move iteration */
         int i = 1;
+
         Pair curSpot = new Pair(start), nextMove = null;
-        this.board[curSpot.getRow()][curSpot.getColumn()] = i;
 
-        boolean done = false;
+        /* And we mark our starting point with iteration 1 */
+        this.board[curSpot.getRow()][curSpot.getColumn()] = i++;
 
+        /* As long as we have taken less moves than there are possible moves
+         * we can continue in the loop
+         */
+        while (i <= this.numCols*numRows) {
 
-        while (!done) {
+            /* We set the moveCounter to the maximum integer to keep track of the move
+             * that contains the lowest number of follow-up moves
+             */
             int moveCounter = Integer.MAX_VALUE;
 
-            for (Pair potentialMove : this.move) {
-                if (tryMove(potentialMove, curSpot) && moveCt(potentialMove) <= moveCounter)  {
-                    moveCounter = moveCt(potentialMove);
-                    nextMove = potentialMove;
+            /* Now we begin testing each possible move */
+            for (Pair potentialMove : move) {
+
+                /* We generate the new Pair object that contains the board coordinates of where we would
+                 * end up if we take the given potentialMove
+                 */
+                Pair newMove = new Pair(curSpot.getRow() + potentialMove.getRow(),
+                        curSpot.getColumn() + potentialMove.getColumn());
+
+                /* If tryMove() tells us the move is valid, and the count of follow-up moves is as least
+                 * as low as the current lowest move count, we can call this newMove our nextMove
+                 */
+                if (tryMove(newMove) && moveCt(newMove) <= moveCounter) {
+
+                    /* Set the move counter to the new lowest value */
+                    moveCounter = moveCt(newMove);
+
+                    /* If we aren't at the final move, but the possible moves are set to 0, something has gone
+                     * wrong
+                     */
+                    if (moveCounter == 0 && i != this.numCols*this.numRows)
+                        continue;
+
+
+                    nextMove = newMove;
                 }
             }
+            /* Now we can change the current position and mark the new position on the board */
             if (nextMove != null) {
-                curSpot = makeMove(nextMove, curSpot);
-                this.board[curSpot.getRow()][curSpot.getColumn()] = i;
-                nextMove = null;
-            }
-            else {
-                done = true;
+                curSpot.setRow(nextMove.getRow());
+                curSpot.setColumn(nextMove.getColumn());
+                this.board[curSpot.getRow()][curSpot.getColumn()] = i++;
             }
         }
 

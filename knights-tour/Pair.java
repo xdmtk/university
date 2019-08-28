@@ -35,6 +35,10 @@ class Pair {
         return this.col;
     }
 
+    public Pair add(Pair addition) {
+        return new Pair(this.row + addition.getRow(), this.col = addition.getColumn());
+    }
+
     // It's almost always a good idea to override Java's default toString
     public String toString() {
         return "(" + String.valueOf(row) + ", " + String.valueOf(col) + ")";
