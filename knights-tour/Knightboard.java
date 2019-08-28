@@ -26,67 +26,66 @@ class KnightBoard {
     // constructor -- data comes from a file
     public KnightBoard(String fileName) throws IOException {
 
-        /* First we need to instantiate our BufferedReader object to begin parsing the file. */
-        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        /** First we need to instantiate our BufferedReader object to begin parsing the file. */
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
         this.move = new ArrayList<Pair>();
 
-        /* Next we declare string buffer for line-by-line parsing */
+        /** Next we declare string buffer for line-by-line parsing */
         String currentLine;
 
-        /* For extra verbosity, we set our enum value to the expected value of the given
+        /** For extra verbosity, we set our enum value to the expected value of the given
          * line, and declare our StringTokenizer object
          */
-        DataReadState rs = DataReadState.BOARD_SIZE;
-        StringTokenizer st;
+        DataReadState readState = DataReadState.BOARD_SIZE;
+        StringTokenizer tokenizer;
 
-        /* Now we can iterate through the file line by line, and exit when EOF is reached */
-        while ((currentLine = br.readLine()) != null) {
+        /** Now we can iterate through the file line by line, and exit when EOF is reached */
+        while ((currentLine = reader.readLine()) != null) {
 
-            /* Making some assumptions about the input format, the first few lines are separated
+            /** Making some assumptions about the input format, the first few lines are separated
              * out by colons ( with the exception of the piece movement data, with the label on
              * left side and the values on the right, so we can split the given string and take the
              * right half to parse values
              */
-            if (currentLine.contains(":") && rs != DataReadState.PIECE_MOVEMENT){
+            if (currentLine.contains(":") && readState != DataReadState.PIECE_MOVEMENT){
 
-                /* Now we can read the tokens and assign them accordingly based on the
+                /** Now we can read the tokens and assign them accordingly based on the
                  * state of the DataReadState enum
                  */
-                st = new StringTokenizer(currentLine.split(":")[1]);
-                switch (rs) {
+                tokenizer = new StringTokenizer(currentLine.split(":")[1]);
+                switch (readState) {
 
                     case BOARD_SIZE:
-                         this.numRows = Integer.parseInt(st.nextToken());
-                         this.numCols = Integer.parseInt(st.nextToken());
+                         this.numRows = Integer.parseInt(tokenizer.nextToken());
+                         this.numCols = Integer.parseInt(tokenizer.nextToken());
 
-                        /* We can now instantiate the board with all zeros */
+                        /** We can now instantiate the board, and in the case of Java,
+                         * by default the instantiation fills the board with zeros
+                         */
                         this.board = new int[numRows][numCols];
-                        for (int r = 0; r < 8; r++)
-                            for (int c = 0; c < 8; c++)
-                                this.board[r][c] = 0;
-                         /* After parsing, we 'increment' our enum to the next line state */
-                         rs = DataReadState.START_SQUARE;
+                         /** After parsing, we 'increment' our enum to the next line state */
+                         readState = DataReadState.START_SQUARE;
                          break;
 
                     case START_SQUARE:
-                        start = new Pair(Integer.parseInt(st.nextToken()),
-                                Integer.parseInt(st.nextToken()));
-                        rs = DataReadState.PIECE_MOVEMENT;
+                        start = new Pair(Integer.parseInt(tokenizer.nextToken()),
+                                Integer.parseInt(tokenizer.nextToken()));
+                        readState = DataReadState.PIECE_MOVEMENT;
                         break;
                 }
             }
-            /* Once we hit the PIECE_MOVEMENT state in our parsing enum, we can skip the initial
+            /** Once we hit the PIECE_MOVEMENT state in our parsing enum, we can skip the initial
              * colon labeled line and start parsing values directly line by line thereafter
              */
             else {
                 if (currentLine.contains(":"))
                    continue;
 
-                /* With that data being appending to our ArrayList of legal moves */
-                st = new StringTokenizer(currentLine);
-                move.add(new Pair(Integer.parseInt(st.nextToken()),
-                        Integer.parseInt(st.nextToken())));
+                /** With that data being appending to our ArrayList of legal moves */
+                tokenizer = new StringTokenizer(currentLine);
+                move.add(new Pair(Integer.parseInt(tokenizer.nextToken()),
+                        Integer.parseInt(tokenizer.nextToken())));
             }
         }
    }
@@ -108,41 +107,41 @@ class KnightBoard {
     }
 
     public String toString () {
-        /* Pretty much the same as toString2 except we space
+        /** Pretty much the same as toString2 except we space
          * and pad out the digit strings, and end each row with a
          * new line character
          */
-        StringBuilder res = new StringBuilder(" ");
+        StringBuilder result = new StringBuilder(" ");
 
-        /* We get the largest iterative value when traversing the board */
+        /** We get the largest iterative value when traversing the board */
         int maxPadding = 1;
 
-        /* And use it to determine how much padding we need to apply to each
+        /** And use it to determine how much padding we need to apply to each
          * digit output
          */
         while ((int)(this.maxDigit/10) > 0) {
-            /* We can do this by getting the magnitude of the number by repeatedly
+            /** We can do this by getting the magnitude of the number by repeatedly
              * dividing it by 10 until its Integer division results in 0
              */
             this.maxDigit /= 10;
             maxPadding++;
         }
 
-        /* Now we begin building the string */
+        /** Now we begin building the string */
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
 
                 String digitStr = String.valueOf(board[row][col]);
 
-                /* Here we apply the padding based on what we found with the highest magnitude iteration */
+                /** Here we apply the padding based on what we found with the highest magnitude iteration */
                 for (int p=0 ; p < maxPadding - String.valueOf(board[row][col]).length(); p++)
-                    res.append(" ");
+                    result.append(" ");
 
-                res.append(digitStr + " ");
+                result.append(digitStr + " ");
             }
-            res.append("\n ");
+            result.append("\n ");
         }
-        return res.toString();
+        return result.toString();
     }
 
     // For easy checking of your answers
@@ -165,11 +164,11 @@ class KnightBoard {
     // the board and has it not been entered yet
     private boolean tryMove (Pair sq){
 
-        /* We check whether the move is legal by testing the bounds of the given board and move */
+        /** We check whether the move is legal by testing the bounds of the given board and move */
         if (sq.getRow() >= 0 && sq.getRow() <this.numRows
             && sq.getColumn() >= 0 && sq.getColumn() < this.numCols
 
-            /* We likewise check whether the given move has already been hit */
+            /** We likewise check whether the given move has already been hit */
             && this.board[sq.getRow()][sq.getColumn()] == 0) {
             return true;
         }
@@ -191,56 +190,54 @@ class KnightBoard {
     // Here’s how mine begins. It would be nice if yours starts the same way.
     public void solve () {
 
-        /* We use i to mark our current move iteration */
+        /** We use i to mark our current move iteration */
         int i = 1; boolean done = false;
 
         Pair curSpot = new Pair(start), nextMove = null;
 
-        /* And we mark our starting point with iteration 1 */
+        /** And we mark our starting point with iteration 1 */
         this.board[curSpot.getRow()][curSpot.getColumn()] = i++;
 
-        /* As long as we have taken less moves than there are possible moves
-         * we can continue in the loop
+        /** As long as we have taken less moves than there are possible moves, and our
+         * done flag remains false we can continue in the loop
          */
         while (i <= this.numCols*numRows && !done) {
-            if (i == 105)
-                i = 105;
-            /* We set the moveCounter to the maximum integer to keep track of the move
+            /** We set the moveCounter to the maximum integer to keep track of the move
              * that contains the lowest number of follow-up moves
              */
             int moveCounter = Integer.MAX_VALUE;
 
-            /* Now we begin testing each possible move */
+            /** Now we begin testing each possible move */
             for (Pair potentialMove : move) {
 
-                /* We generate the new Pair object that contains the board coordinates of where we would
+                /** We generate the new Pair object that contains the board coordinates of where we would
                  * end up if we take the given potentialMove
                  */
                 Pair newMove = new Pair(curSpot.getRow() + potentialMove.getRow(),
                         curSpot.getColumn() + potentialMove.getColumn());
 
-                /* If tryMove() tells us the move is valid, and the count of follow-up moves is as least
+                /** If tryMove() tells us the move is valid, and the count of follow-up moves is as least
                  * as low as the current lowest move count, we can call this newMove our nextMove
                  */
                 if (tryMove(newMove) && moveCt(newMove) <= moveCounter) {
 
-                    /* Set the move counter to the new lowest value */
+                    /** Set the move counter to the new lowest value */
                     moveCounter = moveCt(newMove);
 
-                    /* If we aren't at the final move, but the possible moves are set to 0, then we
+                    /** If we aren't at the final move, but the possible moves are set to 0, then we
                      * are done
                      */
                     if (moveCounter == 0 && i != this.numCols*this.numRows) {
                         done = true;
 
-                        /* But before we finish, mark the final move with the iteration number */
+                        /** But before we finish, mark the final move with the iteration number */
                         this.board[newMove.getRow()][newMove.getColumn()] = i++;
                     }
                     this.maxDigit = i;
                     nextMove = newMove;
                 }
             }
-            /* Now we can change the current position and mark the new position on the board */
+            /** Now we can change the current position and mark the new position on the board */
             if (nextMove != null && !done) {
 
                 curSpot.setRow(nextMove.getRow());
