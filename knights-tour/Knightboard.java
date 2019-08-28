@@ -82,7 +82,7 @@ class KnightBoard {
                 if (currentLine.contains(":"))
                    continue;
 
-                /** With that data being appending to our ArrayList of legal moves */
+                /** With that data being appended to our ArrayList of legal moves */
                 tokenizer = new StringTokenizer(currentLine);
                 move.add(new Pair(Integer.parseInt(tokenizer.nextToken()),
                         Integer.parseInt(tokenizer.nextToken())));
@@ -165,7 +165,7 @@ class KnightBoard {
     private boolean tryMove (Pair sq){
 
         /** We check whether the move is legal by testing the bounds of the given board and move */
-        if (sq.getRow() >= 0 && sq.getRow() <this.numRows
+        if (sq.getRow() >= 0 && sq.getRow() < this.numRows
             && sq.getColumn() >= 0 && sq.getColumn() < this.numCols
 
             /** We likewise check whether the given move has already been hit */
@@ -179,7 +179,13 @@ class KnightBoard {
     private int moveCt (Pair sq){
         int moveCounter = 0;
         for (Pair followingMove : move) {
+            /** Here we iterate through the list of possible follow-up moves from the given square 'sq'
+             *  and call tryMove() repeatedly with the result of applying the possible follow-up move to
+             *  the current square
+             */
             if (tryMove(new Pair(sq.getRow() + followingMove.getRow(), sq.getColumn() + followingMove.getColumn()))) {
+
+                /** If the move is possible, we can increment the `moveCounter` */
                 moveCounter++;
             }
         }
