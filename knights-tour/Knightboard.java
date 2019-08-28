@@ -1,4 +1,3 @@
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.io.IOException;
@@ -7,7 +6,7 @@ import java.io.FileReader;
 
 class KnightBoard {
     private int board[][];
-    private int numRows, numCols;
+    private int numRows, numCols, maxDigit;
     private Pair start;
     private ArrayList<Pair> move;
     private enum DataReadState {BOARD_SIZE, START_SQUARE, PIECE_MOVEMENT};
@@ -44,7 +43,7 @@ class KnightBoard {
         /* Now we can iterate through the file line by line, and exit when EOF is reached */
         while ((currentLine = br.readLine()) != null) {
 
-            /* Making some heavy assumptions about the input format, the first few lines are separated
+            /* Making some assumptions about the input format, the first few lines are separated
              * out by colons ( with the exception of the piece movement data, with the label on
              * left side and the values on the right, so we can split the given string and take the
              * right half to parse values
@@ -114,11 +113,32 @@ class KnightBoard {
          * new line character
          */
         StringBuilder res = new StringBuilder(" ");
+
+        /* We get the largest iterative value when traversing the board */
+        int maxPadding = 1;
+
+        /* And use it to determine how much padding we need to apply to each
+         * digit output
+         */
+        while ((int)(this.maxDigit/10) > 0) {
+            /* We can do this by getting the magnitude of the number by repeatedly
+             * dividing it by 10 until its Integer division results in 0
+             */
+            this.maxDigit /= 10;
+            maxPadding++;
+        }
+
+        /* Now we begin building the string */
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
 
                 String digitStr = String.valueOf(board[row][col]);
-                res.append((board[row][col] < 10 ? " " : "") + digitStr + " ");
+
+                /* Here we apply the padding based on what we found with the highest magnitude iteration */
+                for (int p=0 ; p < maxPadding - String.valueOf(board[row][col]).length(); p++)
+                    res.append(" ");
+
+                res.append(digitStr + " ");
             }
             res.append("\n ");
         }
@@ -144,8 +164,12 @@ class KnightBoard {
     // Check if this is a legal square to move to, i.e., is it actually on
     // the board and has it not been entered yet
     private boolean tryMove (Pair sq){
+
+        /* We check whether the move is legal by testing the bounds of the given board and move */
         if (sq.getRow() >= 0 && sq.getRow() <this.numRows
             && sq.getColumn() >= 0 && sq.getColumn() < this.numCols
+
+            /* We likewise check whether the given move has already been hit */
             && this.board[sq.getRow()][sq.getColumn()] == 0) {
             return true;
         }
@@ -212,7 +236,7 @@ class KnightBoard {
                         /* But before we finish, mark the final move with the iteration number */
                         this.board[newMove.getRow()][newMove.getColumn()] = i++;
                     }
-
+                    this.maxDigit = i;
                     nextMove = newMove;
                 }
             }
