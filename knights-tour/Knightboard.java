@@ -163,16 +163,19 @@ class KnightBoard {
     // Check if this is a legal square to move to, i.e., is it actually on
     // the board and has it not been entered yet
     private boolean tryMove (Pair sq){
-
+        boolean result;
         /** We check whether the move is legal by testing the bounds of the given board and move */
         if (sq.getRow() >= 0 && sq.getRow() < this.numRows
             && sq.getColumn() >= 0 && sq.getColumn() < this.numCols
 
             /** We likewise check whether the given move has already been hit */
             && this.board[sq.getRow()][sq.getColumn()] == 0) {
-            return true;
+            result = true;
         }
-        return false;
+        else {
+            result = false;
+        }
+        return result;
     }
 
     // The number of legal moves from this square
@@ -183,7 +186,8 @@ class KnightBoard {
              *  and call tryMove() repeatedly with the result of applying the possible follow-up move to
              *  the current square
              */
-            if (tryMove(new Pair(sq.getRow() + followingMove.getRow(), sq.getColumn() + followingMove.getColumn()))) {
+            if (tryMove(new Pair(sq.getRow() + followingMove.getRow(),
+                    sq.getColumn() + followingMove.getColumn()))) {
 
                 /** If the move is possible, we can increment the `moveCounter` */
                 moveCounter++;
