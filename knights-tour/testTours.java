@@ -33,7 +33,7 @@ public class testTours {
 
 	// You will need to tweak DataLocation to suit your computer situation. Or you may be able to find a folder to put
 	// the test files in so that you don't need it at all.
-	final static String DataLocation = new String("/home/xdmtk/prog/cosci282/knights-tour/data/");
+	final static String DataLocation = new String("C:\\Users\\overc\\IdeaProjects\\cosci282\\data\\");
 
 	public static void main(String[] args) throws IOException {
 		String answers[] = {
