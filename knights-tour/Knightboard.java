@@ -244,9 +244,6 @@ class KnightBoard {
                     // no more following moves, each of them get marked as if we moved there.
                     if (moveCounter == 0 && i != this.numCols*this.numRows) {
                         done = true;
-
-                        /** But before we finish, mark the final move with the iteration number */
-                        this.board[newMove.getRow()][newMove.getColumn()] = i++;
                     }
                     this.maxDigit = i;
                     nextMove = newMove;
@@ -259,6 +256,12 @@ class KnightBoard {
                 curSpot.setColumn(nextMove.getColumn());
 
                 this.board[curSpot.getRow()][curSpot.getColumn()] = i++;
+            }
+            /** If we have marked ourselves as done, then we mark what _would have been_
+             *  the next move on the board with the iteration number, instead of the current spot
+             */
+            else if (nextMove != null) {
+                this.board[nextMove.getRow()][nextMove.getColumn()] = i++;
             }
         }
 
