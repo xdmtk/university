@@ -84,10 +84,8 @@ class KnightBoard {
 
                 /** With that data being appended to our ArrayList of legal moves */
                 tokenizer = new StringTokenizer(currentLine);
-                if (tokenizer.hasMoreTokens()) {
-                    move.add(new Pair(Integer.parseInt(tokenizer.nextToken()),
-                            Integer.parseInt(tokenizer.nextToken())));
-                }
+                move.add(new Pair(Integer.parseInt(tokenizer.nextToken()),
+                        Integer.parseInt(tokenizer.nextToken())));
             }
         }
    }
@@ -121,7 +119,7 @@ class KnightBoard {
         /** And use it to determine how much padding we need to apply to each
          * digit output
          */
-        while ((int)(this.maxDigit/10) > 0) {
+        while ((this.maxDigit/10) > 0) {
             /** We can do this by getting the magnitude of the number by repeatedly
              * dividing it by 10 until its Integer division results in 0
              */
@@ -241,6 +239,9 @@ class KnightBoard {
                     /** If we aren't at the final move, but the possible moves are set to 0, then we
                      * are done
                      */
+
+                    // TODO: Problem is here, if we have multiple potential moves where each move there are
+                    // no more following moves, each of them get marked as if we moved there.
                     if (moveCounter == 0 && i != this.numCols*this.numRows) {
                         done = true;
 
