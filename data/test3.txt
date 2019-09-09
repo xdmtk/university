@@ -1,0 +1,11 @@
+board size: 8 8
+start square: 7 7
+piece movement:
+1 2
+1 -2
+-1 2
+-1 -2
+2 1
+2 -1
+-2 1
+-2 -1

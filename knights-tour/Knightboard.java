@@ -84,8 +84,10 @@ class KnightBoard {
 
                 /** With that data being appended to our ArrayList of legal moves */
                 tokenizer = new StringTokenizer(currentLine);
-                move.add(new Pair(Integer.parseInt(tokenizer.nextToken()),
-                        Integer.parseInt(tokenizer.nextToken())));
+                if (tokenizer.hasMoreTokens()) {
+                    move.add(new Pair(Integer.parseInt(tokenizer.nextToken()),
+                            Integer.parseInt(tokenizer.nextToken())));
+                }
             }
         }
    }
@@ -201,12 +203,14 @@ class KnightBoard {
     public void solve () {
 
         /** We use i to mark our current move iteration */
-        int i = 1; boolean done = false;
+        int i = 1;
 
         Pair curSpot = new Pair(start), nextMove = null;
 
         /** And we mark our starting point with iteration 1 */
         this.board[curSpot.getRow()][curSpot.getColumn()] = i++;
+        boolean done = move.size() <= 0;
+
 
         /** As long as we have taken less moves than there are possible moves, and our
          * done flag remains false we can continue in the loop
