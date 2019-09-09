@@ -99,11 +99,14 @@ class KnightBoard {
         // Hint: use String.valueOf( num ) to convert int num to a String
         // You must be sure the columns line up properly as they do in my
         // output.
-        this.board = b.board.clone();
-        this.numCols = b.numCols;
-        this.numRows = b.numRows;
-        this.start = b.start;
-        this.move = (ArrayList<Pair>) b.move.clone();
+        this.board = new int[b.numRows][b.numCols];
+        for (int row = 0; row < 8; row++)
+            for (int col = 0; col < 8; col++)
+                this.board[row][col] = b.board[row][col];
+        this.numCols = new Integer(b.numCols);
+        this.numRows = new Integer(b.numRows);
+        this.start = new Pair(b.start);
+        this.move = new ArrayList<Pair>(b.move);
     }
 
     public String toString () {
