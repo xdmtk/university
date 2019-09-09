@@ -207,19 +207,24 @@ class KnightBoard {
 
         /** And we mark our starting point with iteration 1 */
         this.board[curSpot.getRow()][curSpot.getColumn()] = i++;
+
+        /** In the case that we have no possible moves, we are done immediately as there
+         * is nothing to do
+         */
         boolean done = move.size() <= 0;
 
 
-        /** As long as we have taken less moves than there are possible moves, and our
-         * done flag remains false we can continue in the loop
+        /** As long as we have taken less moves than there are possible moves (there is likely no reason this loop
+         * will ever continue on past the total number of squares on the board, but it doesn't hurt to add this
+         * condition ) and our done flag remains false we can continue in the loop
          */
         while (i <= this.numCols*numRows && !done) {
-            /** We set the moveCounter to the maximum integer to keep track of the move
-             * that contains the lowest number of follow-up moves
+            /** We set the moveCounter to the maximum possible integer value, as a basis for finding
+             * the next potential move that contains the lowest number of follow-up moves
              */
             int moveCounter = Integer.MAX_VALUE;
 
-            /** Now we begin testing each possible move */
+            /** Now we begin testing each possible move in the ArrayList `move` */
             for (Pair potentialMove : move) {
 
                 /** We generate the new Pair object that contains the board coordinates of where we would
@@ -228,24 +233,29 @@ class KnightBoard {
                 Pair newMove = new Pair(curSpot.getRow() + potentialMove.getRow(),
                         curSpot.getColumn() + potentialMove.getColumn());
 
-                /** If tryMove() tells us the move is valid, and the count of follow-up moves is as least
-                 * as low as the current lowest move count, we can call this newMove our nextMove
+                /** If tryMove() tells us that `newMove` is valid, and the count of follow-up moves is as least
+                 * as low as the current lowest move count, we can set `newMove` to be our `nextMove`
                  */
                 if (tryMove(newMove) && moveCt(newMove) <= moveCounter) {
 
-                    /** Set the move counter to the new lowest value */
+                    /** Update the lowest possible follow-up move counter to the new lowest value */
                     moveCounter = moveCt(newMove);
 
                     /** If we aren't at the final move, but the possible moves are set to 0, then we
-                     * are done
+                     * are done, meaning we won't be updating curSpot anymore
                      */
-
-                    // TODO: Problem is here, if we have multiple potential moves where each move there are
-                    // no more following moves, each of them get marked as if we moved there.
                     if (moveCounter == 0 && i != this.numCols*this.numRows) {
                         done = true;
                     }
+
+                    /** This maxDigit member variable will help us when are formatting the output,
+                     * to figure out how many space character we will need to pad each cell with
+                     */
                     this.maxDigit = i;
+
+                    /** Now our nextMove becomes `newMove`  as `newMove` has passed the criteria for
+                     * qualifying as the next possible move
+                     */
                     nextMove = newMove;
                 }
             }
