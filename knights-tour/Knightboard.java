@@ -99,12 +99,24 @@ class KnightBoard {
         // Hint: use String.valueOf( num ) to convert int num to a String
         // You must be sure the columns line up properly as they do in my
         // output.
+
+        /** Instantiate a new multidimensional array in memory */
         this.board = new int[b.numRows][b.numCols];
+
+        /** Populate it with the current values of b */
         for (int row = 0; row < 8; row++)
             for (int col = 0; col < 8; col++)
                 this.board[row][col] = b.board[row][col];
+
+        /** Make sure numCols and numRows are not references to b by new
+         * Integer instantiation
+         */
         this.numCols = new Integer(b.numCols);
         this.numRows = new Integer(b.numRows);
+
+        /** Same thing over here, we make sure all members of the newly constructed
+         *  Knightboard object are new objects in memory
+         */
         this.start = new Pair(b.start);
         this.move = new ArrayList<Pair>(b.move);
     }
