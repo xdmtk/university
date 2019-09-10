@@ -1,3 +1,18 @@
+/**********************************
+ *
+ * Name: Nicholas Martinez
+ * Class: COMP 282 * M-W 3:30PM - 4:45PM  
+ * Assignment #: 1
+ * Date Turned In: 09/11/2019 
+ * Description: 
+ *  This file contains the Pair class used in implementing
+ *  Warnsdorff's Algorithm for finding a generalized Knights Tour on
+ *  a chessboard. 
+ *
+ **********************************/
+
+
+
 import java.io.*;
 import java.util.*;
 // Pair can be used as a row and column of a square on the board and
