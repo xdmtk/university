@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define _spc_ "\n\n"
 
 struct instruction_class {
     int cpi, instruction_count;
@@ -13,6 +14,7 @@ struct state {
 int show_menu(void);
 void handle_selection(short selection, struct state * st);
 void enter_parameters(struct state * st);
+void print_results(struct state * st);
 void invalid_selection(struct state * st);
 
 
@@ -45,8 +47,10 @@ void handle_selection(short selection, struct state * st) {
             enter_parameters(st);
             break;
         case 2:
+            print_results(st);
             break;
         case 3:
+            exit(0);
             break;
         default:
             invalid_selection(st);
@@ -55,16 +59,46 @@ void handle_selection(short selection, struct state * st) {
 }
 
 
+void print_results(struct state * st) {
+   
+    int i;
+    char * items[] = {
+        _spc_"FREQUENCY (MHz): ",
+        _spc_"INSTRUCTION DISTRIBUTION"
+        _spc_"CLASS\tCPI\tCOUNT\n",
+        _spc_"PERFORMANCE VALUES",
+        _spc_"AVERAGE CPI\t",
+        _spc_"TIME (ms)\t",
+        _spc_"MIPS\t",
+        _spc_"Nicholas Martinez"
+    };
+    
+    /* Print frequency in MHz */
+    printf(_spc_"%s: %d", items[0], st->frequency);
+    
+    /* Print out instruction distribution for all instruction 
+     * classes */
+    printf(_spc_"%s", items[1]);
+    for (i=0; i < st->instruction_classes; i++)
+        printf(_spc_"%d\t%d\t%d", i+1, st->ic[i].cpi, st->ic[i].instruction_count);
+    
+    /* TODO: Make computation for Average CPI, TIME, MIPS */
+
+
+}
+
+
+
 /* Function that provides the prompts for parameter entry */
 void enter_parameters(struct state * st) {
     
     int i;
     /* Sequential prompt listing */
     char * items[] = {
-        "\n\nEnter the frequency of the machine (MHz): ",
-        "\n\nEnter the number of instruction classes: ",
-        "\n\nEnter CPI of class ",
-        "\n\nEnter instruction count of class "
+        _spc_"Enter the frequency of the machine (MHz): ",
+        _spc_"Enter the number of instruction classes: ",
+        _spc_"Enter CPI of class ",
+        _spc_"Enter instruction count of class "
     };
     
     /* Collect frequency of machine */
@@ -81,6 +115,7 @@ void enter_parameters(struct state * st) {
 
         printf("\nCould not allocate memory. Exiting!\n");
         free(st);
+        free(st->ic);
         exit(-1);
     }
     
@@ -101,12 +136,14 @@ int show_menu(void) {
     
     int i,input;
     char * items[] = {
-        "1) Enter parameters\n\n",
-        "2) Print Results\n\n",
-        "3) Quit\n\n"};
+        _spc_"1) Enter parameters",
+        _spc_"2) Print Results",
+        _spc_"3) Quit",
+        _spc_"Enter Selection: "
+    };
     
     /* Print menu options */
-    for (i=0; i<3; i++)
+    for (i=0; i<4; i++)
         printf("%s",items[i]);
     
     /* Get choice selection from input */
@@ -116,4 +153,12 @@ int show_menu(void) {
     return 0;
 }
 
+
+/* Free allocated structures */
+void invalid_selection(struct state * st) {
+    printf("\nInvalid selection. Exiting!\n");
+    free(st->ic);
+    free(st);
+    exit(0);
+}
 
