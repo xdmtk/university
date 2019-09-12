@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #define _spc_ "\n\n"
 
+
+struct results {
+    double avg_cpi, time, mips;
+};
+
 struct instruction_class {
     int cpi, instruction_count;
 };
@@ -16,25 +21,25 @@ void handle_selection(short selection, struct state * st);
 void enter_parameters(struct state * st);
 void print_results(struct state * st);
 void invalid_selection(struct state * st);
+struct results * calculate_results(struct state * st);
 
+const char * alloc_fail = "\nCould not allocate memory. Exiting!\n";
 
 int main(void) {
     
-    short selection;
     struct state * st;
         
-    /* Allocate for state structure to carry parameters from functin
+    /* Allocate for state structure to carry parameters from function
      * to function
      */
     if (!(st = (struct state *)malloc(sizeof(struct state)))) {
-        printf("\nCould not allocate memory. Exiting!\n");
+        printf("%s", alloc_fail);
         exit(-1);
     }
 
     /* Continue indefinitely until termination is signaled from menu */
     while (1) {
-        selection = show_menu();
-        handle_selection(selection, st);
+        handle_selection(show_menu(), st);
     }
 }
 
@@ -62,15 +67,15 @@ void handle_selection(short selection, struct state * st) {
 void print_results(struct state * st) {
    
     int i;
+    struct results * res;
     char * items[] = {
         _spc_"FREQUENCY (MHz): ",
         _spc_"INSTRUCTION DISTRIBUTION"
-        _spc_"CLASS\tCPI\tCOUNT\n",
+        _spc_"CLASS\tCPI\tCOUNT",
         _spc_"PERFORMANCE VALUES",
         _spc_"AVERAGE CPI\t",
         _spc_"TIME (ms)\t",
         _spc_"MIPS\t",
-        _spc_"Nicholas Martinez"
     };
     
     /* Print frequency in MHz */
@@ -83,10 +88,40 @@ void print_results(struct state * st) {
         printf(_spc_"%d\t%d\t%d", i+1, st->ic[i].cpi, st->ic[i].instruction_count);
     
     /* TODO: Make computation for Average CPI, TIME, MIPS */
+    res = calculate_results(st);
+
+    printf("%s%s %.2f", items[2], items[3], res->avg_cpi);
+    
+
+
 
 
 }
 
+struct results * calculate_results(struct state * st) {
+    
+    int i;
+    double avg_cpi, mips, time, total_ic;
+    struct results * res = (struct results *) malloc(sizeof(struct
+                results *));
+    if (!res) {
+        printf("%s", alloc_fail);
+        exit(-1);
+    }
+
+
+    avg_cpi = mips = time = total_ic = 0;
+    for (i = 0; i < st->instruction_classes; i++) {
+        avg_cpi += st->ic[i].cpi * st->ic[i].instruction_count;
+        total_ic += st->ic[i].instruction_count; 
+    }
+    res->avg_cpi = avg_cpi / total_ic;
+
+
+
+
+    return res;
+}
 
 
 /* Function that provides the prompts for parameter entry */
@@ -112,8 +147,7 @@ void enter_parameters(struct state * st) {
     /* Allocate memory for number of instruction classes specified */
     if (!(st->ic = (struct instruction_class *) malloc(sizeof(struct instruction_class *)
             *st->instruction_classes))) {
-
-        printf("\nCould not allocate memory. Exiting!\n");
+        printf("%s", alloc_fail);
         free(st);
         free(st->ic);
         exit(-1);
@@ -161,4 +195,6 @@ void invalid_selection(struct state * st) {
     free(st);
     exit(0);
 }
+
+
 
