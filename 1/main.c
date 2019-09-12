@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #define _spc_ "\n\n"
 
 
@@ -90,7 +91,8 @@ void print_results(struct state * st) {
     /* TODO: Make computation for Average CPI, TIME, MIPS */
     res = calculate_results(st);
 
-    printf("%s%s %.2f", items[2], items[3], res->avg_cpi);
+    printf("%s%s %.2f%s%.2f%s%.2f", items[2], items[3], res->avg_cpi, items[4], res->time, items[5],
+            res->mips);
     
 
 
@@ -116,6 +118,8 @@ struct results * calculate_results(struct state * st) {
         total_ic += st->ic[i].instruction_count; 
     }
     res->avg_cpi = avg_cpi / total_ic;
+    res->time = ((res->avg_cpi * total_ic)/st->frequency)*1000.00;
+    res->mips = (st->frequency * pow(10.0,6.0))/(res->avg_cpi * (pow(10.0,6.0)));
 
 
 
