@@ -4,15 +4,30 @@
 #define _spc_ "\n\n"
 
 
+/**
+ * NOTE: I spent more time tweaking the output format
+ * than actually writing the program logic.
+ *
+ * Is there any possible way we can avoid this for
+ * future assignments? 
+ */
+
+
+
+
+
+
 /* Set of structs to hold input/output variable data */
 struct results {
     double avg_cpi, time, mips;
 };
 
+
 /* Sub-struct within state to hold various instruction classes */
 struct instruction_class {
     int cpi, instruction_count;
 };
+
 
 /* Struct to be passed around various functions */
 struct state {
@@ -23,12 +38,11 @@ struct state {
 
 /* Function prototypes */
 int show_menu(void);
-void handle_selection(short selection, struct state * st);
+void handle_selection(int selection, struct state * st);
 void enter_parameters(struct state * st);
 void print_results(struct state * st);
 void invalid_selection(struct state * st);
 struct results * calculate_results(struct state * st);
-
 
 
 /* Main function */
@@ -51,13 +65,12 @@ int main(void) {
 
 
 /* Input handler for menu selections */
-void handle_selection(short selection, struct state * st) {
+void handle_selection(int selection, struct state * st) {
 
-    if (selection == 1) { enter_parameters(st); }
-    else if (selection == 2) { print_results(st); }
-    else { invalid_selection(st); }
+    if (selection == 1) enter_parameters(st);
+    else if (selection == 2)  print_results(st); 
+    else invalid_selection(st);
 }
-
 
 
 /* Function to print calculation results */
@@ -67,23 +80,23 @@ void print_results(struct state * st) {
     int i;
     struct results * res;
     char * items[] = {
-        _spc_"FREQUENCY (MHz): ",
+        "FREQUENCY (MHz): ",
         _spc_"INSTRUCTION DISTRIBUTION"
         _spc_"CLASS\tCPI\tCOUNT",
         _spc_"PERFORMANCE VALUES",
         _spc_"AVERAGE CPI\t",
-        _spc_"TIME (ms)\t",
-        _spc_"MIPS\t",
+        "\nTIME (ms)\t",
+        "\nMIPS\t",
     };
     
     /* Print frequency in MHz */
-    printf(_spc_"%s: %d", items[0], st->frequency);
+    printf("%s%d", items[0], st->frequency);
     
     /* Print out instruction distribution for all instruction 
      * classes */
-    printf(_spc_"%s", items[1]);
+    printf("%s", items[1]);
     for (i=0; i < st->instruction_classes; i++)
-        printf(_spc_"%d\t%d\t%d", i+1, st->ic[i].cpi, st->ic[i].instruction_count);
+        printf("\n%d\t%d\t%d", i+1, st->ic[i].cpi, st->ic[i].instruction_count);
     
     /* Print out performance calculation results */
     res = calculate_results(st);
@@ -93,6 +106,8 @@ void print_results(struct state * st) {
             res->mips);
     
 }
+
+
 /* Function to handle calculation of all performace variables */
 struct results * calculate_results(struct state * st) {
     
@@ -133,25 +148,29 @@ struct results * calculate_results(struct state * st) {
 void enter_parameters(struct state * st) {
     
     int i;
-    /* Sequential prompt listing */
+    /* Sequential prompt listing 
+     * Eliminated from this version 
+     *
     char * items[] = {
         _spc_"Enter the frequency of the machine (MHz): ",
         _spc_"Enter the number of instruction classes: ",
         _spc_"Enter CPI of class ",
         _spc_"Enter instruction count of class "
     };
+
+    */
     
     /* Collect frequency of machine */
-    printf("%s", items[0]);
+    //printf("%s", items[0]);
     scanf("%d", &st->frequency);
 
     /* Collect number of instruction classes */
-    printf("%s", items[1]);
+    //printf("%s", items[1]);
     scanf("%d", &st->instruction_classes);
 
     /* Allocate memory for number of instruction classes specified */
     if (!(st->ic = (struct instruction_class *) malloc(sizeof(struct instruction_class *)
-            *st->instruction_classes))) {
+            * (long unsigned int)st->instruction_classes))) {
         free(st);
         free(st->ic);
         exit(-1);
@@ -160,19 +179,20 @@ void enter_parameters(struct state * st) {
     /* Collect parameters for # of instruction classes specified */ 
     for (i=0; i < st->instruction_classes; i++) {
 
-        printf("%s%d: ", items[2], i+1);
+        //printf("%s%d: ", items[2], i+1);
         scanf("%d", &st->ic[i].cpi);
         
-        printf("%s%d (millions): ", items[3], i+1);
+        //printf("%s%d (millions): ", items[3], i+1);
         scanf("%d", &st->ic[i].instruction_count);
     }
 }
 
 
-
 int show_menu(void) {
     
-    int i,input;
+    int input;
+    /* Print menu options 
+     * Eliminated for this submission
     char * items[] = {
         _spc_"1) Enter parameters",
         _spc_"2) Print Results",
@@ -180,9 +200,10 @@ int show_menu(void) {
         _spc_"Enter Selection: "
     };
     
-    /* Print menu options */
+     
     for (i=0; i<4; i++)
         printf("%s",items[i]);
+    */
     
     /* Get choice selection from input */
     if (scanf("%d", &input) >= 0)
@@ -194,11 +215,10 @@ int show_menu(void) {
 
 /* Free allocated structures */
 void invalid_selection(struct state * st) {
-    printf("\nInvalid selection. Exiting!\n");
+    printf("\n\nPROGRAM TERMINATED NORMALLY\n");
     free(st->ic);
     free(st);
     exit(0);
 }
-
 
 
