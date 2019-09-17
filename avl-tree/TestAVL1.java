@@ -76,13 +76,97 @@ class StringAVLTreeXtra extends StringAVLTree {
 	}
 }
 
-
 class StringAVLNode {
+	private String item;
+	private int balance;
+	private StringAVLNode left, right;
+
+	// just one constructor, please
+	public StringAVLNode(String str) {
+
+	}
+
+	public int getBalance () {
+	}
+
+	public void setBalance ( int bal){
+
+	}
+
+	public String getItem () {
+	// no set item
+	}
+
+	public StringAVLNode getLeft () {
+
+	}
+
+	public void setLeft (StringAVLNode pt){
+
+	}
+	public StringAVLNode getRight () {
+
+	}
+
+	public void setRight (StringAVLNode pt){
+
+	}
+}
+class StringAVLTree {
 
 
+	// should really be private but I need access
+	// for my test program to work
+	StringAVLNode root;
+	// just one constructor
+	public StringAVLTree() {
 
+	}
 
+	// Rotate the node to the right
+	private static StringAVLNode rotateRight(StringAVLNode t) {
 
+	}
 
+	// Rotate the node to the left
+	private static StringAVLNode rotateLeft(StringAVLNode t) {
 
+	}
+	// For these next four, be sure not to use any global variables
+	// and no extra “counting” parameters in the recursive methods, e.g.,
+	// the recursive height method should just have one parameter, the
+	// StringAVLNode
+	// Return the height of the tree – not to be used anywhere in insert or delete
+	public int height() {
+
+	}
+	// Return the number of leaves in the tree
+	public int leafCt() {
+
+	}
+	// Return the number of perfectly balanced AVL nodes
+	public int balanced() {
+
+	}
+	// Return the inorder successor, i.e., the next larger value in the tree
+	// or null if there is none or str is not in the tree
+	public String successor(String str) {
+
+	}
+	public void insert(String str) {
+
+	}
+	private StringAVLNode insert(String str, StringAVLNode t) {
+
+	}
+	public void delete(String d) {
+
+	}
+	private StringAVLNode delete(StringAVLNode t, String d) {
+
+	}
+	// who are you? Put your name here!
+	public static String myName() {
+	return "Magnus Carlsen";
+	}
 }
