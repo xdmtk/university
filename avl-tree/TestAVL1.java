@@ -87,6 +87,7 @@ class StringAVLNode {
 	}
 
 	public int getBalance () {
+		return 0;
 	}
 
 	public void setBalance ( int bal){
@@ -94,18 +95,21 @@ class StringAVLNode {
 	}
 
 	public String getItem () {
+		return new String("Hi");
 	// no set item
 	}
 
 	public StringAVLNode getLeft () {
-
+		return new StringAVLNode("Foo");
 	}
 
 	public void setLeft (StringAVLNode pt){
 
 	}
+
 	public StringAVLNode getRight () {
 
+		return new StringAVLNode("Foo");
 	}
 
 	public void setRight (StringAVLNode pt){
@@ -125,12 +129,12 @@ class StringAVLTree {
 
 	// Rotate the node to the right
 	private static StringAVLNode rotateRight(StringAVLNode t) {
-
+		return new StringAVLNode("Foo");
 	}
 
 	// Rotate the node to the left
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
-
+		return new StringAVLNode("Foo");
 	}
 	// For these next four, be sure not to use any global variables
 	// and no extra “counting” parameters in the recursive methods, e.g.,
@@ -138,35 +142,35 @@ class StringAVLTree {
 	// StringAVLNode
 	// Return the height of the tree – not to be used anywhere in insert or delete
 	public int height() {
-
+		return 0;
 	}
 	// Return the number of leaves in the tree
 	public int leafCt() {
-
+		return 0;
 	}
 	// Return the number of perfectly balanced AVL nodes
 	public int balanced() {
-
+		return 0;
 	}
 	// Return the inorder successor, i.e., the next larger value in the tree
 	// or null if there is none or str is not in the tree
 	public String successor(String str) {
-
+		return new String("foo");
 	}
 	public void insert(String str) {
 
 	}
 	private StringAVLNode insert(String str, StringAVLNode t) {
-
+		return new StringAVLNode("Foo");
 	}
 	public void delete(String d) {
 
 	}
 	private StringAVLNode delete(StringAVLNode t, String d) {
-
+		return new StringAVLNode("Foo");
 	}
 	// who are you? Put your name here!
 	public static String myName() {
-	return "Magnus Carlsen";
+		return "Nicholas Martinez";
 	}
 }
