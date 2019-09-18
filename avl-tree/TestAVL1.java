@@ -300,6 +300,10 @@ class StringAVLTree {
 			 */
 			else
 				returnNode = t;
+
+			/** As we are backtracking up the call stack, we get/set the balance of each node we pass
+			 */
+			t.setBalance(balanced(t));
 		}
 
 		/** Now that we've defined the Node we are to return, we must calculate the balance
