@@ -199,12 +199,31 @@ class StringAVLTree {
 		return balanced(root);
 	}
 
+	/** Similar to the leafCount() method, except the integer we are returning
+	 * is only incremented when the balance of the given node is 0
+	 * @param t
+	 * @return
+	 */
+	private int balanced(StringAVLNode t) {
+		int balanceCount = 0;
+		if (t != null) {
+			if (t.getLeft() != null) {
+				 balanced(t.getLeft());
+			}
+			if (t.getRight() != null) {
+				balanced(t.getRight());
+			}
+			balanceCount += t.getBalance() == 0 ? 1 : 0;
+		}
+		return balanceCount;
+	}
+
 
 	/**
 	 * Recursively call the height function to calculate
 	 * the balance for the given Node
 	 */
-	private int balanced(StringAVLNode t) {
+	private int findBalance(StringAVLNode t) {
 		int nodeBalance;
 
 		/** The balance of the node is simply the height of the right sub-tree
@@ -307,7 +326,7 @@ class StringAVLTree {
 			/** As we are backtracking up the call stack, we get/set the balance of each node we pass,
 			 *  and use it to determine whether we need to rotate any of the subtrees
 			 */
-			t.setBalance(balanced(t));
+			t.setBalance(findBalance(t));
 			int balance = t.getBalance();
 
 			/** For balanced nodes we can skip all rotation logic */
