@@ -135,7 +135,12 @@ class StringAVLNode {
 		right = pt;
 	}
 }
+
+
+
 class StringAVLTree {
+
+
 	StringAVLNode root;
 	// just one constructor
 	public StringAVLTree() {
@@ -259,6 +264,9 @@ class StringAVLTree {
 		 */
 		else
 			root = new StringAVLNode(str);
+
+
+		BTreePrinter.printStringAVLNode(root);
 	}
 
 
@@ -327,26 +335,28 @@ class StringAVLTree {
 			t.setBalance(findBalance(t));
 			int balance = t.getBalance();
 
-			/** For balanced nodes we can skip all rotation logic */
+			// TODO: FIGURE OUT ROTATIONS !!!
+			/** For balanced nodes we can skip all rotation logic
 			if (balance != 0) {
 				balanceTrees(balance, t);
 			}
+			 */
 
 		}
-
 		return returnNode;
 	}
 
-	private void balanceTrees(int balance, StringAVLNode t) {
+	private StringAVLNode balanceTrees(int balance, StringAVLNode t) {
 
+		StringAVLNode returnNode = t;
 		/** For right heavy nodes, we can determine if we need a double left rotation
 		 * if the right sub-tree is left heavy
 		 */
 		if (balance > 1) {
 			if (t.getRight() != null && t.getRight().getBalance() < -1) {
-				doubleLeftRotate(t);
+				// Do double left rotate
 			} else {
-				singleLeftRotate(t);
+				// Do single left rotate
 			}
 		}
 		/** Likewise for left heavy nodes, we can determine if we need a double right
@@ -354,26 +364,13 @@ class StringAVLTree {
 		 */
 		else if (balance < -1) {
 			if (t.getLeft() != null && t.getLeft().getBalance() > 1) {
-				doubleRightRotate(t);
+				// Do double right rotate
 			} else {
-				singleRightRotate(t);
+				// Do single right rotate
 			}
 		}
+		return returnNode;
 	}
-
-	private void singleLeftRotate(StringAVLNode t) {
-
-	}
-	private void doubleLeftRotate(StringAVLNode t) {
-
-	}
-	private void singleRightRotate(StringAVLNode t) {
-
-	}
-	private void doubleRightRotate(StringAVLNode t) {
-
-	}
-
 
 
 	public void delete(String d) {
