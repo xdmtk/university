@@ -1,35 +1,46 @@
 public class TestAVL1 {
 
 	public static void main(String[] args) {
-		StringAVLTreeXtra t = new StringAVLTreeXtra();
 
-		String str;
-		int line = 1;
-		char action;
-		String s = "imaoinaoioaoipaoiqaoilaoikaoikdikgikfikeo";
-		
-		// add lines like this when you have delete working
-		// s = s + "dkeodkfodpao";
-		
-		do {
-			action = s.charAt(0);
-			if (action == 'i') {   // insert
-				str = s.substring(1,3);
-				s = s.substring(3, s.length());
-				t.insert(str);
-			} else if (action == 'd') {  // delete
-				str = s.substring(1,3);
-				s = s.substring(3, s.length());
-				t.delete(str);
-			} else if (action == 'n') {  // new tree -- wipe out the tree and start over
-				s = s.substring(1, s.length());
-				t = new StringAVLTreeXtra();
-			} else {  // no other choice, then output the tree
-				s = s.substring(1, s.length());
-				t.display();
-				System.out.println(" - " + line++ + ".\n");
-			}
-		} while (s.length() != 0);
+		/*
+			StringAVLTreeXtra t = new StringAVLTreeXtra();
+
+			String str;
+			int line = 1;
+			char action;
+			String s = "imaoinaoioaoipaoiqaoilaoikaoikdikgikfikeo";
+
+			// add lines like this when you have delete working
+			// s = s + "dkeodkfodpao";
+
+			do {
+				action = s.charAt(0);
+				if (action == 'i') {   // insert
+					str = s.substring(1,3);
+					s = s.substring(3, s.length());
+					t.insert(str);
+				} else if (action == 'd') {  // delete
+					str = s.substring(1,3);
+					s = s.substring(3, s.length());
+					t.delete(str);
+				} else if (action == 'n') {  // new tree -- wipe out the tree and start over
+					s = s.substring(1, s.length());
+					t = new StringAVLTreeXtra();
+				} else {  // no other choice, then output the tree
+					s = s.substring(1, s.length());
+					t.display();
+					System.out.println(" - " + line++ + ".\n");
+				}
+			} while (s.length() != 0);
+	 */
+		StringAVLTreeXtra t = new StringAVLTreeXtra();
+		t.insert("a");
+		t.insert("d");
+		t.insert("e");
+		t.insert("z");
+		t.insert("t");
+		t.insert("c");
+		t.display();
 	}
 }
 
@@ -185,13 +196,22 @@ class StringAVLTree {
 
 	// Return the number of perfectly balanced AVL nodes
 	public int balanced() {
-
+		return balanced(root);
 	}
 
-	private int balance(StringAVLNode t) {
 
+	/**
+	 * Recursively call the height function to calculate
+	 * the balance for the given Node
+	 */
+	private int balanced(StringAVLNode t) {
+		int nodeBalance;
 
-
+		/** The balance of the node is simply the height of the right sub-tree
+		 *  subtracted from the height of the left sub-tree
+		 */
+		nodeBalance = height(t.getRight()) - height(t.getLeft());
+		return nodeBalance;
 	}
 
 	// Return the inorder successor, i.e., the next larger value in the tree
@@ -208,13 +228,14 @@ class StringAVLTree {
 	 */
 	public void insert(String str) {
 
+		StringAVLNode newRoot = root;
 		/**
 		 * If our root node exists, then we need to call our internal
 		 * insertion method to decide whether to insert on the left or
 		 * the right
 		 */
-		if (root != null)
-			root = insert(str, root);
+		if (newRoot != null)
+			newRoot = insert(str, newRoot);
 		/**
 		 * If our root node does not exist, our tree is empty, and we can
 		 * simply establish the root as a new Node
@@ -252,12 +273,27 @@ class StringAVLTree {
 			 * ASCII difference between the two strings. A sub-zero number means the comparing
 			 * string is greater than the string compared, so we descend left
 			 */
-			if (compareResult < 0)
-				returnNode = insert(str,t.getLeft());
+			if (compareResult < 0) {
+				returnNode = insert(str, t.getLeft());
+
+				/** If the left of the current node is null, then we can go ahead
+				 * and set this newly created Node, otherwise we still need to descend
+				 * further down the tree
+				 */
+				if (t.getLeft() == null)
+					t.setLeft(returnNode);
+			}
 
 			/** Of course the opposite result and we descend right */
-			else if (compareResult > 0)
+			else if (compareResult > 0) {
 				returnNode = insert(str, t.getRight());
+
+				/** Same logic applies here, if the right child of the given node is
+				 * null, we can make the insert, otherwise continue descending
+				 */
+				if (t.getRight() == null)
+					t.setRight(returnNode);
+			}
 
 			/** In the case that the strings are equal, we stop making any more calls
 			 * and send the unaltered Node back up the call stack
