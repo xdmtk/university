@@ -264,6 +264,7 @@ class StringAVLTree {
 		 */
 		else {
 
+
 			/** We can do this by using the String compare functions built into the
 			 * Java String class
 			 */
@@ -301,17 +302,61 @@ class StringAVLTree {
 			else
 				returnNode = t;
 
-			/** As we are backtracking up the call stack, we get/set the balance of each node we pass
+
+
+			/** As we are backtracking up the call stack, we get/set the balance of each node we pass,
+			 *  and use it to determine whether we need to rotate any of the subtrees
 			 */
 			t.setBalance(balanced(t));
-		}
+			int balance = t.getBalance();
 
-		/** Now that we've defined the Node we are to return, we must calculate the balance
-		 *  as we backtrack up the call stack
-		 */
+			/** For balanced nodes we can skip all rotation logic */
+			if (balance != 0) {
+				balanceTrees(balance, t);
+			}
+
+		}
 
 		return returnNode;
 	}
+
+	private void balanceTrees(int balance, StringAVLNode t) {
+
+		/** For right heavy nodes, we can determine if we need a double left rotation
+		 * if the right sub-tree is left heavy
+		 */
+		if (balance > 1) {
+			if (t.getRight() != null && t.getRight().getBalance() < -1) {
+				doubleLeftRotate(t);
+			} else {
+				singleLeftRotate(t);
+			}
+		}
+		/** Likewise for left heavy nodes, we can determine if we need a double right
+		 * rotation if the left sub-tree is right heavy
+		 */
+		else if (balance < -1) {
+			if (t.getLeft() != null && t.getLeft().getBalance() > 1) {
+				doubleRightRotate(t);
+			} else {
+				singleRightRotate(t);
+			}
+		}
+	}
+
+	private void singleLeftRotate(StringAVLNode t) {
+
+	}
+	private void doubleLeftRotate(StringAVLNode t) {
+
+	}
+	private void singleRightRotate(StringAVLNode t) {
+
+	}
+	private void doubleRightRotate(StringAVLNode t) {
+
+	}
+
 
 
 	public void delete(String d) {
