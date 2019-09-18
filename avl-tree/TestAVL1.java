@@ -349,8 +349,8 @@ class StringAVLTree {
 			t.setBalance(findBalance(t));
 			int balance = t.getBalance();
 
-			if (balance != 0) {
-				balanceTrees(balance, t);
+			if (balance > 1 || balance < -1) {
+				returnNode = balanceTrees(balance, t);
 			}
 
 		}
