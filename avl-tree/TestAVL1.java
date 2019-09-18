@@ -142,12 +142,14 @@ class StringAVLTree {
 	 * StringAVLNode
 	 * Return the height of the tree – not to be used anywhere in insert or delete
 	 */
-
-
 	public int height() {
 		return height(root);
 	}
 
+	/**
+	 * Recursively descend both left and right nodes to get the
+	 * height of the tree
+	 */
 	private int height(StringAVLNode t) {
 		int height;
 		if (t != null)
@@ -160,14 +162,38 @@ class StringAVLTree {
 
 	// Return the number of leaves in the tree
 	public int leafCt() {
-		return 0;
+		return leafCt(root);
+	}
+
+
+	/** Recursively traverse every node in the tree,
+	 * adding one to the total recursive sum with each
+	 * function return
+	 */
+	private int leafCt(StringAVLNode t) {
+
+		int leafCount;
+		if (t != null) {
+			leafCount = leafCt(t.getLeft()) + 1;
+			leafCount += leafCt(t.getRight()) + 1;
+		}
+		else
+			leafCount = -1;
+		return leafCount;
 	}
 
 
 	// Return the number of perfectly balanced AVL nodes
 	public int balanced() {
-		return 0;
+
 	}
+
+	private int balance(StringAVLNode t) {
+
+
+
+	}
+
 	// Return the inorder successor, i.e., the next larger value in the tree
 	// or null if there is none or str is not in the tree
 	public String successor(String str) {
@@ -239,6 +265,11 @@ class StringAVLTree {
 			else
 				returnNode = t;
 		}
+
+		/** Now that we've defined the Node we are to return, we must calculate the balance
+		 *  as we backtrack up the call stack
+		 */
+
 		return returnNode;
 	}
 
