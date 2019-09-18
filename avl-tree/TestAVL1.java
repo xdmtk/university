@@ -148,11 +148,25 @@ class StringAVLTree {
 	}
 
 	private static StringAVLNode rotateRight(StringAVLNode t) {
-		return new StringAVLNode("Foo");
+        StringAVLNode returnNode = t.getLeft();
+
+        t.setLeft(returnNode.getRight());
+        returnNode.setRight(t);
+        t.setBalance(findBalance(t));
+        returnNode.setBalance(findBalance(returnNode));
+
+        return returnNode;
 	}
 
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
-		return new StringAVLNode("Foo");
+        StringAVLNode returnNode = t.getRight();
+
+        t.setRight(returnNode.getLeft());
+        returnNode.setLeft(t);
+        t.setBalance(findBalance(t));
+        returnNode.setBalance(findBalance(returnNode));
+
+        return returnNode;
 	}
 
 	/** For these next four, be sure not to use any global variables
@@ -169,7 +183,7 @@ class StringAVLTree {
 	 * Recursively descend both left and right nodes to get the
 	 * height of the tree
 	 */
-	private int height(StringAVLNode t) {
+	private static int height(StringAVLNode t) {
 		int height = 0;
 		if (t != null)
 			height = Math.max(height(t.getLeft()), height(t.getRight()))+ 1;
@@ -226,7 +240,7 @@ class StringAVLTree {
 	 * Recursively call the height function to calculate
 	 * the balance for the given Node
 	 */
-	private int findBalance(StringAVLNode t) {
+	private static int findBalance(StringAVLNode t) {
 		int nodeBalance;
 
 		/** The balance of the node is simply the height of the right sub-tree
@@ -335,12 +349,9 @@ class StringAVLTree {
 			t.setBalance(findBalance(t));
 			int balance = t.getBalance();
 
-			// TODO: FIGURE OUT ROTATIONS !!!
-			/** For balanced nodes we can skip all rotation logic
 			if (balance != 0) {
 				balanceTrees(balance, t);
 			}
-			 */
 
 		}
 		return returnNode;
@@ -355,8 +366,10 @@ class StringAVLTree {
 		if (balance > 1) {
 			if (t.getRight() != null && t.getRight().getBalance() < -1) {
 				// Do double left rotate
+                t.setRight(rotateRight(t.getRight()));
+                returnNode = rotateLeft(t);
 			} else {
-				// Do single left rotate
+                returnNode = rotateLeft(t);
 			}
 		}
 		/** Likewise for left heavy nodes, we can determine if we need a double right
@@ -364,9 +377,10 @@ class StringAVLTree {
 		 */
 		else if (balance < -1) {
 			if (t.getLeft() != null && t.getLeft().getBalance() > 1) {
-				// Do double right rotate
+                t.setLeft(rotateLeft(t.getLeft()));
+                returnNode = rotateRight(t);
 			} else {
-				// Do single right rotate
+                returnNode = rotateRight(t);
 			}
 		}
 		return returnNode;
