@@ -83,67 +83,76 @@ class StringAVLNode {
 
 	// just one constructor, please
 	public StringAVLNode(String str) {
-
+		item = str;
+		balance = 0;
+		left = null; right = null;
 	}
 
 	public int getBalance () {
-		return 0;
+		return balance;
 	}
 
 	public void setBalance ( int bal){
-
+		balance = bal;
 	}
 
 	public String getItem () {
-		return new String("Hi");
-	// no set item
+		return item;
 	}
 
 	public StringAVLNode getLeft () {
-		return new StringAVLNode("Foo");
+		return left;
 	}
 
 	public void setLeft (StringAVLNode pt){
-
+		left = pt;
 	}
 
 	public StringAVLNode getRight () {
-
-		return new StringAVLNode("Foo");
+		return right;
 	}
 
 	public void setRight (StringAVLNode pt){
-
+		right = pt;
 	}
 }
 class StringAVLTree {
-
-
-	// should really be private but I need access
-	// for my test program to work
 	StringAVLNode root;
 	// just one constructor
 	public StringAVLTree() {
-
+        root = null;
 	}
 
-	// Rotate the node to the right
 	private static StringAVLNode rotateRight(StringAVLNode t) {
 		return new StringAVLNode("Foo");
 	}
 
-	// Rotate the node to the left
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
 		return new StringAVLNode("Foo");
 	}
-	// For these next four, be sure not to use any global variables
-	// and no extra “counting” parameters in the recursive methods, e.g.,
-	// the recursive height method should just have one parameter, the
-	// StringAVLNode
-	// Return the height of the tree – not to be used anywhere in insert or delete
+
+	/** For these next four, be sure not to use any global variables
+	 * and no extra “counting” parameters in the recursive methods, e.g.,
+	 * the recursive height method should just have one parameter, the
+	 * StringAVLNode
+	 * Return the height of the tree – not to be used anywhere in insert or delete
+	 */
+
+
 	public int height() {
-		return 0;
+		return height(root);
 	}
+
+	private int height(StringAVLNode t) {
+		int height;
+		if (t != null)
+			height = Math.max(height(t.getLeft()), height(t.getRight()))+ 1;
+		else
+			height = -1;
+		return height;
+	}
+
+
 	// Return the number of leaves in the tree
 	public int leafCt() {
 		return 0;
@@ -157,12 +166,76 @@ class StringAVLTree {
 	public String successor(String str) {
 		return new String("foo");
 	}
+
+	/**
+	 * Public insertion method handling the empty tree case and a
+	 * typical insertion case
+	 *
+ 	 * @param str - Value to be inserted in the tree
+	 */
 	public void insert(String str) {
 
+		/**
+		 * If our root node exists, then we need to call our internal
+		 * insertion method to decide whether to insert on the left or
+		 * the right
+		 */
+		if (root != null)
+			root = insert(str, root);
+		/**
+		 * If our root node does not exist, our tree is empty, and we can
+		 * simply establish the root as a new Node
+		 */
+		else
+			root = new StringAVLNode(str);
 	}
+
+
 	private StringAVLNode insert(String str, StringAVLNode t) {
-		return new StringAVLNode("Foo");
+
+		/** To keep a single return point in the function, we declare a placeholder
+		 * for the Node pointer we are going to return
+		 */
+		StringAVLNode returnNode = null;
+
+		/** If t is null, we've hit the base-case as there is no more
+		 * comparison or traversal needed, so create the Node we want to
+		 * insert and return it back up the call stack
+		 */
+		if (t == null)
+			returnNode = new StringAVLNode(str);
+
+		/** If t isn't null, then we need to decide whether to descend left
+		 * or right
+		 */
+		else {
+
+			/** We can do this by using the String compare functions built into the
+			 * Java String class
+			 */
+			int compareResult = str.compareToIgnoreCase(t.getItem());
+
+			/** The result from compareToIgnoreCase() gives an integer that tells us the
+			 * ASCII difference between the two strings. A sub-zero number means the comparing
+			 * string is greater than the string compared, so we descend left
+			 */
+			if (compareResult < 0)
+				returnNode = insert(str,t.getLeft());
+
+			/** Of course the opposite result and we descend right */
+			else if (compareResult > 0)
+				returnNode = insert(str, t.getRight());
+
+			/** In the case that the strings are equal, we stop making any more calls
+			 * and send the unaltered Node back up the call stack
+			 */
+			else
+				returnNode = t;
+		}
+		return returnNode;
 	}
+
+
 	public void delete(String d) {
 
 	}
