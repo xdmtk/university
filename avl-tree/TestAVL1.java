@@ -41,6 +41,9 @@ public class TestAVL1 {
 		t.insert("t");
 		t.insert("c");
 		t.display();
+		System.out.println(t.balanced());
+		System.out.println(t.leafCt());
+		System.out.println(t.height());
 	}
 }
 
@@ -162,11 +165,9 @@ class StringAVLTree {
 	 * height of the tree
 	 */
 	private int height(StringAVLNode t) {
-		int height;
+		int height = 0;
 		if (t != null)
 			height = Math.max(height(t.getLeft()), height(t.getRight()))+ 1;
-		else
-			height = -1;
 		return height;
 	}
 
@@ -183,13 +184,10 @@ class StringAVLTree {
 	 */
 	private int leafCt(StringAVLNode t) {
 
-		int leafCount;
+		int leafCount = 0;
 		if (t != null) {
-			leafCount = leafCt(t.getLeft()) + 1;
-			leafCount += leafCt(t.getRight()) + 1;
+			leafCount = leafCt(t.getLeft()) + leafCt(t.getRight()) + 1;
 		}
-		else
-			leafCount = -1;
 		return leafCount;
 	}
 
