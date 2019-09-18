@@ -2,6 +2,7 @@ public class TestAVL1 {
 
 	public static void main(String[] args) {
 		StringAVLTreeXtra t = new StringAVLTreeXtra();
+
 		String str;
 		int line = 1;
 		char action;
@@ -43,9 +44,13 @@ class StringAVLTreeXtra extends StringAVLTree {
 	}
 
 	public void display() {
+		BTreePrinter.printStringAVLNode(getRoot());
+		/*
 		paren_out(getRoot());
 		System.out.println();
 		bal_out(getRoot());
+		
+		 */
 	}
 
 	public void paren_out(StringAVLNode t) {
@@ -157,6 +162,8 @@ class StringAVLTree {
 	public int leafCt() {
 		return 0;
 	}
+
+
 	// Return the number of perfectly balanced AVL nodes
 	public int balanced() {
 		return 0;
@@ -247,3 +254,11 @@ class StringAVLTree {
 		return "Nicholas Martinez";
 	}
 }
+
+
+
+
+
+
+
+
