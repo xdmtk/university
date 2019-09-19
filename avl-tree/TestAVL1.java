@@ -1,3 +1,5 @@
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 public class TestAVL1 {
 
 	public static void main(String[] args) {
@@ -142,6 +144,9 @@ class StringAVLTree {
 
 
 	StringAVLNode root;
+	boolean debugMode = true;
+
+
 	// just one constructor
 	public StringAVLTree() {
         root = null;
@@ -256,6 +261,8 @@ class StringAVLTree {
 		return new String("foo");
 	}
 
+
+
 	/**
 	 * Public insertion method handling the empty tree case and a
 	 * typical insertion case
@@ -264,38 +271,26 @@ class StringAVLTree {
 	 */
 	public void insert(String str) {
 
-		StringAVLNode newRoot = root;
-		/**
-		 * If our root node exists, then we need to call our internal
-		 * insertion method to decide whether to insert on the left or
-		 * the right
-		 */
-		if (newRoot != null)
-			newRoot = insert(str, newRoot);
-		/**
-		 * If our root node does not exist, our tree is empty, and we can
-		 * simply establish the root as a new Node
-		 */
-		else
-			root = new StringAVLNode(str);
+		/** Update the root for every insert */
+		root = insert(str, root);
 
-
-		BTreePrinter.printStringAVLNode(root);
+		if (debugMode)
+			BTreePrinter.printStringAVLNode(root);
 	}
 
 
 	private StringAVLNode insert(String str, StringAVLNode t) {
 
-		/** To keep a single return point in the function, we declare a placeholder
-		 * for the Node pointer we are going to return
+		/** To keep a single return point in the function, we setup a temporary
+		 * pointer to `t`, and modify it as we step through the function.
 		 */
-		StringAVLNode returnNode = null;
+		StringAVLNode returnNode = t;
 
-		/** If t is null, we've hit the base-case as there is no more
+		/** If the given node is null, we've hit the base-case as there is no more
 		 * comparison or traversal needed, so create the Node we want to
 		 * insert and return it back up the call stack
 		 */
-		if (t == null)
+		if (returnNode == null)
 			returnNode = new StringAVLNode(str);
 
 		/** If t isn't null, then we need to decide whether to descend left
@@ -314,33 +309,18 @@ class StringAVLTree {
 			 * string is greater than the string compared, so we descend left
 			 */
 			if (compareResult < 0) {
-				returnNode = insert(str, t.getLeft());
 
-				/** If the left of the current node is null, then we can go ahead
-				 * and set this newly created Node, otherwise we still need to descend
-				 * further down the tree
+				/** We descend into the left while also calling insert as a parameter to
+				 * setLeft(), this way, when we hit the base case, the new node will be generated
+				 * at the very bottom of the tree
 				 */
-				if (t.getLeft() == null)
-					t.setLeft(returnNode);
+				returnNode.setLeft(insert(str, returnNode.getLeft()));
 			}
 
 			/** Of course the opposite result and we descend right */
 			else if (compareResult > 0) {
-				returnNode = insert(str, t.getRight());
-
-				/** Same logic applies here, if the right child of the given node is
-				 * null, we can make the insert, otherwise continue descending
-				 */
-				if (t.getRight() == null)
-					t.setRight(returnNode);
+				returnNode.setRight(insert(str, returnNode.getRight()));
 			}
-
-			/** In the case that the strings are equal, we stop making any more calls
-			 * and send the unaltered Node back up the call stack
-			 */
-			else
-				returnNode = t;
-
 
 
 			/** As we are backtracking up the call stack, we get/set the balance of each node we pass,
@@ -349,6 +329,9 @@ class StringAVLTree {
 			t.setBalance(findBalance(t));
 			int balance = t.getBalance();
 
+			/** If we run into an unbalanced situation for the node, we call balanceTrees()
+			 * to determine what kind of rotation is required for the given imbalance
+			 */
 			if (balance > 1 || balance < -1) {
 				returnNode = balanceTrees(balance, t);
 			}
@@ -357,32 +340,73 @@ class StringAVLTree {
 		return returnNode;
 	}
 
+
+
+	/**
+	 * This function handles the left/right rotates, and double left/double right
+	 * rotates (LR, RL)
+	 *
+	 * @param balance - The balance value of the given node t
+	 * @param t - The current node
+	 * @return - The balanced root node
+	 */
 	private StringAVLNode balanceTrees(int balance, StringAVLNode t) {
 
 		StringAVLNode returnNode = t;
-		/** For right heavy nodes, we can determine if we need a double left rotation
-		 * if the right sub-tree is left heavy
-		 */
+		if (debugMode) {
+			BTreePrinter.printStringAVLNode(root);
+			System.out.println("Tree went out of balance at level " + (height(root) - height(t)));
+		}
+
 		if (balance > 1) {
+
+			/** For right heavy nodes, we can determine if we need a double left rotation
+			 *  if the right sub-tree is left heavy
+			 */
 			if (t.getRight() != null && t.getRight().getBalance() < -1) {
-				// Do double left rotate
+
+				if (debugMode)
+					System.out.println("Executing double left rotation");
+
                 t.setRight(rotateRight(t.getRight()));
                 returnNode = rotateLeft(t);
-			} else {
-                returnNode = rotateLeft(t);
+
+			}
+			/** If not just do a left rotation */
+			else {
+				if (debugMode)
+					System.out.println("Executing left rotation");
+				
+				returnNode = rotateLeft(t);
 			}
 		}
-		/** Likewise for left heavy nodes, we can determine if we need a double right
-		 * rotation if the left sub-tree is right heavy
-		 */
 		else if (balance < -1) {
+
+			/** Likewise for left heavy nodes, we can determine if we need a double right
+			 * rotation if the left sub-tree is right heavy
+			 */
 			if (t.getLeft() != null && t.getLeft().getBalance() > 1) {
                 t.setLeft(rotateLeft(t.getLeft()));
                 returnNode = rotateRight(t);
-			} else {
+
+                if (debugMode)
+                	System.out.println("Executing double right rotation");
+
+			}
+			/** If not just do a left rotation */
+			else {
+
+				if (debugMode)
+					System.out.println("Executing right rotation");
+
                 returnNode = rotateRight(t);
 			}
 		}
+
+		/** returnNode should now have the root of the tree that needed balancing
+		 *  so we return it to the caller ( the insert method ) so the 'whole' subtree is
+		 *  updated
+		 */
 		return returnNode;
 	}
 
