@@ -4,7 +4,6 @@ public class TestAVL1 {
 
 	public static void main(String[] args) {
 
-		/*
 			StringAVLTreeXtra t = new StringAVLTreeXtra();
 
 			String str;
@@ -34,15 +33,6 @@ public class TestAVL1 {
 					System.out.println(" - " + line++ + ".\n");
 				}
 			} while (s.length() != 0);
-	 */
-		StringAVLTreeXtra t = new StringAVLTreeXtra();
-		t.insert("a");
-		t.insert("d");
-		t.insert("e");
-		t.insert("z");
-		t.insert("t");
-		t.insert("c");
-		t.display();
 		System.out.println(t.balanced());
 		System.out.println(t.leafCt());
 		System.out.println(t.height());
@@ -60,13 +50,9 @@ class StringAVLTreeXtra extends StringAVLTree {
 	}
 
 	public void display() {
-		BTreePrinter.printStringAVLNode(getRoot());
-		/*
 		paren_out(getRoot());
 		System.out.println();
 		bal_out(getRoot());
-		
-		 */
 	}
 
 	public void paren_out(StringAVLNode t) {
@@ -144,7 +130,7 @@ class StringAVLTree {
 
 
 	StringAVLNode root;
-	boolean debugMode = true;
+	boolean debugMode = false;
 
 
 	// just one constructor
