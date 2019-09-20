@@ -13,7 +13,7 @@ public class TestAVL1 {
 
 			// add lines like this when you have delete working
 			// s = s + "dkeodkfodpao";
-
+			long exec_time = System.currentTimeMillis();
 			do {
 				action = s.charAt(0);
 				if (action == 'i') {   // insert
@@ -33,9 +33,11 @@ public class TestAVL1 {
 					System.out.println(" - " + line++ + ".\n");
 				}
 			} while (s.length() != 0);
-		System.out.println(t.balanced());
-		System.out.println(t.leafCt());
-		System.out.println(t.height());
+		System.out.println("Execution Time: " + (System.currentTimeMillis() - exec_time) + "ms");
+		System.out.println("Balanced Nodes: " + t.balanced());
+		System.out.println("Total leaves: " + t.leafCt());
+		System.out.println("Tree Height: " + t.height());
+
 	}
 }
 
@@ -79,6 +81,15 @@ class StringAVLTreeXtra extends StringAVLTree {
 				System.out.print(" " + t.getBalance());
 			bal_out(t.getRight());
 			System.out.print(")");
+		}
+	}
+
+	public static void p_balance(StringAVLNode t) {
+		if (t == null) {
+		} else {
+			System.out.println(t.getItem() + " - " + t.getBalance());
+			p_balance(t.getLeft());
+			p_balance(t.getRight());
 		}
 	}
 }
@@ -130,7 +141,7 @@ class StringAVLTree {
 
 
 	StringAVLNode root;
-	boolean debugMode = false;
+	boolean debugMode = true;
 
 
 	// just one constructor
@@ -341,7 +352,7 @@ class StringAVLTree {
 		StringAVLNode returnNode = t;
 		if (debugMode) {
 			BTreePrinter.printStringAVLNode(root);
-			System.out.println("Tree went out of balance at level " + (height(root) - height(t)));
+			System.out.println("Tree went out of balance at node \"" + t.getItem() + "\" at level " + (height(root) - height(t)));
 		}
 
 		if (balance > 1) {

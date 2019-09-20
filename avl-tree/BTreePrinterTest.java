@@ -10,6 +10,7 @@ class BTreePrinter {
         int maxLevel = BTreePrinter.maxLevel(root);
 
         printStringAVLNodeInternal(Collections.singletonList(root), 1, maxLevel);
+        StringAVLTreeXtra.p_balance(root);
     }
 
     private static <T extends Comparable<?>> void printStringAVLNodeInternal(List<StringAVLNode> nodes, int level, int maxLevel) {
