@@ -36,12 +36,9 @@ public class TestAVL1 {
 			} while (s.length() != 0);
 	 */
 		StringAVLTreeXtra t = new StringAVLTreeXtra();
-		t.insert("a");
-		t.insert("d");
-		t.insert("e");
-		t.insert("z");
-		t.insert("t");
 		t.insert("c");
+		t.insert("a");
+		t.insert("b");
 		t.display();
 		System.out.println(t.balanced());
 		System.out.println(t.leafCt());
@@ -363,7 +360,7 @@ class StringAVLTree {
 			/** For right heavy nodes, we can determine if we need a double left rotation
 			 *  if the right sub-tree is left heavy
 			 */
-			if (t.getRight() != null && t.getRight().getBalance() < -1) {
+			if (t.getRight() != null && t.getRight().getBalance() <= -1) {
 
 				if (debugMode)
 					System.out.println("Executing double left rotation");
@@ -385,7 +382,7 @@ class StringAVLTree {
 			/** Likewise for left heavy nodes, we can determine if we need a double right
 			 * rotation if the left sub-tree is right heavy
 			 */
-			if (t.getLeft() != null && t.getLeft().getBalance() > 1) {
+			if (t.getLeft() != null && t.getLeft().getBalance() >= 1) {
                 t.setLeft(rotateLeft(t.getLeft()));
                 returnNode = rotateRight(t);
 
