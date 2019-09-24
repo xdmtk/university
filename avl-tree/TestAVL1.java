@@ -39,10 +39,20 @@ public class TestAVL1 {
 		t.insert("c");
 		t.insert("a");
 		t.insert("b");
+		t.insert("r");
+		t.insert("f");
+		t.insert("e");
+		t.insert("l");
+		t.insert("o");
+		t.insert("p");
+		t.insert("z");
+		t.insert("u");
+
 		t.display();
-		System.out.println(t.balanced());
-		System.out.println(t.leafCt());
-		System.out.println(t.height());
+		System.out.println("Balanced Nodes: " + t.balanced());
+		System.out.println("Total Leaves: " + t.leafCt());
+		System.out.println("Height: " + t.height());
+		t.print_bal();
 	}
 }
 
@@ -90,6 +100,18 @@ class StringAVLTreeXtra extends StringAVLTree {
 				System.out.print(" " + t.getBalance());
 			bal_out(t.getRight());
 			System.out.print(")");
+		}
+	}
+
+	public void print_bal() {
+		print_bal(root);
+	}
+	public void print_bal(StringAVLNode t) {
+		if (t == null) {
+		} else {
+			System.out.println(t.getItem() + " - " + t.getBalance());
+			print_bal(t.getLeft());
+			print_bal(t.getRight());
 		}
 	}
 }
@@ -141,7 +163,7 @@ class StringAVLTree {
 
 
 	StringAVLNode root;
-	boolean debugMode = true;
+	private boolean debugMode = true;
 
 
 	// just one constructor
@@ -366,6 +388,7 @@ class StringAVLTree {
 					System.out.println("Executing double left rotation");
 
                 t.setRight(rotateRight(t.getRight()));
+				BTreePrinter.printStringAVLNode(root);
                 returnNode = rotateLeft(t);
 
 			}
@@ -383,11 +406,13 @@ class StringAVLTree {
 			 * rotation if the left sub-tree is right heavy
 			 */
 			if (t.getLeft() != null && t.getLeft().getBalance() >= 1) {
-                t.setLeft(rotateLeft(t.getLeft()));
-                returnNode = rotateRight(t);
 
-                if (debugMode)
-                	System.out.println("Executing double right rotation");
+				if (debugMode)
+					System.out.println("Executing double right rotation");
+
+				t.setLeft(rotateLeft(t.getLeft()));
+				BTreePrinter.printStringAVLNode(root);
+                returnNode = rotateRight(t);
 
 			}
 			/** If not just do a left rotation */
