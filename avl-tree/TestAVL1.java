@@ -246,17 +246,10 @@ class StringAVLTree {
 	 * @return
 	 */
 	private int balanced(StringAVLNode t) {
-		int balanceCount = 0;
 		if (t != null) {
-			if (t.getLeft() != null) {
-				 balanced(t.getLeft());
-			}
-			if (t.getRight() != null) {
-				balanced(t.getRight());
-			}
-			balanceCount += t.getBalance() == 0 ? 1 : 0;
+				 return balanced(t.getLeft()) + balanced(t.getRight()) + (t.getBalance() == 0 ? 1 : 0);
 		}
-		return balanceCount;
+		return 0;
 	}
 
 
