@@ -1,4 +1,5 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
+import java.util.ArrayList;
 
 public class TestAVL1 {
 
@@ -103,17 +104,6 @@ class StringAVLTreeXtra extends StringAVLTree {
 		}
 	}
 
-	public void print_bal() {
-		print_bal(root);
-	}
-	public void print_bal(StringAVLNode t) {
-		if (t == null) {
-		} else {
-			System.out.println(t.getItem() + " - " + t.getBalance());
-			print_bal(t.getLeft());
-			print_bal(t.getRight());
-		}
-	}
 }
 
 class StringAVLNode {
@@ -155,6 +145,8 @@ class StringAVLNode {
 	public void setRight (StringAVLNode pt){
 		right = pt;
 	}
+
+
 }
 
 
@@ -165,11 +157,34 @@ class StringAVLTree {
 	StringAVLNode root;
 	private boolean debugMode = true;
 
+	public void print_bal() {
+		ArrayList<String> s = new ArrayList<>();
+		print_bal(root, s);
+		for (int i = 0; i < s.size(); i++) {
+			for (int j = 0; j < 5 && i < s.size(); j++, i++) {
+				System.out.print(s.get(i) + "  ");
+			}
+			System.out.print("\n");
+		}
+		System.out.println("\n==================\n");
+	}
+	public void print_bal(StringAVLNode t, ArrayList<String> s) {
+		if (t == null) {
+		} else {
+			s.add(t.getItem() + " = " + t.getBalance());
+			print_bal(t.getLeft(), s);
+			print_bal(t.getRight(), s);
+		}
+	}
+
+
+
 
 	// just one constructor
 	public StringAVLTree() {
         root = null;
 	}
+
 
 	private static StringAVLNode rotateRight(StringAVLNode t) {
         StringAVLNode returnNode = t.getLeft();
@@ -286,8 +301,11 @@ class StringAVLTree {
 		/** Update the root for every insert */
 		root = insert(str, root);
 
-		if (debugMode)
+		if (debugMode) {
 			BTreePrinter.printStringAVLNode(root);
+			print_bal();
+		}
+
 	}
 
 
@@ -367,7 +385,8 @@ class StringAVLTree {
 		StringAVLNode returnNode = t;
 		if (debugMode) {
 			BTreePrinter.printStringAVLNode(root);
-			System.out.println("Tree went out of balance at level " + (height(root) - height(t)));
+			System.out.println("Tree went out of balance at level " + (height(root) - height(t)) +
+					" at node " + t.getItem() + " with balance factor " + t.getBalance());
 		}
 
 		if (balance > 1) {
@@ -384,6 +403,9 @@ class StringAVLTree {
 				BTreePrinter.printStringAVLNode(root);
                 returnNode = rotateLeft(t);
 
+                if (debugMode)
+					print_bal();
+
 			}
 			/** If not just do a left rotation */
 			else {
@@ -391,6 +413,9 @@ class StringAVLTree {
 					System.out.println("Executing left rotation");
 				
 				returnNode = rotateLeft(t);
+
+				if (debugMode)
+					print_bal();
 			}
 		}
 		else if (balance < -1) {
@@ -407,6 +432,9 @@ class StringAVLTree {
 				BTreePrinter.printStringAVLNode(root);
                 returnNode = rotateRight(t);
 
+                if (debugMode)
+					print_bal();
+
 			}
 			/** If not just do a left rotation */
 			else {
@@ -415,6 +443,9 @@ class StringAVLTree {
 					System.out.println("Executing right rotation");
 
                 returnNode = rotateRight(t);
+
+                if (debugMode)
+					print_bal();
 			}
 		}
 
