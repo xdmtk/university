@@ -14,7 +14,6 @@ public class TestAVL1 {
 
 			// add lines like this when you have delete working
 			// s = s + "dkeodkfodpao";
-			long exec_time = System.currentTimeMillis();
 			do {
 				action = s.charAt(0);
 				if (action == 'i') {   // insert
@@ -34,25 +33,7 @@ public class TestAVL1 {
 					System.out.println(" - " + line++ + ".\n");
 				}
 			} while (s.length() != 0);
-		StringAVLTreeXtra t = new StringAVLTreeXtra();
-		t.insert("c");
-		t.insert("a");
-		t.insert("b");
-		t.insert("r");
-		t.insert("f");
-		t.insert("e");
-		t.insert("l");
-		t.insert("o");
-		t.insert("p");
-		t.insert("z");
-		t.insert("u");
-
 		t.display();
-		System.out.println("Balanced Nodes: " + t.balanced());
-		System.out.println("Total Leaves: " + t.leafCt());
-		System.out.println("Height: " + t.height());
-		System.out.println("Nadir: " + t.nadir() + "\n");
-		t.print_bal();
 	}
 }
 
@@ -150,36 +131,6 @@ class StringAVLTree {
 
 
 	StringAVLNode root;
-	private boolean debugMode = true;
-
-
-	/**
-	 * DEBUGGING METHODS - DELETE
-	 */
-	public void print_bal() {
-		ArrayList<String> s = new ArrayList<>();
-		print_bal(root, s);
-		for (int i = 0; i < s.size(); ) {
-			for (int j = 0; j < 5 && i < s.size(); j++, i++) {
-				System.out.print(s.get(i) + "  ");
-			}
-			System.out.print("\n");
-		}
-		System.out.println("\n==================\n");
-	}
-	public void print_bal(StringAVLNode t, ArrayList<String> s) {
-		if (t == null) {
-		} else {
-			s.add(t.getItem() + " = " + t.getBalance());
-			print_bal(t.getLeft(), s);
-			print_bal(t.getRight(), s);
-		}
-	}
-	/**
-	 * ==========================
-	 */
-
-
 
 	// just one constructor
 	public StringAVLTree() {
@@ -321,14 +272,7 @@ class StringAVLTree {
 
 
 	public void insert(String str) {
-
 		root = insert(str, root);
-
-		if (debugMode) {
-			BTreePrinter.printStringAVLNode(root);
-			print_bal();
-		}
-
 	}
 
 
@@ -376,12 +320,6 @@ class StringAVLTree {
 		boolean requiresDoubleLeft = t.getRight() != null && t.getRight().getBalance() <= -1;
 		boolean requiresDoubleRight = t.getLeft() != null && t.getLeft().getBalance() >= 1;
 
-		if (debugMode) {
-			BTreePrinter.printStringAVLNode(root);
-			System.out.println("Tree went out of balance at level " + (height(root) - height(t)) +
-					" at node " + t.getItem() + " with balance factor " + t.getBalance());
-		}
-
 		if (rightHeavy) {
 
 			/** Do double left rotation by right rotating the right child subtree, then
@@ -389,17 +327,12 @@ class StringAVLTree {
 			 */
 			if (requiresDoubleLeft) {
 
-				if (debugMode) System.out.println("Executing double left rotation");
                 t.setRight(rotateRight(t.getRight()));
-                if (debugMode) BTreePrinter.printStringAVLNode(root);
                 t = rotateLeft(t);
-                if (debugMode) print_bal();
 
 			}
 			else {
-				if (debugMode) System.out.println("Executing left rotation");
 				t = rotateLeft(t);
-				if (debugMode) print_bal();
 			}
 		}
 
@@ -409,17 +342,12 @@ class StringAVLTree {
 		else if (leftHeavy) {
 			if (requiresDoubleRight) {
 
-				if (debugMode) System.out.println("Executing double right rotation");
 				t.setLeft(rotateLeft(t.getLeft()));
-				if (debugMode) BTreePrinter.printStringAVLNode(root);
                 t = rotateRight(t);
-                if (debugMode) print_bal();
 
 			}
 			else {
-				if (debugMode) System.out.println("Executing right rotation");
                 t = rotateRight(t);
-                if (debugMode) print_bal();
 			}
 		}
 		return t;
