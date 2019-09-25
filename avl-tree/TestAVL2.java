@@ -309,15 +309,26 @@ class StringAVLTree {
 	/** Essentially the inverse of height, descend the tree
 	 * in the direction of the less heavy node
 	 */
-	private static int nadir(StringAVLNode t) {
+	private int nadir(StringAVLNode t) {
 		int nadir = 0;
-		if (t != null) {
-			if (t.getBalance() > 0 )
-				nadir = nadir(t.getLeft()) + 1;
-			else
-				nadir = nadir(t.getRight()) + 1;
-		}
-		return nadir ;
+		// called on root = NULL
+		if (t == null)
+			return 0;
+
+		// Base case : Leaf Node. This accounts for height = 1.
+		if (t.getLeft() == null && t.getRight() == null)
+			return 1;
+
+		// If left subtree is NULL, recur for right subtree
+		if (t.getLeft() == null)
+			return nadir(t.getRight()) + 1;
+
+		// If right subtree is NULL, recur for left subtree
+		if (t.getRight() == null)
+			return nadir(t.getLeft()) + 1;
+
+		return Math.min(nadir(t.getLeft()),
+				nadir(t.getRight())) + 1;
 
 	}
 
