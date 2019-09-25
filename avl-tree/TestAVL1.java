@@ -227,8 +227,12 @@ class StringAVLTree {
 	 */
 	private static int height(StringAVLNode t) {
 		int height = 0;
-		if (t != null)
-			height = Math.max(height(t.getLeft()), height(t.getRight()))+ 1;
+		if (t != null) {
+			if (t.getBalance() > 0)
+				height = height(t.getRight()) + 1;
+			else
+				height = height(t.getLeft()) + 1;
+		}
 		return height;
 	}
 
@@ -405,6 +409,10 @@ class StringAVLTree {
 		return t;
 	}
 
+
+	public void nadir() {
+
+	}
 
 
 	// TODO: Unused
