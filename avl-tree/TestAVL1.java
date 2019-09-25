@@ -314,14 +314,13 @@ class StringAVLTree {
 		/** To keep a single return point in the function, we setup a temporary
 		 * pointer to `t`, and modify it as we step through the function.
 		 */
-		StringAVLNode returnNode = t;
 
 		/** If the given node is null, we've hit the base-case as there is no more
 		 * comparison or traversal needed, so create the Node we want to
 		 * insert and return it back up the call stack
 		 */
-		if (returnNode == null)
-			returnNode = new StringAVLNode(str);
+		if (t == null)
+			t = new StringAVLNode(str);
 
 		/** If t isn't null, then we need to decide whether to descend left
 		 * or right
@@ -344,12 +343,12 @@ class StringAVLTree {
 				 * setLeft(), this way, when we hit the base case, the new node will be generated
 				 * at the very bottom of the tree
 				 */
-				returnNode.setLeft(insert(str, returnNode.getLeft()));
+				t.setLeft(insert(str, t.getLeft()));
 			}
 
 			/** Of course the opposite result and we descend right */
 			else if (compareResult > 0) {
-				returnNode.setRight(insert(str, returnNode.getRight()));
+				t.setRight(insert(str, t.getRight()));
 			}
 
 
@@ -363,11 +362,11 @@ class StringAVLTree {
 			 * to determine what kind of rotation is required for the given imbalance
 			 */
 			if (balance > 1 || balance < -1) {
-				returnNode = balanceTrees(balance, t);
+				t = balanceTrees(balance, t);
 			}
 
 		}
-		return returnNode;
+		return t;
 	}
 
 
@@ -382,7 +381,6 @@ class StringAVLTree {
 	 */
 	private StringAVLNode balanceTrees(int balance, StringAVLNode t) {
 
-		StringAVLNode returnNode = t;
 		if (debugMode) {
 			BTreePrinter.printStringAVLNode(root);
 			System.out.println("Tree went out of balance at level " + (height(root) - height(t)) +
@@ -401,7 +399,7 @@ class StringAVLTree {
 
                 t.setRight(rotateRight(t.getRight()));
 				BTreePrinter.printStringAVLNode(root);
-                returnNode = rotateLeft(t);
+                t = rotateLeft(t);
 
                 if (debugMode)
 					print_bal();
@@ -412,7 +410,7 @@ class StringAVLTree {
 				if (debugMode)
 					System.out.println("Executing left rotation");
 				
-				returnNode = rotateLeft(t);
+				t = rotateLeft(t);
 
 				if (debugMode)
 					print_bal();
@@ -430,7 +428,7 @@ class StringAVLTree {
 
 				t.setLeft(rotateLeft(t.getLeft()));
 				BTreePrinter.printStringAVLNode(root);
-                returnNode = rotateRight(t);
+                t = rotateRight(t);
 
                 if (debugMode)
 					print_bal();
@@ -442,7 +440,7 @@ class StringAVLTree {
 				if (debugMode)
 					System.out.println("Executing right rotation");
 
-                returnNode = rotateRight(t);
+                t = rotateRight(t);
 
                 if (debugMode)
 					print_bal();
@@ -453,7 +451,7 @@ class StringAVLTree {
 		 *  so we return it to the caller ( the insert method ) so the 'whole' subtree is
 		 *  updated
 		 */
-		return returnNode;
+		return t;
 	}
 
 
