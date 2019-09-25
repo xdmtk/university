@@ -52,7 +52,7 @@ public class TestAVL1 {
 		t.display();
 		System.out.println("Balanced Nodes: " + t.balanced());
 		System.out.println("Total Leaves: " + t.leafCt());
-		System.out.println("Height: " + t.height());
+		System.out.println("Height: " + t.height() + "\n");
 		t.print_bal();
 	}
 }
@@ -157,10 +157,14 @@ class StringAVLTree {
 	StringAVLNode root;
 	private boolean debugMode = true;
 
+
+	/**
+	 * DEBUGGING METHODS - DELETE
+	 */
 	public void print_bal() {
 		ArrayList<String> s = new ArrayList<>();
 		print_bal(root, s);
-		for (int i = 0; i < s.size(); i++) {
+		for (int i = 0; i < s.size(); ) {
 			for (int j = 0; j < 5 && i < s.size(); j++, i++) {
 				System.out.print(s.get(i) + "  ");
 			}
@@ -176,7 +180,9 @@ class StringAVLTree {
 			print_bal(t.getRight(), s);
 		}
 	}
-
+	/**
+	 * ==========================
+	 */
 
 
 
@@ -186,6 +192,7 @@ class StringAVLTree {
 	}
 
 
+	// TODO: Find a way to balance these without calling height
 	private static StringAVLNode rotateRight(StringAVLNode t) {
         StringAVLNode returnNode = t.getLeft();
 
@@ -197,6 +204,7 @@ class StringAVLTree {
         return returnNode;
 	}
 
+	// TODO: Find a way to balance these without calling height
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
         StringAVLNode returnNode = t.getRight();
 
@@ -208,19 +216,14 @@ class StringAVLTree {
         return returnNode;
 	}
 
-	/** For these next four, be sure not to use any global variables
-	 * and no extra “counting” parameters in the recursive methods, e.g.,
-	 * the recursive height method should just have one parameter, the
-	 * StringAVLNode
-	 * Return the height of the tree – not to be used anywhere in insert or delete
-	 */
+
+
 	public int height() {
 		return height(root);
 	}
 
-	/**
-	 * Recursively descend both left and right nodes to get the
-	 * height of the tree
+	/** Find height by descending the tree based on node balance
+	 * factor
 	 */
 	private static int height(StringAVLNode t) {
 		int height = 0;
@@ -230,15 +233,16 @@ class StringAVLTree {
 	}
 
 
+
+
+
 	// Return the number of leaves in the tree
 	public int leafCt() {
 		return leafCt(root);
 	}
 
-
-	/** Recursively traverse every node in the tree,
-	 * adding one to the total recursive sum with each
-	 * function return
+	/** Recursively traverse every node in the tree, adding one to the
+	 *  total recursive sum with each function return
 	 */
 	private int leafCt(StringAVLNode t) {
 
@@ -250,15 +254,17 @@ class StringAVLTree {
 	}
 
 
+
+
+
+
 	// Return the number of perfectly balanced AVL nodes
 	public int balanced() {
 		return balanced(root);
 	}
 
-	/** Similar to the leafCount() method, except the integer we are returning
-	 * is only incremented when the balance of the given node is 0
-	 * @param t
-	 * @return
+	/** Similar to the leafCount() method, except the integer returned
+	 *  is only incremented when the balance of the given node is 0
 	 */
 	private int balanced(StringAVLNode t) {
 		if (t != null) {
@@ -268,37 +274,34 @@ class StringAVLTree {
 	}
 
 
+
+
+
+
 	/**
-	 * Recursively call the height function to calculate
-	 * the balance for the given Node
+	 * TODO: DELETE THIS METHOD - SHOULD FIND BALANCE WITHOUT CALLING HEIGHT
 	 */
 	private static int findBalance(StringAVLNode t) {
 		int nodeBalance;
 
-		/** The balance of the node is simply the height of the right sub-tree
-		 *  subtracted from the height of the left sub-tree
-		 */
 		nodeBalance = height(t.getRight()) - height(t.getLeft());
 		return nodeBalance;
 	}
 
-	// Return the inorder successor, i.e., the next larger value in the tree
-	// or null if there is none or str is not in the tree
+
+
+
+
+
+	// Not used - For delete only
 	public String successor(String str) {
 		return new String("foo");
 	}
 
 
 
-	/**
-	 * Public insertion method handling the empty tree case and a
-	 * typical insertion case
-	 *
- 	 * @param str - Value to be inserted in the tree
-	 */
 	public void insert(String str) {
 
-		/** Update the root for every insert */
 		root = insert(str, root);
 
 		if (debugMode) {
@@ -311,59 +314,33 @@ class StringAVLTree {
 
 	private StringAVLNode insert(String str, StringAVLNode t) {
 
-		/** To keep a single return point in the function, we setup a temporary
-		 * pointer to `t`, and modify it as we step through the function.
-		 */
-
-		/** If the given node is null, we've hit the base-case as there is no more
-		 * comparison or traversal needed, so create the Node we want to
-		 * insert and return it back up the call stack
-		 */
+		// Base case - Just insert the node
 		if (t == null)
 			t = new StringAVLNode(str);
-
-		/** If t isn't null, then we need to decide whether to descend left
-		 * or right
-		 */
 		else {
 
-
-			/** We can do this by using the String compare functions built into the
-			 * Java String class
-			 */
+			// Perform string comparisons to determine left/right insert
 			int compareResult = str.compareToIgnoreCase(t.getItem());
-
-			/** The result from compareToIgnoreCase() gives an integer that tells us the
-			 * ASCII difference between the two strings. A sub-zero number means the comparing
-			 * string is greater than the string compared, so we descend left
-			 */
 			if (compareResult < 0) {
-
-				/** We descend into the left while also calling insert as a parameter to
-				 * setLeft(), this way, when we hit the base case, the new node will be generated
-				 * at the very bottom of the tree
-				 */
 				t.setLeft(insert(str, t.getLeft()));
 			}
-
-			/** Of course the opposite result and we descend right */
 			else if (compareResult > 0) {
 				t.setRight(insert(str, t.getRight()));
 			}
 
 
-			/** As we are backtracking up the call stack, we get/set the balance of each node we pass,
-			 *  and use it to determine whether we need to rotate any of the subtrees
-			 */
+			// TODO: THIS IS WRONG - NEED TO FIND A WAY TO UPDATE BALANCE WITHOUT CALLING HEIGHT
 			t.setBalance(findBalance(t));
 			int balance = t.getBalance();
 
-			/** If we run into an unbalanced situation for the node, we call balanceTrees()
-			 * to determine what kind of rotation is required for the given imbalance
-			 */
-			if (balance > 1 || balance < -1) {
+
+			// Verbosify booleans
+			boolean rightImbalance = balance > 1; boolean leftImbalance = balance < -1;
+
+			// Imbalance tree situation calls balanceTrees() to handle the rotation logic
+			// ( Keeps insert() succinct )
+			if (rightImbalance || leftImbalance)
 				t = balanceTrees(balance, t);
-			}
 
 		}
 		return t;
@@ -371,15 +348,13 @@ class StringAVLTree {
 
 
 
-	/**
-	 * This function handles the left/right rotates, and double left/double right
-	 * rotates (LR, RL)
-	 *
-	 * @param balance - The balance value of the given node t
-	 * @param t - The current node
-	 * @return - The balanced root node
-	 */
+	// Rotation Handler
 	private StringAVLNode balanceTrees(int balance, StringAVLNode t) {
+
+		// Verbosify boolean values
+		boolean rightHeavy = balance > 1; boolean leftHeavy = balance < -1;
+		boolean requiresDoubleLeft = t.getRight() != null && t.getRight().getBalance() <= -1;
+		boolean requiresDoubleRight = t.getLeft() != null && t.getLeft().getBalance() >= 1;
 
 		if (debugMode) {
 			BTreePrinter.printStringAVLNode(root);
@@ -387,80 +362,61 @@ class StringAVLTree {
 					" at node " + t.getItem() + " with balance factor " + t.getBalance());
 		}
 
-		if (balance > 1) {
+		if (rightHeavy) {
 
-			/** For right heavy nodes, we can determine if we need a double left rotation
-			 *  if the right sub-tree is left heavy
+			/** Do double left rotation by right rotating the right child subtree, then
+			 * rotate left
 			 */
-			if (t.getRight() != null && t.getRight().getBalance() <= -1) {
+			if (requiresDoubleLeft) {
 
-				if (debugMode)
-					System.out.println("Executing double left rotation");
-
+				if (debugMode) System.out.println("Executing double left rotation");
                 t.setRight(rotateRight(t.getRight()));
-				BTreePrinter.printStringAVLNode(root);
+                if (debugMode) BTreePrinter.printStringAVLNode(root);
                 t = rotateLeft(t);
-
-                if (debugMode)
-					print_bal();
+                if (debugMode) print_bal();
 
 			}
-			/** If not just do a left rotation */
 			else {
-				if (debugMode)
-					System.out.println("Executing left rotation");
-				
+				if (debugMode) System.out.println("Executing left rotation");
 				t = rotateLeft(t);
-
-				if (debugMode)
-					print_bal();
-			}
-		}
-		else if (balance < -1) {
-
-			/** Likewise for left heavy nodes, we can determine if we need a double right
-			 * rotation if the left sub-tree is right heavy
-			 */
-			if (t.getLeft() != null && t.getLeft().getBalance() >= 1) {
-
-				if (debugMode)
-					System.out.println("Executing double right rotation");
-
-				t.setLeft(rotateLeft(t.getLeft()));
-				BTreePrinter.printStringAVLNode(root);
-                t = rotateRight(t);
-
-                if (debugMode)
-					print_bal();
-
-			}
-			/** If not just do a left rotation */
-			else {
-
-				if (debugMode)
-					System.out.println("Executing right rotation");
-
-                t = rotateRight(t);
-
-                if (debugMode)
-					print_bal();
+				if (debugMode) print_bal();
 			}
 		}
 
-		/** returnNode should now have the root of the tree that needed balancing
-		 *  so we return it to the caller ( the insert method ) so the 'whole' subtree is
-		 *  updated
+		/** Do double right rotation by left rotating the left child subtree, then
+		 * rotate right
 		 */
+		else if (leftHeavy) {
+			if (requiresDoubleRight) {
+
+				if (debugMode) System.out.println("Executing double right rotation");
+				t.setLeft(rotateLeft(t.getLeft()));
+				if (debugMode) BTreePrinter.printStringAVLNode(root);
+                t = rotateRight(t);
+                if (debugMode) print_bal();
+
+			}
+			else {
+				if (debugMode) System.out.println("Executing right rotation");
+                t = rotateRight(t);
+                if (debugMode) print_bal();
+			}
+		}
 		return t;
 	}
 
 
+
+	// TODO: Unused
 	public void delete(String d) {
 
 	}
 	private StringAVLNode delete(StringAVLNode t, String d) {
 		return new StringAVLNode("Foo");
 	}
+
+
+
 	// who are you? Put your name here!
 	public static String myName() {
 		return "Nicholas Martinez";
