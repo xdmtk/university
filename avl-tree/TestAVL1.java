@@ -52,7 +52,8 @@ public class TestAVL1 {
 		t.display();
 		System.out.println("Balanced Nodes: " + t.balanced());
 		System.out.println("Total Leaves: " + t.leafCt());
-		System.out.println("Height: " + t.height() + "\n");
+		System.out.println("Height: " + t.height());
+		System.out.println("Nadir: " + t.nadir() + "\n");
 		t.print_bal();
 	}
 }
@@ -239,6 +240,27 @@ class StringAVLTree {
 
 
 
+	public int nadir() {
+		return nadir(root);
+	}
+
+	/** Essentially the inverse of height, descend the tree
+	 * in the direction of the less heavy node
+	 */
+	private static int nadir(StringAVLNode t) {
+		int nadir = 0;
+		if (t != null) {
+			if (t.getBalance() > 0 )
+				nadir = nadir(t.getLeft()) + 1;
+			else
+				nadir = nadir(t.getRight()) + 1;
+		}
+		return nadir ;
+
+	}
+
+
+
 
 	// Return the number of leaves in the tree
 	public int leafCt() {
@@ -407,11 +429,6 @@ class StringAVLTree {
 			}
 		}
 		return t;
-	}
-
-
-	public void nadir() {
-
 	}
 
 
