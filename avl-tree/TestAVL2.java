@@ -1,3 +1,6 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class TestAVL2 {
 
 	public static void main(String[] args) {
@@ -333,6 +336,8 @@ class StringAVLTree {
 
 
 
+
+
 	// Return the number of leaves in the tree
 	public int leafCt() {
 		return leafCt(root);
@@ -392,12 +397,6 @@ class StringAVLTree {
 
 
 
-
-
-	// Not used - For delete only
-	public String successor(String str) {
-		return new String("foo");
-	}
 
 
 
@@ -482,6 +481,81 @@ class StringAVLTree {
 		}
 		return t;
 	}
+
+
+
+
+
+
+
+
+	/** Probably not the ideal solution, but it does work, and it is recursive...
+	 *  Can't find any explicit mentions to _not_ do it this way so.. here it is
+	 */
+	public String successor(String str) {
+
+		// Instantiate a list to hold all values greater then the given string
+		ArrayList<String> itemList = new ArrayList<>();
+		String minString;
+
+		// Supply ArrayList with values
+		successor(root, str, itemList);
+
+		/** If there are values in the list ( possible successors ) and the string
+		 * is indeed in the tree, then sort the values and exit the loop with the
+		 * next greatest value ( successor ) as the value of minString
+		 */
+		if (itemList.size() > 0 && inTree(str, root)) {
+
+			minString = itemList.get(0);
+			for (String item : itemList) {
+
+				// If the potential successor is at least as close or closer to the
+				// given string value, set it to minString
+				if (item.compareToIgnoreCase(minString) <= 0)
+					minString = item;
+			}
+		}
+		// If there are no potential successors or the value is not in the tree, return null
+		else
+			minString = null;
+		return minString;
+	}
+
+
+	// Recursive method to collect all potential successors in the tree
+	private static void successor(StringAVLNode t, String str, ArrayList<String> s) {
+		if (t != null) {
+
+			if (str.compareToIgnoreCase(t.getItem()) < 0)
+				s.add(t.getItem());
+
+			successor(t.getLeft(), str, s);
+			successor(t.getRight(), str, s);
+		}
+	}
+
+
+	// Quick and dirty helper function determine if given string is in the tree
+	private static boolean inTree(String str, StringAVLNode t) {
+		boolean ret;
+		if (t == null)
+			ret = false;
+		else if (t.getItem().equals(str))
+			ret = true;
+		else
+			ret = inTree(str, t.getLeft()) || inTree(str, t.getRight());
+		return ret;
+	}
+
+
+
+
+
+
+
+
+
 
 
 	// TODO: Unused
