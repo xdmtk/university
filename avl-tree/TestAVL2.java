@@ -258,14 +258,11 @@ class StringAVLTree {
 	}
 
 
-	// TODO: Find a way to balance these without calling height
 	private static StringAVLNode rotateRight(StringAVLNode t) {
 		StringAVLNode returnNode = t.getLeft();
 
 		t.setLeft(returnNode.getRight());
 		returnNode.setRight(t);
-		t.setBalance(findBalance(t));
-		returnNode.setBalance(findBalance(returnNode));
 
 		return returnNode;
 	}
@@ -276,8 +273,6 @@ class StringAVLTree {
 
 		t.setRight(returnNode.getLeft());
 		returnNode.setLeft(t);
-		t.setBalance(findBalance(t));
-		returnNode.setBalance(findBalance(returnNode));
 
 		return returnNode;
 	}
@@ -411,20 +406,36 @@ class StringAVLTree {
 		if (t == null)
 			t = new StringAVLNode(str);
 		else {
+			int balance, leftChildBalance, rightChildBalance;
+			leftChildBalance = t.getLeft() != null ? t.getLeft().getBalance() : -99;
+			rightChildBalance = t.getRight() != null ? t.getRight().getBalance() : -99;
 
 			// Perform string comparisons to determine left/right insert
 			int compareResult = str.compareToIgnoreCase(t.getItem());
 			if (compareResult < 0) {
 				t.setLeft(insert(str, t.getLeft()));
+
+				if (t.getRight() == null)
+					t.setBalance(t.getBalance()-1);
+				else if (leftChildBalance == 0 && t.getLeft().getBalance() != 0)
+					t.setBalance(t.getBalance()-1);
+				else if (leftChildBalance == -99 && t.getLeft() != null)
+					t.setBalance(t.getBalance()-1);
+
 			}
 			else if (compareResult > 0) {
 				t.setRight(insert(str, t.getRight()));
+
+
+				if (t.getLeft() == null)
+
+					t.setBalance(t.getBalance()+1);
+				else if (rightChildBalance == 0 && t.getRight().getBalance() != 0)
+					t.setBalance(t.getBalance()+1);
+				else if (rightChildBalance == -99 && t.getRight() != null)
+					t.setBalance(t.getBalance()+1);
 			}
-
-
-			// TODO: THIS IS WRONG - NEED TO FIND A WAY TO UPDATE BALANCE WITHOUT CALLING HEIGHT
-			t.setBalance(findBalance(t));
-			int balance = t.getBalance();
+			balance = t.getBalance();
 
 
 			// Verbosify booleans
@@ -457,11 +468,16 @@ class StringAVLTree {
 			if (requiresDoubleLeft) {
 
 				t.setRight(rotateRight(t.getRight()));
+                t.getRight().setBalance(0);
 				t = rotateLeft(t);
+				t.setBalance(0);
 
 			}
 			else {
 				t = rotateLeft(t);
+				t.setBalance(0);
+				if (t.getLeft() != null) t.getLeft().setBalance(0);
+				if (t.getRight() != null) t.getRight().setBalance(0);
 			}
 		}
 
@@ -472,12 +488,35 @@ class StringAVLTree {
 			if (requiresDoubleRight) {
 
 				t.setLeft(rotateLeft(t.getLeft()));
+				t.getLeft().setBalance(0);
 				t = rotateRight(t);
+				t.setBalance(0);
 
 			}
 			else {
 				t = rotateRight(t);
+                t.setBalance(0);
+                if (t.getLeft() != null) t.getLeft().setBalance(0);
+				if (t.getRight() != null) t.getRight().setBalance(0);
 			}
+		}
+		if (t.getLeft() != null) {
+			if (t.getLeft().getRight() != null && t.getLeft().getLeft() == null)
+				t.getLeft().setBalance(1);
+			else if (t.getLeft().getLeft() != null && t.getLeft().getRight() == null)
+				t.getLeft().setBalance(-1);
+			else if ((t.getLeft().getLeft() != null && t.getLeft().getRight() != null)
+					|| (t.getLeft().getLeft() == null && t.getLeft().getRight() == null))
+				t.getLeft().setBalance(0);
+		}
+		if (t.getRight() != null) {
+			if (t.getRight().getRight() != null && t.getRight().getLeft() == null)
+				t.getRight().setBalance(1);
+			else if (t.getRight().getLeft() != null && t.getRight().getRight() == null)
+				t.getRight().setBalance(-1);
+			else if ((t.getRight().getLeft() != null && t.getRight().getRight() != null)
+					|| (t.getRight().getLeft() == null && t.getRight().getRight() == null))
+				t.getRight().setBalance(0);
 		}
 		return t;
 	}
