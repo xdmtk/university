@@ -264,17 +264,14 @@ class StringAVLTree {
 		t.setLeft(returnNode.getRight());
 		returnNode.setRight(t);
 
-
 		return returnNode;
 	}
 
-	// TODO: Find a way to balance these without calling height
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
-
 		StringAVLNode returnNode = t.getRight();
+
 		t.setRight(returnNode.getLeft());
 		returnNode.setLeft(t);
-
 
 		return returnNode;
 	}
@@ -318,12 +315,16 @@ class StringAVLTree {
 		boolean onlyLeft = !isNull && t.getRight() == null;
 		boolean isLeaf = !isNull && onlyLeft && onlyRight;
 
+		// No more traversal
 		if (isLeaf)
 			nadir = 1;
+		// Only right node? No choice but to go right
 		else if (onlyRight)
 			nadir = nadir(t.getRight()) + 1;
+		// Only left node? No choice but to go left
 		else if (onlyLeft)
 			nadir = nadir(t.getLeft()) + 1;
+		// Choice of both nodes? Descend into both and take the minimum value
 		else if (!isNull)
 			nadir = Math.min(nadir(t.getLeft()), nadir(t.getRight())) + 1;
 
@@ -347,10 +348,12 @@ class StringAVLTree {
 
 		int leafCount = 0;
 		if (t != null) {
+			// Left and right children null? Arrived at a leaf, no more descending
 			if (t.getLeft() == null && t.getRight() == null) {
 				leafCount = 1;
 			}
 			else
+				// Otherwise continue to descend until the above case is met
 				leafCount = leafCt(t.getLeft()) + leafCt(t.getRight());
 		}
 		return leafCount;
@@ -371,6 +374,7 @@ class StringAVLTree {
 	 */
 	private int balanced(StringAVLNode t) {
 		if (t != null) {
+			// For every balanced node during the traversal, add one to the recursive sum
 			return balanced(t.getLeft()) + balanced(t.getRight()) + (t.getBalance() == 0 ? 1 : 0);
 		}
 		return 0;
@@ -378,29 +382,10 @@ class StringAVLTree {
 
 
 
-
-
-
-	/**
-	 * TODO: DELETE THIS METHOD - SHOULD FIND BALANCE WITHOUT CALLING HEIGHT
-	 */
-	private static int findBalance(StringAVLNode t) {
-		int nodeBalance;
-
-		nodeBalance = height(t.getRight()) - height(t.getLeft());
-		return nodeBalance;
-	}
-
-
-
-
-
-
-
+	// Driver method
 	public void insert(String str) {
 		root = insert(str, root);
 	}
-
 
 	private StringAVLNode insert(String str, StringAVLNode t) {
 
