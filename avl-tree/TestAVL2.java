@@ -543,6 +543,8 @@ class StringAVLTree {
 		else if (leftHeavy) {
 			if (requiresDoubleRight) {
 
+				// Everything here is simply the inverse of the Double-Left rotation
+				// no comments are necessary
 
 				int lrBalance = t.getLeft().getRight().getBalance();
 				boolean lrRightHeavy = lrBalance > 0;
@@ -568,11 +570,13 @@ class StringAVLTree {
 					}
 				}
 				t.setBalance(0);
-
 			}
 			else if (requiresSingleRight) {
+
 				t = rotateRight(t);
-				t.getRight().setBalance(0); t.setBalance(0);
+
+				t.getRight().setBalance(0);
+				t.setBalance(0);
 			}
 		}
 		return t;
