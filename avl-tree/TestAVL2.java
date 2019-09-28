@@ -264,15 +264,17 @@ class StringAVLTree {
 		t.setLeft(returnNode.getRight());
 		returnNode.setRight(t);
 
+
 		return returnNode;
 	}
 
 	// TODO: Find a way to balance these without calling height
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
-		StringAVLNode returnNode = t.getRight();
 
+		StringAVLNode returnNode = t.getRight();
 		t.setRight(returnNode.getLeft());
 		returnNode.setLeft(t);
+
 
 		return returnNode;
 	}
@@ -401,50 +403,50 @@ class StringAVLTree {
 
 
 	private StringAVLNode insert(String str, StringAVLNode t) {
+		final int nullNodeVal = 666;
 
 		// Base case - Just insert the node
 		if (t == null)
 			t = new StringAVLNode(str);
 		else {
-			int balance, leftChildBalance, rightChildBalance;
-			leftChildBalance = t.getLeft() != null ? t.getLeft().getBalance() : -99;
-			rightChildBalance = t.getRight() != null ? t.getRight().getBalance() : -99;
+
+			// Get original balances of left/right children before insert, put arbitrary value
+			// if null
+			int oldBalRight = t.getRight() != null ? t.getRight().getBalance() : nullNodeVal;
+			int oldBalLeft = t.getLeft() != null ? t.getLeft().getBalance() : nullNodeVal;
 
 			// Perform string comparisons to determine left/right insert
 			int compareResult = str.compareToIgnoreCase(t.getItem());
-			if (compareResult < 0) {
+			boolean goLeft = compareResult < 0; boolean goRight = compareResult > 0;
+
+			// Make left/right insert
+			if (goLeft) {
 				t.setLeft(insert(str, t.getLeft()));
-
-				if (t.getRight() == null)
-					t.setBalance(t.getBalance()-1);
-				else if (leftChildBalance == 0 && t.getLeft().getBalance() != 0)
-					t.setBalance(t.getBalance()-1);
-				else if (leftChildBalance == -99 && t.getLeft() != null)
-					t.setBalance(t.getBalance()-1);
-
 			}
-			else if (compareResult > 0) {
+			else if (goRight) {
 				t.setRight(insert(str, t.getRight()));
-
-
-				if (t.getLeft() == null)
-
-					t.setBalance(t.getBalance()+1);
-				else if (rightChildBalance == 0 && t.getRight().getBalance() != 0)
-					t.setBalance(t.getBalance()+1);
-				else if (rightChildBalance == -99 && t.getRight() != null)
-					t.setBalance(t.getBalance()+1);
 			}
-			balance = t.getBalance();
+
+			boolean leftWasNull = (oldBalLeft == nullNodeVal); boolean rightWasNull = (oldBalRight == nullNodeVal);
+			boolean twoNullChildren = (leftWasNull && rightWasNull);
+
+			// Determine whether the current sub-tree grew left or right after the insert
+			boolean treeGrewLeft = (twoNullChildren && t.getLeft() != null) ||
+					(!leftWasNull && oldBalLeft == 0 && t.getLeft().getBalance() != 0);
+			boolean treeGrewRight = (twoNullChildren && t.getRight() != null) ||
+					(!rightWasNull && oldBalRight == 0 && t.getRight().getBalance() != 0);
+
+			// Increment the balance of the node if one of the sub-trees has grown
+			if (treeGrewLeft) t.setBalance(t.getBalance()-1);
+			if (treeGrewRight) t.setBalance(t.getBalance()+1);
 
 
-			// Verbosify booleans
-			boolean rightImbalance = balance > 1; boolean leftImbalance = balance < -1;
+			int currentBalance = t.getBalance();
+			boolean rightImbalance = currentBalance > 1; boolean leftImbalance = currentBalance < -1;
 
-			// Imbalance tree situation calls balanceTrees() to handle the rotation logic
-			// ( Keeps insert() succinct )
+			// If the trees are out of balance, call balanceTrees() to handle rotations
 			if (rightImbalance || leftImbalance)
-				t = balanceTrees(balance, t);
+				t = balanceTrees(currentBalance, t);
 
 		}
 		return t;
@@ -459,6 +461,7 @@ class StringAVLTree {
 		boolean rightHeavy = balance > 1; boolean leftHeavy = balance < -1;
 		boolean requiresDoubleLeft = t.getRight() != null && t.getRight().getBalance() <= -1;
 		boolean requiresDoubleRight = t.getLeft() != null && t.getLeft().getBalance() >= 1;
+		boolean requiresSingleRight = !requiresDoubleRight; boolean requiresSingleLeft = !requiresDoubleLeft;
 
 		if (rightHeavy) {
 
@@ -466,18 +469,16 @@ class StringAVLTree {
 			 * rotate left
 			 */
 			if (requiresDoubleLeft) {
-
 				t.setRight(rotateRight(t.getRight()));
-                t.getRight().setBalance(0);
 				t = rotateLeft(t);
-				t.setBalance(0);
 
 			}
-			else {
+			else if (requiresSingleLeft) {
+
 				t = rotateLeft(t);
-				t.setBalance(0);
-				if (t.getLeft() != null) t.getLeft().setBalance(0);
-				if (t.getRight() != null) t.getRight().setBalance(0);
+				// Single left rotation zero's the balance of the new left child
+				// and the node itself
+				t.getLeft().setBalance(0); t.setBalance(0);
 			}
 		}
 
@@ -488,35 +489,13 @@ class StringAVLTree {
 			if (requiresDoubleRight) {
 
 				t.setLeft(rotateLeft(t.getLeft()));
-				t.getLeft().setBalance(0);
 				t = rotateRight(t);
-				t.setBalance(0);
 
 			}
-			else {
+			else if (requiresSingleRight) {
 				t = rotateRight(t);
-                t.setBalance(0);
-                if (t.getLeft() != null) t.getLeft().setBalance(0);
-				if (t.getRight() != null) t.getRight().setBalance(0);
+				t.getRight().setBalance(0); t.setBalance(0);
 			}
-		}
-		if (t.getLeft() != null) {
-			if (t.getLeft().getRight() != null && t.getLeft().getLeft() == null)
-				t.getLeft().setBalance(1);
-			else if (t.getLeft().getLeft() != null && t.getLeft().getRight() == null)
-				t.getLeft().setBalance(-1);
-			else if ((t.getLeft().getLeft() != null && t.getLeft().getRight() != null)
-					|| (t.getLeft().getLeft() == null && t.getLeft().getRight() == null))
-				t.getLeft().setBalance(0);
-		}
-		if (t.getRight() != null) {
-			if (t.getRight().getRight() != null && t.getRight().getLeft() == null)
-				t.getRight().setBalance(1);
-			else if (t.getRight().getLeft() != null && t.getRight().getRight() == null)
-				t.getRight().setBalance(-1);
-			else if ((t.getRight().getLeft() != null && t.getRight().getRight() != null)
-					|| (t.getRight().getLeft() == null && t.getRight().getRight() == null))
-				t.getRight().setBalance(0);
 		}
 		return t;
 	}
