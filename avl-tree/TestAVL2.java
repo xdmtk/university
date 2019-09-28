@@ -469,8 +469,23 @@ class StringAVLTree {
 			 * rotate left
 			 */
 			if (requiresDoubleLeft) {
+				int rlBalance = t.getRight().getLeft().getBalance();
 				t.setRight(rotateRight(t.getRight()));
 				t = rotateLeft(t);
+				if (rlBalance > 0) {
+				t.getLeft().setBalance(-1);
+					t.getRight().setBalance(0);
+				}
+				else {
+					if (rlBalance == 0) {
+						t.getLeft().setBalance(0);
+						t.getRight().setBalance(0);
+					}
+					else {
+						t.getLeft().setBalance(0);
+						t.getRight().setBalance(1);
+					}
+				}
 
 			}
 			else if (requiresSingleLeft) {
@@ -487,9 +502,24 @@ class StringAVLTree {
 		 */
 		else if (leftHeavy) {
 			if (requiresDoubleRight) {
-
+				int lrBalance = t.getLeft().getRight().getBalance();
 				t.setLeft(rotateLeft(t.getLeft()));
 				t = rotateRight(t);
+				if (lrBalance > 0) {
+					t.getLeft().setBalance(-1);
+					t.getRight().setBalance(0);
+				}
+				else {
+					if (lrBalance == 0) {
+						t.getLeft().setBalance(0);
+						t.getRight().setBalance(0);
+					}
+					else {
+						t.getLeft().setBalance(0);
+						t.getRight().setBalance(1);
+					}
+				}
+				t.setBalance(0);
 
 			}
 			else if (requiresSingleRight) {
