@@ -432,9 +432,11 @@ class StringAVLTree {
 
 			// Determine whether the current sub-tree grew left or right after the insert
 			boolean treeGrewLeft = (twoNullChildren && t.getLeft() != null) ||
-					(!leftWasNull && oldBalLeft == 0 && t.getLeft().getBalance() != 0);
+					(!leftWasNull && oldBalLeft == 0 && t.getLeft().getBalance() != 0) ||
+					(leftWasNull && !rightWasNull && t.getLeft() != null);
 			boolean treeGrewRight = (twoNullChildren && t.getRight() != null) ||
-					(!rightWasNull && oldBalRight == 0 && t.getRight().getBalance() != 0);
+					(!rightWasNull && oldBalRight == 0 && t.getRight().getBalance() != 0) ||
+					(rightWasNull && !leftWasNull && t.getRight() != null);
 
 			// Increment the balance of the node if one of the sub-trees has grown
 			if (treeGrewLeft) t.setBalance(t.getBalance()-1);
