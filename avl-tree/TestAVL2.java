@@ -591,6 +591,7 @@ class StringAVLTree {
 		StringAVLNode node = find(str, root);
 
 		// If the node has a right child, then descend right and then left as far as possible
+		// on that right child
 		if (node != null && node.getRight() != null) {
 			node = node.getRight();
 			while (node.getLeft() != null)
@@ -599,39 +600,39 @@ class StringAVLTree {
 		}
 		// If the node _doesn't_ have a right child, need to scan the whole tree
 		else if (node != null) {
-
-			StringBuilder strb = new StringBuilder(str);
+			ArrayList<String> itemList = new ArrayList<>();
+			String minString = null;
 			// Supply ArrayList with values
-			successor(root, strb.append(" "));
-			if (strb.chars().filter(ch -> ch == ' ').count() > 1) {
-
-
+			successor(root, str, itemList);
+			/** If there are values in the list ( possible successors ) then sort the
+			 *  values and exit the loop with the next greatest value ( successor ) as
+			 *  the value of minString
+			 */
+			if (itemList.size() > 0) {
+				minString = itemList.get(0);
+				for (String item : itemList) {
 					// If the potential successor is at least as close or closer to the
 					// given string value, set it to minString
-					if (str.compareToIgnoreCase(successorString) <= 0)
-						successorString = str;
+					if (item.compareToIgnoreCase(minString) <= 0)
+						minString = item;
+				}
+				successorString = minString;
 			}
-			// If there are no potential successors or the value is not in the tree, return null
-			else
-				successorString = null;
+
 		}
 		return successorString;
 	}
 
 
 	// Recursive method to collect all potential successors in the tree
-	private static void successor(StringAVLNode t, StringBuilder str) {
-		String delimiter = " ";
+	private static void successor(StringAVLNode t, String str, ArrayList<String> s) {
 		if (t != null) {
-
-			if (str.substring(str.indexOf(delimiter)).compareToIgnoreCase(t.getItem()) < 0)
-				str.append(t.getItem() + delimiter);
-
-			successor(t.getLeft(), str);
-			successor(t.getRight(), str);
+			if (str.compareToIgnoreCase(t.getItem()) < 0)
+				s.add(t.getItem());
+			successor(t.getLeft(), str, s);
+			successor(t.getRight(), str, s);
 		}
 	}
-
 
 	private static StringAVLNode find(String str, StringAVLNode t) {
 		StringAVLNode ret;
