@@ -259,21 +259,21 @@ class StringAVLTree {
 
 
 	private static StringAVLNode rotateRight(StringAVLNode t) {
-		StringAVLNode returnNode = t.getLeft();
+		StringAVLNode newRoot = t.getLeft();
 
-		t.setLeft(returnNode.getRight());
-		returnNode.setRight(t);
+		t.setLeft(newRoot.getRight());
+		newRoot.setRight(t);
 
-		return returnNode;
+		return newRoot;
 	}
 
 	private static StringAVLNode rotateLeft(StringAVLNode t) {
-		StringAVLNode returnNode = t.getRight();
+		StringAVLNode newRoot = t.getRight();
 
-		t.setRight(returnNode.getLeft());
-		returnNode.setLeft(t);
+		t.setRight(newRoot.getLeft());
+		newRoot.setLeft(t);
 
-		return returnNode;
+		return newRoot;
 	}
 
 
@@ -410,23 +410,28 @@ class StringAVLTree {
 
 			// Perform string comparisons to determine left/right insert
 			int compareResult = str.compareToIgnoreCase(t.getItem());
-			boolean goLeft = compareResult < 0;
-			boolean goRight = compareResult > 0;
+			boolean insertLeft = compareResult < 0;
+			boolean insertRight = compareResult > 0;
 
 
 			// Make left/right insert
-			if (goLeft)
+			if (insertLeft)
 				t.setLeft(insert(str, t.getLeft()));
-			else if (goRight)
+			else if (insertRight)
 				t.setRight(insert(str, t.getRight()));
 
 
 			/** Determine whether the current sub-tree grew left or right after the insert
 			 *
 			 *  Example cases:
-			 *  Two originally null children, 1 not null after insert -> Grew
-			 *  One originally null child and one 0 balance child, 0 balance child become +- 1 after insert -> Grew
-			 *  One originally null child, now 0 null children after insert -> Grew
+			 *  Two originally null children, 1 not null after insert -> Tree grew
+			 *
+			 *  One originally null child and one 0 balance child,
+			 *  	0 balance child become +- 1 after insert -> Tree grew
+			 *
+			 *  One originally null child, now 0 null children after insert -> Technically the tree
+			 *  	didnt grow, but the balance gets incremented in the direction of the insert
+			 *  	so it will typically 0 out the balance anyways
 			 */
 			boolean treeGrewLeft = (twoNullChildren && t.getLeft() != null) ||
 					(!leftWasNull && oldBalLeft == 0 && t.getLeft().getBalance() != 0) ||
@@ -439,13 +444,14 @@ class StringAVLTree {
 			// Increment the balance of the node if one of the sub-trees has grown
 			if (treeGrewLeft)
 				t.setBalance(t.getBalance()-1);
-			if (treeGrewRight)
+			else if (treeGrewRight)
 				t.setBalance(t.getBalance()+1);
 
 
-			// Check whether trees are still in balance after updates
+			// Check whether trees are still in balance after insertion
 			int currentBalance = t.getBalance();
-			boolean rightImbalance = currentBalance > 1; boolean leftImbalance = currentBalance < -1;
+			boolean rightImbalance = currentBalance > 1;
+			boolean leftImbalance = currentBalance < -1;
 
 
 			// If the trees are out of balance, call balanceTrees() to handle rotations
@@ -478,7 +484,7 @@ class StringAVLTree {
 			if (requiresDoubleLeft) {
 
 				// Get the balance of the right child's left heavy node to determine
-				// the correct re-balancing case
+				// the correct balance update case
 				int rlBalance = t.getRight().getLeft().getBalance();
 				boolean rlRightHeavy = rlBalance > 0;
 				boolean rlEqual = rlBalance == 0;
@@ -579,57 +585,65 @@ class StringAVLTree {
 	 */
 	public String successor(String str) {
 
-		// Instantiate a list to hold all values greater then the given string
-		ArrayList<String> itemList = new ArrayList<>();
-		String minString;
+		String successorString = null;
 
-		// Supply ArrayList with values
-		successor(root, str, itemList);
+		// Find the node in the tree
+		StringAVLNode node = find(str, root);
 
-		/** If there are values in the list ( possible successors ) and the string
-		 * is indeed in the tree, then sort the values and exit the loop with the
-		 * next greatest value ( successor ) as the value of minString
-		 */
-		if (itemList.size() > 0 && inTree(str, root)) {
-
-			minString = itemList.get(0);
-			for (String item : itemList) {
-
-				// If the potential successor is at least as close or closer to the
-				// given string value, set it to minString
-				if (item.compareToIgnoreCase(minString) <= 0)
-					minString = item;
-			}
+		// If the node has a right child, then descend right and then left as far as possible
+		if (node != null && node.getRight() != null) {
+			node = node.getRight();
+			while (node.getLeft() != null)
+				node = node.getLeft();
+			successorString = node.getItem();
 		}
-		// If there are no potential successors or the value is not in the tree, return null
-		else
-			minString = null;
-		return minString;
+		// If the node _doesn't_ have a right child, need to scan the whole tree
+		else if (node != null) {
+
+			StringBuilder strb = new StringBuilder(str);
+			// Supply ArrayList with values
+			successor(root, strb.append(" "));
+			if (strb.chars().filter(ch -> ch == ' ').count() > 1) {
+
+
+					// If the potential successor is at least as close or closer to the
+					// given string value, set it to minString
+					if (str.compareToIgnoreCase(successorString) <= 0)
+						successorString = str;
+			}
+			// If there are no potential successors or the value is not in the tree, return null
+			else
+				successorString = null;
+		}
+		return successorString;
 	}
 
 
 	// Recursive method to collect all potential successors in the tree
-	private static void successor(StringAVLNode t, String str, ArrayList<String> s) {
+	private static void successor(StringAVLNode t, StringBuilder str) {
+		String delimiter = " ";
 		if (t != null) {
 
-			if (str.compareToIgnoreCase(t.getItem()) < 0)
-				s.add(t.getItem());
+			if (str.substring(str.indexOf(delimiter)).compareToIgnoreCase(t.getItem()) < 0)
+				str.append(t.getItem() + delimiter);
 
-			successor(t.getLeft(), str, s);
-			successor(t.getRight(), str, s);
+			successor(t.getLeft(), str);
+			successor(t.getRight(), str);
 		}
 	}
 
 
-	// Quick and dirty helper function determine if given string is in the tree
-	private static boolean inTree(String str, StringAVLNode t) {
-		boolean ret;
+	private static StringAVLNode find(String str, StringAVLNode t) {
+		StringAVLNode ret;
+		// Hit a null node? Not in the tree
 		if (t == null)
-			ret = false;
+			ret = null;
+		// Node value equal string? Found in the tree
 		else if (t.getItem().equals(str))
-			ret = true;
+			ret = t;
+		// String to find less than given node? Descend left, otherwise descend right
 		else
-			ret = inTree(str, t.getLeft()) || inTree(str, t.getRight());
+			ret = find(str, str.compareToIgnoreCase(t.getItem()) < 0 ? t.getLeft() : t.getRight());
 		return ret;
 	}
 
