@@ -1,7 +1,19 @@
+/**********************************
+ *
+ * Name: Nicholas Martinez
+ * Class: COMP 282 * M-W 3:30PM - 4:45PM
+ * Assignment #: 2
+ * Date Turned In: 09/29/2019
+ * Description:
+ *  This file contains both the StringAVLNode class and the StringAVLTree
+ *  class used for implementing an AVL BST
+ *
+ **********************************/
+
+
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-
 
 
 class StringAVLNode {
