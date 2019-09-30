@@ -574,14 +574,8 @@ class StringAVLTree {
 	}
 
 
-
-
-
-
-
-
-	/** Probably not the ideal solution, but it does work, and it is recursive...
-	 *  Can't find any explicit mentions to _not_ do it this way so.. here it is
+	/** O(logn) when node has a right child
+	 *  O(n) when node has no right children ( need to walk the tree )
 	 */
 	public String successor(String str) {
 
