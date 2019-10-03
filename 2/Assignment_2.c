@@ -9,11 +9,14 @@
 /* Function prototypes */
 int show_menu(void);
 void handle_selection(int selection);
-int get_unbiased_exp(float dec_in);
 void exit_program(void);
+
+int get_unbiased_exp(float dec_in);
+
 void write_mantissa(unsigned char *mantissa, float mantissa_float);
 void write_exponent(float *dec_in, unsigned char * biased_exp, int * unbiased_exp, int sign);
 void write_sign(float dec_in, unsigned char *sign);
+void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa, unsigned char *hex);
 
 
 /* Main function */
@@ -60,6 +63,9 @@ void decimal_to_floating(void) {
     /* Write out the mantissa bits */
     write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
 
+
+    
+    /* Output results */
     printf("%s%s%s%s%s%s%s%s",
             items[0], sign, items[1], biased_exp,
             items[2], mantissa, items[3], hex);
@@ -117,11 +123,31 @@ void write_mantissa(unsigned char *mantissa, float mantissa_float) {
 
 }
 
+void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa, unsigned char *hex) {
+    
+    int i, j;
+    unsigned char full[32], byte = 0x0;
+
+    memcpy(full,sign,1);
+    memcpy(full+1,exp,8);
+    memcpy(full+9,mantissa,23);
+
+    for (i = 0; i < 32; ) {
+        for (j = 0; j < 4; j++, i++) {
+             
+        }
+    }
+
+
+}
+
+
 int get_unbiased_exp(float dec_in) {
 
     int i, exp, exp_cnt, exp_inc;
     i = exp = exp_cnt = 0;
     
+
     exp_inc  = (dec_in < 1 && dec_in > -1) ? -1 : 1;
     dec_in *= dec_in < 0 ? -1 : 1;
 
