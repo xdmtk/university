@@ -24,20 +24,32 @@ int main(void) {
 void decimal_to_floating(void) {
     
     float dec_in;
-    int remainder, unbiased_exp;
+    int i, remainder, biased_exp_int, unbiased_exp;
     unsigned char biased_exp[8], mantissa[23], hex[8], sign[1];
     
+    /* Input decimal */
     printf(_spc_"Enter the decimal representation:");
     if (!scanf("%f",&dec_in))
         exit_program();
-
+    
+    /* Calculate sign bit */
     sign[0] = dec_in < 0 ? '1' : '0';
-    unbiased_exp = 127 + get_unbiased_exp(dec_in);
+    
+    /* Calculate integer representation of biased exponet */
+    biased_exp_int = 127 + (unbiased_exp = get_unbiased_exp(dec_in));
+    
+    /* Calucate the remainder */
+    remainder = dec_in - pow(2,unbiased_exp);
+    
+    /* Convert biased exponet to binary char array */
+    for (i = 7; i >= 0; i--) {
+        biased_exp[i] = (biased_exp_int & 0x1) ? '1' : '0';
+        biased_exp_int = biased_exp_int >> 1;
+    }
+    
+    
+        
 
-
-
-
-    remainder = dec_in - pow(2,exp_c);
 
 
 
