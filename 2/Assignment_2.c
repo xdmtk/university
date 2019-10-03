@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 #include <errno.h>
 #define _spc_ "\n\n"
 
@@ -24,12 +25,25 @@ int main(void) {
     }
 }
 
+
+/** 
+ * May need to consider an overflow/underflow situation 
+ */
 void decimal_to_floating(void) {
     
     float dec_in;
     int unbiased_exp;
-    unsigned char biased_exp[8], mantissa[23], hex[8], sign[1];
-    
+    unsigned char biased_exp[9], mantissa[24], hex[9], sign[2];
+    char * items[] = {
+        _spc_"*** Sign: ",
+        _spc_"*** Biased exponent: ",
+        _spc_"*** Mantissa: ",
+        _spc_"*** IEEE HEX: "
+    };
+    biased_exp[8] = mantissa[23] = hex[8] = sign[1] = '\0';
+
+
+
     /* Input decimal */
     printf(_spc_"Enter the decimal representation:");
 
@@ -46,6 +60,9 @@ void decimal_to_floating(void) {
     /* Write out the mantissa bits */
     write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
 
+    printf("%s%s%s%s%s%s%s%s",
+            items[0], sign, items[1], biased_exp,
+            items[2], mantissa, items[3], hex);
 }
 
 void write_sign(float dec_in, unsigned char *sign) {
