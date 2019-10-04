@@ -63,7 +63,7 @@ void decimal_to_floating(void) {
     /* Write out the mantissa bits */
     write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
 
-
+    write_hex(sign, biased_exp, mantissa, hex);
     
     /* Output results */
     printf("%s%s%s%s%s%s%s%s",
@@ -125,20 +125,25 @@ void write_mantissa(unsigned char *mantissa, float mantissa_float) {
 
 void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa, unsigned char *hex) {
     
-    int i, j;
-    unsigned char full[32], byte = 0x0;
+    int i, j, h;
+    unsigned char full[32], byte,
+        byte_table[] = {
+            '0','1','2','3','4',
+            '5','6','7','8','9',
+            'A','B','C','D','F'
+        };
+        
 
     memcpy(full,sign,1);
     memcpy(full+1,exp,8);
     memcpy(full+9,mantissa,23);
 
-    for (i = 0; i < 32; ) {
-        for (j = 0; j < 4; j++, i++) {
-             
+    for (i = 0, h = 0; i < 32; ) {
+        for (j = 3, byte = 0; j >= 0; j--, i++) {
+            byte += full[i] == '1' ? pow(2,j) : 0;
         }
+        hex[h++] = byte_table[byte];
     }
-
-
 }
 
 
