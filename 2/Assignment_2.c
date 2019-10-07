@@ -16,8 +16,10 @@ int get_unbiased_exp(float dec_in);
 void write_mantissa(unsigned char *mantissa, float mantissa_float);
 void write_exponent(float *dec_in, unsigned char * biased_exp, int * unbiased_exp, int sign);
 void write_sign(float dec_in, unsigned char *sign);
-void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa, unsigned char *hex);
-
+void write_hex(unsigned char *sign, unsigned char *exp, 
+        unsigned char *mantissa, unsigned char *hex);
+int handle_special(float dec_in, unsigned char *exp, 
+        unsigned char *sign, unsigned char *mantissa);
 
 /* Main function */
 int main(void) {
@@ -53,16 +55,19 @@ void decimal_to_floating(void) {
     /* Bad input? Exit the program */
     if (!scanf("%f",&dec_in))
         exit_program();
-    
-    /* Write out the sign bit */
-    write_sign(dec_in, sign);
-    
-    /* Write out the exponent bits */
-    write_exponent(&dec_in, biased_exp, &unbiased_exp, sign[0] == '1' ? -1 : 1);
-    
-    /* Write out the mantissa bits */
-    write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
 
+
+    if (!handle_special(dec_in, biased_exp, sign, mantissa)) { 
+        /* Write out the sign bit */
+        write_sign(dec_in, sign);
+        
+        /* Write out the exponent bits */
+        write_exponent(&dec_in, biased_exp, &unbiased_exp, sign[0] == '1' ? -1 : 1);
+        
+        /* Write out the mantissa bits */
+        write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
+
+    }
     write_hex(sign, biased_exp, mantissa, hex);
     
     /* Output results */
@@ -74,6 +79,24 @@ void decimal_to_floating(void) {
 void write_sign(float dec_in, unsigned char *sign) {
     sign[0] = dec_in < 0 ? '1' : '0';
 }
+
+
+int handle_special(float dec_in, unsigned char *exp, 
+        unsigned char *sign, unsigned char *mantissa) {
+    
+    int flag = fpclassify(dec_in); int special = 0, i;
+    if (flag == FP_INFINITE || flag == (-FP_INFINITE)) {
+        for (i = 0; i < 8; i++)
+            exp[i] = '1';
+        for (i = 0; i < 23; i++)
+            mantissa[i] = '0';
+        sign[0] = dec_in == INFINITY ? '0' : '1';
+        special = 1;
+    }
+    return special;
+}
+
+
 
 
 
@@ -130,7 +153,8 @@ void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa,
         byte_table[] = {
             '0','1','2','3','4',
             '5','6','7','8','9',
-            'A','B','C','D','F'
+            'A','B','C','D','E',
+            'F'
         };
         
 
@@ -147,6 +171,10 @@ void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa,
 }
 
 
+
+/* Calculate the unbiased exponent needed to raise 2 to the magnitude
+ * that is equal to or less than the input decimal 
+ */
 int get_unbiased_exp(float dec_in) {
 
     int i, exp, exp_cnt, exp_inc;
@@ -156,11 +184,15 @@ int get_unbiased_exp(float dec_in) {
     exp_inc  = (dec_in < 1 && dec_in > -1) ? -1 : 1;
     dec_in *= dec_in < 0 ? -1 : 1;
 
-    for (; i < 8; i++) {
+    for (; ; i++) {
         if (dec_in - pow(2,exp) >= 0) {
             dec_in -= pow(2,exp);
             exp_cnt++; 
         }
+        else {
+            break;
+        }
+
         exp += exp_inc;
     }
 
