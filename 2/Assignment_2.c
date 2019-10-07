@@ -34,6 +34,7 @@ int handle_special(float dec_in, unsigned char *exp,
 void floating_to_decimal(void);
 int parse_hex_input(unsigned char *buffer, unsigned char *hex_in);
 int in_hex_table(unsigned char c);
+void hex_to_bin(unsigned char *hex_in);
 
 
 
@@ -58,15 +59,38 @@ void floating_to_decimal(void) {
     };
     biased_exp[8] = mantissa[23] = hex_in[8] = sign[1] = '\0';
     
-    if (parse_hex_input(buffer, hex_in) != NAN) {
-        printf("nan");
-        exit(0);
+    if (parse_hex_input(buffer, hex_in) != IS_NAN) {
+
     }
 
 
     
 
 }
+
+void hex_to_bin(unsigned char *hex_in) {
+    
+    int i,j;
+    unsigned char full[33];
+    const unsigned char * bin_table[]= {
+        "0000", "0001", "0010", "0011",
+        "0100", "0101", "0110", "0111",
+        "1000", "1001", "1010", "1011",
+        "1100", "1101", "1110", "1111"
+    };
+    full[32] = '\0';
+
+    for (i = 0; i < 8; i++ ) {
+        for (j = 4; j < 4; j++) {
+        }
+    }
+
+
+
+
+}
+
+
 
 
 
@@ -85,7 +109,8 @@ int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
         if ((j > 8) || (!in_hex_table(c)))
             flag = IS_NAN;
         buffer[j++] = c;
-    } 
+    }
+    memcpy(hex_in, buffer, 8);
 
     return flag;
 }
