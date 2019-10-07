@@ -3,6 +3,11 @@
 #include <math.h>
 #include <string.h>
 #include <errno.h>
+
+#define BUFFER_SIZE 256
+#define INPUT_OK 1
+#define NOT_HEX 2
+#define IS_NAN 3
 #define _spc_ "\n\n"
 
 
@@ -11,17 +16,24 @@ int show_menu(void);
 void handle_selection(int selection);
 void exit_program(void);
 
-int get_unbiased_exp(float dec_in);
 
+
+/* Decimal to IEEE-754 */
+void decimal_to_floating(void);
 void write_mantissa(unsigned char *mantissa, float mantissa_float);
 void write_exponent(float *dec_in, unsigned char * biased_exp, int * unbiased_exp, int sign);
 void write_sign(float dec_in, unsigned char *sign);
 void write_hex(unsigned char *sign, unsigned char *exp, 
         unsigned char *mantissa, unsigned char *hex);
-
+int get_unbiased_exp(float dec_in);
 int handle_special(float dec_in, unsigned char *exp, 
         unsigned char *sign, unsigned char *mantissa);
 
+
+/* IEEE-754 to Decimal */
+void floating_to_decimal(void);
+int parse_hex_input(unsigned char *buffer, unsigned char *hex_in);
+int in_hex_table(unsigned char c);
 
 
 
@@ -32,6 +44,65 @@ int main(void) {
     while (1) {
         handle_selection(show_menu()); 
     }
+}
+
+void floating_to_decimal(void) {
+
+    int unbiased_exp;
+    unsigned char biased_exp[9], mantissa[24], sign[2] , hex_in[9], buffer[256];
+    char * items[] = {
+        _spc_"*** Sign: ",
+        _spc_"*** Unbiased exponent: ",
+        _spc_"*** Normalized Decimal: ",
+        _spc_"*** Decimal: "
+    };
+    biased_exp[8] = mantissa[23] = hex_in[8] = sign[1] = '\0';
+    
+    if (parse_hex_input(buffer, hex_in) != NAN) {
+        printf("nan");
+        exit(0);
+    }
+
+
+    
+
+}
+
+
+
+int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
+    
+    unsigned char c;
+    int i,j, flag = INPUT_OK;
+    
+    fflush(stdin);
+    /* Zero out input buffer */
+    for (i=j=0; i < BUFFER_SIZE; i++) 
+        buffer[i] = '\0';
+    
+    /* Get input and store in buffer */
+    while (((c = getchar()) != '\n') && j < BUFFER_SIZE) {
+        if ((j > 8) || (!in_hex_table(c)))
+            flag = IS_NAN;
+        buffer[j++] = c;
+    } 
+
+    return flag;
+}
+
+int in_hex_table(unsigned char c) {
+    int i, flag = NOT_HEX;
+    unsigned char byte_table[] = {
+        '0','1','2','3','4',
+        '5','6','7','8','9',
+        'A','B','C','D','E',
+        'F'
+    };
+    for (i = 0; i < 15; i++) {
+        if (c == byte_table[i])
+            flag = INPUT_OK;
+    }
+    return flag;
 }
 
 
@@ -58,7 +129,7 @@ void decimal_to_floating(void) {
     printf(_spc_"Enter the decimal representation:");
 
     /* Require numerical input, otherwise exit the program */
-    if (!scanf("%f",&dec_in))
+    if (!scanf("%f\n",&dec_in))
         exit_program();
 
     /* Check for special cases ( inf/-inf */
@@ -238,6 +309,7 @@ int get_unbiased_exp(float dec_in) {
 /* Input handler for menu selections */
 void handle_selection(int selection) {
     if (selection == 1) decimal_to_floating();
+    else if (selection == 2) floating_to_decimal();
 }
 
 
@@ -257,7 +329,7 @@ int show_menu(void) {
         printf("%s",items[i]);
     
     /* Get choice selection from input */
-    if (scanf("%d", &input) >= 0)
+    if (scanf("%d\n", &input) >= 0)
         return input;
 
     return 0;
