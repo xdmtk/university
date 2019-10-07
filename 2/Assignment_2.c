@@ -18,8 +18,12 @@ void write_exponent(float *dec_in, unsigned char * biased_exp, int * unbiased_ex
 void write_sign(float dec_in, unsigned char *sign);
 void write_hex(unsigned char *sign, unsigned char *exp, 
         unsigned char *mantissa, unsigned char *hex);
+
 int handle_special(float dec_in, unsigned char *exp, 
         unsigned char *sign, unsigned char *mantissa);
+
+
+
 
 /* Main function */
 int main(void) {
@@ -45,19 +49,21 @@ void decimal_to_floating(void) {
         _spc_"*** Mantissa: ",
         _spc_"*** IEEE HEX: "
     };
+
+
+    /* Zero out char arrays */
     biased_exp[8] = mantissa[23] = hex[8] = sign[1] = '\0';
-
-
 
     /* Input decimal */
     printf(_spc_"Enter the decimal representation:");
 
-    /* Bad input? Exit the program */
+    /* Require numerical input, otherwise exit the program */
     if (!scanf("%f",&dec_in))
         exit_program();
 
-
+    /* Check for special cases ( inf/-inf */
     if (!handle_special(dec_in, biased_exp, sign, mantissa)) { 
+
         /* Write out the sign bit */
         write_sign(dec_in, sign);
         
@@ -68,29 +74,48 @@ void decimal_to_floating(void) {
         write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
 
     }
+
+    /* Write out the hex representation */
     write_hex(sign, biased_exp, mantissa, hex);
-    
+   
+
     /* Output results */
     printf("%s%s%s%s%s%s%s%s",
             items[0], sign, items[1], biased_exp,
             items[2], mantissa, items[3], hex);
 }
 
+
+/* Negative/positive check on input decimal to write sign bit */
 void write_sign(float dec_in, unsigned char *sign) {
+
     sign[0] = dec_in < 0 ? '1' : '0';
 }
 
 
+
+/* Check for infinity on input decimal and handle appropriately */
 int handle_special(float dec_in, unsigned char *exp, 
         unsigned char *sign, unsigned char *mantissa) {
     
+    /* Get infinity macro */
     int flag = fpclassify(dec_in); int special = 0, i;
+    
+    /* Test for infinity macro */
     if (flag == FP_INFINITE || flag == (-FP_INFINITE)) {
+
+        /* IEEE Representation of infinity, FF for exponent */
         for (i = 0; i < 8; i++)
             exp[i] = '1';
+
+        /* IEEE Representation of infinity in mantissa, 0 */
         for (i = 0; i < 23; i++)
             mantissa[i] = '0';
+
+        /* Sign bit determined by negative or positive infintiy */
         sign[0] = dec_in == INFINITY ? '0' : '1';
+
+        /* Return special flag to skip normal conversion routines */
         special = 1;
     }
     return special;
@@ -103,20 +128,17 @@ int handle_special(float dec_in, unsigned char *exp,
 void write_exponent(float *dec_in, unsigned char * biased_exp, int * unbiased_exp, int sign) {
     int i, biased_exp_int;
 
-    /* Calculate integer representation of biased exponet */
+    /* Calculate integer representation of biased exponent */
     biased_exp_int = 127 + (*unbiased_exp = get_unbiased_exp(*dec_in));
    
     /* Make positive for sake of calculation */
     *dec_in *= sign;
     
-    /* Convert biased exponet to binary char array */
+    /* Convert biased exponent to binary char array */
     for (i = 7; i >= 0; i--) {
         biased_exp[i] = (biased_exp_int & 0x1) ? '1' : '0';
         biased_exp_int = biased_exp_int >> 1;
     }
-
-
-
 }
 
 
@@ -146,7 +168,8 @@ void write_mantissa(unsigned char *mantissa, float mantissa_float) {
 
 }
 
-void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa, unsigned char *hex) {
+void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa, 
+        unsigned char *hex) {
     
     int i, j, h;
     unsigned char full[32], byte,
@@ -157,15 +180,20 @@ void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa,
             'F'
         };
         
-
+    /* Scan the whole IEEE representation char array and use bits for hex 
+     * interpretation 
+     */
     memcpy(full,sign,1);
     memcpy(full+1,exp,8);
     memcpy(full+9,mantissa,23);
-
+    
+    /* Take bits 4 at a time, and convert to integer representation */
     for (i = 0, h = 0; i < 32; ) {
         for (j = 3, byte = 0; j >= 0; j--, i++) {
             byte += full[i] == '1' ? pow(2,j) : 0;
         }
+
+        /* Use integer representation to index byte table for char representation */
         hex[h++] = byte_table[byte];
     }
 }
@@ -180,19 +208,23 @@ int get_unbiased_exp(float dec_in) {
     int i, exp, exp_cnt, exp_inc;
     i = exp = exp_cnt = 0;
     
-
+    
+    /* Negative input increments 2^n where n is decreasing */
     exp_inc  = (dec_in < 1 && dec_in > -1) ? -1 : 1;
+
+    /* Conver to positive for sake of calculation */
     dec_in *= dec_in < 0 ? -1 : 1;
 
+    /* Iterate through exponent values to total the n value of 2^n 
+     * that equals the input decimal 
+     */
     for (; ; i++) {
         if (dec_in - pow(2,exp) >= 0) {
             dec_in -= pow(2,exp);
             exp_cnt++; 
         }
-        else {
+        else
             break;
-        }
-
         exp += exp_inc;
     }
 
