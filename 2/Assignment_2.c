@@ -33,8 +33,10 @@ int handle_special(float dec_in, unsigned char *exp,
 /* IEEE-754 to Decimal */
 void floating_to_decimal(void);
 int parse_hex_input(unsigned char *buffer, unsigned char *hex_in);
+void hex_to_bin(unsigned char *hex_in, unsigned char *full);
+int get_unbiased_exp_fd(unsigned char *full);
+
 int in_hex_table(unsigned char c);
-void hex_to_bin(unsigned char *hex_in);
 
 
 
@@ -50,17 +52,23 @@ int main(void) {
 void floating_to_decimal(void) {
 
     int unbiased_exp;
-    unsigned char biased_exp[9], mantissa[24], sign[2] , hex_in[9], buffer[256];
+    unsigned char biased_exp[9], mantissa[24], sign[2] ,
+                  hex_in[9], buffer[256], full[33];
     char * items[] = {
         _spc_"*** Sign: ",
         _spc_"*** Unbiased exponent: ",
         _spc_"*** Normalized Decimal: ",
         _spc_"*** Decimal: "
     };
-    biased_exp[8] = mantissa[23] = hex_in[8] = sign[1] = '\0';
-    
+    biased_exp[8] = mantissa[23] = hex_in[8] = sign[1] = full[32] = '\0';
+   
+
     if (parse_hex_input(buffer, hex_in) != IS_NAN) {
-        hex_to_bin(hex_in);
+        hex_to_bin(hex_in, full);
+
+        /* Set the sign */
+        sign[0] = full[0] == '1' ? '-' : '+';
+        unbiased_exp = get_unbiased_exp_fd(full);
     }
 
 
@@ -68,10 +76,27 @@ void floating_to_decimal(void) {
 
 }
 
-void hex_to_bin(unsigned char *hex_in) {
+
+int get_unbiased_exp_fd(unsigned char *full) {
+
+    int i, biased_exp, unbiased_exp;
+    
+    for (i = 1, biased_exp = 0; i < 9; i++)
+        /* Get the biased exponent by converting bits 1 - 9 to decimal */
+        biased_exp += full[i] == '1' ? pow(2,8-i) : 0;
+    
+    /* Unbiased exponent is biased exponent - 127 */
+    unbiased_exp = biased_exp - 127;
+    
+    return unbiased_exp;
+}
+
+
+
+
+void hex_to_bin(unsigned char *hex_in, unsigned char *full) {
     
     int i,j;
-    unsigned char full[33]; full[32] = '\0';
     const char * bin_table[]= {
         "0000", "0001", "0010", "0011",
         "0100", "0101", "0110", "0111",
