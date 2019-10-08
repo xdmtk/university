@@ -35,6 +35,7 @@ void floating_to_decimal(void);
 int parse_hex_input(unsigned char *buffer, unsigned char *hex_in);
 void hex_to_bin(unsigned char *hex_in, unsigned char *full);
 int get_unbiased_exp_fd(unsigned char *full);
+float get_normalized_decimal(unsigned char *full);
 
 int in_hex_table(unsigned char c);
 
@@ -52,6 +53,7 @@ int main(void) {
 void floating_to_decimal(void) {
 
     int unbiased_exp;
+    float normalized_decimal, decimal;
     unsigned char biased_exp[9], mantissa[24], sign[2] ,
                   hex_in[9], buffer[256], full[33];
     char * items[] = {
@@ -68,13 +70,27 @@ void floating_to_decimal(void) {
 
         /* Set the sign */
         sign[0] = full[0] == '1' ? '-' : '+';
+
+        /* Get unbiased exponent from exp bits */
         unbiased_exp = get_unbiased_exp_fd(full);
+
+        /* Get normalized decimal from manitissa bits */
+        normalized_decimal = get_normalized_decimal(full);
     }
 
 
     
 
 }
+
+float get_normalized_decimal(unsigned char *full) {
+    
+    float normalized_decimal;
+
+
+    return normalized_decimal;
+}
+
 
 
 int get_unbiased_exp_fd(unsigned char *full) {
