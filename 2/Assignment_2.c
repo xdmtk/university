@@ -85,10 +85,14 @@ void floating_to_decimal(void) {
 
 float get_normalized_decimal(unsigned char *full) {
     
+    int i;
     float normalized_decimal;
+    
 
+    for (i = 9, normalized_decimal = 0; i < 32; i++)
+        normalized_decimal += full[i] == '1' ? pow(2, (-1)*(i-8)) : 0;
 
-    return normalized_decimal;
+    return 1 + normalized_decimal;
 }
 
 
