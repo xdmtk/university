@@ -82,9 +82,14 @@ void floating_to_decimal(void) {
          */
         decimal = (pow(2,unbiased_exp)) * normalized_decimal * (sign[0] == '-' ? -1 : 1);
     }
+    else {
+        /* TODO: Handle special case */
+    }
 
-
-    
+    printf("%s%s%s%d%s%f%s%f", items[0],sign,
+            items[1], unbiased_exp, items[2],
+            normalized_decimal, items[3],
+            decimal);
 
 }
 
