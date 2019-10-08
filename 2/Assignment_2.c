@@ -83,7 +83,7 @@ void floating_to_decimal(void) {
         decimal = (pow(2,unbiased_exp)) * normalized_decimal * (sign[0] == '-' ? -1 : 1);
     }
     else {
-        /* TODO: Handle special case */
+        printf("NAN\n");
     }
 
     printf("%s%s%s%d%s%f%s%f", items[0],sign,
@@ -158,12 +158,21 @@ int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
     for (i=j=0; i < BUFFER_SIZE; i++) 
         buffer[i] = '\0';
     
-    /* Get input and store in buffer */
+    /* Get input and store in buffer
     while (((c = getchar()) != '\n') && j < BUFFER_SIZE) {
         if ((j > 8) || (!in_hex_table(c)))
             flag = IS_NAN;
         buffer[j++] = c;
     }
+    */
+    scanf("%s",buffer);
+    i = 0;
+    while(buffer[i] != '\0') {
+        if (!in_hex_table(buffer[i]) || i++ > 8)
+            flag = IS_NAN;
+    }
+        
+            
     memcpy(hex_in, buffer, 8);
 
     return flag;
@@ -208,7 +217,7 @@ void decimal_to_floating(void) {
     printf(_spc_"Enter the decimal representation:");
 
     /* Require numerical input, otherwise exit the program */
-    if (!scanf("%f\n",&dec_in))
+    if (!scanf("%f",&dec_in))
         exit_program();
 
     /* Check for special cases ( inf/-inf */
@@ -389,6 +398,7 @@ int get_unbiased_exp(float dec_in) {
 void handle_selection(int selection) {
     if (selection == 1) decimal_to_floating();
     else if (selection == 2) floating_to_decimal();
+    else exit_program();
 }
 
 
@@ -408,7 +418,7 @@ int show_menu(void) {
         printf("%s",items[i]);
     
     /* Get choice selection from input */
-    if (scanf("%d\n", &input) >= 0)
+    if (scanf("%d", &input) >= 0)
         return input;
 
     return 0;
