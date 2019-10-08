@@ -76,6 +76,11 @@ void floating_to_decimal(void) {
 
         /* Get normalized decimal from manitissa bits */
         normalized_decimal = get_normalized_decimal(full);
+        
+        /* Get decimal by multiplying 2^unbiased_expo and the normalized decimal
+         * and 1 or -1 depending on the sign bit 
+         */
+        decimal = (pow(2,unbiased_exp)) * normalized_decimal * (sign[0] == '-' ? -1 : 1);
     }
 
 
@@ -87,7 +92,6 @@ float get_normalized_decimal(unsigned char *full) {
     
     int i;
     float normalized_decimal;
-    
 
     for (i = 9, normalized_decimal = 0; i < 32; i++)
         normalized_decimal += full[i] == '1' ? pow(2, (-1)*(i-8)) : 0;
