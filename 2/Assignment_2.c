@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <float.h>
 #include <string.h>
 #include <errno.h>
 
@@ -54,7 +55,7 @@ void floating_to_decimal(void) {
 
     int unbiased_exp;
     float normalized_decimal, decimal;
-    unsigned char biased_exp[9], mantissa[24], sign[2] ,
+    unsigned char sign[2] ,
                   hex_in[9], buffer[256], full[33];
     char * items[] = {
         _spc_"*** Sign: ",
@@ -62,7 +63,7 @@ void floating_to_decimal(void) {
         _spc_"*** Normalized Decimal: ",
         _spc_"*** Decimal: "
     };
-    biased_exp[8] = mantissa[23] = hex_in[8] = sign[1] = full[32] = '\0';
+    hex_in[8] = sign[1] = full[32] = '\0';
    
 
     if (parse_hex_input(buffer, hex_in) != IS_NAN) {
@@ -137,7 +138,7 @@ void hex_to_bin(unsigned char *hex_in, unsigned char *full) {
      * index to binary table
      */
     for (i = j = 0; i < 8; i++, j+=4 ) {
-        char buffer[] = {hex_in[i], '\0'};
+        char buffer[] = {'\0', '\0'}; buffer[0] = hex_in[i];
         memcpy(full+j, bin_table[strtol(buffer,NULL, 16)], 4);
     }
     return;
@@ -150,7 +151,6 @@ void hex_to_bin(unsigned char *hex_in, unsigned char *full) {
 
 int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
     
-    unsigned char c;
     int i,j, flag = INPUT_OK;
     
     fflush(stdin);
@@ -258,10 +258,10 @@ int handle_special(float dec_in, unsigned char *exp,
         unsigned char *sign, unsigned char *mantissa) {
     
     /* Get infinity macro */
-    int flag = fpclassify(dec_in); int special = 0, i;
-    
+    int i, special = 0;
+
     /* Test for infinity macro */
-    if (flag == FP_INFINITE || flag == (-FP_INFINITE)) {
+    if (__isinf(dec_in) || __isnan(dec_in)) {
 
         /* IEEE Representation of infinity, FF for exponent */
         for (i = 0; i < 8; i++)
@@ -272,7 +272,7 @@ int handle_special(float dec_in, unsigned char *exp,
             mantissa[i] = '0';
 
         /* Sign bit determined by negative or positive infintiy */
-        sign[0] = dec_in == INFINITY ? '0' : '1';
+        sign[0] = dec_in == __isinf(dec_in) ? '0' : '1';
 
         /* Return special flag to skip normal conversion routines */
         special = 1;
@@ -426,7 +426,7 @@ int show_menu(void) {
 
 
 /* Free allocated structures */
-void exit_program() {
+void exit_program(void) {
     printf("\n\nProgram Terminated Normally");
     exit(0);
 }
