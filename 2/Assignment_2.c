@@ -12,7 +12,7 @@
 #define _spc_ "\n\n"
 
 
-/* Function prototypes */
+/* Menu functions */
 int show_menu(void);
 void handle_selection(int selection);
 void exit_program(void);
@@ -38,7 +38,16 @@ void hex_to_bin(unsigned char *hex_in, unsigned char *full);
 int get_unbiased_exp_fd(unsigned char *full);
 float get_normalized_decimal(unsigned char *full);
 
+/* Helper functions */
 int in_hex_table(unsigned char c);
+
+
+
+
+
+
+
+
 
 
 
@@ -50,6 +59,14 @@ int main(void) {
         handle_selection(show_menu()); 
     }
 }
+
+
+
+
+
+
+
+/* Master functions ( Floating -> Decimal / Decimal -> Floating ) */
 
 void floating_to_decimal(void) {
 
@@ -94,6 +111,65 @@ void floating_to_decimal(void) {
 
 }
 
+void decimal_to_floating(void) {
+    
+    float dec_in;
+    int unbiased_exp;
+    unsigned char biased_exp[9], mantissa[24], hex[9], sign[2];
+    char * items[] = {
+        _spc_"*** Sign: ",
+        _spc_"*** Biased exponent: ",
+        _spc_"*** Mantissa: ",
+        _spc_"*** IEEE HEX: "
+    };
+
+
+    /* Zero out char arrays */
+    biased_exp[8] = mantissa[23] = hex[8] = sign[1] = '\0';
+
+    /* Input decimal */
+    printf(_spc_"Enter the decimal representation:");
+
+    /* Require numerical input, otherwise exit the program */
+    if (!scanf("%f",&dec_in))
+        exit_program();
+
+
+    /* Write out the sign bit */
+    write_sign(dec_in, sign);
+    
+    /* Write out the exponent bits */
+    write_exponent(&dec_in, biased_exp, &unbiased_exp, sign[0] == '1' ? -1 : 1);
+    
+    /* Write out the mantissa bits */
+    write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
+
+
+    /* Write out the hex representation */
+    write_hex(sign, biased_exp, mantissa, hex);
+   
+
+    /* Output results */
+    printf("%s%s%s%s%s%s%s%s",
+            items[0], sign, items[1], biased_exp,
+            items[2], mantissa, items[3], hex);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Floating to Decimal related Functions */
+
 float get_normalized_decimal(unsigned char *full) {
     
     int i;
@@ -104,8 +180,6 @@ float get_normalized_decimal(unsigned char *full) {
 
     return 1 + normalized_decimal;
 }
-
-
 
 int get_unbiased_exp_fd(unsigned char *full) {
 
@@ -120,9 +194,6 @@ int get_unbiased_exp_fd(unsigned char *full) {
     
     return unbiased_exp;
 }
-
-
-
 
 void hex_to_bin(unsigned char *hex_in, unsigned char *full) {
     
@@ -144,10 +215,6 @@ void hex_to_bin(unsigned char *hex_in, unsigned char *full) {
     return;
 
 }
-
-
-
-
 
 int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
     
@@ -178,111 +245,28 @@ int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
     return flag;
 }
 
-int in_hex_table(unsigned char c) {
-    int i, flag = NOT_HEX;
-    unsigned char byte_table[] = {
-        '0','1','2','3','4',
-        '5','6','7','8','9',
-        'A','B','C','D','E',
-        'F'
-    };
-    for (i = 0; i < 15; i++) {
-        if (c == byte_table[i])
-            flag = INPUT_OK;
-    }
-    return flag;
-}
 
 
-/** 
- * May need to consider an overflow/underflow situation 
- */
-void decimal_to_floating(void) {
-    
-    float dec_in;
-    int unbiased_exp;
-    unsigned char biased_exp[9], mantissa[24], hex[9], sign[2];
-    char * items[] = {
-        _spc_"*** Sign: ",
-        _spc_"*** Biased exponent: ",
-        _spc_"*** Mantissa: ",
-        _spc_"*** IEEE HEX: "
-    };
 
 
-    /* Zero out char arrays */
-    biased_exp[8] = mantissa[23] = hex[8] = sign[1] = '\0';
 
-    /* Input decimal */
-    printf(_spc_"Enter the decimal representation:");
 
-    /* Require numerical input, otherwise exit the program */
-    if (!scanf("%f",&dec_in))
-        exit_program();
 
-    /* Check for special cases ( inf/-inf */
-    if (!handle_special(dec_in, biased_exp, sign, mantissa)) { 
 
-        /* Write out the sign bit */
-        write_sign(dec_in, sign);
-        
-        /* Write out the exponent bits */
-        write_exponent(&dec_in, biased_exp, &unbiased_exp, sign[0] == '1' ? -1 : 1);
-        
-        /* Write out the mantissa bits */
-        write_mantissa(mantissa, dec_in/pow(2,unbiased_exp) - 1.0);
 
-    }
 
-    /* Write out the hex representation */
-    write_hex(sign, biased_exp, mantissa, hex);
-   
 
-    /* Output results */
-    printf("%s%s%s%s%s%s%s%s",
-            items[0], sign, items[1], biased_exp,
-            items[2], mantissa, items[3], hex);
-}
 
+
+
+
+/* Decimal to Float related Functions */
 
 /* Negative/positive check on input decimal to write sign bit */
 void write_sign(float dec_in, unsigned char *sign) {
 
     sign[0] = dec_in < 0 ? '1' : '0';
 }
-
-
-
-/* Check for infinity on input decimal and handle appropriately */
-int handle_special(float dec_in, unsigned char *exp, 
-        unsigned char *sign, unsigned char *mantissa) {
-    
-    /* Get infinity macro */
-    int i, special = 0;
-
-    /* Test for infinity macro */
-    if (__isinf(dec_in) || __isnan(dec_in)) {
-
-        /* IEEE Representation of infinity, FF for exponent */
-        for (i = 0; i < 8; i++)
-            exp[i] = '1';
-
-        /* IEEE Representation of infinity in mantissa, 0 */
-        for (i = 0; i < 23; i++)
-            mantissa[i] = '0';
-
-        /* Sign bit determined by negative or positive infintiy */
-        sign[0] = dec_in == __isinf(dec_in) ? '0' : '1';
-
-        /* Return special flag to skip normal conversion routines */
-        special = 1;
-    }
-    return special;
-}
-
-
-
-
 
 void write_exponent(float *dec_in, unsigned char * biased_exp, int * unbiased_exp, int sign) {
     int i, biased_exp_int;
@@ -357,8 +341,6 @@ void write_hex(unsigned char *sign, unsigned char *exp, unsigned char *mantissa,
     }
 }
 
-
-
 /* Calculate the unbiased exponent needed to raise 2 to the magnitude
  * that is equal to or less than the input decimal 
  */
@@ -394,13 +376,47 @@ int get_unbiased_exp(float dec_in) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+/* Helper functions */
+
+int in_hex_table(unsigned char c) {
+    int i, flag = NOT_HEX;
+    unsigned char byte_table[] = {
+        '0','1','2','3','4',
+        '5','6','7','8','9',
+        'A','B','C','D','E',
+        'F'
+    };
+    for (i = 0; i < 15; i++) {
+        if (c == byte_table[i])
+            flag = INPUT_OK;
+    }
+    return flag;
+}
+
+
+
+
+
+
+
+/* Program menu related functions */
+
 /* Input handler for menu selections */
 void handle_selection(int selection) {
     if (selection == 1) decimal_to_floating();
     else if (selection == 2) floating_to_decimal();
     else exit_program();
 }
-
 
 int show_menu(void) {
     
@@ -423,7 +439,6 @@ int show_menu(void) {
 
     return 0;
 }
-
 
 /* Free allocated structures */
 void exit_program(void) {
