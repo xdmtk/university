@@ -7,14 +7,14 @@
 
 #define BUFFER_SIZE 256
 #define INPUT_OK 1
-#define NOT_HEX 2
+#define NOT_HEX 0
 #define IS_NAN 3
-#define NOT_SPECIAL 0
-#define POSITIVE_ZERO 1
-#define NEGATIVE_ZERO 2
-#define POSITIVE_INF 3
-#define NEGATIVE_INF 4
-#define NAN_NUM 5
+#define NOT_SPECIAL 1
+#define POSITIVE_ZERO 2
+#define NEGATIVE_ZERO 3
+#define POSITIVE_INF 4
+#define NEGATIVE_INF 5
+#define NAN_NUM 6
 
 #define _spc_ "\n\n"
 
@@ -34,8 +34,6 @@ void write_sign(float dec_in, unsigned char *sign);
 void write_hex(unsigned char *sign, unsigned char *exp, 
         unsigned char *mantissa, unsigned char *hex);
 int get_unbiased_exp(float dec_in);
-int handle_special(float dec_in, unsigned char *exp, 
-        unsigned char *sign, unsigned char *mantissa);
 
 
 /* IEEE-754 to Decimal */
@@ -44,6 +42,8 @@ int parse_hex_input(unsigned char *buffer, unsigned char *hex_in);
 void hex_to_bin(unsigned char *hex_in, unsigned char *full);
 int get_unbiased_exp_fd(unsigned char *full);
 float get_normalized_decimal(unsigned char *full);
+int check_special_cases(unsigned char *full);
+
 
 /* Helper functions */
 int in_hex_table(unsigned char c);
@@ -77,7 +77,7 @@ int main(void) {
 
 void floating_to_decimal(void) {
 
-    int unbiased_exp;
+    int unbiased_exp, special_flag;
     float normalized_decimal, decimal;
     unsigned char sign[2] ,
                   hex_in[9], buffer[256], full[33];
@@ -90,8 +90,9 @@ void floating_to_decimal(void) {
     };
     hex_in[8] = sign[1] = full[32] = '\0';
    
+    special_flag = parse_hex_input(buffer, hex_in);
 
-    if (parse_hex_input(buffer, hex_in) != IS_NAN) {
+    if (special_flag != NAN_NUM) {
         hex_to_bin(hex_in, full);
 
         /* Set the sign */
@@ -107,75 +108,29 @@ void floating_to_decimal(void) {
          * and 1 or -1 depending on the sign bit 
          */
         decimal = (pow(2,unbiased_exp)) * normalized_decimal * (sign[0] == '-' ? -1 : 1);
-        
-        
+
+        special_flag = check_special_cases(full);
+    }
+    if (special_flag == INPUT_OK) {
         printf("%s%s%s%d%s%f%s%f", items[0],sign,
                 items[1], unbiased_exp, items[2],
                 normalized_decimal, items[3],
                 decimal);
     }
-
-
-
+    else {
+        char * special_cases[] = {
+            " ", " ",
+            "+0",
+            "-0",
+            "+infinity",
+            "-infinity",
+            "NaN"
+        };
+        const char * special_case = special_cases[special_flag];
+        printf("%s%s%s%s", items[0], sign, items[4], special_case);
+    }
 }
 
-int check_special_cases(unsigned char *full) {
-    
-    int i, ret;
-    
-
-    /* Check for positive/negative 0 */
-    for (i = 1; i < 32; i++)
-        if (full[i] == '1') {
-            ret = NOT_SPECIAL;
-            break;
-        }
-        else 
-            ret = full[0] == '1' ? NEGATIVE_ZERO : POSITIVE_ZERO;
-    
-    if (ret == POSITIVE_ZERO || ret == NEGATIVE_ZERO)
-        return ret;
-
-
-    /* Check for positive/negative infinity */
-    for (i = 1; i < 9; i++)
-        if (full[i] == '0') {
-            ret = NOT_SPECIAL;
-            break;
-        }
-        else
-            ret = full[0] == '1' ? NEGATIVE_INF : POSITIVE_INF;
-    for (i = 9; i < 32; i++) {
-        if (full[i] == '1') {
-            ret = NOT_SPECIAL;
-            break;
-        }
-    }
-
-    if (ret == POSITIVE_INF || ret == NEGATIVE_INF)
-        return ret;
-    
-    
-    /* Check for NaN */
-    for (i = 1; i < 9; i++) {
-        if (full[i] == '0') {
-            ret = NOT_SPECIAL;
-            break;
-        }
-        else
-            ret = IS_NAN;
-    }
-    if (ret == IS_NAN) {
-        ret = NOT_SPECIAL;
-        for (i = 9; i < 32; i++) {
-            if (full[i] == '1') {
-                ret = IS_NAN;
-                break;
-            }
-        }
-    }
-    return ret;
-}
 
 void decimal_to_floating(void) {
     
@@ -294,8 +249,8 @@ int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
     scanf("%s",buffer); i = 0;
 
     while(buffer[i] != '\0') {
-        if (!in_hex_table(buffer[i]) || i++ > 8)
-            flag = IS_NAN;
+        if (!in_hex_table(buffer[i++]) || i > 9)
+            flag = NAN_NUM;
     }
             
     memcpy(hex_in, buffer, 8);
@@ -303,6 +258,63 @@ int parse_hex_input(unsigned char *buffer, unsigned char *hex_in) {
     return flag;
 }
 
+int check_special_cases(unsigned char *full) {
+    
+    int i, ret;
+    
+
+    /* Check for positive/negative 0 */
+    for (i = 1; i < 32; i++)
+        if (full[i] == '1') {
+            ret = NOT_SPECIAL;
+            break;
+        }
+        else 
+            ret = full[0] == '1' ? NEGATIVE_ZERO : POSITIVE_ZERO;
+    
+    if (ret == POSITIVE_ZERO || ret == NEGATIVE_ZERO)
+        return ret;
+
+
+    /* Check for positive/negative infinity */
+    for (i = 1; i < 9; i++)
+        if (full[i] == '0') {
+            ret = NOT_SPECIAL;
+            break;
+        }
+        else
+            ret = full[0] == '1' ? NEGATIVE_INF : POSITIVE_INF;
+    for (i = 9; i < 32; i++) {
+        if (full[i] == '1') {
+            ret = NOT_SPECIAL;
+            break;
+        }
+    }
+
+    if (ret == POSITIVE_INF || ret == NEGATIVE_INF)
+        return ret;
+    
+    
+    /* Check for NaN */
+    for (i = 1; i < 9; i++) {
+        if (full[i] == '0') {
+            ret = NOT_SPECIAL;
+            break;
+        }
+        else
+            ret = IS_NAN;
+    }
+    if (ret == IS_NAN) {
+        ret = NOT_SPECIAL;
+        for (i = 9; i < 32; i++) {
+            if (full[i] == '1') {
+                ret = IS_NAN;
+                break;
+            }
+        }
+    }
+    return ret;
+}
 
 
 
