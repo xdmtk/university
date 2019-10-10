@@ -3,11 +3,14 @@
 #include <math.h>
 #include <float.h>
 #include <stdint.h>
+#include <string.h>
 #include <limits.h>
 
 #define _spc_ "\n\n"
-#define NAN_SPECIAL = 0xFF
-    
+#define NAN_SPECIAL 0xFF
+
+
+/* TODO: Maybe name these a bit better */
 union f_bits {
     float decimal;
     uint32_t decimal_mem;
@@ -29,6 +32,8 @@ struct bit_state {
 /* Decimal to IEEE-754 functions */
 void decimal_to_floating(void);
 void write_bits(union f_bits float_mem, struct bit_state * bs);
+int in_hex_table(char * c, int size);
+void floating_to_decimal(void);
 
 /* Menu handling functions */
 void exit_program(void);
@@ -36,11 +41,9 @@ int show_menu(void);
 void handle_selection(int selection);
 
 
-
+/* Can I really not have a void main function ? */
 int main(void) {
-    while (1) {
-        handle_selection(show_menu());
-    }
+    while (1) handle_selection(show_menu());
     return 0;
 }
 
@@ -51,6 +54,7 @@ int main(void) {
 
 void decimal_to_floating(void) {
     
+    /* Declare and initialize stack memory */
     union f_bits float_mem;
     struct bit_state bs;
     char * items[] = {
@@ -61,17 +65,27 @@ void decimal_to_floating(void) {
         _spc_"*** IEEE HEX: "
     };
     bs.sign[1] = bs.exponent[8] = bs.mantissa[23] = '\0';
-
+    
+    /* Print prompt and read response into float union */
     printf("%s",items[0]);
     scanf("%f", &float_mem.decimal);
-
+    
+    /* Get the binary representation of the floating point
+     * of the union, store in struct with char represented 
+     * bit fields
+     */
     write_bits(float_mem, &bs);
-
+    
+    /* Print results */
     printf("%s%s%s%s%s%s%s%x", items[1], bs.sign, items[2],
             bs.exponent, items[3], bs.mantissa, 
             items[4], float_mem.decimal_mem);
 }
 
+
+/* Iterate through uint32_t representation of float bits to get
+ * sign, exponent, and mantissa bit fields
+ */
 void write_bits(union f_bits float_mem, struct bit_state * bs) {
     
     int b,i;
@@ -137,7 +151,7 @@ int in_hex_table(char * c, int size) {
                 flag = 1;
         }
         if (!flag) break;
-        flag = 0;
+        if (size - i != 1) flag = 0;
     }
     return flag;
 }
@@ -148,6 +162,7 @@ int in_hex_table(char * c, int size) {
 /* Input handler for menu selections */
 void handle_selection(int selection) {
     if (selection == 1) decimal_to_floating();
+    if (selection == 2) floating_to_decimal();
     else exit_program();
 }
 
