@@ -17,12 +17,16 @@ struct bit_state {
     unsigned char mantissa[24];
 };
 
+
+
+/* Decimal to IEEE-754 functions */
 void decimal_to_floating(void);
+void write_bits(union f_bits float_mem, struct bit_state * bs);
+
+/* Menu handling functions */
 void exit_program(void);
 int show_menu(void);
 void handle_selection(int selection);
-void write_bits(union f_bits float_mem, struct bit_state * bs);
-
 
 
 
@@ -34,11 +38,14 @@ int main(void) {
 }
 
 
+
+
+
+
 void decimal_to_floating(void) {
     
     union f_bits float_mem;
     struct bit_state bs;
-
     char * items[] = {
         _spc_"Enter the decimal representation: ",
         _spc_"*** Sign: ",
@@ -71,6 +78,23 @@ void write_bits(union f_bits float_mem, struct bit_state * bs) {
 }
 
 
+void floating_to_decimal(void) {
+
+    char * items[] = {
+        _spc_"*** Sign: ",
+        _spc_"*** Unbiased exponent: ",
+        _spc_"*** Normalized Decimal: ",
+        _spc_"*** Decimal: ",
+        _spc_"*** Special case: "
+    };
+    char * special_cases[] = {
+        "+0",
+        "-0",
+        "+infinity",
+        "-infinity",
+        "NaN"
+    };
+}
 
 
 
