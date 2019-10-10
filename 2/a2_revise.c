@@ -2,14 +2,29 @@
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
-#include <string.h>
-#include <errno.h>
+#include <stdint.h>
+#include <limits.h>
 #define _spc_ "\n\n"
+    
+union f_bits {
+    float decimal;
+    uint32_t decimal_mem;
+};
+
+struct bit_state {
+    unsigned char sign[2];
+    unsigned char exponent[9];
+    unsigned char mantissa[24];
+};
 
 void decimal_to_floating(void);
 void exit_program(void);
 int show_menu(void);
 void handle_selection(int selection);
+void write_bits(union f_bits float_mem, struct bit_state * bs);
+
+
+
 
 int main(void) {
     while (1) {
@@ -21,11 +36,8 @@ int main(void) {
 
 void decimal_to_floating(void) {
     
-    float decimal;
-   
-    unsigned char * decimal_mem;
-    unsigned char sign[2], exponent[9], mantissa[24];
-    sign[1] = exponent[8] = mantissa[23] = '\0';
+    union f_bits float_mem;
+    struct bit_state bs;
 
     char * items[] = {
         _spc_"Enter the decimal representation: ",
@@ -34,22 +46,34 @@ void decimal_to_floating(void) {
         _spc_"*** Mantissa: ",
         _spc_"*** IEEE HEX: "
     };
+    bs.sign[1] = bs.exponent[8] = bs.mantissa[23] = '\0';
 
     printf("%s",items[0]);
-    scanf("%f", &decimal);
-    
+    scanf("%f", &float_mem.decimal);
 
-    /* Trying different approach */
-    decimal_mem = reinterpret_cast<unsigned char *>(&decimal);
-    memcpy(sign,decimal_mem,1);
-    memcpy(exponent,decimal_mem+1,8);
-    memcpy(mantissa,decimal_mem+9,23);
+    write_bits(float_mem, &bs);
+
+    printf("%s%s%s%s%s%s%s%x", items[1], bs.sign, items[2],
+            bs.exponent, items[3], bs.mantissa, 
+            items[4], float_mem.decimal_mem);
+}
+
+void write_bits(union f_bits float_mem, struct bit_state * bs) {
     
-    printf("%s%s%s%s%s%s%s", items[1], sign,
-            items[2], exponent, items[3], mantissa,
-            items[4]);
+    int b,i;
+    for (i = b = 0; i < 1; i++)
+        bs->sign[b] = ((float_mem.decimal_mem >> (31 - i)) & 0x1) == 1 ? '1' : '0';
+    for (b = 0; b < 8; i++, b++)
+        bs->exponent[b] = ((float_mem.decimal_mem >> (31 - i)) & 0x1) == 1 ? '1' : '0';
+    for (b = 0; b < 23; i++, b++)
+        bs->mantissa[b] = ((float_mem.decimal_mem >> (31 - i)) & 0x1) == 1 ? '1' : '0';
 
 }
+
+
+
+
+
 
 
 /* Input handler for menu selections */
