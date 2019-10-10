@@ -79,7 +79,9 @@ void write_bits(union f_bits float_mem, struct bit_state * bs) {
 
 
 void floating_to_decimal(void) {
-
+    
+    int i;
+    char buffer[256];
     char * items[] = {
         _spc_"*** Sign: ",
         _spc_"*** Unbiased exponent: ",
@@ -89,13 +91,39 @@ void floating_to_decimal(void) {
     };
     char * special_cases[] = {
         "+0",
-        "-0",
+        "-0"
         "+infinity",
         "-infinity",
         "NaN"
     };
+    for (i=0; i<256; i++) buffer[i] = '\0'; 
+    
+    /* May need to change this prompt */
+    printf("Enter the IEE-745 representation: ");
+    scanf("%s", &buffer);
+
 }
 
+
+
+int in_hex_table(char * c, int size) {
+    int flag, i,j;
+    unsigned char byte_table[] = {
+        '0','1','2','3','4',
+        '5','6','7','8','9',
+        'A','B','C','D','E',
+        'F'
+    };
+    for (flag = i = 0; i < size; i++) {
+        for (j = 0; j < 16; j++) {
+            if (byte_table[j] == c[i])
+                flag = 1;
+        }
+        if (!flag) break;
+        flag = 0;
+    }
+    return flag;
+}
 
 
 
