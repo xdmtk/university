@@ -4,11 +4,18 @@
 #include <float.h>
 #include <stdint.h>
 #include <limits.h>
+
 #define _spc_ "\n\n"
+#define NAN_SPECIAL = 0xFF
     
 union f_bits {
     float decimal;
     uint32_t decimal_mem;
+};
+
+union d_bits {
+    float float_mem;
+    uint32_t decimal;
 };
 
 struct bit_state {
@@ -80,7 +87,8 @@ void write_bits(union f_bits float_mem, struct bit_state * bs) {
 
 void floating_to_decimal(void) {
     
-    int i;
+    union d_bits decimal_mem;
+    int i, flag;
     char buffer[256];
     char * items[] = {
         _spc_"*** Sign: ",
@@ -101,7 +109,14 @@ void floating_to_decimal(void) {
     /* May need to change this prompt */
     printf("Enter the IEE-745 representation: ");
     scanf("%s", &buffer);
+    
+    if (!in_hex_table(buffer, strlen(buffer)))
+        flag = NAN_SPECIAL;
 
+    decimal_mem.decimal = strtol(buffer, NULL, 16);
+    
+
+    
 }
 
 
@@ -114,6 +129,8 @@ int in_hex_table(char * c, int size) {
         'A','B','C','D','E',
         'F'
     };
+    
+    if (size > 8) return 0;
     for (flag = i = 0; i < size; i++) {
         for (j = 0; j < 16; j++) {
             if (byte_table[j] == c[i])
