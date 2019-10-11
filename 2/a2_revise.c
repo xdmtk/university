@@ -271,7 +271,7 @@ int show_menu(void) {
 
 /* Free allocated structures */
 void exit_program(void) {
-    printf("\n\nProgram Terminated Normally");
+    printf("\n\n*** Program Terminated Normally");
     exit(0);
 }
 
