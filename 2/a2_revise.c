@@ -7,7 +7,13 @@
 #include <limits.h>
 
 #define _spc_ "\n\n"
-#define NAN_SPECIAL 0xFF
+
+#define NOT_SPECIAL 0x1
+#define IS_NAN 0xFFFFFFFF
+#define POSITIVE_ZERO 0x0
+#define NEGATIVE_ZERO 0x80000000
+#define POSITIVE_INF  0x7F800000
+#define NEGATIVE_INF  0xFF800000
 
 
 /* TODO: Maybe name these a bit better */
@@ -32,8 +38,11 @@ struct bit_state {
 /* Decimal to IEEE-754 functions */
 void decimal_to_floating(void);
 void write_bits(union f_bits float_mem, struct bit_state * bs);
-int in_hex_table(char * c, int size);
+
+/* IEEE-754 to Decimal functions */
 void floating_to_decimal(void);
+int in_hex_table(char * c, int size);
+int is_nan(union d_bits decimal_mem);
 
 /* Menu handling functions */
 void exit_program(void);
@@ -77,7 +86,7 @@ void decimal_to_floating(void) {
     write_bits(float_mem, &bs);
     
     /* Print results */
-    printf("%s%s%s%s%s%s%s%x", items[1], bs.sign, items[2],
+    printf("%s%s%s%s%s%s%s%.8x", items[1], bs.sign, items[2],
             bs.exponent, items[3], bs.mantissa, 
             items[4], float_mem.decimal_mem);
 }
@@ -99,6 +108,11 @@ void write_bits(union f_bits float_mem, struct bit_state * bs) {
 }
 
 
+
+
+
+
+
 void floating_to_decimal(void) {
     
     union d_bits decimal_mem;
@@ -113,27 +127,44 @@ void floating_to_decimal(void) {
     };
     char * special_cases[] = {
         "+0",
-        "-0"
+        "-0",
         "+infinity",
         "-infinity",
         "NaN"
     };
     for (i=0; i<256; i++) buffer[i] = '\0'; 
-    
-    /* May need to change this prompt */
-    printf("Enter the IEE-745 representation: ");
-    scanf("%s", &buffer);
-    
-    if (!in_hex_table(buffer, strlen(buffer)))
-        flag = NAN_SPECIAL;
+   
 
-    decimal_mem.decimal = strtol(buffer, NULL, 16);
+    printf("Enter the IEE-754 representation: ");
+    scanf("%s", buffer);
     
+    if (!in_hex_table(buffer, strlen(buffer))) {
+        printf("%s-%s%s", items[0], items[4], special_cases[4]);
+        return;
+    }
+    decimal_mem.decimal = strtol(buffer, NULL, 16);
+
+    switch (decimal_mem.decimal) {
+        case POSITIVE_INF:
+        case NEGATIVE_INF:
+        case POSITIVE_ZERO:
+        case NEGATIVE_ZERO:
+            break;
+    } 
 
     
 }
 
-
+int is_nan(union d_bits decimal_mem) {
+    if (decimal_mem.decimal != POSITIVE_INF 
+            && decimal_mem.decimal != NEGATIVE_INF
+            && ((decimal_mem.decimal >> 23 == 0x1FF)
+            || decimal_mem.decimal >> 23 == 0xFF)
+            && ((decimal_mem.decimal & 0xFFFFF6) != 0x0)) {
+        return IS_NAN;
+    }
+    return NOT_SPECIAL;
+}
 
 int in_hex_table(char * c, int size) {
     int flag, i,j;
@@ -144,12 +175,19 @@ int in_hex_table(char * c, int size) {
         'F'
     };
     
+    /* Must be a valid 32 bit hex number */
     if (size > 8) return 0;
+
+    /* Check if all hex is valid - Lowercase OK */
     for (flag = i = 0; i < size; i++) {
         for (j = 0; j < 16; j++) {
-            if (byte_table[j] == c[i])
+
+            int is_lower = c[i] >= 97 && c[i] <= 122;
+            if (byte_table[j] == c[i] || 
+                    (is_lower && (byte_table[j] == (c[i] - 32))))
                 flag = 1;
         }
+        /* Break if hex digit not in byte table */
         if (!flag) break;
         if (size - i != 1) flag = 0;
     }
@@ -162,7 +200,7 @@ int in_hex_table(char * c, int size) {
 /* Input handler for menu selections */
 void handle_selection(int selection) {
     if (selection == 1) decimal_to_floating();
-    if (selection == 2) floating_to_decimal();
+    else if (selection == 2) floating_to_decimal();
     else exit_program();
 }
 
