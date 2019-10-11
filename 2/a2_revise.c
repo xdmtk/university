@@ -116,7 +116,7 @@ void write_bits(union f_bits float_mem, struct bit_state * bs) {
 void floating_to_decimal(void) {
     
     union d_bits decimal_mem;
-    int i, flag;
+    int i, special_index = 0;
     char buffer[256];
     char * items[] = {
         _spc_"*** Sign: ",
@@ -142,15 +142,33 @@ void floating_to_decimal(void) {
         printf("%s-%s%s", items[0], items[4], special_cases[4]);
         return;
     }
+   
     decimal_mem.decimal = strtol(buffer, NULL, 16);
-
+    
+    /* Check special cases */
     switch (decimal_mem.decimal) {
         case POSITIVE_INF:
+            special_index = 3;
+            break;
         case NEGATIVE_INF:
+            special_index = 4;
+            break;
         case POSITIVE_ZERO:
+            special_index = 1;
+            break;
         case NEGATIVE_ZERO:
+            special_index = 2;
             break;
     } 
+
+    /* Print special cases output */
+    if ((is_nan(decimal_mem) == IS_NAN) || special_index) {
+        printf("%s%c%s%s", items[0], 
+                special_index == 1 || special_index == 3 ? '+' : '-',
+                items[4], special_index ? special_cases[special_index-1] : 
+                special_cases[4]);
+        return;
+    }
 
     
 }
