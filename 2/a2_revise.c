@@ -116,8 +116,9 @@ void write_bits(union f_bits float_mem, struct bit_state * bs) {
 void floating_to_decimal(void) {
     
     union d_bits decimal_mem;
-    int i, special_index = 0;
-    char buffer[256];
+    int i, unbiased_exp, special_index = 0;
+    float normalized_decimal, decimal;
+    char buffer[256], sign[2] = {'\0', '\0'};
     char * items[] = {
         _spc_"*** Sign: ",
         _spc_"*** Unbiased exponent: ",
@@ -133,32 +134,28 @@ void floating_to_decimal(void) {
         "NaN"
     };
     for (i=0; i<256; i++) buffer[i] = '\0'; 
-   
+    
+  
 
+    /* Prompt and input */
     printf("Enter the IEE-754 representation: ");
     scanf("%s", buffer);
-    
+
+    /* Invalid hex immediately output as NaN */
     if (!in_hex_table(buffer, strlen(buffer))) {
         printf("%s-%s%s", items[0], items[4], special_cases[4]);
         return;
     }
-   
+    
+    /* Parse hex */
     decimal_mem.decimal = strtol(buffer, NULL, 16);
     
     /* Check special cases */
     switch (decimal_mem.decimal) {
-        case POSITIVE_INF:
-            special_index = 3;
-            break;
-        case NEGATIVE_INF:
-            special_index = 4;
-            break;
-        case POSITIVE_ZERO:
-            special_index = 1;
-            break;
-        case NEGATIVE_ZERO:
-            special_index = 2;
-            break;
+        case POSITIVE_INF: special_index = 3; break;
+        case NEGATIVE_INF: special_index = 4; break;
+        case POSITIVE_ZERO: special_index = 1; break;
+        case NEGATIVE_ZERO: special_index = 2; break;
     } 
 
     /* Print special cases output */
@@ -169,8 +166,18 @@ void floating_to_decimal(void) {
                 special_cases[4]);
         return;
     }
-
     
+    /* Print values in normal cases */
+    sign[0] = ((decimal_mem.decimal >> 31) & 0x1) ? '-' : '+';
+    unbiased_exp = ((decimal_mem.decimal >> 23) & 0xFF) - 127;
+    decimal = decimal_mem.float_mem;
+
+    /* TODO: This is wrong. Need to get the mantissa bits and do the 2^-n calculation */
+    normalized_decimal = (float)(decimal_mem.decimal & 0xFFFFF7);
+    
+    printf("%s%s%s%d%s%f%s%f", items[0], sign, items[1], unbiased_exp,
+            items[2], normalized_decimal, items[3], decimal_mem.float_mem);
+
 }
 
 int is_nan(union d_bits decimal_mem) {
