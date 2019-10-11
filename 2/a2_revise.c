@@ -43,6 +43,7 @@ void write_bits(union f_bits float_mem, struct bit_state * bs);
 void floating_to_decimal(void);
 int in_hex_table(char * c, int size);
 int is_nan(union d_bits decimal_mem);
+float calculate_normalized(int mantissa_bits);
 
 /* Menu handling functions */
 void exit_program(void);
@@ -71,7 +72,9 @@ void decimal_to_floating(void) {
         _spc_"*** Sign: ",
         _spc_"*** Biased exponent: ",
         _spc_"*** Mantissa: ",
-        _spc_"*** IEEE HEX: "
+        _spc_"*** IEEE HEX: ",
+        _spc_"*** The IEEE-754 representation is: "
+
     };
     bs.sign[1] = bs.exponent[8] = bs.mantissa[23] = '\0';
     
@@ -85,10 +88,15 @@ void decimal_to_floating(void) {
      */
     write_bits(float_mem, &bs);
     
-    /* Print results */
-    printf("%s%s%s%s%s%s%s%.8x", items[1], bs.sign, items[2],
-            bs.exponent, items[3], bs.mantissa, 
-            items[4], float_mem.decimal_mem);
+    if (float_mem.decimal_mem != 0x0)
+        /* Print results */
+        printf("%s%s%s%s%s%s%s%.8x", items[1], bs.sign, items[2],
+                bs.exponent, items[3], bs.mantissa, 
+                items[4], float_mem.decimal_mem);
+    else 
+        printf("%s%s%s%s%s%s%s%f", items[1], bs.sign, items[2],
+                bs.exponent, items[3], bs.mantissa, 
+                items[5], float_mem.decimal);
 }
 
 
@@ -117,7 +125,7 @@ void floating_to_decimal(void) {
     
     union d_bits decimal_mem;
     int i, unbiased_exp, special_index = 0;
-    float normalized_decimal, decimal;
+    float normalized_decimal; 
     char buffer[256], sign[2] = {'\0', '\0'};
     char * items[] = {
         _spc_"*** Sign: ",
@@ -170,22 +178,32 @@ void floating_to_decimal(void) {
     /* Print values in normal cases */
     sign[0] = ((decimal_mem.decimal >> 31) & 0x1) ? '-' : '+';
     unbiased_exp = ((decimal_mem.decimal >> 23) & 0xFF) - 127;
-    decimal = decimal_mem.float_mem;
 
     /* TODO: This is wrong. Need to get the mantissa bits and do the 2^-n calculation */
-    normalized_decimal = (float)(decimal_mem.decimal & 0xFFFFF7);
+    normalized_decimal = calculate_normalized(decimal_mem.decimal & 0x7FFFFF);
     
     printf("%s%s%s%d%s%f%s%f", items[0], sign, items[1], unbiased_exp,
             items[2], normalized_decimal, items[3], decimal_mem.float_mem);
 
 }
 
+float calculate_normalized(int mantissa_bits){
+    
+    int i;
+    float sum = 0;
+
+    for (i=1; i < 24; i++)
+        sum += ((mantissa_bits >> (23 - i)) & 0x1) ? pow(2, (-1)*i) : 0;
+    return sum+1;
+}
+
+
 int is_nan(union d_bits decimal_mem) {
     if (decimal_mem.decimal != POSITIVE_INF 
             && decimal_mem.decimal != NEGATIVE_INF
             && ((decimal_mem.decimal >> 23 == 0x1FF)
             || decimal_mem.decimal >> 23 == 0xFF)
-            && ((decimal_mem.decimal & 0xFFFFF6) != 0x0)) {
+            && ((decimal_mem.decimal & 0x7FFFFF) != 0x0)) {
         return IS_NAN;
     }
     return NOT_SPECIAL;
@@ -237,7 +255,7 @@ int show_menu(void) {
         _spc_"1) Decimal to IEEE-754 conversion",
         _spc_"2) IEEE-754 to Decimal conversion",
         _spc_"3) Exit",
-        _spc_"Enter Selection"
+        _spc_"Enter Selection: "
     };
     
      
