@@ -4,7 +4,10 @@
 
 #define _spc_ "\n\n"
 
-
+struct state {
+    struct instr ** instructions;
+    int instruction_count;
+};
 
 struct instr {
     int src_one, src_two, dest, wait_cycle;
@@ -14,13 +17,12 @@ struct instr {
 
 /* Menu functions */
 int show_menu(void);
-void exit_program(struct instr **, int);
-void free_prg_mem(struct instr **, int);
-void handle_selection(int, int *, struct instr **);
+void exit_program(struct state *);
+void free_prg_mem(struct state *);
+void handle_selection(int, struct state *); 
 
-/* Input function */
-struct instr ** read_instructions(int *);
-
+/* Read instruction function */
+void read_instructions(struct state *);
 
 
 
@@ -29,60 +31,35 @@ struct instr ** read_instructions(int *);
 
 
 int main(void) {
-
-    struct instr ** instructions;
-    int instructions_read;
-
-    instructions = NULL; 
-
-    while (1) handle_selection(show_menu(), &instructions_read, instructions);
-    return 0;
+    struct state * st = (struct state *) calloc(1,sizeof(struct state *));
+    while (1) handle_selection(show_menu(), st);
 }
 
 
-struct instr **read_instructions(int * instr_read) {
-
-    struct instr **instructions;
-    struct instr current_instruction;
-    int src_one, src_two, dest, ret;
-
-    /* Initialize array of pointers to hold instruction struct's */
-    instructions = (struct instr **) malloc(sizeof(struct instr **));
-
-    for (*instr_read = 1, ret = 0; ret >= 0 ; ++(*instr_read)) {
-
-        /* Print prompt and read input */
-        printf("%d) ", *instr_read);
-        ret = scanf(" r%d=r%d+r%d", &current_instruction.dest, &current_instruction.src_one, 
-            &current_instruction.src_two);
-
-       
-        /* Dynamically expand pointer struct for new instruction entry */
-        instructions = (struct instr **) realloc(instructions, sizeof(struct instr **) * (*instr_read));
-        
-        /* On read success, allocate new entry in pointer struct */
-        instructions[*instr_read-1] = (struct instr *) malloc(sizeof(struct instr *));
-
-        /* Copy newly read data into pointer struct */
-        memcpy(instructions[*instr_read-1], &current_instruction, sizeof(struct instr));
-    }
+void read_instructions(struct state *st) {
     
-    return instructions;
+    int i;
+    
+    /* Get instruction count */
+    printf("Enter number of instructions: ");
+    scanf("%d", &st->instruction_count);
+    
+    /* Allocate memory for instruction pointer array */
+    st->instructions = (struct instr **) malloc(sizeof(struct instr *)*st->instruction_count);
+    
+    /* Read instructions */
+    for (i = 0; i < st->instruction_count; ++i) {
+        printf("%d) ", i+1);
+        scanf("r%d=r%d+r%d", &st->instructions[i]->dest, &st->instructions[i]->src_one, 
+                &st->instructions[i]->src_two);
+    }
 }
-
-
 
 
 /* Input handler for menu selections */
-void handle_selection(int selection, int * instructions_read, struct instr ** instructions) {
-
-    if (selection == 1) {
-        
-        /* Free existing instruction memory if already inputted */
-        if (instructions != NULL) 
-            free_prg_mem(instructions, *instructions_read);
-        instructions = read_instructions(instructions_read);
-    } 
+void handle_selection(int selection, struct state * st) {
+    if (selection == 1) read_instructions(st);
+    else exit_program(st);
 
 }
 
@@ -92,39 +69,34 @@ int show_menu(void) {
     char * items[] = {
         _spc_"Pipelined instruction performance",
         _spc_"1) Enter instructions",
-        _spc_"2) determine when instructions are fetched",
+        _spc_"2) Determine when instructions are fetched",
         _spc_"3) Exit",
         _spc_"Enter Selection: "
     };
     
     /* Output menu choices */ 
-    for (i=0; i<5; i++)
-        printf("%s",items[i]);
+    for (i=0; i<5; i++) printf("%s",items[i]);
     
     /* Get choice selection from input */
-    if (scanf("%d", &input) >= 0)
-        return input;
-
-    return 0;
+    if (scanf("%d", &input) >= 0) return input;
+    else return 0;
 }
 
-void free_prg_mem(struct instr ** instructions, int instructions_read) {
+void free_prg_mem(struct state *st) {
+
     int i;
-
     /* Free up all allocated memory */
-    if (instructions != NULL) {
-        for (i=0; i < instructions_read; i++)
-            free(instructions[i]);
-        free(instructions);
+    if (st->instructions != NULL) {
+        for (i=0; i < st->instruction_count; i++)
+            free(st->instructions[i]);
+        free(st->instructions);
     }
-
+    free(st);
 }
 
-void exit_program(struct instr ** instructions, int instructions_read) {
+void exit_program(struct state *st) {
     
-    if (instructions != NULL)
-        free_prg_mem(instructions, instructions_read);
-
+    free_prg_mem(st);
     printf("\n\n*** Program Terminated Normally");
     exit(0);
 }
