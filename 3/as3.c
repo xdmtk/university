@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -45,12 +46,14 @@ void read_instructions(struct state *st) {
     scanf("%d", &st->instruction_count);
     
     /* Allocate memory for instruction pointer array */
-    st->instructions = (struct instr **) malloc(sizeof(struct instr *)*st->instruction_count);
+    st->instructions = (struct instr **) malloc(sizeof(struct instr **)*st->instruction_count);
     
     /* Read instructions */
     for (i = 0; i < st->instruction_count; ++i) {
+        st->instructions[i] = (struct instr *) malloc(sizeof(struct instr *));
+
         printf("%d) ", i+1);
-        scanf("r%d=r%d+r%d", &st->instructions[i]->dest, &st->instructions[i]->src_one, 
+        scanf(" r%d=r%d+r%d", &st->instructions[i]->dest, &st->instructions[i]->src_one, 
                 &st->instructions[i]->src_two);
     }
 }
