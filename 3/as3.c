@@ -42,10 +42,36 @@ int main(void) {
 
 void analyze_instructions(struct state *st) {
     
-    int i;
+    int i, j, deps_count, stalled;
+    int deps[32], deps_cycle[32];
+
+    for (i = 0; i < 32; ++i) deps[i] = deps_cycle[i] = -1;
+    deps_count = stalled = 0;
    
     /* Iterate through intructions and begin tracking dependencies */
     for (i = 0; i < st->instruction_count; ++i) {
+        
+        /* If either source register of the given instructions is currently awaiting
+         * a result, set the 'stalled' flag
+         */
+        for (j = 0; j < 32; ++j) {
+            if (st->instructions[i]->src_one == deps[j] || st->instructions[i]->src_two == deps[j]) {
+                stalled = 1;
+                break;
+            }
+        }
+
+        /* If the pipeline is stalled, increment the cycle count for every instruction after 
+         * the current instruction in the pipeline
+         */
+        if (stalled) {
+            for (j = i; j < st->instruction_count; ++j)
+                st->instructions[j]->cycle++;
+        }
+
+       // TODO: Start decrementing the cycle count of registers awating results  
+
+
     }
 }
 
@@ -121,7 +147,6 @@ void free_prg_mem(struct state *st) {
             free(st->instructions[i]);
         free(st->instructions);
     }
-    free(st->dependency_list);
     free(st);
 }
 
