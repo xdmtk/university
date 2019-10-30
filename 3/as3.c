@@ -11,7 +11,7 @@ struct state {
 };
 
 struct instr {
-    int src_one, src_two, dest, wait_cycle;
+    int src_one, src_two, dest, cycle;
 };
 
 
@@ -22,11 +22,10 @@ void exit_program(struct state *);
 void free_prg_mem(struct state *);
 void handle_selection(int, struct state *); 
 
-/* Read instruction function */
 void read_instructions(struct state *);
 
 
-
+void analyze_instructions(struct state *);
 
 
 
@@ -37,6 +36,24 @@ int main(void) {
 }
 
 
+
+
+
+
+void analyze_instructions(struct state *st) {
+    
+    int i;
+   
+    /* Iterate through intructions and begin tracking dependencies */
+    for (i = 0; i < st->instruction_count; ++i) {
+    }
+}
+
+
+
+
+
+/* Function to collect instruction data via user input */
 void read_instructions(struct state *st) {
     
     int i;
@@ -50,13 +67,23 @@ void read_instructions(struct state *st) {
     
     /* Read instructions */
     for (i = 0; i < st->instruction_count; ++i) {
+        
+        /* Allocate memory for instruction pointer */
         st->instructions[i] = (struct instr *) malloc(sizeof(struct instr *));
 
+        /* Get register information in format rX=rY+rZ */
         printf("%d) ", i+1);
         scanf(" r%d=r%d+r%d", &st->instructions[i]->dest, &st->instructions[i]->src_one, 
                 &st->instructions[i]->src_two);
+
+        /* Set initial cycle number based on input order */
+        st->instructions[i]->cycle = i+1;
     }
 }
+
+
+
+
 
 
 /* Input handler for menu selections */
@@ -94,6 +121,7 @@ void free_prg_mem(struct state *st) {
             free(st->instructions[i]);
         free(st->instructions);
     }
+    free(st->dependency_list);
     free(st);
 }
 
