@@ -43,9 +43,20 @@ int main(void) {
 void analyze_instructions(struct state *st) {
     
     int i, j, deps_count, stalled;
-    int deps[32], deps_cycle[32];
+    
+    /* List of register numbers that are currently awaiting a result */
+    int deps[32], 
+    
+    /* A mapping of registers to their index with the corresponding amount of 
+     * cycles before the register result is available
+     */
+    deps_cycle[32];
 
+
+    /* Initialize register mappings to -1, for proper indexing of 0-31 registers */
     for (i = 0; i < 32; ++i) deps[i] = deps_cycle[i] = -1;
+
+    /* Initialize the deps[] stack pointer and stall flag to 0 */
     deps_count = stalled = 0;
    
     /* Iterate through intructions and begin tracking dependencies */
@@ -70,6 +81,18 @@ void analyze_instructions(struct state *st) {
         }
 
        // TODO: Start decrementing the cycle count of registers awating results  
+       
+        for (j = 0; j < deps_count; ++j) {
+            if (--deps_cycle[deps[j]] <= 0) {
+                deps_cycle[deps[j]] = -1;
+                deps[j] = -1;
+            }
+        }
+       
+        /* Add current destination register to dependency list */
+       st->instructions[i]->dest = deps[deps_count++];
+
+       
 
 
     }
