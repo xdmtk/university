@@ -244,6 +244,6 @@ void free_prg_mem(struct state *st, int exit) {
 void exit_program(struct state *st) {
     
     free_prg_mem(st, true);
-    printf("\n\n*** Program Terminated Normally");
+    printf("\n\nProgram Terminated Normally");
     exit(0);
 }
