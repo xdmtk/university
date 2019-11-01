@@ -113,9 +113,8 @@ int analyze_instructions(struct state *st) {
             inc_cycles(st, i);
         }
 
-        /* If we are still waiting for a register result, decrement the cycles to go before
-         * the result is resolved */
-        if (stalled) dec_dep_cycles(dep_cycle, dep);
+         /* Decrement all cycle counts of dependencies for each successive cycle */
+        dec_dep_cycles(dep_cycle, dep);
         set_dep(st, dep_cycle, dep, &i, &stalled);
     }
     
@@ -187,21 +186,19 @@ void set_dep(struct state *st, int *dep_cycle, int *dep, int *iter, int *stalled
                 dep[i] = st->instructions[*iter]->dest;
 
                 /* Also set the cycle counter to 3 */
-                dep_cycle[i] = 3;
+                dep_cycle[i] = 2;
+                break;
             }
         }
     }
-/* 
- * Unsure why I needed to count the current dependencies, commenting this out for 
- * now
- *
+    
     for (i = 0; i < 5; ++i)
         dep_count += dep[i] == -1 ? -1 : 0;
-*/ 
     /* If we aren't stalled, or if we are stalled but its the last instruction
      * we can move the instruction iterator forward */
-    if (!(*stalled) || *iter == st->instruction_count)
+    if (!(*stalled) || (*iter == st->instruction_count-1 && !dep_count))
         ++(*iter);
+    *stalled = false;
 }
 
 
