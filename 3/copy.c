@@ -5,11 +5,14 @@
 #define true 1
 #define false 0
 
+/* State struct to pass around function calls, simplifies parameter entry */
 struct state {
     struct instr ** instructions;
     int instruction_count;
 };
 
+/* Instruction struct specifying details about instruction, including
+ * source registers, destination registers, and fetch cycle # */
 struct instr {
     int src_one, src_two, dest, cycle;
 };
@@ -99,22 +102,27 @@ void print_instructions(struct state *st) {
 
 
 int analyze_instructions(struct state *st) {
-   
+    
+    /* Initialization code */
     int i, j, dep_index, dep[5], dep_cycle[5], stalled;
-    i = j = stalled = dep_index = 0; for (;i < 5; ++i) dep[i] = dep_cycle[i] = -1; 
+    i = j = stalled = dep_index = 0; 
+    for (;i < 5; ++i) dep[i] = dep_cycle[i] = -1; 
 
-    /* Iterate through intructions and begin tracking dependencies */
+    /* Iterate through intructions and begin counting dependencies */
     for (i = 0; i < st->instruction_count; ) {
         
         /* Check for dependencies on either source register */
-        if (is_dependency(dep, st->instructions[i]->src_one, st->instructions[i]->src_two) != -1) {
+        if (is_dependency(dep, st->instructions[i]->src_one, st->instructions[i]->src_two)) {
+
+            /* If found, increment all pending instruction fetch cycle # and set the stall flag*/
             stalled = true;
-            /* If found, increment all pending instruction fetch cycle # */
             inc_cycles(st, i);
         }
 
          /* Decrement all cycle counts of dependencies for each successive cycle */
         dec_dep_cycles(dep_cycle, dep);
+
+        /* Set the new depedent register and reset stall flag */
         set_dep(st, dep_cycle, dep, &i, &stalled);
     }
     
@@ -124,7 +132,8 @@ int analyze_instructions(struct state *st) {
 
 
 
-
+/* Helper function to check whether the given source registers are currently 
+ * awaiting a result */
 int is_dependency(int *dep, int src_one, int src_two) {
 
     int i;
@@ -132,10 +141,8 @@ int is_dependency(int *dep, int src_one, int src_two) {
      * registers are a current dependency */
     for (i = 0; i < 5; ++i) 
         if (dep[i] == src_one || dep[i] == src_two)
-
-            /* I forget why, but return the index of the dependency */
-            return i;
-    return -1;
+            return true;
+    return false;
 }
 
 /* Helper function to increment the fetch cycle # of all instructions
@@ -147,8 +154,8 @@ void inc_cycles(struct state *st, int index) {
         st->instructions[index]->cycle += 1;
 }
 
-/* Helper function to decrement the cycles to wait to remove the dependency
- * from the dependency list */
+/* Helper function to decrement the stall cycles needed to remove the dependent
+ * register from the dependency list */
 void dec_dep_cycles(int *dep_cycle, int *dep) {
     
     int i;
@@ -156,48 +163,52 @@ void dec_dep_cycles(int *dep_cycle, int *dep) {
     /* Walk the dependency cycle list */
     for (i = 0; i < 5; ++i) {
         
-
+        /* Decrement the wait cycles for depedent registers if the result
+         * will be non-zero */
         if (dep_cycle[i]-1 > 0)
             --dep_cycle[i];
-        /* If the dependency count will be 0 on the next decrement,
-         * change both the dependency list value 
-         * and depedency cycle count to -1, the 'null' value in this case */
+        /* If the dependent register will have 0 cycles remaining
+         * set to -1 ( arbitrary NULL value ) */
         else {
             dep_cycle[i] = -1;
             dep[i] = -1;
         }
     }
-
-
 }
 
 /* Helper function to add the next dependency to the list of depedencies 
  * and increments the instruction iterator when there is no stall present */
 void set_dep(struct state *st, int *dep_cycle, int *dep, int *iter, int *stalled) {
 
-    int i, dep_count = 5;
+    int i, dep_count;
 
-    /* If there is no stall, walk the dependency list and look for the first
-     * vacant spot to insert the new dependency ( the given instruction's source 
-     * register ) */
+    /* If there is no stall,*/
     if (!(*stalled)) {
+
+    /* Walk the dependency list and look for the first vacant spot (marked by -1) */
         for (i = 0; i < 5; ++i)  {
             if (dep[i] == -1) {
+
+                /* Set the destination register as a dependency */
                 dep[i] = st->instructions[*iter]->dest;
 
-                /* Also set the cycle counter to 3 */
+                /* Also set the wait cycle counter to 2 */
                 dep_cycle[i] = 2;
                 break;
             }
         }
     }
     
-    for (i = 0; i < 5; ++i)
+    /* Walk the depedency list and count current depedencies by checking for -1 */
+    for (i = 0, dep_count = 5; i < 5; ++i)
         dep_count += dep[i] == -1 ? -1 : 0;
+
     /* If we aren't stalled, or if we are stalled but its the last instruction
      * we can move the instruction iterator forward */
     if (!(*stalled) || (*iter == st->instruction_count-1 && !dep_count))
         ++(*iter);
+
+    /* Reset the stall flag */
     *stalled = false;
 }
 
