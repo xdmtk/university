@@ -27,7 +27,9 @@ void print_instructions(struct state *);
 
 /* Helper functions */
 void inc_cycles(struct state *, int);
-int set_dep(struct state *, int *, int *);
+void set_dep(struct state *, int *, int *, int *, int *);
+int is_dependency(int *, int, int);
+void dec_dep_cycles(int *, int *);
 
 
 
@@ -98,25 +100,23 @@ void print_instructions(struct state *st) {
 
 int analyze_instructions(struct state *st) {
    
-    int i, j, dep, dep_cycle, stalled;
-    i = j = stalled = dep_cycle = 0; dep  = -1;
+    int i, j, dep_index, dep[5], dep_cycle[5], stalled;
+    i = j = stalled = dep_index = 0; for (;i < 5; ++i) dep[i] = dep_cycle[i] = -1; 
 
     /* Iterate through intructions and begin tracking dependencies */
     for (i = 0; i < st->instruction_count; ) {
         
         /* Check for dependencies on either source register */
-        if (st->instructions[i]->src_one == dep || st->instructions[i]->src_two == dep)
-
+        if (is_dependency(dep, st->instructions[i]->src_one, st->instructions[i]->src_two) != -1) {
+            stalled = true;
             /* If found, increment all pending instruction fetch cycle # */
             inc_cycles(st, i);
+        }
 
         /* If we are still waiting for a register result, decrement the cycles to go before
          * the result is resolved */
-        if (dep_cycle)  --dep_cycle;
-
-        /* Otherwise set the next destination register as the new dependency, and increment the
-         * instruction iterator 'i' */
-        else set_dep(st, &dep_cycle, &i);
+        if (stalled) dec_dep_cycles(dep_cycle, dep);
+        set_dep(st, dep_cycle, dep, &i, &stalled);
     }
     
     /* Return total cycles by adding 4 to last instruction fetch cycle # */
@@ -126,22 +126,82 @@ int analyze_instructions(struct state *st) {
 
 
 
+int is_dependency(int *dep, int src_one, int src_two) {
+
+    int i;
+    /* Walk through the dependency list to see whether the given source
+     * registers are a current dependency */
+    for (i = 0; i < 5; ++i) 
+        if (dep[i] == src_one || dep[i] == src_two)
+
+            /* I forget why, but return the index of the dependency */
+            return i;
+    return -1;
+}
 
 /* Helper function to increment the fetch cycle # of all instructions
  * after the specified index */
 void inc_cycles(struct state *st, int index) {
-
+    
+    /* Walk the instructions and increment the cycle # for each */
     for (; index < st->instruction_count; ++index)
         st->instructions[index]->cycle += 1;
 }
 
-/* Helper function to reset the dependency cycle count, increment the instruction
- * iterator, and set the next dependent register */
-int set_dep(struct state *st, int * dep_cycle, int * iter) {
+/* Helper function to decrement the cycles to wait to remove the dependency
+ * from the dependency list */
+void dec_dep_cycles(int *dep_cycle, int *dep) {
+    
+    int i;
 
-    *dep_cycle = 1;
-    ++(*iter);
-    return st->instructions[(*iter)-1]->dest;
+    /* Walk the dependency cycle list */
+    for (i = 0; i < 5; ++i) {
+        
+
+        if (dep_cycle[i]-1 > 0)
+            --dep_cycle[i];
+        /* If the dependency count will be 0 on the next decrement,
+         * change both the dependency list value 
+         * and depedency cycle count to -1, the 'null' value in this case */
+        else {
+            dep_cycle[i] = -1;
+            dep[i] = -1;
+        }
+    }
+
+
+}
+
+/* Helper function to add the next dependency to the list of depedencies 
+ * and increments the instruction iterator when there is no stall present */
+void set_dep(struct state *st, int *dep_cycle, int *dep, int *iter, int *stalled) {
+
+    int i, dep_count = 5;
+
+    /* If there is no stall, walk the dependency list and look for the first
+     * vacant spot to insert the new dependency ( the given instruction's source 
+     * register ) */
+    if (!(*stalled)) {
+        for (i = 0; i < 5; ++i)  {
+            if (dep[i] == -1) {
+                dep[i] = st->instructions[*iter]->dest;
+
+                /* Also set the cycle counter to 3 */
+                dep_cycle[i] = 3;
+            }
+        }
+    }
+/* 
+ * Unsure why I needed to count the current dependencies, commenting this out for 
+ * now
+ *
+    for (i = 0; i < 5; ++i)
+        dep_count += dep[i] == -1 ? -1 : 0;
+*/ 
+    /* If we aren't stalled, or if we are stalled but its the last instruction
+     * we can move the instruction iterator forward */
+    if (!(*stalled) || *iter == st->instruction_count)
+        ++(*iter);
 }
 
 
