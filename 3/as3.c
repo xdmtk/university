@@ -1,9 +1,9 @@
 #include <stdio.h>
-
 #include <stdlib.h>
 #include <string.h>
-
 #define _spc_ "\n\n"
+#define true 1
+#define false 0
 
 struct state {
     struct instr ** instructions;
@@ -14,30 +14,41 @@ struct instr {
     int src_one, src_two, dest, cycle;
 };
 
-
-
 /* Menu functions */
 int show_menu(void);
 void exit_program(struct state *);
-void free_prg_mem(struct state *);
+void free_prg_mem(struct state *, int);
 void handle_selection(int, struct state *); 
 
+/* Core functions */
 void read_instructions(struct state *);
-
-
 void analyze_instructions(struct state *);
+void print_instructions(struct state *);
+
+int is_dependency(int *deps, int reg);
 
 
 
 
 int main(void) {
+
     struct state * st = (struct state *) calloc(1,sizeof(struct state *));
     while (1) handle_selection(show_menu(), st);
 }
 
 
+void print_instructions(struct state *st) {
+    
+    int i,j;
+    analyze_instructions(st);
 
+    for (i = 0; i < st->instruction_count; ++i) {
 
+        printf("Instruction %d Fetched at Cycle %d"_spc_, i+1, st->instructions[i]->cycle);
+        for (j = 0; j < st->instructions[i]->cycle - 1; j++) printf("\t");
+        printf("IF\tID\tEX\tMM\tWB"_spc_);
+    }
+}
 
 
 void analyze_instructions(struct state *st) {
@@ -60,13 +71,14 @@ void analyze_instructions(struct state *st) {
     deps_count = stalled = 0;
    
     /* Iterate through intructions and begin tracking dependencies */
-    for (i = 0; i < st->instruction_count; ++i) {
+    for (i = 0; i < st->instruction_count; ) {
         
         /* If either source register of the given instructions is currently awaiting
          * a result, set the 'stalled' flag
          */
         for (j = 0; j < 32; ++j) {
-            if (st->instructions[i]->src_one == deps[j] || st->instructions[i]->src_two == deps[j]) {
+            if (is_dependency(deps, st->instructions[i]->src_one) || 
+                    is_dependency(deps, st->instructions[i]->src_two)) {
                 stalled = 1;
                 break;
             }
@@ -80,21 +92,30 @@ void analyze_instructions(struct state *st) {
                 st->instructions[j]->cycle++;
             stalled = !stalled;
         }
-
-       // TODO: Start decrementing the cycle count of registers awating results  
        
         for (j = 0; j < deps_count; ++j) {
             if (--deps_cycle[deps[j]] <= 0) {
-                deps_cycle[deps[j]] = -1;
                 deps[j] = -1;
+                if (!--deps_count) return;
             }
         }
        
         /* Add current destination register to dependency list */
-       deps[deps_count++] = st->instructions[i]->dest;
+       if (i < st->instruction_count-1 && !is_dependency(deps,st->instructions[i]->dest)) {
+           deps[deps_count++] = st->instructions[i]->dest;
+           deps_cycle[st->instructions[i]->dest] = 2;
+       }
 
-       deps_cycle[st->instructions[i]->dest] = 3;
+       if (i < st->instruction_count-1) ++i;
     }
+}
+
+
+int is_dependency(int *deps, int reg) {
+    int i;
+    for (i = 0; i < 32; ++i) 
+        if (reg == deps[i]) return true;
+    return false;
 }
 
 
@@ -106,6 +127,8 @@ void read_instructions(struct state *st) {
     
     int i;
     
+    free_prg_mem(st, false);
+
     /* Get instruction count */
     printf("Enter number of instructions: ");
     scanf("%d", &st->instruction_count);
@@ -138,7 +161,7 @@ void read_instructions(struct state *st) {
 void handle_selection(int selection, struct state * st) {
 
     if (selection == 1) read_instructions(st);
-    else if (selection == 2) analyze_instructions(st);
+    else if (selection == 2) print_instructions(st);
     else exit_program(st);
 }
 
@@ -161,7 +184,7 @@ int show_menu(void) {
     else return 0;
 }
 
-void free_prg_mem(struct state *st) {
+void free_prg_mem(struct state *st, int exit) {
 
     int i;
     /* Free up all allocated memory */
@@ -170,12 +193,12 @@ void free_prg_mem(struct state *st) {
             free(st->instructions[i]);
         free(st->instructions);
     }
-    free(st);
+    if (exit) free(st);
 }
 
 void exit_program(struct state *st) {
     
-    free_prg_mem(st);
+    free_prg_mem(st, true);
     printf("\n\n*** Program Terminated Normally");
     exit(0);
 }
