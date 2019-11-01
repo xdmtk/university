@@ -78,6 +78,7 @@ void analyze_instructions(struct state *st) {
         if (stalled) {
             for (j = i; j < st->instruction_count; ++j)
                 st->instructions[j]->cycle++;
+            stalled = !stalled;
         }
 
        // TODO: Start decrementing the cycle count of registers awating results  
@@ -90,11 +91,9 @@ void analyze_instructions(struct state *st) {
         }
        
         /* Add current destination register to dependency list */
-       st->instructions[i]->dest = deps[deps_count++];
+       deps[deps_count++] = st->instructions[i]->dest;
 
-       
-
-
+       deps_cycle[st->instructions[i]->dest] = 3;
     }
 }
 
@@ -137,9 +136,10 @@ void read_instructions(struct state *st) {
 
 /* Input handler for menu selections */
 void handle_selection(int selection, struct state * st) {
-    if (selection == 1) read_instructions(st);
-    else exit_program(st);
 
+    if (selection == 1) read_instructions(st);
+    else if (selection == 2) analyze_instructions(st);
+    else exit_program(st);
 }
 
 int show_menu(void) {
