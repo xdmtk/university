@@ -5,11 +5,21 @@ class ArraySorts {
 
     public static void main(String[] args) {
         int a[] = UnitTests.generateRandomDataSet(100, 100);
-        insertionSortIterative(a,a.length);
+        insertionSort(a,a.length);
+        //insertionSortIterative(a,a.length);
         UnitTests.prettyPrintArray(a,a.length);
     }
 
+    public static void insertionSort(int a[], int n) {
+        insertionSortRecursive(a, n);
+    }
 
+    /**
+     * Iterative approach to Insertion Sort, requires no driver method
+     *
+     * @param a - Array to operate on
+     * @param n - Length of array
+     */
     public static void insertionSortIterative(int a[], int n) {
 
         /* Base case  - Do nothing */
@@ -23,9 +33,36 @@ class ArraySorts {
                 /* Previous element bigger? Initiate shift */
                 if (a[i] < a[i-1]) Helpers.shift(a, i, 0);
     }
-    public static void insertionSort(int a[], int n) {
 
+    /**
+     * Recursive approach to Insertion Sort. Makes recursive calls for
+     * 'n' slices of a[], each with a length of 'n-1' where 'n' is the length
+     * of the last slice on the call stack
+     *
+     * @param a - Array to operate on
+     * @param n - Length of array slice
+     */
+    private static void insertionSortRecursive(int a[], int n) {
+
+        /* Base case  - Do nothing */
+        if (n <= 1) {}
+
+        /* Otherwise begin recursive Insertion Sort */
+        else {
+
+            /* Make recursive call to insertion sort on 1 less than current 'n' slice of a[] */
+            insertionSortRecursive(a, n - 1);
+
+            /* Now iterate in reverse and shift, since the preceding slice of a[0] -> a[n-1]
+             * will be already sorted */
+            for (int i = n - 1; i > 1; --i)
+
+                /* Previous element bigger? Initiate shift */
+                if (a[i] < a[i - 1]) Helpers.shift(a, i, 0);
+        }
     }
+
+
     public static void QuickSort1(int a[], int n, int cutoff) {
 
     }
@@ -68,9 +105,9 @@ class Helpers {
      * @param second - Second value
      */
     static void swap(int a[], int first, int second) {
-        a[first] ^= a[second];
+        a[first]  ^= a[second];
         a[second] ^= a[first];
-        a[first] ^= a[second];
+        a[first]  ^= a[second];
     }
 
     /**
