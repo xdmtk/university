@@ -1,6 +1,7 @@
 import com.sun.xml.internal.bind.v2.model.annotation.Quick;
 import sun.applet.AppletResourceLoader;
 
+import javax.swing.*;
 import java.math.*;
 import java.util.Arrays;
 import java.util.Random;
@@ -11,9 +12,7 @@ class ArraySorts {
 
 
     public static void main(String[] args) {
-        int a[] = UnitTests.generateRandomDataSet(1000, 100);
-        UnitTests.prettyPrintArray(a, a.length);
-
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 100, 100 );
     }
 
 
@@ -82,7 +81,7 @@ class ArraySorts {
 
 
     public static void QuickSort1(int a[], int n, int cutoff) {
-        QuickSort1(a, new pair(0,a.length-1), 10);
+        QuickSort1(a, new pair(0,n), cutoff);
     }
 
     private static void QuickSort1(int a[], pair pivotIndex, int cutoff) {
@@ -217,6 +216,10 @@ class Helpers {
 
 class UnitTests {
 
+    public static enum SortMethod {
+            QuickSort1
+    };
+
     public static int[] generateRandomDataSet(int n, int lim) {
         int a[] = new int[n];
         Random randomGen = new Random();
@@ -233,4 +236,23 @@ class UnitTests {
         }
     }
 
+    public static void execSort(SortMethod sortMethod, int n, int lim) {
+
+        int a[];
+        double begin, end;
+        String method;
+
+        method = null; begin = end = 0;
+         a = UnitTests.generateRandomDataSet(n, lim);
+        switch (sortMethod) {
+            case QuickSort1:
+                method = "QuickSort1";
+                begin = System.nanoTime();
+                ArraySorts.QuickSort1(a,n, 10);
+                end = System.nanoTime();
+                break;
+        }
+        UnitTests.prettyPrintArray(a,a.length);
+        System.out.println("Code execution time for \"" + method + "\": " + (end-begin) + "ns");
+    }
 }
