@@ -1,13 +1,19 @@
+import com.sun.xml.internal.bind.v2.model.annotation.Quick;
+import sun.applet.AppletResourceLoader;
+
 import java.math.*;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.Callable;
 
 class ArraySorts {
     public static boolean debug = true;
 
 
     public static void main(String[] args) {
-        int a[] = UnitTests.generateRandomDataSet(2, 100);
-        partitionOutsideIn(a,0,a.length-1);
+        int a[] = UnitTests.generateRandomDataSet(1000, 100);
+        UnitTests.prettyPrintArray(a, a.length);
+
     }
 
 
@@ -20,7 +26,7 @@ class ArraySorts {
      * @param n - Length of array
      */
     public static void insertionSort(int a[], int n) {
-        insertionSortRecursive(a, n);
+        insertionSortRecursive(a,0,n);
     }
 
     /**
@@ -31,7 +37,7 @@ class ArraySorts {
      * @param a - Array to operate on
      * @param n - Length of array slice
      */
-    private static void insertionSortRecursive(int a[], int n) {
+    private static void insertionSortRecursive(int a[], int begin, int n) {
 
         /* Base case  - Do nothing */
         if (n <= 1) {}
@@ -40,14 +46,14 @@ class ArraySorts {
         else {
 
             /* Make recursive call to insertion sort on 1 less than current 'n' slice of a[] */
-            insertionSortRecursive(a, n - 1);
+            insertionSortRecursive(a, begin, n - 1);
 
             /* Now iterate in reverse and shift, since the preceding slice of a[0] -> a[n-1]
              * will be already sorted */
-            for (int i = n - 1; i > 1; --i)
+            for (int i = n - 1; i > begin; --i)
 
                 /* Previous element bigger? Initiate shift */
-                if (a[i] < a[i - 1]) Helpers.shift(a, i, 0);
+                if (a[i] < a[i - 1]) Helpers.shift(a, i, begin);
         }
     }
 
@@ -57,7 +63,7 @@ class ArraySorts {
      * @param a - Array to operate on
      * @param n - Length of array
      */
-    public static void insertionSortIterative(int a[], int n) {
+    public static void insertionSortIterative(int a[], int begin, int n) {
 
         /* Base case  - Do nothing */
         if (n <= 1) {}
@@ -65,10 +71,10 @@ class ArraySorts {
         /* Otherwise begin iterative Insertion Sort */
         else
             /* Begin at element 1, compare with previous element */
-            for (int i = 1; i < n; ++i)
+            for (int i = begin+1; i < n; ++i)
 
                 /* Previous element bigger? Initiate shift */
-                if (a[i] < a[i-1]) Helpers.shift(a, i, 0);
+                if (a[i] < a[i-1]) Helpers.shift(a, i, begin);
     }
 
 
@@ -76,9 +82,17 @@ class ArraySorts {
 
 
     public static void QuickSort1(int a[], int n, int cutoff) {
-
+        QuickSort1(a, new pair(0,a.length-1), 10);
     }
 
+    private static void QuickSort1(int a[], pair pivotIndex, int cutoff) {
+        int[] aTemp;
+        if (pivotIndex.getRight() - pivotIndex.getLeft() < 10) {
+            insertionSortIterative(a,pivotIndex.getLeft(), pivotIndex.getRight());
+        }
+        else  {
+        }
+    }
 
     /**
      * Outside-in partitioning function. Random pivot is chosen, and left/right pointers
@@ -92,7 +106,7 @@ class ArraySorts {
      * @return - pair - New pair of the modified left/right indices, with 'right' as the
      * outer bound of the left partition, and 'left' as the beginning index for the right partition
      */
-    public static pair partitionOutsideIn(int a[], int left, int right)  {
+    private static pair partitionOutsideIn(int a[], int left, int right)  {
 
         int pivot;
         Random randomGen;
@@ -165,8 +179,8 @@ class Helpers {
      * against each other repeatedly to swap values
      *
      * @param a - Array to operate on
-     * @param first - First value
-     * @param second - Second value
+     * @param first - First index value of a[]
+     * @param second - Second index value value of a[]
      */
     static void swap(int a[], int first, int second) {
         if (a[first] != a[second]) {
@@ -218,4 +232,5 @@ class UnitTests {
             System.out.print("\n");
         }
     }
+
 }
