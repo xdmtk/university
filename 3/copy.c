@@ -85,12 +85,13 @@ void print_instructions(struct state *st) {
 
     /* Calculate cycle count and instruction cycle # */
     total_cycles = analyze_instructions(st);
+    /* Print cycle # per instruction */
+    printf("Total number of cycles: %d"_spc_, total_cycles);
+
     for (i = 0; i < st->instruction_count; ++i) {
         
-        /* Print cycle # per instruction */
-        printf("Total number of cycles: %d"_spc_
-                "Instruction %d Fetched at Cycle %d"_spc_, 
-                total_cycles, i+1, st->instructions[i]->cycle);
+                printf("Instruction %d Fetched at Cycle %d"_spc_, 
+                    i+1, st->instructions[i]->cycle);
 
         /* Insert tabs corresponding to fetch cycle */
         for (j = 0; j < st->instructions[i]->cycle - 1; j++) printf("\t");
