@@ -70,7 +70,7 @@ void read_instructions(struct state *st) {
 
         /* Get register information in format rX=rY+rZ */
         printf("%d) ", i+1);
-        scanf(" %c%d=%c%d+%c%d", &a, &st->instructions[i]->dest, &b.
+        scanf(" %c%d=%c%d+%c%d", &a, &st->instructions[i]->dest, &b,
                 &st->instructions[i]->src_one, &c,
                 &st->instructions[i]->src_two);
 
