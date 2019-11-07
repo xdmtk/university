@@ -5,11 +5,14 @@
 #define true 1
 #define false 0
 
+/* State struct to pass around function calls, simplifies parameter entry */
 struct state {
     struct instr ** instructions;
     int instruction_count;
 };
 
+/* Instruction struct specifying details about instruction, including
+ * source registers, destination registers, and fetch cycle # */
 struct instr {
     int src_one, src_two, dest, cycle;
 };
@@ -22,10 +25,15 @@ void handle_selection(int, struct state *);
 
 /* Core functions */
 void read_instructions(struct state *);
-void analyze_instructions(struct state *);
+int analyze_instructions(struct state *);
 void print_instructions(struct state *);
 
-int is_dependency(int *deps, int reg);
+/* Helper functions */
+void inc_cycles(struct state *, int);
+void set_dep(struct state *, int *, int *, int *, int *);
+int is_dependency(int *, int, int);
+void dec_dep_cycles(int *, int *);
+
 
 
 
@@ -37,88 +45,6 @@ int main(void) {
 }
 
 
-void print_instructions(struct state *st) {
-    
-    int i,j;
-    analyze_instructions(st);
-
-    for (i = 0; i < st->instruction_count; ++i) {
-
-        printf("Instruction %d Fetched at Cycle %d"_spc_, i+1, st->instructions[i]->cycle);
-        for (j = 0; j < st->instructions[i]->cycle - 1; j++) printf("\t");
-        printf("IF\tID\tEX\tMM\tWB"_spc_);
-    }
-}
-
-
-void analyze_instructions(struct state *st) {
-    
-    int i, j, deps_count, stalled;
-    
-    /* List of register numbers that are currently awaiting a result */
-    int deps[32], 
-    
-    /* A mapping of registers to their index with the corresponding amount of 
-     * cycles before the register result is available
-     */
-    deps_cycle[32];
-
-
-    /* Initialize register mappings to -1, for proper indexing of 0-31 registers */
-    for (i = 0; i < 32; ++i) deps[i] = deps_cycle[i] = -1;
-
-    /* Initialize the deps[] stack pointer and stall flag to 0 */
-    deps_count = stalled = 0;
-   
-    /* Iterate through intructions and begin tracking dependencies */
-    for (i = 0; i < st->instruction_count; ) {
-        
-        /* If either source register of the given instructions is currently awaiting
-         * a result, set the 'stalled' flag
-         */
-        for (j = 0; j < 32; ++j) {
-            if (is_dependency(deps, st->instructions[i]->src_one) || 
-                    is_dependency(deps, st->instructions[i]->src_two)) {
-                stalled = 1;
-                break;
-            }
-        }
-
-        /* If the pipeline is stalled, increment the cycle count for every instruction after 
-         * the current instruction in the pipeline
-         */
-        if (stalled) {
-            for (j = i; j < st->instruction_count; ++j)
-                st->instructions[j]->cycle++;
-            stalled = !stalled;
-        }
-       
-        for (j = 0; j < deps_count; ++j) {
-            if (--deps_cycle[deps[j]] <= 0) {
-                deps[j] = -1;
-                if (!--deps_count) return;
-            }
-        }
-       
-        /* Add current destination register to dependency list */
-       if (i < st->instruction_count-1 && !is_dependency(deps,st->instructions[i]->dest)) {
-           deps[deps_count++] = st->instructions[i]->dest;
-           deps_cycle[st->instructions[i]->dest] = 2;
-       }
-
-       if (i < st->instruction_count-1) ++i;
-    }
-}
-
-
-int is_dependency(int *deps, int reg) {
-    int i;
-    for (i = 0; i < 32; ++i) 
-        if (reg == deps[i]) return true;
-    return false;
-}
-
-
 
 
 
@@ -126,7 +52,6 @@ int is_dependency(int *deps, int reg) {
 void read_instructions(struct state *st) {
     
     int i;
-    
     free_prg_mem(st, false);
 
     /* Get instruction count */
@@ -144,7 +69,8 @@ void read_instructions(struct state *st) {
 
         /* Get register information in format rX=rY+rZ */
         printf("%d) ", i+1);
-        scanf(" r%d=r%d+r%d", &st->instructions[i]->dest, &st->instructions[i]->src_one, 
+        scanf(" r%d=r%d+r%d", &st->instructions[i]->dest, 
+                &st->instructions[i]->src_one, 
                 &st->instructions[i]->src_two);
 
         /* Set initial cycle number based on input order */
@@ -152,6 +78,140 @@ void read_instructions(struct state *st) {
     }
 }
 
+/* Function to print instructions and cycle count */
+void print_instructions(struct state *st) {
+    
+    int i,j, total_cycles;
+
+    /* Calculate cycle count and instruction cycle # */
+    total_cycles = analyze_instructions(st);
+    /* Print cycle # per instruction */
+    printf("Total number of cycles: %d"_spc_, total_cycles);
+
+    for (i = 0; i < st->instruction_count; ++i) {
+        
+                printf("Instruction %d Fetched at Cycle %d"_spc_, 
+                    i+1, st->instructions[i]->cycle);
+
+        /* Insert tabs corresponding to fetch cycle */
+        for (j = 0; j < st->instructions[i]->cycle - 1; j++) printf("\t");
+
+        /* Print instruction cycle operations */
+        printf("IF\tID\tEX\tMM\tWB"_spc_);
+    }
+}
+
+
+int analyze_instructions(struct state *st) {
+    
+    /* Initialization code */
+    int i, j, dep_index, dep[5], dep_cycle[5], stalled;
+    i = j = stalled = dep_index = 0; 
+    for (;i < 5; ++i) dep[i] = dep_cycle[i] = -1; 
+
+    /* Iterate through intructions and begin counting dependencies */
+    for (i = 0; i < st->instruction_count; ) {
+        
+        /* Check for dependencies on either source register */
+        if (is_dependency(dep, st->instructions[i]->src_one, st->instructions[i]->src_two)) {
+
+            /* If found, increment all pending instruction fetch cycle # and set the stall flag*/
+            stalled = true;
+            inc_cycles(st, i);
+        }
+
+         /* Decrement all cycle counts of dependencies for each successive cycle */
+        dec_dep_cycles(dep_cycle, dep);
+
+        /* Set the new depedent register and reset stall flag */
+        set_dep(st, dep_cycle, dep, &i, &stalled);
+    }
+    
+    /* Return total cycles by adding 4 to last instruction fetch cycle # */
+    return st->instructions[i-1]->cycle+4;
+}
+
+
+
+/* Helper function to check whether the given source registers are currently 
+ * awaiting a result */
+int is_dependency(int *dep, int src_one, int src_two) {
+
+    int i;
+    /* Walk through the dependency list to see whether the given source
+     * registers are a current dependency */
+    for (i = 0; i < 5; ++i) 
+        if (dep[i] == src_one || dep[i] == src_two)
+            return true;
+    return false;
+}
+
+/* Helper function to increment the fetch cycle # of all instructions
+ * after the specified index */
+void inc_cycles(struct state *st, int index) {
+    
+    /* Walk the instructions and increment the cycle # for each */
+    for (; index < st->instruction_count; ++index)
+        st->instructions[index]->cycle += 1;
+}
+
+/* Helper function to decrement the stall cycles needed to remove the dependent
+ * register from the dependency list */
+void dec_dep_cycles(int *dep_cycle, int *dep) {
+    
+    int i;
+
+    /* Walk the dependency cycle list */
+    for (i = 0; i < 5; ++i) {
+        
+        /* Decrement the wait cycles for depedent registers if the result
+         * will be non-zero */
+        if (dep_cycle[i]-1 > 0)
+            --dep_cycle[i];
+        /* If the dependent register will have 0 cycles remaining
+         * set to -1 ( arbitrary NULL value ) */
+        else {
+            dep_cycle[i] = -1;
+            dep[i] = -1;
+        }
+    }
+}
+
+/* Helper function to add the next dependency to the list of depedencies 
+ * and increments the instruction iterator when there is no stall present */
+void set_dep(struct state *st, int *dep_cycle, int *dep, int *iter, int *stalled) {
+
+    int i, dep_count;
+
+    /* If there is no stall,*/
+    if (!(*stalled)) {
+
+    /* Walk the dependency list and look for the first vacant spot (marked by -1) */
+        for (i = 0; i < 5; ++i)  {
+            if (dep[i] == -1) {
+
+                /* Set the destination register as a dependency */
+                dep[i] = st->instructions[*iter]->dest;
+
+                /* Also set the wait cycle counter to 2 */
+                dep_cycle[i] = 2;
+                break;
+            }
+        }
+    }
+    
+    /* Walk the depedency list and count current depedencies by checking for -1 */
+    for (i = 0, dep_count = 5; i < 5; ++i)
+        dep_count += dep[i] == -1 ? -1 : 0;
+
+    /* If we aren't stalled, or if we are stalled but its the last instruction
+     * we can move the instruction iterator forward */
+    if (!(*stalled) || (*iter == st->instruction_count-1 && !dep_count))
+        ++(*iter);
+
+    /* Reset the stall flag */
+    *stalled = false;
+}
 
 
 
@@ -169,10 +229,8 @@ int show_menu(void) {
     
     int input, i;
     char * items[] = {
-        _spc_"Pipelined instruction performance",
-        _spc_"1) Enter instructions",
-        _spc_"2) Determine when instructions are fetched",
-        _spc_"3) Exit",
+        _spc_"Pipelined instruction performance", _spc_"1) Enter instructions",
+        _spc_"2) Determine when instructions are fetched", _spc_"3) Exit",
         _spc_"Enter Selection: "
     };
     
@@ -189,8 +247,7 @@ void free_prg_mem(struct state *st, int exit) {
     int i;
     /* Free up all allocated memory */
     if (st->instructions != NULL) {
-        for (i=0; i < st->instruction_count; i++)
-            free(st->instructions[i]);
+        for (i=0; i < st->instruction_count; i++) free(st->instructions[i]);
         free(st->instructions);
     }
     if (exit) free(st);
@@ -199,8 +256,6 @@ void free_prg_mem(struct state *st, int exit) {
 void exit_program(struct state *st) {
     
     free_prg_mem(st, true);
-    printf("\n\n*** Program Terminated Normally");
+    printf("\n\nProgram Terminated Normally");
     exit(0);
 }
-
-
