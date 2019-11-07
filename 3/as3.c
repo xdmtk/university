@@ -52,6 +52,7 @@ int main(void) {
 void read_instructions(struct state *st) {
     
     int i;
+    char a,b,c;
     free_prg_mem(st, false);
 
     /* Get instruction count */
@@ -69,8 +70,8 @@ void read_instructions(struct state *st) {
 
         /* Get register information in format rX=rY+rZ */
         printf("%d) ", i+1);
-        scanf(" r%d=r%d+r%d", &st->instructions[i]->dest, 
-                &st->instructions[i]->src_one, 
+        scanf(" %c%d=%c%d+%c%d", &a, &st->instructions[i]->dest, &b.
+                &st->instructions[i]->src_one, &c,
                 &st->instructions[i]->src_two);
 
         /* Set initial cycle number based on input order */
@@ -123,7 +124,7 @@ int analyze_instructions(struct state *st) {
          /* Decrement all cycle counts of dependencies for each successive cycle */
         dec_dep_cycles(dep_cycle, dep);
 
-        /* Set the new depedent register and reset stall flag */
+        /* Set the new dependent register and reset stall flag */
         set_dep(st, dep_cycle, dep, &i, &stalled);
     }
     
