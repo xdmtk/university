@@ -1,17 +1,13 @@
-import com.sun.xml.internal.bind.v2.model.annotation.Quick;
-import sun.applet.AppletResourceLoader;
 
 import javax.swing.*;
 import java.math.*;
-import java.util.Arrays;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
 class ArraySorts {
-    public static boolean debug = true;
+    public static boolean debug = false;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 100, 100 );
     }
 
@@ -70,7 +66,7 @@ class ArraySorts {
         /* Otherwise begin iterative Insertion Sort */
         else
             /* Begin at element 1, compare with previous element */
-            for (int i = begin+1; i < n; ++i)
+            for (int i = begin+1, x = 0; x < n-1; ++i, ++x)
 
                 /* Previous element bigger? Initiate shift */
                 if (a[i] < a[i-1]) Helpers.shift(a, i, begin);
@@ -79,17 +75,23 @@ class ArraySorts {
 
 
 
-
+    /** QuickSort1 Driver */
     public static void QuickSort1(int a[], int n, int cutoff) {
-        QuickSort1(a, new pair(0,n), cutoff);
+        QuickSort1(a, 0, n-1, cutoff);
     }
 
-    private static void QuickSort1(int a[], pair pivotIndex, int cutoff) {
+    /** Quicksort1 recursive method */
+    private static void QuickSort1(int a[], int left, int right, int cutoff) {
+
         int[] aTemp;
-        if (pivotIndex.getRight() - pivotIndex.getLeft() < 10) {
-            insertionSortIterative(a,pivotIndex.getLeft(), pivotIndex.getRight());
-        }
+        pair pivotIndex;
+
+        if (right - left < cutoff)
+            insertionSortIterative(a,left,right-left+1);
         else  {
+            pivotIndex = partitionOutsideIn(a, left, right);
+            QuickSort1(a, left, pivotIndex.getRight(), cutoff);
+            QuickSort1(a, pivotIndex.getLeft(), right, cutoff);
         }
     }
 
@@ -131,15 +133,16 @@ class ArraySorts {
 
                 /* Begin incrementing/decrementing left/right pointers until elements
                  * greater/less than the pivot are identified. */
-                while (left < right && a[left] < pivot)
+                while (left <= right && a[left] <= pivot)
                     left++;
-                while (right > left && a[right] > pivot)
+                while (right >= left && a[right] > pivot)
                     right--;
 
-                Helpers.swap(a, left, right);
+                if (left < right)
+                    Helpers.swap(a, left, right);
             }
         }
-        return new pair(right,left);
+        return new pair(left,right);
     }
 
 
