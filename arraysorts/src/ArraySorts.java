@@ -8,49 +8,9 @@ class ArraySorts {
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 100, 100 );
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 100000, 1000000 );
     }
 
-
-
-
-    /**
-     * Driver method for recursive insertion sort.
-     *
-     * @param a - Array to operate on
-     * @param n - Length of array
-     */
-    public static void insertionSort(int a[], int n) {
-        insertionSortRecursive(a,0,n);
-    }
-
-    /**
-     * Recursive approach to Insertion Sort. Makes recursive calls for
-     * 'n' slices of a[], each with a length of 'n-1' where 'n' is the length
-     * of the last slice on the call stack
-     *
-     * @param a - Array to operate on
-     * @param n - Length of array slice
-     */
-    private static void insertionSortRecursive(int a[], int begin, int n) {
-
-        /* Base case  - Do nothing */
-        if (n <= 1) {}
-
-        /* Otherwise begin recursive Insertion Sort */
-        else {
-
-            /* Make recursive call to insertion sort on 1 less than current 'n' slice of a[] */
-            insertionSortRecursive(a, begin, n - 1);
-
-            /* Now iterate in reverse and shift, since the preceding slice of a[0] -> a[n-1]
-             * will be already sorted */
-            for (int i = n - 1; i > begin; --i)
-
-                /* Previous element bigger? Initiate shift */
-                if (a[i] < a[i - 1]) Helpers.shift(a, i, begin);
-        }
-    }
 
     /**
      * Iterative approach to Insertion Sort, requires no driver method
@@ -91,6 +51,8 @@ class ArraySorts {
         else  {
             pivotIndex = partitionOutsideIn(a, left, right);
             QuickSort1(a, left, pivotIndex.getRight(), cutoff);
+
+            // TODO: Optimize this into a while loop
             QuickSort1(a, pivotIndex.getLeft(), right, cutoff);
         }
     }
@@ -250,12 +212,12 @@ class UnitTests {
         switch (sortMethod) {
             case QuickSort1:
                 method = "QuickSort1";
-                begin = System.nanoTime();
+                begin = System.currentTimeMillis();
                 ArraySorts.QuickSort1(a,n, 10);
-                end = System.nanoTime();
+                end = System.currentTimeMillis();
                 break;
         }
         UnitTests.prettyPrintArray(a,a.length);
-        System.out.println("Code execution time for \"" + method + "\": " + (end-begin) + "ns");
+        System.out.println("Code execution time for \"" + method + "\": " + (end-begin) + "ms");
     }
 }
