@@ -8,7 +8,7 @@ class ArraySorts {
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 100000, 1000000 );
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 10, 100 );
     }
 
 
@@ -156,25 +156,18 @@ class Helpers {
 
     /**
      * Reusable shift function. Shifts lesser elements left
-     * by continuously swapping until left element is less than the
-     * current element
+     * until current element is less shift target
      *
      * @param a - Array to operate on
      * @param start - Index of element to shift
      * @param end - Index of limiting slice of a[]
      *
      */
-    static void shift(int a[], int start, int end) {
-
-        /* Begin iterating in reverse from current element */
-        for (int j = start; j > end; --j)
-
-            /* Swap elements successively ( shift ) until previous element is smaller */
-            if (a[j] < a[j - 1]) Helpers.swap(a, j, j - 1);
-
-            /* No need to iterate further after reaching smaller previous element, already
-             * sorted */
-            else break;
+    static void shift(int a[], int target, int begin) {
+        int temp = a[target], i = target;
+        while (i > begin && temp < a[i-1])
+            a[i] = a[--i];
+        a[i] = temp;
     }
 }
 
