@@ -185,6 +185,67 @@ class ArraySorts {
     }
 
 
+
+
+
+
+
+    public static void QuickSort3(int[] a, int n, int cutoff) {
+        QuickSort3(a, 0, n-1, cutoff);
+    }
+
+    private static void QuickSort3(int[] a, int left, int right, int cutoff) {
+        pair pivotIndex;
+
+        if (right - left < cutoff)
+            insertionSortIterative(a,left,right-left+1);
+        else  {
+            pivotIndex = partitionLeftRightTwoRandomPivots(a, left, right);
+            QuickSort3(a, left, pivotIndex.getLeft(), cutoff);
+            QuickSort3(a, pivotIndex.getLeft()+1, pivotIndex.getRight(), cutoff);
+
+            // TODO: Optimize this into a while loop
+            QuickSort3(a, pivotIndex.getRight()+1, right, cutoff);
+        }
+
+    }
+
+    private static pair partitionLeftRightTwoRandomPivots(int[] a, int left, int right) {
+
+        int pivotLeft, pivotRight, pivotIndexLeft, pivotIndexRight;
+        Random randomGen;
+
+        /* Base case - Do nothing except for setting the dependencies in the return pair */
+        if (right - left < 1) {
+            pivotIndexLeft = left; pivotIndexRight = right;
+        }
+        /* Otherwise begin partitioning */
+        else {
+            randomGen = new Random();
+
+            /* Get the first pivot by generating a random index within the bounds of right - left,
+             * then add left as the base index for the chosen random value  */
+            pivotLeft = a[pivotIndexLeft = (left + randomGen.nextInt(right - left))];
+
+            /* Get the second pivot via the same method, except repeat if the indices are
+             * generated to be the same */
+            do pivotRight = a[pivotIndexRight = (left + randomGen.nextInt(right - left))];
+            while (pivotIndexRight != pivotIndexLeft);
+
+            /* Let our left pivot be the lesser of the two pivots */
+            if (pivotLeft > pivotRight) {
+                Helpers.swap(a, pivotLeft, pivotRight);
+                pivotIndexLeft ^= pivotIndexRight;
+                pivotIndexRight ^= pivotIndexLeft;
+                pivotIndexLeft ^= pivotIndexRight;
+            }
+        }
+    }
+
+
+
+
+
     public static void HeapSortBU(int a[], int n){
 
     }
