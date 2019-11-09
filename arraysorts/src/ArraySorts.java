@@ -43,7 +43,6 @@ class ArraySorts {
     /** Quicksort1 recursive method */
     private static void QuickSort1(int a[], int left, int right, int cutoff) {
 
-        int[] aTemp;
         pair pivotIndex;
 
         if (right - left < cutoff)
@@ -108,6 +107,49 @@ class ArraySorts {
     }
 
 
+
+    public static void QuickSort2(int[] a, int n, int cutoff) {
+        QuickSort2(a, 0, n-1, cutoff);
+    }
+
+    private static void QuickSort2(int[] a, int left, int right, int cutoff) {
+        pair pivotIndex;
+
+        if (right - left < cutoff)
+            insertionSortIterative(a,left,right-left+1);
+        else  {
+            pivotIndex = partitionLeftRightOneRandomPivot(a, left, right);
+            QuickSort2(a, left, pivotIndex.getRight(), cutoff);
+
+            // TODO: Optimize this into a while loop
+            QuickSort2(a, pivotIndex.getLeft(), right, cutoff);
+        }
+
+    }
+
+    private static pair partitionLeftRightOneRandomPivot(int[] a, int left, int right) {
+
+        int pivot, pivotIndex;
+        Random randomGen;
+
+        /* Base case - Do nothing */
+        if (right - left < 1) { }
+
+        /* Otherwise begin partitioning */
+        else {
+
+            randomGen = new Random();
+            /* Get the pivot by generating a random index within the bounds of right - left,
+             * then add left as the base index for the chosen random value  */
+            pivot = a[pivotIndex = (left + randomGen.nextInt(right - left))];
+
+            /* Swap the pivot with the first element */
+            Helpers.swap(a, left, pivotIndex);
+        }
+        return new pair(left,right);
+    }
+
+
     public static void HeapSortBU(int a[], int n){
 
     }
@@ -159,8 +201,8 @@ class Helpers {
      * until current element is less shift target
      *
      * @param a - Array to operate on
-     * @param start - Index of element to shift
-     * @param end - Index of limiting slice of a[]
+     * @param target - Index of element to shift
+     * @param begin - Index of limiting slice of a[]
      *
      */
     static void shift(int a[], int target, int begin) {
