@@ -8,7 +8,7 @@ class ArraySorts {
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 10, 100 );
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort2, 50, 1000);
     }
 
 
@@ -129,24 +129,43 @@ class ArraySorts {
 
     private static pair partitionLeftRightOneRandomPivot(int[] a, int left, int right) {
 
-        int pivot, pivotIndex;
+        int pivot, pivotIndex, firstUknownIndex, smallPartitionLimit;
         Random randomGen;
 
-        /* Base case - Do nothing */
-        if (right - left < 1) { }
+        /* Base case - Do nothing except for setting the dependency in the return pair */
+        if (right - left < 1) { smallPartitionLimit = left;}
 
         /* Otherwise begin partitioning */
         else {
-
             randomGen = new Random();
+
             /* Get the pivot by generating a random index within the bounds of right - left,
              * then add left as the base index for the chosen random value  */
             pivot = a[pivotIndex = (left + randomGen.nextInt(right - left))];
+            firstUknownIndex = left + 1;
+            smallPartitionLimit = left;
 
             /* Swap the pivot with the first element */
             Helpers.swap(a, left, pivotIndex);
+
+            /* Walk first unknown index across the array */
+            while (firstUknownIndex <= right) {
+
+                /* When the unknown element is less than the pivot, swap it with
+                 * the limiting index of the smaller partition */
+                if (a[firstUknownIndex] < pivot)  {
+                    Helpers.swap(a, firstUknownIndex, smallPartitionLimit);
+
+                    /* Increment the limit index, since we have added another element to the
+                     * smaller-than partiton  */
+                    smallPartitionLimit++;
+                }
+                /* Advance first unknown index */
+                firstUknownIndex++;
+            }
+
         }
-        return new pair(left,right);
+        return new pair(smallPartitionLimit,smallPartitionLimit+1);
     }
 
 
@@ -217,7 +236,7 @@ class Helpers {
 class UnitTests {
 
     public static enum SortMethod {
-            QuickSort1
+            QuickSort1, QuickSort2
     };
 
     public static int[] generateRandomDataSet(int n, int lim) {
@@ -249,6 +268,12 @@ class UnitTests {
                 method = "QuickSort1";
                 begin = System.currentTimeMillis();
                 ArraySorts.QuickSort1(a,n, 10);
+                end = System.currentTimeMillis();
+                break;
+            case QuickSort2:
+                method = "QuickSort2";
+                begin = System.currentTimeMillis();
+                ArraySorts.QuickSort2(a,n, 10);
                 end = System.currentTimeMillis();
                 break;
         }
