@@ -212,7 +212,7 @@ class ArraySorts {
 
     private static pair partitionLeftRightTwoRandomPivots(int[] a, int left, int right) {
 
-        int pivotLeft, pivotRight, pivotIndexLeft, pivotIndexRight;
+        int pivotLeft, pivotRight, pivotIndexLeft, pivotIndexRight, firstUnknown;
         Random randomGen;
 
         /* Base case - Do nothing except for setting the dependencies in the return pair */
@@ -234,11 +234,18 @@ class ArraySorts {
 
             /* Let our left pivot be the lesser of the two pivots */
             if (pivotLeft > pivotRight) {
-                Helpers.swap(a, pivotLeft, pivotRight);
+                Helpers.swap(a, pivotIndexLeft, pivotIndexRight);
                 pivotIndexLeft ^= pivotIndexRight;
                 pivotIndexRight ^= pivotIndexLeft;
                 pivotIndexLeft ^= pivotIndexRight;
+                pivotLeft = a[pivotIndexLeft];
+                pivotRight = a[pivotIndexRight];
             }
+
+
+
+
+
         }
     }
 
