@@ -10,7 +10,7 @@ class ArraySorts {
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 30, 50);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 30, 500);
     }
 
 
@@ -296,6 +296,146 @@ class ArraySorts {
 
 
 
+
+    /** QuickSort1 Driver */
+    public static void QuickSort4(int a[], int n, int cutoff) {
+        QuickSort4(a, 0, n-1, cutoff);
+    }
+
+    /** Quicksort1 recursive method */
+    private static void QuickSort4(int a[], int left, int right, int cutoff) {
+
+        pair pivotIndex;
+
+        if (right - left < cutoff)
+            insertionSortIterative(a,left,right-left+1);
+        else  {
+            pivotIndex = partitionOutsideInStaticPivot(a, left, right);
+            QuickSort4(a, left, pivotIndex.getRight(), cutoff);
+
+            // TODO: Optimize this into a while loop
+            QuickSort4(a, pivotIndex.getLeft(), right, cutoff);
+        }
+    }
+
+    /**
+     * Outside-in partitioning function. Random pivot is chosen, and left/right pointers
+     * are moved successively from the outer bounds of the array, until they overlap,
+     * swapping elements when greater/less conditions against the pivot are met.
+     *
+     * @param a - Array to operate on
+     * @param left - Left index of array slice
+     * @param right - Right index of array slice
+     *
+     * @return - pair - New pair of the modified left/right indices, with 'right' as the
+     * outer bound of the left partition, and 'left' as the beginning index for the right partition
+     */
+    private static pair partitionOutsideInStaticPivot(int a[], int left, int right)  {
+
+        int pivot, origindex = left;
+
+        /* Base case - Do nothing */
+        if (right - left < 1) {}
+
+        /* Otherwise begin partitioning */
+        else {
+
+            /* Constant left pivot */
+            pivot = a[left];
+
+
+            if (ArraySorts.debug) System.out.println("Pivot: " + pivot);
+
+            /* Begin swapping elements until the left/right pointers overlap */
+            while (left < right) {
+
+                if (ArraySorts.debug) UnitTests.prettyPrintArray(a,a.length);
+
+                /* Begin incrementing/decrementing left/right pointers until elements
+                 * greater/less than the pivot are identified. */
+                while (left <= right && a[left] <= pivot)
+                    left++;
+                while (right >= left && a[right] > pivot)
+                    right--;
+
+                if (left < right)
+                    Helpers.swap(a, left, right);
+            }
+
+            /* Since our pivot is now always the left pointer, we need to swap it where
+             * the partition divides */
+            Helpers.swap(a, origindex, right);
+        }
+        return new pair(left,right);
+    }
+
+
+
+    public static void QuickSort5(int[] a, int n, int cutoff) {
+        QuickSort5(a, 0, n-1, cutoff);
+    }
+
+    private static void QuickSort5(int[] a, int left, int right, int cutoff) {
+        pair pivotIndex;
+
+        if (right - left < cutoff)
+            insertionSortIterative(a,left,right-left+1);
+        else  {
+            pivotIndex = partitionLeftRightOneStaticPivot(a, left, right);
+            QuickSort5(a, left, pivotIndex.getRight(), cutoff);
+
+            // TODO: Optimize this into a while loop
+            QuickSort5(a, pivotIndex.getLeft(), right, cutoff);
+        }
+
+    }
+
+    private static pair partitionLeftRightOneStaticPivot(int[] a, int left, int right) {
+
+        int pivot, firstUknownIndex, smallPartitionLimit;
+
+        /* Base case - Do nothing except for setting the dependency in the return pair */
+        if (right - left < 1) { smallPartitionLimit = left;}
+
+        /* Otherwise begin partitioning */
+        else {
+
+            /* Constant left pivot */
+            pivot = a[left];
+            firstUknownIndex = left + 1;
+            smallPartitionLimit = left;
+
+            /* Walk first unknown index across the array */
+            while (firstUknownIndex <= right) {
+
+                /* When the unknown element is less than the pivot, swap it with
+                 * the limiting index of the smaller partition */
+                if (a[firstUknownIndex] < pivot)  {
+                    Helpers.swap(a, firstUknownIndex, smallPartitionLimit);
+
+                    /* Increment the limit index, since we have added another element to the
+                     * smaller-than partiton  */
+                    smallPartitionLimit++;
+                }
+                /* Advance first unknown index */
+                firstUknownIndex++;
+            }
+
+        }
+        return new pair(smallPartitionLimit,smallPartitionLimit+1);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     public static void HeapSortBU(int a[], int n){
 
     }
@@ -363,7 +503,7 @@ class Helpers {
 class UnitTests {
 
     public static enum SortMethod {
-        QuickSort1, QuickSort2, QuickSort3
+        QuickSort1, QuickSort2, QuickSort3, QuickSort4, QuickSort5
     };
 
     public static int[] generateRandomDataSet(int n, int lim) {
@@ -407,6 +547,18 @@ class UnitTests {
                 method = "QuickSort3";
                 begin = System.currentTimeMillis();
                 ArraySorts.QuickSort3(a,n, 10);
+                end = System.currentTimeMillis();
+                break;
+            case QuickSort4:
+                method = "QuickSort4";
+                begin = System.currentTimeMillis();
+                ArraySorts.QuickSort4(a,n, 10);
+                end = System.currentTimeMillis();
+                break;
+            case QuickSort5:
+                method = "QuickSort5";
+                begin = System.currentTimeMillis();
+                ArraySorts.QuickSort5(a,n, 10);
                 end = System.currentTimeMillis();
                 break;
         }

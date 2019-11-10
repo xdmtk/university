@@ -342,7 +342,6 @@ public class TestSorts1 {
 			ArraySorts.QuickSort1(a, n, 50);
 		else if (which == 2)
 			ArraySorts.QuickSort2(a, n, 50);
-		/*
 		else if (which == 3)
 			ArraySorts.QuickSort3(a, n, 50);
 		else if (which == 4)
@@ -359,6 +358,7 @@ public class TestSorts1 {
 			ArraySorts.QuickSort4(a, n, 2);
 		else if (which == 10)
 			ArraySorts.QuickSort5(a, n, 2);
+		/*
 		else if (which == 11)
 			ArraySorts.AlmostQS1(a, n, 2);
 		else if (which == 12)
@@ -371,8 +371,7 @@ public class TestSorts1 {
 			ArraySorts.HeapSortBU(a, n);
 		else
 			System.out.println("No such sort " + which + ".");
-
-		 */
+		*/
 	}
 
 	private static void fillArray(int fillNumber, int[] number, int BigorSmall,
