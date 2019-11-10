@@ -5,10 +5,12 @@ import java.util.Random;
 
 class ArraySorts {
     public static boolean debug = false;
+    public static boolean partitions = true;
+
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 40, 500);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 30, 50);
     }
 
 
@@ -217,7 +219,8 @@ class ArraySorts {
 
         /* Base case - Do nothing except for setting the dependencies in the return pair */
         if (right - left < 1) {
-            pivotIndexLeft = left; pivotIndexRight = right;
+            pivotIndexLeft = left;
+            pivotIndexRight = right;
         }
         /* Otherwise begin partitioning */
         else {
@@ -239,27 +242,37 @@ class ArraySorts {
                 pivotRight ^= pivotLeft;
                 Helpers.swap(a, right, pivotIndexLeft);
                 Helpers.swap(a, left, pivotIndexRight);
-            }
-            else {
+            } else {
                 Helpers.swap(a, left, pivotIndexLeft);
                 Helpers.swap(a, right, pivotIndexRight);
             }
-            pivotIndexLeft = left; pivotIndexRight = right;
-            firstUnknown = left+1;
+            pivotIndexLeft = left;
+            pivotIndexRight = right;
+            firstUnknown = left + 1;
 
             while (firstUnknown <= pivotIndexRight) {
-                if (a[firstUnknown] < pivotLeft) {
-                    Helpers.swap(a, firstUnknown, pivotIndexLeft);
-                    pivotIndexLeft++;
-                }
-                else if (a[firstUnknown] > pivotLeft && a[firstUnknown] < pivotRight) {
+                if (a[firstUnknown] < pivotLeft)
+                    Helpers.swap(a, firstUnknown++, pivotIndexLeft++);
+                else if (a[firstUnknown] > pivotRight)
+                    Helpers.swap(a, firstUnknown, pivotIndexRight--);
+                else
+                    firstUnknown++;
+            }
 
+            if (ArraySorts.partitions) {
+                System.out.println("Pivot Left: " + pivotLeft + " - Pivot Right: " + pivotRight + "\n");
+                System.out.println("\nPartition 1:");
+                for (int i = left; i < pivotIndexLeft; ++i) {
+                    System.out.print(a[i] + " ");
                 }
-                else if (a[firstUnknown] > pivotRight) {
-                    Helpers.swap(a, firstUnknown, pivotIndexRight);
-                    pivotIndexRight--;
+                System.out.println("\nPartition 2:");
+                for (int i = pivotIndexLeft + 1; i < pivotIndexRight; ++i) {
+                    System.out.print(a[i] + " ");
                 }
-                firstUnknown++;
+                System.out.println("\nPartition 3:");
+                for (int i = pivotIndexRight + 1; i < right; ++i) {
+                    System.out.print(a[i] + " ");
+                }
             }
         }
         return new pair(pivotIndexLeft, pivotIndexRight);
@@ -336,7 +349,7 @@ class Helpers {
 class UnitTests {
 
     public static enum SortMethod {
-            QuickSort1, QuickSort2, QuickSort3
+        QuickSort1, QuickSort2, QuickSort3
     };
 
     public static int[] generateRandomDataSet(int n, int lim) {
@@ -362,7 +375,7 @@ class UnitTests {
         String method;
 
         method = null; begin = end = 0;
-         a = UnitTests.generateRandomDataSet(n, lim);
+        a = UnitTests.generateRandomDataSet(n, lim);
         switch (sortMethod) {
             case QuickSort1:
                 method = "QuickSort1";
