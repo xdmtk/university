@@ -69,11 +69,12 @@ void read_instructions(struct state *st) {
         st->instructions[i] = (struct instr *) malloc(sizeof(struct instr *));
 
         /* Get register information in format rX=rY+rZ */
-        printf("%d) ", i+1);
         scanf(" %c%d=%c%d+%c%d", &a, &st->instructions[i]->dest, &b,
                 &st->instructions[i]->src_one, &c,
                 &st->instructions[i]->src_two);
 
+        printf("%d) %c%d=%c%d+%c%d\n", i+1, a, st->instructions[i]->dest, 
+                b, st->instructions[i]->src_one, c, st->instructions[i]->src_two);
         /* Set initial cycle number based on input order */
         st->instructions[i]->cycle = i+1;
     }
@@ -91,14 +92,14 @@ void print_instructions(struct state *st) {
 
     for (i = 0; i < st->instruction_count; ++i) {
         
-                printf("Instruction %d Fetched at Cycle %d"_spc_, 
+                printf("Instruction %d is Fetched at Cycle %d"_spc_, 
                     i+1, st->instructions[i]->cycle);
 
         /* Insert tabs corresponding to fetch cycle */
         for (j = 0; j < st->instructions[i]->cycle - 1; j++) printf("\t");
 
         /* Print instruction cycle operations */
-        printf("IF\tID\tEX\tMM\tWB"_spc_);
+        printf("%d) IF\tID\tEX\tMM\tWB"_spc_, i+1);
     }
 }
 
