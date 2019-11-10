@@ -8,7 +8,7 @@ class ArraySorts {
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort2, 50, 1000);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 40, 500);
     }
 
 
@@ -202,10 +202,10 @@ class ArraySorts {
         else  {
             pivotIndex = partitionLeftRightTwoRandomPivots(a, left, right);
             QuickSort3(a, left, pivotIndex.getLeft(), cutoff);
-            QuickSort3(a, pivotIndex.getLeft()+1, pivotIndex.getRight(), cutoff);
+            QuickSort3(a, pivotIndex.getLeft(), pivotIndex.getRight(), cutoff);
 
             // TODO: Optimize this into a while loop
-            QuickSort3(a, pivotIndex.getRight()+1, right, cutoff);
+            QuickSort3(a, pivotIndex.getRight(), right, cutoff);
         }
 
     }
@@ -230,23 +230,39 @@ class ArraySorts {
             /* Get the second pivot via the same method, except repeat if the indices are
              * generated to be the same */
             do pivotRight = a[pivotIndexRight = (left + randomGen.nextInt(right - left))];
-            while (pivotIndexRight != pivotIndexLeft);
+            while (pivotIndexRight == pivotIndexLeft);
 
-            /* Let our left pivot be the lesser of the two pivots */
+            /* Set pivots to appropriate places */
             if (pivotLeft > pivotRight) {
-                Helpers.swap(a, pivotIndexLeft, pivotIndexRight);
-                pivotIndexLeft ^= pivotIndexRight;
-                pivotIndexRight ^= pivotIndexLeft;
-                pivotIndexLeft ^= pivotIndexRight;
-                pivotLeft = a[pivotIndexLeft];
-                pivotRight = a[pivotIndexRight];
+                pivotRight ^= pivotLeft;
+                pivotLeft ^= pivotRight;
+                pivotRight ^= pivotLeft;
+                Helpers.swap(a, right, pivotIndexLeft);
+                Helpers.swap(a, left, pivotIndexRight);
             }
+            else {
+                Helpers.swap(a, left, pivotIndexLeft);
+                Helpers.swap(a, right, pivotIndexRight);
+            }
+            pivotIndexLeft = left; pivotIndexRight = right;
+            firstUnknown = left+1;
 
+            while (firstUnknown <= pivotIndexRight) {
+                if (a[firstUnknown] < pivotLeft) {
+                    Helpers.swap(a, firstUnknown, pivotIndexLeft);
+                    pivotIndexLeft++;
+                }
+                else if (a[firstUnknown] > pivotLeft && a[firstUnknown] < pivotRight) {
 
-
-
-
+                }
+                else if (a[firstUnknown] > pivotRight) {
+                    Helpers.swap(a, firstUnknown, pivotIndexRight);
+                    pivotIndexRight--;
+                }
+                firstUnknown++;
+            }
         }
+        return new pair(pivotIndexLeft, pivotIndexRight);
     }
 
 
@@ -320,7 +336,7 @@ class Helpers {
 class UnitTests {
 
     public static enum SortMethod {
-            QuickSort1, QuickSort2
+            QuickSort1, QuickSort2, QuickSort3
     };
 
     public static int[] generateRandomDataSet(int n, int lim) {
@@ -358,6 +374,12 @@ class UnitTests {
                 method = "QuickSort2";
                 begin = System.currentTimeMillis();
                 ArraySorts.QuickSort2(a,n, 10);
+                end = System.currentTimeMillis();
+                break;
+            case QuickSort3:
+                method = "QuickSort3";
+                begin = System.currentTimeMillis();
+                ArraySorts.QuickSort3(a,n, 10);
                 end = System.currentTimeMillis();
                 break;
         }
