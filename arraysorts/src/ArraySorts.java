@@ -5,7 +5,7 @@ import java.util.Random;
 
 class ArraySorts {
     public static boolean debug = false;
-    public static boolean partitions = true;
+    public static boolean partitions = false;
 
 
 
@@ -235,7 +235,7 @@ class ArraySorts {
             do pivotRight = a[pivotIndexRight = (left + randomGen.nextInt(right - left))];
             while (pivotIndexRight == pivotIndexLeft);
 
-            /* Set pivots to appropriate places */
+            /* Set pivot locations to left/right indices of partition */
             if (pivotLeft > pivotRight) {
                 pivotRight ^= pivotLeft;
                 pivotLeft ^= pivotRight;
@@ -246,15 +246,29 @@ class ArraySorts {
                 Helpers.swap(a, left, pivotIndexLeft);
                 Helpers.swap(a, right, pivotIndexRight);
             }
+
+            /* Reset the indices to left/right */
             pivotIndexLeft = left;
             pivotIndexRight = right;
+
+            /* Begin iteration on the first element after the left pivot index */
             firstUnknown = left + 1;
 
             while (firstUnknown <= pivotIndexRight) {
+
+                /* Elements less than the left pivot get moved into partition 1 via a swap,
+                 * then increment the dividing index */
                 if (a[firstUnknown] < pivotLeft)
                     Helpers.swap(a, firstUnknown++, pivotIndexLeft++);
+
+                /* If the element is greater than the right pivot, it belongs in partition 3,
+                 * but this time, only decrement the partition divider, since the swap will introduce
+                 * another unknown into the 'first unknown' index. */
                 else if (a[firstUnknown] > pivotRight)
                     Helpers.swap(a, firstUnknown, pivotIndexRight--);
+
+                /* If the element is between the value of the two pivots, firstUnknown can be advanced
+                 * and no dividing partitions moved, since it will be the middle partition */
                 else
                     firstUnknown++;
             }
