@@ -10,7 +10,7 @@ class ArraySorts {
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 30, 500);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 300, 100000, 2);
     }
 
 
@@ -522,7 +522,7 @@ class UnitTests {
         }
     }
 
-    public static void execSort(SortMethod sortMethod, int n, int lim) {
+    public static void execSort(SortMethod sortMethod, int n, int lim, int cutoff) {
 
         int a[];
         double begin, end;
@@ -534,31 +534,31 @@ class UnitTests {
             case QuickSort1:
                 method = "QuickSort1";
                 begin = System.currentTimeMillis();
-                ArraySorts.QuickSort1(a,n, 10);
+                ArraySorts.QuickSort1(a,n, cutoff);
                 end = System.currentTimeMillis();
                 break;
             case QuickSort2:
                 method = "QuickSort2";
                 begin = System.currentTimeMillis();
-                ArraySorts.QuickSort2(a,n, 10);
+                ArraySorts.QuickSort2(a,n, cutoff);
                 end = System.currentTimeMillis();
                 break;
             case QuickSort3:
                 method = "QuickSort3";
                 begin = System.currentTimeMillis();
-                ArraySorts.QuickSort3(a,n, 10);
+                ArraySorts.QuickSort3(a,n, cutoff);
                 end = System.currentTimeMillis();
                 break;
             case QuickSort4:
                 method = "QuickSort4";
                 begin = System.currentTimeMillis();
-                ArraySorts.QuickSort4(a,n, 10);
+                ArraySorts.QuickSort4(a,n, cutoff);
                 end = System.currentTimeMillis();
                 break;
             case QuickSort5:
                 method = "QuickSort5";
                 begin = System.currentTimeMillis();
-                ArraySorts.QuickSort5(a,n, 10);
+                ArraySorts.QuickSort5(a,n, cutoff);
                 end = System.currentTimeMillis();
                 break;
         }
