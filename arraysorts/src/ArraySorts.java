@@ -142,7 +142,6 @@
  * Nicholas Martinez's QS: left-to-right, 1 random pivot partition, cutoff=2 not tested.
  *
  * Nicholas Martinez's QS: left-to-right, 2 random pivot partition, cutoff=2 not tested.
- * Seems to stall here..
  */
 
 import java.util.Random;
