@@ -17,6 +17,12 @@ class ArraySorts {
         UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.QuickSort4, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort1, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort2, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort3, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.InsertionSort, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.HeapSortBottomUp, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.HeapSortTopDown, 101, 100, 2);
     }
 
 
