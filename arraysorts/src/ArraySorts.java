@@ -574,9 +574,7 @@ class ArraySorts {
           //1. While the partition is bigger then the cutoff
           while(rt - lf >= cutoff) {
   
-              //2. Get pivot point and then call outside-in partition
-              pivotIndex = randomGenerator(lf,rt-1);
-              mid = partitionOi(a, lf, rt-1, pivotIndex);
+              mid = partitionOutsideIn(a, lf, rt-1);
   
               //3.Recursively call AQS#1 on the smaller of the 2 partitions
               if ((mid.getRight() - lf) < (rt - mid.getLeft())){
@@ -596,23 +594,22 @@ class ArraySorts {
       }
       //AQS#2 Recursive method
       public static void AlmostQS2(int a[],int lf, int rt, int cutoff){
-          int mid,pivot;
+          pair pivotIndex;
   
           //1.While the partition is bigger then the cutoff
           while(rt - lf >= cutoff){
   
               //2.Get pivot point and call left to right parition method
-              pivot = randomGenerator(lf,rt-1);
-              mid = partitionLR(a,lf,rt-1,pivot);
+              pivotIndex =  partitionLeftRightOneRandomPivot(a,lf,rt-1);
   
               //3. Recursively call AQS#2 on the smaller partition
-              if((mid - lf) < (rt - mid)){
-                  AlmostQS2(a,lf,mid,cutoff);
-                  lf = mid + 1;
+              if((pivotIndex.getRight() - lf) < (rt - pivotIndex.getLeft())){
+                  AlmostQS2(a,lf,pivotIndex.getLeft(),cutoff);
+                  lf = pivotIndex.getRight();
               }
               else{
-                  AlmostQS2(a,mid,rt,cutoff);
-                  rt = mid ;
+                  AlmostQS2(a,pivotIndex.getRight(),rt,cutoff);
+                  rt = pivotIndex.getLeft();
               }
           }
       }
@@ -625,20 +622,29 @@ class ArraySorts {
       public static void AlmostQS3(int a[], int lf, int rt, int cutoff){
           int leftPartition,middlePartition,rightPartition,pivotIndex,pivotIndex2;
           pair mid;
+          Random randomGen;
   
           //1.While the partition is bigger then the cutoff
           while(rt - lf >= cutoff){
-  
+
+
+              randomGen = new Random();
+              /* Get the pivot by generating a random index within the bounds of right - left,
+               * then add left as the base index for the chosen random value  */
+              pivotIndex = a[pivotIndex = (lf + randomGen.nextInt(rt - lf))];
               //1.Get pivot points and place them in there correct positions
-              pivotIndex = randomGenerator(lf,rt-1);
-              swap(a,pivotIndex,lf);
-              pivotIndex2 = randomGenerator(lf+1,rt-1);
+              Helpers.swap(a,pivotIndex,lf);
+
+              /* Dont choose the same pivot */
+              while ((pivotIndex2 = a[pivotIndex = (lf + randomGen.nextInt(rt - lf))]) != pivotIndex)
+                    pivotIndex2 = pivotIndex2;
+
               Helpers.swap(a,pivotIndex2,rt-1);
               if(a[lf] > a[rt-1])
                   Helpers.swap(a,lf,rt-1);
-  
+
               //2.Get the mid point and then calculate the different partition sizes
-              mid = partition3(a,lf,rt-1);
+              mid = partitionLeftRightTwoRandomPivots(a,lf,rt-1);
               leftPartition = mid.getLeft() - lf;
               middlePartition = mid.getRight() - mid.getLeft();
               rightPartition = rt - mid.getRight();
@@ -787,6 +793,42 @@ class UnitTests {
                 method = "QuickSort5";
                 begin = System.currentTimeMillis();
                 ArraySorts.QuickSort5(a,n, cutoff);
+                end = System.currentTimeMillis();
+                break;
+            case AlmostQuickSort1:
+                method = "AlmostQuickSort1";
+                begin = System.currentTimeMillis();
+                ArraySorts.AlmostQS1(a,n, cutoff);
+                end = System.currentTimeMillis();
+                break;
+            case AlmostQuickSort2:
+                method = "AlmostQuickSort2";
+                begin = System.currentTimeMillis();
+                ArraySorts.AlmostQS2(a,n, cutoff);
+                end = System.currentTimeMillis();
+                break;
+            case AlmostQuickSort3:
+                method = "AlmostQuickSort3";
+                begin = System.currentTimeMillis();
+                ArraySorts.AlmostQS3(a,n, cutoff);
+                end = System.currentTimeMillis();
+                break;
+            case HeapSortBottomUp:
+                method = "HeapSort Bottom-up";
+                begin = System.currentTimeMillis();
+                ArraySorts.HeapSortBU(a, n);
+                end = System.currentTimeMillis();
+                break;
+            case HeapSortTopDown:
+                method = "HeapSort Top-Down";
+                begin = System.currentTimeMillis();
+                ArraySorts.HeapSortTD(a, n);
+                end = System.currentTimeMillis();
+                break;
+            case InsertionSort:
+                method = "InsertionSort";
+                begin = System.currentTimeMillis();
+                ArraySorts.insertionSortIterative(a, 0, n);
                 end = System.currentTimeMillis();
                 break;
         }
