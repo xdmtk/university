@@ -1,3 +1,149 @@
+/**
+ * OUTPUT:
+ *
+ * Testing Nicholas Martinez's program.
+ * QS: outside-in partition, random pivot, cutoff=50:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: left-to-right, 1 random pivot partition, cutoff=50:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: left-to-right, 2 random pivot partition, cutoff=50:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: outside-in partition, lf pivot, cutoff=50:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: left-to-right, lf pivot, cutoff=50:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: outside-in partition, random pivot, cutoff=2:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: left-to-right, 1 random pivot partition, cutoff=2:
+ *     26.
+ * *** Mids sorting error: QS: left-to-right, 1 random pivot partition, cutoff=2, position #21
+ * *** No more QS: left-to-right, 1 random pivot partition, cutoff=2s will be tested.  Correct values and Nicholas Martinez's values follow.
+ * 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+ * 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 0 0 0 0 0
+ *
+ * QS: left-to-right, 2 random pivot partition, cutoff=2:
+ *     26.25.24.23.22.21.20.19.18.17.16.
+ * *** Random sorting error: QS: left-to-right, 2 random pivot partition, cutoff=2, position #1
+ * *** No more QS: left-to-right, 2 random pivot partition, cutoff=2s will be tested.  Correct values and Nicholas Martinez's values follow.
+ * 0 1 3 4 4 5 6 9 10 13 13 13 13 14 14 14
+ * 0 3 4 4 5 1 6 9 10 13 13 13 13 14 14 14
+ *
+ * QS: outside-in partition, lf pivot, cutoff=2:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * QS: left-to-right, lf pivot, cutoff=2:
+ *     26.
+ * *** Decreasing sorting error: QS: left-to-right, lf pivot, cutoff=2, position #1
+ * *** No more QS: left-to-right, lf pivot, cutoff=2s will be tested.  Correct values and Nicholas Martinez's values follow.
+ * 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+ * 0 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+ *
+ * Almost QS: outside-in partition, random pivot, cutoff=2:
+ *     26.
+ * *** Random sorting error: Almost QS: outside-in partition, random pivot, cutoff=2, position #0
+ * *** No more Almost QS: outside-in partition, random pivot, cutoff=2s will be tested.  Correct values and Nicholas Martinez's values follow.
+ * 0 1 3 4 5 5 6 9 13 13 14 14 17 17 17 19 20 20 20 21 22 22 22 23 24 25
+ * 1 0 3 4 5 5 6 9 13 13 14 14 17 17 17 19 20 21 20 20 24 23 22 25 22 22
+ *
+ * Almost QS: left-to-right, 1 random pivot partition, cutoff=2:
+ *     26.
+ * *** Constant sorting error: Almost QS: left-to-right, 1 random pivot partition, cutoff=2, position #0
+ * *** No more Almost QS: left-to-right, 1 random pivot partition, cutoff=2s will be tested.  Correct values and Nicholas Martinez's values follow.
+ * 51 51 51 51 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52
+ * 25 51 51 51 51 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52
+ *
+ * Almost QS: left-to-right, 2 random pivot partition, cutoff=2:
+ *     26.
+ * *** Increasing sorting error: Almost QS: left-to-right, 2 random pivot partition, cutoff=2, position #4
+ * *** No more Almost QS: left-to-right, 2 random pivot partition, cutoff=2s will be tested.  Correct values and Nicholas Martinez's values follow.
+ * 0 2 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25
+ * 0 2 2 3 5 4 6 7 8 9 10 11 13 12 14 15 16 17 18 19 20 21 22 23 24 25
+ *
+ * HeapSort: top-down build heap:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * HeapSort: bottom-up build heap:
+ *     26.25.24.23.22.21.20.19.18.17.16.15.14.13.12.11.10.9.8.7.6.5.4.3.2.1.0.
+ * Bigger, QS: outside-in partition, random pivot, cutoff=50:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ * Bigger, QS: left-to-right, 1 random pivot partition, cutoff=50:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ * Bigger, QS: left-to-right, 2 random pivot partition, cutoff=50:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.
+ * *** Random sorting error: QS: left-to-right, 2 random pivot partition, cutoff=50, position #1912
+ * *** No more QS: left-to-right, 2 random pivot partition, cutoff=50s will be tested.  Correct values and Nicholas Martinez's values follow.
+ *  done.
+ * Bigger, QS: outside-in partition, lf pivot, cutoff=50:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ * Bigger, QS: left-to-right, lf pivot, cutoff=50:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747.
+ * *** Decreasing sorting error: QS: left-to-right, lf pivot, cutoff=50, position #1
+ * *** No more QS: left-to-right, lf pivot, cutoff=50s will be tested.  Correct values and Nicholas Martinez's values follow.
+ *  done.
+ * Bigger, QS: outside-in partition, random pivot, cutoff=2:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ * Bigger, QS: left-to-right, 1 random pivot partition, cutoff=2:
+ *      done.
+ * Bigger, QS: left-to-right, 2 random pivot partition, cutoff=2:
+ *      done.
+ * Bigger, QS: outside-in partition, lf pivot, cutoff=2:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ * Bigger, QS: left-to-right, lf pivot, cutoff=2:
+ *      done.
+ * Bigger, Almost QS: outside-in partition, random pivot, cutoff=2:
+ *      done.
+ * Bigger, Almost QS: left-to-right, 1 random pivot partition, cutoff=2:
+ *      done.
+ * Bigger, Almost QS: left-to-right, 2 random pivot partition, cutoff=2:
+ *      done.
+ * Bigger, HeapSort: top-down build heap:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ * Bigger, HeapSort: bottom-up build heap:
+ *     100.631.1162.1693.2224.2755.3286.3817.4348.4879.5410.5941.6472.7003.7534.8065.8596.
+ *     9127.9658.10189.10720.11251.11782.12313.12844.13375.13906.14437.14968.15499.16030.
+ *     16561.17092.17623.18154.18685.19216.19747. done.
+ *
+ * Testing Nicholas Martinez's sorts on a huge array.
+ *
+ * Java's QuickSort on random data runs in 3.903 seconds.
+ * Java's QuickSort on the test sets runs in 0.956 seconds.
+ *
+ *
+ * Nicholas Martinez's QS: outside-in partition, random pivot, cutoff=50
+ *     on all random values runs in 4.888 seconds.      Java Ratio = 1.25
+ *     on the test sets runs in 32.332 seconds.          Java Ratio = 33.82
+ *
+ * Nicholas Martinez's QS: left-to-right, 1 random pivot partition, cutoff=50
+ *     on all random values runs in 4.395 seconds.      Java Ratio = 1.12
+ *     on the test sets runs in 42.002 seconds.          Java Ratio = 43.93
+ * Nicholas Martinez's QS: left-to-right, 2 random pivot partition, cutoff=50 not tested.
+ *
+ *
+ * Nicholas Martinez's QS: outside-in partition, lf pivot, cutoff=50
+ *     on all random values runs in 19.802 seconds.      Java Ratio = 5.07
+ * Nicholas Martinez's QS: left-to-right, lf pivot, cutoff=50 not tested.
+ *
+ *
+ * Nicholas Martinez's QS: outside-in partition, random pivot, cutoff=2
+ *     on all random values runs in 2183.056 seconds.      Java Ratio = 559.32
+ *     on the test sets runs in 469.868 seconds.          Java Ratio = 491.49
+ * Nicholas Martinez's QS: left-to-right, 1 random pivot partition, cutoff=2 not tested.
+ *
+ * Nicholas Martinez's QS: left-to-right, 2 random pivot partition, cutoff=2 not tested.
+ * Seems to stall here..
+ */
 
 import java.util.Random;
 
