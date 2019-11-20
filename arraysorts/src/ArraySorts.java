@@ -17,9 +17,9 @@ class ArraySorts {
         UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.QuickSort4, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 101, 100, 2);
-        //UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort1, 101, 100, 2);
-//        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort2, 101, 100, 2);
- //       UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort3, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort1, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort2, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort3, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.InsertionSort, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.HeapSortBottomUp, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.HeapSortTopDown, 101, 100, 2);
@@ -150,10 +150,12 @@ class ArraySorts {
 
 
 
+    /** QuickSort2 Driver*/
     public static void QuickSort2(int[] a, int n, int cutoff) {
         QuickSort2(a, 0, n-1, cutoff);
     }
 
+    /** QuickSort2 Recursive Method */
     private static void QuickSort2(int[] a, int left, int right, int cutoff) {
         pair pivotIndex;
 
@@ -174,6 +176,20 @@ class ArraySorts {
 
     }
 
+
+    /**
+     * Left to Right partitioning function. Random pivot is chosen, pivot is moved to the first element.
+     * Then a partition divider pointer moves along the array, and gets advanced for each
+     * element that is less than the pivot element. When an element is greater than the pivot
+     * the firstUnknown pointer advances without any swaps to the less than partition
+     *
+     * @param a - Array to operate on
+     * @param left - Left index of array slice
+     * @param right - Right index of array slice
+     *
+     * @return - pair - New pair of the modified left/right indices, with 'right' as the
+     * outer bound of the left partition, and 'left' as the beginning index for the right partition
+     */
     private static pair partitionLeftRightOneRandomPivot(int[] a, int left, int right) {
 
         int pivot, pivotIndex, firstUknownIndex, smallPartitionLimit = left;
@@ -225,10 +241,12 @@ class ArraySorts {
 
 
 
+    /** QuickSort3 Driver*/
     public static void QuickSort3(int[] a, int n, int cutoff) {
         QuickSort3(a, 0, n-1, cutoff);
     }
 
+    /** QuickSort3 Recursive Method*/
     private static void QuickSort3(int[] a, int left, int right, int cutoff) {
         pair pivotIndex;
 
@@ -250,6 +268,19 @@ class ArraySorts {
 
     }
 
+    /**
+     * Left to Right partitioning function. Random pivot is chosen, pivot is moved to the first element.
+     * Then a partition divider pointer moves along the array, and gets advanced for each
+     * element that is less than the pivot element. When an element is greater than the pivot
+     * the firstUnknown pointer advances without any swaps to the less than partition
+     *
+     * @param a - Array to operate on
+     * @param left - Left index of array slice
+     * @param right - Right index of array slice
+     *
+     * @return - pair - New pair of the modified left/right indices, with 'right' as the
+     * outer bound of the left partition, and 'left' as the beginning index for the right partition
+     */
     private static pair partitionLeftRightTwoRandomPivots(int[] a, int left, int right) {
 
         int pivotLeft, pivotRight, pivotIndexLeft = left, pivotIndexRight = right, firstUnknown;
