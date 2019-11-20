@@ -1,4 +1,15 @@
 /**
+ *
+ ***********************************
+ **
+ ** Name: Nicholas Martinez
+ ** Class:COMP 282*M-W 3:30PM-4:45PM
+ ** Assignment #: 4
+ ** Date Turned In: 11/20/2019
+ ** Description: Implements Quicksort + Quicksort Variants + Heapsort
+ ***********************************
+ *
+ *
  * OUTPUT:
  *
  * Testing Nicholas Martinez's program.
