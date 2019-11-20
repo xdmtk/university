@@ -534,7 +534,6 @@ class ArraySorts {
 
 
 
-
     public static void HeapSortBU(int a[], int n){
 
         heapifyBottomUp(a,n);
@@ -556,32 +555,18 @@ class ArraySorts {
         trickleVal = a[index];
         right = (index*2)+2;
         left = (index*2)+1;
-        max = getLargestChild(a,n-1,left,right);
+        max = Helpers.getLargestChild(a,n-1,left,right);
 
         while(max < n && trickleVal < a[max]){
             a[(max -1)/2] = a[max];
             right = (max*2) + 2;
             left = (max*2) + 1;
-            max = getLargestChild(a,n-1,left,right);
+            max = Helpers.getLargestChild(a,n-1,left,right);
         }
         a[(max-1)/2] = trickleVal;
 
     }
 
-
-    public static int getLargestChild(int[] a, int n, int left, int right){
-        int max = 0;
-        if(left <= n && right <= n){
-            if(a[left] > a[right])
-                max = left;
-            else
-                max = right;
-        }
-        else
-            max = left;
-
-        return max;
-    }
 
 
 
@@ -773,6 +758,32 @@ class Helpers {
             a[i] = a[--i];
         a[i] = temp;
     }
+
+
+    /**
+     * Helper function to find the larger of the
+     * children when building a heap top down
+     *
+     * @param a - Heap to operate on
+     * @param n - Heap boundary
+     * @param left - Index of left child
+     * @param right - Index of right child
+     *
+     */
+    public static int getLargestChild(int[] a, int n, int left, int right){
+        int max = 0;
+        if(left <= n && right <= n){
+            if(a[left] > a[right])
+                max = left;
+            else
+                max = right;
+        }
+        else
+            max = left;
+
+        return max;
+    }
+
 }
 
 
