@@ -7,16 +7,16 @@ import java.util.Stack;
 class ArraySorts {
     public static boolean debug = false;
     public static boolean partitions = false;
-    public static boolean printArray = false;
+    public static boolean printArray = true;
 
 
 
     public static void main(String[] args){
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 11000, 10000, 2);
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort2, 11000, 10000, 2);
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 11000, 10000, 2);
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort4, 11000, 10000, 2);
-        UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 11000, 10000, 2);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort1, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort2, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort4, 101, 100, 2);
+        UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 101, 100, 2);
     }
 
 
@@ -27,17 +27,15 @@ class ArraySorts {
      * @param n - Length of array
      */
     public static void insertionSortIterative(int a[], int begin, int n) {
-
-        /* Base case  - Do nothing */
+        return;
+        /* Base case  - Do nothing 
         if (n <= 1) {}
 
-        /* Otherwise begin iterative Insertion Sort */
         else
-            /* Begin at element 1, compare with previous element */
             for (int i = begin+1, x = 0; x < n-1; ++i, ++x)
 
-                /* Previous element bigger? Initiate shift */
                 if (a[i] < a[i-1]) Helpers.shift(a, i, begin);
+                */
     }
 
 
