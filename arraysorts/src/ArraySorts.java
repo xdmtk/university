@@ -17,9 +17,9 @@ class ArraySorts {
         UnitTests.execSort(UnitTests.SortMethod.QuickSort3, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.QuickSort4, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.QuickSort5, 101, 100, 2);
-        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort1, 101, 100, 2);
-        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort2, 101, 100, 2);
-        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort3, 101, 100, 2);
+        //UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort1, 101, 100, 2);
+//        UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort2, 101, 100, 2);
+ //       UnitTests.execSort(UnitTests.SortMethod.AlmostQuickSort3, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.InsertionSort, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.HeapSortBottomUp, 101, 100, 2);
         UnitTests.execSort(UnitTests.SortMethod.HeapSortTopDown, 101, 100, 2);
@@ -34,11 +34,19 @@ class ArraySorts {
      */
     public static void insertionSortIterative(int a[], int begin, int n) {
         if (n <= 1) {}
-
-        else
-            for (int i = begin+1, x = 0; x < n-1; ++i, ++x)
-
-                if (a[i] < a[i-1]) Helpers.shift(a, i, begin);
+        else {
+            try {
+                for (int i = begin+1, x = 0; x < n-1; ++i, ++x)
+                    if (a[i] < a[i-1]) Helpers.shift(a, i, begin);
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+                if (ArraySorts.debug) {
+                    System.out.println("Insertion sort failure.. Dumping current contents of array:");
+                    UnitTests.prettyPrintArray(a, a.length);
+                    System.out.println("Fatal error");
+                }
+            }
+        }
     }
 
 
@@ -570,7 +578,7 @@ class ArraySorts {
   //-----------------------------------------------AlmostQS1--------------------------------------------------------------
       //AQS#1 Driver method
       public static void AlmostQS1(int a[],int n,int cutoff){
-          AlmostQS1(a,0,n,2);
+          AlmostQS1(a,0,n,cutoff);
       }
       //AQS#1 Recursive method
       public static void AlmostQS1(int a[], int lf, int rt, int cutoff){
