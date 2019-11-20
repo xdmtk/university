@@ -27,15 +27,12 @@ class ArraySorts {
      * @param n - Length of array
      */
     public static void insertionSortIterative(int a[], int begin, int n) {
-        return;
-        /* Base case  - Do nothing 
         if (n <= 1) {}
 
         else
             for (int i = begin+1, x = 0; x < n-1; ++i, ++x)
 
                 if (a[i] < a[i-1]) Helpers.shift(a, i, begin);
-                */
     }
 
 
@@ -352,7 +349,7 @@ class ArraySorts {
     }
 
     /**
-     * Outside-in partitioning function. Random pivot is chosen, and left/right pointers
+     * Outside-in partitioning function. Static pivot is chosen, and left/right pointers
      * are moved successively from the outer bounds of the array, until they overlap,
      * swapping elements when greater/less conditions against the pivot are met.
      *
@@ -474,12 +471,198 @@ class ArraySorts {
 
 
 
+      public static void HeapSortBU(int a[], int n){
+         buildHeapBU(a,n);
+  
+         //2. Go through array while removing the largest value to be sorted
+         for( int i = n - 1;i > 0; --i){
+             Helpers.swap(a,0,i);
+             ArraySorts.trickleDown(a,0,i);
+         }
+     }
+     public static void buildHeapBU(int a[], int n){
+          for(int i = (n-1)/2; i >= 0; i--)
+              trickleDown(a,i,n);
+     }
+  
+     public static void trickleDown(int a[],int index, int n){
+
+          int trickleValue,rightChild,leftChild,largest;
+          trickleValue = a[index];
+          rightChild = (index*2)+2;
+          leftChild = (index*2)+1;
+          largest = largestChild(a,n-1,leftChild,rightChild);
+  
+          //1.Keep shifting until you reach a leaf or trickleValue is in the right place
+          while(largest < n && trickleValue < a[largest]){
+              //2. Shift largest child up to parent
+              a[(largest -1)/2] = a[largest];
+              //Get children and check
+              rightChild = (largest*2) + 2;
+              leftChild = (largest*2) + 1;
+              //Now find the next largest child
+              largest = largestChild(a,n-1,leftChild,rightChild);
+          }
+          //4.Since trickle value is greater then largest make it its parent
+          a[(largest-1)/2] = trickleValue;
+  
+     }
+      //Gets the largest child of parent
+      public static int largestChild(int a[], int n,int leftIndex, int rightIndex){
+          int largest = 0;
+          //1. If indexs are not out of bounds then find then the largest child
+          if(leftIndex <= n && rightIndex <= n){
+              if(a[leftIndex] > a[rightIndex])
+                  largest = leftIndex;
+              else
+                  largest = rightIndex;
+          }
+          //2.Its out of bounds so the only possible case is left index
+          else
+              largest = leftIndex;
+  
+          return largest;
+      }
 
 
 
-    public static void HeapSortBU(int a[], int n){
+      //--------------------------------------------Heap Sort TD-----------------------------------------------------------
+      //HSTD method
+      public static void HeapSortTD(int a[], int n){
+          //1. Build the heap top down
+          buildHeapTD(a,n);
+          //2.Go through array while removing the largest item to be sorted
+          for(int i = n -1;i >0; i--){
+              Helpers.swap(a,0,i);
+              ArraySorts.trickleDown(a,0,i);
+          }
+      }
+      //HSTD buildHeap method
+      public static void buildHeapTD(int a[], int n){
+          //1.Call trickle Up on the first node all the way to the last
+          for(int i = 0; i < n; i++)
+              trickleUp(a,i,n);
+      }
+     
+      public static void trickleUp(int a[],int index,int n){
+          int trickleValue,parent;
+          trickleValue = a[index];
+          parent = (index -1 )/2;
+          //1.If parent is greater than 0 and parent is less than trickle value by trickle up (shift parent down)
+          while(index > 0 && a[parent] < trickleValue){
+              a[index] = a[parent];
+              parent = (parent -1)/2;
+              index = (index -1)/2;
+          }
+          //2.
+          if(a[index] != trickleValue)
+          a[index] = trickleValue;
+  
+      }
 
-    }
+
+  //-----------------------------------------------AlmostQS1--------------------------------------------------------------
+      //AQS#1 Driver method
+      public static void AlmostQS1(int a[],int n,int cutoff){
+          AlmostQS1(a,0,n,2);
+      }
+      //AQS#1 Recursive method
+      public static void AlmostQS1(int a[], int lf, int rt, int cutoff){
+        int pivotIndex,sum;
+          pair mid;
+  
+          //1. While the partition is bigger then the cutoff
+          while(rt - lf >= cutoff) {
+  
+              //2. Get pivot point and then call outside-in partition
+              pivotIndex = randomGenerator(lf,rt-1);
+              mid = partitionOi(a, lf, rt-1, pivotIndex);
+  
+              //3.Recursively call AQS#1 on the smaller of the 2 partitions
+              if ((mid.getRight() - lf) < (rt - mid.getLeft())){
+                  AlmostQS1(a,lf,mid.getLeft(),cutoff);
+                  lf = mid.getRight();
+              }
+              else{
+                  AlmostQS1(a,mid.getRight(),rt,cutoff);
+                  rt = mid.getLeft();
+              }
+          }
+      }
+  //-----------------------------------------------AlmostQS2--------------------------------------------------------------
+      //AQS#2 Driver method
+      public static void AlmostQS2(int a[],int n,int cutoff){
+          AlmostQS2(a,0,n,cutoff);
+      }
+      //AQS#2 Recursive method
+      public static void AlmostQS2(int a[],int lf, int rt, int cutoff){
+          int mid,pivot;
+  
+          //1.While the partition is bigger then the cutoff
+          while(rt - lf >= cutoff){
+  
+              //2.Get pivot point and call left to right parition method
+              pivot = randomGenerator(lf,rt-1);
+              mid = partitionLR(a,lf,rt-1,pivot);
+  
+              //3. Recursively call AQS#2 on the smaller partition
+              if((mid - lf) < (rt - mid)){
+                  AlmostQS2(a,lf,mid,cutoff);
+                  lf = mid + 1;
+              }
+              else{
+                  AlmostQS2(a,mid,rt,cutoff);
+                  rt = mid ;
+              }
+          }
+      }
+  //------------------------------------------------AlmostQS3-------------------------------------------------------------
+      //AQS#3 Driver method
+       public static void AlmostQS3(int a[], int n,int cutoff){
+          AlmostQS3(a,0,n,cutoff);
+      }
+      //AQS#3 Recursive method
+      public static void AlmostQS3(int a[], int lf, int rt, int cutoff){
+          int leftPartition,middlePartition,rightPartition,pivotIndex,pivotIndex2;
+          pair mid;
+  
+          //1.While the partition is bigger then the cutoff
+          while(rt - lf >= cutoff){
+  
+              //1.Get pivot points and place them in there correct positions
+              pivotIndex = randomGenerator(lf,rt-1);
+              swap(a,pivotIndex,lf);
+              pivotIndex2 = randomGenerator(lf+1,rt-1);
+              Helpers.swap(a,pivotIndex2,rt-1);
+              if(a[lf] > a[rt-1])
+                  Helpers.swap(a,lf,rt-1);
+  
+              //2.Get the mid point and then calculate the different partition sizes
+              mid = partition3(a,lf,rt-1);
+              leftPartition = mid.getLeft() - lf;
+              middlePartition = mid.getRight() - mid.getLeft();
+              rightPartition = rt - mid.getRight();
+  
+              //1. Case leftPartition is smallest
+              if(leftPartition < middlePartition && leftPartition < rightPartition){
+                  AlmostQS3(a,lf,mid.getLeft(),cutoff);
+                  lf = mid.getLeft() + 1;
+              }
+              //2. Case middlePartition is smallest
+              else if(middlePartition < rightPartition){
+                  AlmostQS3(a,mid.getLeft(),mid.getRight(),cutoff);
+              }
+              //3. Case rightPartition is smallest
+              else{
+                  AlmostQS3(a,mid.getRight(),rt,cutoff);
+                  rt = mid.getRight() ;
+              }
+          }
+      }
+
+
+
+
 
     public static String myName () {
         return "Nicholas Martinez";
@@ -544,7 +727,11 @@ class Helpers {
 class UnitTests {
 
     public static enum SortMethod {
-        QuickSort1, QuickSort2, QuickSort3, QuickSort4, QuickSort5
+        QuickSort1, QuickSort2, QuickSort3, QuickSort4, 
+        QuickSort5, InsertionSort, HeapSortBottomUp,
+        HeapSortTopDown, AlmostQuickSort1, AlmostQuickSort2,
+        AlmostQuickSort3;
+
     };
 
     public static int[] generateRandomDataSet(int n, int lim) {
