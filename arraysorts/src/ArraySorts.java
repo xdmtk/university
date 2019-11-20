@@ -1,13 +1,11 @@
 
-import javax.swing.*;
-import java.math.*;
 import java.util.Random;
-import java.util.Stack;
 
 class ArraySorts {
     public static boolean debug = false;
     public static boolean partitions = false;
     public static boolean printArray = true;
+    public static boolean overflow = false;
 
 
 
@@ -367,12 +365,12 @@ class ArraySorts {
 
 
 
-    /** QuickSort1 Driver */
+    /** QuickSort4 Driver */
     public static void QuickSort4(int a[], int n, int cutoff) {
         QuickSort4(a, 0, n-1, cutoff);
     }
 
-    /** Quicksort1 recursive method */
+    /** Quicksort4 recursive method */
     private static void QuickSort4(int a[], int left, int right, int cutoff) {
 
         pair pivotIndex;
@@ -449,10 +447,18 @@ class ArraySorts {
 
 
 
+
+
+
+
+
+
+    /** QuickSort5 Driver */
     public static void QuickSort5(int[] a, int n, int cutoff) {
         QuickSort5(a, 0, n-1, cutoff);
     }
 
+    /** QuickSort5 Recursive Method */
     private static void QuickSort5(int[] a, int left, int right, int cutoff) {
         pair pivotIndex;
 
@@ -473,6 +479,19 @@ class ArraySorts {
 
     }
 
+    /**
+     * Left to Right partitioning function. One static pivot is chosen, pivot is moved to the first element.
+     * Then a partition divider pointer moves along the array, and gets advanced for each
+     * element that is less than the pivot element. When an element is greater than the pivot
+     * the firstUnknown pointer advances without any swaps to the less than partition
+     *
+     * @param a - Array to operate on
+     * @param left - Left index of array slice
+     * @param right - Right index of array slice
+     *
+     * @return - pair - New pair of the modified left/right indices, with 'right' as the
+     * outer bound of the left partition, and 'left' as the beginning index for the right partition
+     */
     private static pair partitionLeftRightOneStaticPivot(int[] a, int left, int right) {
 
         int pivot, firstUknownIndex, smallPartitionLimit = left;
@@ -516,200 +535,182 @@ class ArraySorts {
 
 
 
-      public static void HeapSortBU(int a[], int n){
-         buildHeapBU(a,n);
-  
-         //2. Go through array while removing the largest value to be sorted
-         for( int i = n - 1;i > 0; --i){
-             Helpers.swap(a,0,i);
-             ArraySorts.trickleDown(a,0,i);
-         }
-     }
-     public static void buildHeapBU(int a[], int n){
-          for(int i = (n-1)/2; i >= 0; i--)
-              trickleDown(a,i,n);
-     }
-  
-     public static void trickleDown(int a[],int index, int n){
+    public static void HeapSortBU(int a[], int n){
 
-          int trickleValue,rightChild,leftChild,largest;
-          trickleValue = a[index];
-          rightChild = (index*2)+2;
-          leftChild = (index*2)+1;
-          largest = largestChild(a,n-1,leftChild,rightChild);
-  
-          //1.Keep shifting until you reach a leaf or trickleValue is in the right place
-          while(largest < n && trickleValue < a[largest]){
-              //2. Shift largest child up to parent
-              a[(largest -1)/2] = a[largest];
-              //Get children and check
-              rightChild = (largest*2) + 2;
-              leftChild = (largest*2) + 1;
-              //Now find the next largest child
-              largest = largestChild(a,n-1,leftChild,rightChild);
-          }
-          //4.Since trickle value is greater then largest make it its parent
-          a[(largest-1)/2] = trickleValue;
-  
-     }
-      //Gets the largest child of parent
-      public static int largestChild(int a[], int n,int leftIndex, int rightIndex){
-          int largest = 0;
-          //1. If indexs are not out of bounds then find then the largest child
-          if(leftIndex <= n && rightIndex <= n){
-              if(a[leftIndex] > a[rightIndex])
-                  largest = leftIndex;
-              else
-                  largest = rightIndex;
-          }
-          //2.Its out of bounds so the only possible case is left index
-          else
-              largest = leftIndex;
-  
-          return largest;
-      }
+        heapifyBottomUp(a,n);
+        for( int i = n - 1;i > 0; --i){
+            Helpers.swap(a,0,i);
+            ArraySorts.trickleDown(a,0,i);
+        }
+    }
+    public static void heapifyBottomUp(int[] a, int n){
+
+        for (int i = (n-1)/2; i >= 0; --i)
+            trickleDown(a,i,n);
+    }
+
+    public static void trickleDown(int a[],int index, int n){
+
+        int trickleVal, right, left, max;
+
+        trickleVal = a[index];
+        right = (index*2)+2;
+        left = (index*2)+1;
+        max = getLargestChild(a,n-1,left,right);
+
+        while(max < n && trickleVal < a[max]){
+            a[(max -1)/2] = a[max];
+            right = (max*2) + 2;
+            left = (max*2) + 1;
+            max = getLargestChild(a,n-1,left,right);
+        }
+        a[(max-1)/2] = trickleVal;
+
+    }
+
+
+    public static int getLargestChild(int[] a, int n, int left, int right){
+        int max = 0;
+        if(left <= n && right <= n){
+            if(a[left] > a[right])
+                max = left;
+            else
+                max = right;
+        }
+        else
+            max = left;
+
+        return max;
+    }
 
 
 
-      //--------------------------------------------Heap Sort TD-----------------------------------------------------------
-      //HSTD method
-      public static void HeapSortTD(int a[], int n){
-          //1. Build the heap top down
-          buildHeapTD(a,n);
-          //2.Go through array while removing the largest item to be sorted
-          for(int i = n -1;i >0; i--){
-              Helpers.swap(a,0,i);
-              ArraySorts.trickleDown(a,0,i);
-          }
-      }
-      //HSTD buildHeap method
-      public static void buildHeapTD(int a[], int n){
-          //1.Call trickle Up on the first node all the way to the last
-          for(int i = 0; i < n; i++)
-              trickleUp(a,i,n);
-      }
-     
-      public static void trickleUp(int a[],int index,int n){
-          int trickleValue,parent;
-          trickleValue = a[index];
-          parent = (index -1 )/2;
-          //1.If parent is greater than 0 and parent is less than trickle value by trickle up (shift parent down)
-          while(index > 0 && a[parent] < trickleValue){
-              a[index] = a[parent];
-              parent = (parent -1)/2;
-              index = (index -1)/2;
-          }
-          //2.
-          if(a[index] != trickleValue)
-          a[index] = trickleValue;
-  
-      }
+    public static void HeapSortTD(int a[], int n){
+        heapifyTopDown(a,n);
+        for(int i = n -1;i >0; i--){
+            Helpers.swap(a,0,i);
+            ArraySorts.trickleDown(a,0,i);
+        }
+    }
+
+    public static void heapifyTopDown(int[] a, int n){
+        for(int i = 0; i < n; i++)
+            trickleUp(a,i,n);
+    }
+
+    public static void trickleUp(int a[],int index, int n){
+
+        int trickleValue,parent;
+        trickleValue = a[index];
+        parent = (index -1 )/2;
+
+        while(index > 0 && a[parent] < trickleValue){
+            a[index] = a[parent];
+            parent = (parent -1)/2;
+            index = (index -1)/2;
+        }
+        //2.
+        if(a[index] != trickleValue)
+            a[index] = trickleValue;
+
+    }
 
 
-  //-----------------------------------------------AlmostQS1--------------------------------------------------------------
-      //AQS#1 Driver method
-      public static void AlmostQS1(int a[],int n,int cutoff){
-          AlmostQS1(a,0,n,cutoff);
-      }
-      //AQS#1 Recursive method
-      public static void AlmostQS1(int a[], int lf, int rt, int cutoff){
-        int pivotIndex,sum;
-          pair mid;
-  
-          //1. While the partition is bigger then the cutoff
-          while(rt - lf >= cutoff) {
-  
-              mid = partitionOutsideIn(a, lf, rt-1);
-  
-              //3.Recursively call AQS#1 on the smaller of the 2 partitions
-              if ((mid.getRight() - lf) < (rt - mid.getLeft())){
-                  AlmostQS1(a,lf,mid.getLeft(),cutoff);
-                  lf = mid.getRight();
-              }
-              else{
-                  AlmostQS1(a,mid.getRight(),rt,cutoff);
-                  rt = mid.getLeft();
-              }
-          }
-      }
-  //-----------------------------------------------AlmostQS2--------------------------------------------------------------
-      //AQS#2 Driver method
-      public static void AlmostQS2(int a[],int n,int cutoff){
-          AlmostQS2(a,0,n,cutoff);
-      }
-      //AQS#2 Recursive method
-      public static void AlmostQS2(int a[],int lf, int rt, int cutoff){
+    /**
+     * NOTE: Because of a fundamental error in previous Quicksort implementations,
+     * namely that of handling arrays with many similar values, commenting out insertion sort
+     * during the inevitable handling of stackoverflow results in an infinite loop of
+     * continuously abusing the stack -> unwinding the stack.
+     *
+     * Fully understanding this is in no way correct, to get this program to at the very least not stall
+     * up the test program, an 'Overflow' flag was utilized and essentially alerts AlmostQS that
+     * more partitioning cannot be achieved without overflowing the stack, but because the cutoff might
+     * never be reached the base case now includes the activation of the overflow flag, to avoid infinitely
+     * looping.
+     *
+     * Sorry about that...
+     */
+
+
+
+    /** AlmostQuickSort1 Driver */
+    public static void AlmostQS1(int a[],int n,int cutoff){
+        AlmostQS1(a,0,n,cutoff);
+        if (ArraySorts.overflow)
+            ArraySorts.overflow = false;
+    }
+    /** AlmostQuickSort1 Recursive Method*/
+    public static void AlmostQS1(int a[], int left, int right, int cutoff){
           pair pivotIndex;
-  
-          //1.While the partition is bigger then the cutoff
-          while(rt - lf >= cutoff){
-  
-              //2.Get pivot point and call left to right parition method
-              pivotIndex =  partitionLeftRightOneRandomPivot(a,lf,rt-1);
-  
-              //3. Recursively call AQS#2 on the smaller partition
-              if((pivotIndex.getRight() - lf) < (rt - pivotIndex.getLeft())){
-                  AlmostQS2(a,lf,pivotIndex.getLeft(),cutoff);
-                  lf = pivotIndex.getRight();
+
+          if (right - left < cutoff || ArraySorts.overflow) {
+          }
+          else  {
+              try {
+                  pivotIndex = partitionOutsideIn(a, left, right);
+                  AlmostQS1(a, left, pivotIndex.getRight(), cutoff);
+
+                  // TODO: Optimize this into a while loop
+                  AlmostQS1(a, pivotIndex.getLeft(), right, cutoff);
               }
-              else{
-                  AlmostQS2(a,pivotIndex.getRight(),rt,cutoff);
-                  rt = pivotIndex.getLeft();
+              catch (StackOverflowError e) {
+                    ArraySorts.overflow = true;
               }
           }
       }
-  //------------------------------------------------AlmostQS3-------------------------------------------------------------
-      //AQS#3 Driver method
-       public static void AlmostQS3(int a[], int n,int cutoff){
-          AlmostQS3(a,0,n,cutoff);
-      }
-      //AQS#3 Recursive method
-      public static void AlmostQS3(int a[], int lf, int rt, int cutoff){
-          int leftPartition,middlePartition,rightPartition,pivotIndex,pivotIndex2;
-          pair mid;
-          Random randomGen;
-  
-          //1.While the partition is bigger then the cutoff
-          while(rt - lf >= cutoff){
 
+    /** AlmostQuickSort2 Driver */
+    public static void AlmostQS2(int a[],int n,int cutoff){
+        AlmostQS2(a,0,n,cutoff);
+        if (ArraySorts.overflow)
+            ArraySorts.overflow = false;
+    }
+    /** AlmostQuickSort2 Recursive Method*/
+    public static void AlmostQS2(int a[],int left, int right, int cutoff){
+        pair pivotIndex;
 
-              randomGen = new Random();
-              /* Get the pivot by generating a random index within the bounds of right - left,
-               * then add left as the base index for the chosen random value  */
-              pivotIndex = a[pivotIndex = (lf + randomGen.nextInt(rt - lf))];
-              //1.Get pivot points and place them in there correct positions
-              Helpers.swap(a,pivotIndex,lf);
+        if (right - left < cutoff) {}
+        else  {
+            try {
+                pivotIndex = partitionLeftRightOneRandomPivot(a, left, right);
+                AlmostQS2(a, left, pivotIndex.getRight(), cutoff);
 
-              /* Dont choose the same pivot */
-              while ((pivotIndex2 = a[pivotIndex = (lf + randomGen.nextInt(rt - lf))]) != pivotIndex)
-                    pivotIndex2 = pivotIndex2;
+                // TODO: Optimize this into a while loop
+                AlmostQS2(a, pivotIndex.getLeft(), right, cutoff);
+            }
+            catch (StackOverflowError e){
+                ArraySorts.overflow = true;
+            }
+        }
 
-              Helpers.swap(a,pivotIndex2,rt-1);
-              if(a[lf] > a[rt-1])
-                  Helpers.swap(a,lf,rt-1);
+    }
+    /** AlmostQuickSort3 Driver */
+    public static void AlmostQS3(int a[], int n,int cutoff){
+        AlmostQS3(a, 0, n, cutoff);
+        if (ArraySorts.overflow)
+            ArraySorts.overflow = false;
+    }
+    /** AlmostQuickSort3 Recursive Method */
+    public static void AlmostQS3(int a[], int left, int right, int cutoff){
 
-              //2.Get the mid point and then calculate the different partition sizes
-              mid = partitionLeftRightTwoRandomPivots(a,lf,rt-1);
-              leftPartition = mid.getLeft() - lf;
-              middlePartition = mid.getRight() - mid.getLeft();
-              rightPartition = rt - mid.getRight();
-  
-              //1. Case leftPartition is smallest
-              if(leftPartition < middlePartition && leftPartition < rightPartition){
-                  AlmostQS3(a,lf,mid.getLeft(),cutoff);
-                  lf = mid.getLeft() + 1;
-              }
-              //2. Case middlePartition is smallest
-              else if(middlePartition < rightPartition){
-                  AlmostQS3(a,mid.getLeft(),mid.getRight(),cutoff);
-              }
-              //3. Case rightPartition is smallest
-              else{
-                  AlmostQS3(a,mid.getRight(),rt,cutoff);
-                  rt = mid.getRight() ;
-              }
-          }
-      }
+        pair pivotIndex;
+
+        if (right - left < cutoff) {}
+        else  {
+            try {
+                pivotIndex = partitionLeftRightTwoRandomPivots(a, left, right);
+                AlmostQS3(a, left, pivotIndex.getLeft(), cutoff);
+                AlmostQS3(a, pivotIndex.getLeft(), pivotIndex.getRight(), cutoff);
+
+                // TODO: Optimize this into a while loop
+                AlmostQS3(a, pivotIndex.getRight(), right, cutoff);
+            }
+            catch (StackOverflowError e) {
+                ArraySorts.overflow = true;
+            }
+        }
+
+    }
 
 
 
@@ -782,7 +783,6 @@ class UnitTests {
         QuickSort5, InsertionSort, HeapSortBottomUp,
         HeapSortTopDown, AlmostQuickSort1, AlmostQuickSort2,
         AlmostQuickSort3;
-
     };
 
     public static int[] generateRandomDataSet(int n, int lim) {
