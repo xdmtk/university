@@ -14,10 +14,11 @@
 #include <string.h>
 #define _spc_ "\n\n"
 #define _err_ "\n\n*** Error - "
-#define MAIN_MEM_ERR 0
+#define MEM_SIZE_ERR 0
 #define BLOCK_SIZE_ERR 1
 #define CACHE_SIZE_ERR 2
 #define BLOCK_CACHE_ERR 3
+#define PARAMS_OK 4
 #define true 1
 #define false 0
 
@@ -43,7 +44,7 @@ void enter_params(struct state *st);
 
 /* Helper functions */
 int scan_args(struct state *st);
-
+int is_pow2(int num);
 
 
 
@@ -58,7 +59,7 @@ int main(void) {
 
 
 
-
+/* Parameter entry function */
 void enter_params(struct state *st) {
     
     int i, error_code;
@@ -85,21 +86,43 @@ void enter_params(struct state *st) {
     
     /* scan_args() returns with index of appropriate error code if errors are 
      * found with input parameters */
-    if ((error_code = scan_args(st)) < (int)(sizeof(errors)/sizeof(char *)))
+    if ((error_code = scan_args(st)) != PARAMS_OK)
         printf("%s", errors[error_code]);
     
     /* If error code was set, parameters were not initialized. Do not allow further
      * menu options unless parameters are correctly initialized */
-    st->params->initialzied = error_code < (int)(sizeof(errors)/sizeof(char *)) ? true : false;
+    st->params->initialzied = error_code == PARAMS_OK ? true : false;
 }
 
+
+/* Parameter validation function */
 int scan_args(struct state * st) {
-
-
-
-    return 
+    
+    if (is_pow2(st->params->block_size) || !st->params->block_size)
+        return BLOCK_SIZE_ERR;
+    if (is_pow2(st->params->cache_size) || !st->params->cache_size)
+        return CACHE_SIZE_ERR;
+    if (is_pow2(st->params->mem_size) || !st->params->mem_size)
+        return MEM_SIZE_ERR;;
+    if (st->params->block_size > st->params->cache_size)
+        return BLOCK_CACHE_ERR;;
+    return PARAMS_OK;
 }
 
+
+/* Determines whether given integer is a power of 2 */
+int is_pow2(int num) {
+
+    int i, bit_count;
+
+    /* Take advantage of the fact that all integers that are a power of 2
+     * will have exactly 1 non-zero bit, so shift and AND consecutively to
+     * count the total 1-bits.*/
+    for (i = 0, bit_count = 0; i < 32; ++i)
+       bit_count += ((num >> i) & 0x1);
+    
+    return bit_count == 1;
+}
 
 
 
