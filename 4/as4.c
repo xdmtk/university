@@ -59,8 +59,8 @@ void read_from_cache(struct state *st);
 
 /* Helper functions */
 int scan_args(struct state *st);
+void initialize_cache(struct state *st);
 int is_pow2(int num);
-
 
 
 
@@ -121,11 +121,12 @@ void enter_params(struct state *st) {
 
     /* Clear out all existing params on new/re-entry */
     free(st->params);
+    st->params = (struct program_meta *) malloc(sizeof(struct program_meta));
     
     /* Output prompts and input parameters */
     for (i = 0; i < (int)(sizeof(items)/sizeof(char *)); ++i) {
         printf("%s", items[i]);
-        scanf("%d", (int *)&st->params+(sizeof(int)*i));
+        scanf("%d", (int *)st->params+(sizeof(int)*i));
     }
     
     /* scan_args() returns with index of appropriate error code if errors are 
@@ -136,18 +137,20 @@ void enter_params(struct state *st) {
     /* If error code was set, parameters were not initialized. Do not allow further
      * menu options unless parameters are correctly initialized */
     st->params->initialzied = error_code == PARAMS_OK ? true : false;
+    if (st->params->initialzied)
+        initialize_cache(st);
 }
 
 
 /* Parameter validation function */
 int scan_args(struct state * st) {
     
-    if (is_pow2(st->params->block_size))
-        return BLOCK_SIZE_ERR;
-    if (is_pow2(st->params->cache_size))
-        return CACHE_SIZE_ERR;
-    if (is_pow2(st->params->mem_size))
+    if (!is_pow2(st->params->mem_size))
         return MEM_SIZE_ERR;;
+    if (!is_pow2(st->params->cache_size))
+        return CACHE_SIZE_ERR;
+    if (!is_pow2(st->params->block_size))
+        return BLOCK_SIZE_ERR;
     if (st->params->block_size > st->params->cache_size)
         return BLOCK_CACHE_ERR;;
     return PARAMS_OK;
@@ -165,17 +168,21 @@ int is_pow2(int num) {
     for (i = 0, bit_count = 0; i < 32; ++i)
        bit_count += ((num >> i) & 0x1);
 
-    
     return bit_count == 1 && (num > 1);
 }
 
 
 void initialize_cache(struct state *st) {
     
+    int i;
+
+    /* Allocate main memory and cache */
     st->memory = (int *) malloc(sizeof(int)*st->params->mem_size);
-    st->cache->blocks
-
-
+    st->cache->blocks = (struct cache_block *) malloc(sizeof(struct cache_block)*st->params->cache_size);
+    
+    /* Initialize main memory */
+    for (i = 0; i < st->params->mem_size; ++i)
+         st->memory[i] = st->params->mem_size - i;
 
 }
 
@@ -220,7 +227,7 @@ int show_menu(void) {
     };
     
     /* Output menu choices */ 
-    for (i=0; i<sizeof(items)/sizeof(char *); i++) printf("%s",items[i]);
+    for (i=0; i<(int)(sizeof(items)/sizeof(char *)); i++) printf("%s",items[i]);
     
     /* Get choice selection from input */
     if (scanf("%d", &input) >= 0) return input;
