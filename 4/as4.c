@@ -22,15 +22,29 @@
 #define true 1
 #define false 0
 
-/* State struct to pass around function calls, simplifies parameter entry */
-struct state {
-    struct program_meta * params;
-};
+
 
 struct program_meta {
     int mem_size, cache_size, block_size;
     unsigned char initialzied;
 };
+
+struct program_cache {
+    struct cache_block * blocks;
+};
+
+struct cache_block {
+    int tag;
+    int * line_block;
+};
+
+/* State struct to pass around function calls, simplifies parameter entry */
+struct state {
+    struct program_meta * params;
+    struct program_cache * cache;
+    int * memory;
+};
+
 
 
 
@@ -41,6 +55,7 @@ void exit_program(struct state *st);
 
 /* Core functions */
 void enter_params(struct state *st);
+void read_from_cache(struct state *st);
 
 /* Helper functions */
 int scan_args(struct state *st);
@@ -54,6 +69,35 @@ int main(void) {
     st->params = (struct program_meta *)malloc(sizeof(struct program_meta *));
     handle_selection(show_menu(), st);
 }
+
+
+
+void read_from_cache(struct state *st) {
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -98,11 +142,11 @@ void enter_params(struct state *st) {
 /* Parameter validation function */
 int scan_args(struct state * st) {
     
-    if (is_pow2(st->params->block_size) || !st->params->block_size)
+    if (is_pow2(st->params->block_size))
         return BLOCK_SIZE_ERR;
-    if (is_pow2(st->params->cache_size) || !st->params->cache_size)
+    if (is_pow2(st->params->cache_size))
         return CACHE_SIZE_ERR;
-    if (is_pow2(st->params->mem_size) || !st->params->mem_size)
+    if (is_pow2(st->params->mem_size))
         return MEM_SIZE_ERR;;
     if (st->params->block_size > st->params->cache_size)
         return BLOCK_CACHE_ERR;;
@@ -120,11 +164,20 @@ int is_pow2(int num) {
      * count the total 1-bits.*/
     for (i = 0, bit_count = 0; i < 32; ++i)
        bit_count += ((num >> i) & 0x1);
+
     
-    return bit_count == 1;
+    return bit_count == 1 && (num > 1);
 }
 
 
+void initialize_cache(struct state *st) {
+    
+    st->memory = (int *) malloc(sizeof(int)*st->params->mem_size);
+    st->cache->blocks
+
+
+
+}
 
 
 
@@ -147,6 +200,8 @@ int is_pow2(int num) {
 
 /* Input handler for menu selections */
 void handle_selection(int selection, struct state * st) {
+    if (selection == 1) enter_params(st);
+    if (selection == 2) enter_params(st);
     if (selection == 3) exit_program(st);
     return;
 }
