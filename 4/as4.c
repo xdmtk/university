@@ -51,6 +51,7 @@ struct state {
 /* Menu functions */
 int show_menu(void);
 void handle_selection(int, struct state *); 
+void free_prg_mem(struct state *st);
 void exit_program(struct state *st);
 
 /* Core functions */
@@ -178,12 +179,18 @@ void initialize_cache(struct state *st) {
 
     /* Allocate main memory and cache */
     st->memory = (int *) malloc(sizeof(int)*st->params->mem_size);
+    st->cache = (struct program_cache *) malloc(sizeof(struct program_cache *));
     st->cache->blocks = (struct cache_block *) malloc(sizeof(struct cache_block)*st->params->cache_size);
     
     /* Initialize main memory */
     for (i = 0; i < st->params->mem_size; ++i)
          st->memory[i] = st->params->mem_size - i;
-
+    
+    /* Initialize cache memory */
+    for (i = 0; i < st->params->cache_size; ++i) {
+        st->cache->blocks[i].tag = -1;
+        st->cache->blocks[i].line_block = NULL;
+    }
 }
 
 
@@ -234,8 +241,27 @@ int show_menu(void) {
     else return 0;
 }
 
+void free_prg_mem(struct state *st) {
+
+    int i; 
+    /* Free main memory */
+    free(st->memory);
+    
+    /* Free cache line blocks */
+    for (i = 0; i < st->params->cache_size; ++i)
+        free(st->cache->blocks[i].line_block);
+    
+    /* Free cache blocks */
+    free(st->cache->blocks);
+
+    /* Free cache */
+    free(st->cache);
+    
+}
+
 void exit_program(struct state *st) {
     
+    free_prg_mem(st);
     printf(_spc_"*** Memory Freed Up - Program Terminated Normally");
     exit(0);
 }
