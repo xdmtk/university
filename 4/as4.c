@@ -82,10 +82,11 @@ int main(void) {
 /* Write Cache Function */
 void write_to_cache(struct state *st) {
     
-    int index, tag, write_addr, hit;
+    int index, tag, write_addr, hit, val;
     char * items[] = {
         _spc_"Enter Main Memory Address to Write:",
-        _msg_"Cache hit"
+        _msg_"Cache hit",
+        _spc_"Enter Value to Write",
     };
     char * errors[] = {
         _err_"Write Miss - First Load Block from Memory",
@@ -95,6 +96,8 @@ void write_to_cache(struct state *st) {
     /* Input/Output */
     printf("%s", items[0]);
     scanf("%d", &write_addr);
+    printf("%s", items[2]);
+    scanf("%d", &val);
     
     /* Validate read address */
     if (write_addr > st->params->mem_size) {
@@ -110,13 +113,18 @@ void write_to_cache(struct state *st) {
     printf("%s", (hit = (st->cache->blocks[index].tag == 
             tag )) ? items[CACHE_HIT] : errors[write_addr]);
     
-    /* On Read-Miss, free existing line block, allocate new lineblock of specified BS */
+    /* On Write-Miss, free existing line block, allocate new lineblock of specified BS */
     if (!hit) {
         free(st->cache->blocks[index].line_block);
         st->cache->blocks[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
 
-        /* Copy data from main memory of block size spec, update tag */
-        memcpy(st->cache->blocks[index].line_block, &st->memory[write_addr], st->params->block_size);
+        /* Write data from val to cache */
+        memcpy(st->cache->blocks[index].line_block, &val, sizeof(val));
+        
+        /* Write-through to memory */
+        memcpy(&st->memory[index], &val, sizeof(val));
+
+        /* Update tag */
         st->cache->blocks[index].tag = tag;
     }
     
@@ -211,12 +219,13 @@ void enter_params(struct state *st) {
         _spc_"Enter main memory size (words):",
         _spc_"Enter cache size (words):",
         _spc_"Enter block size (words/block):",
+        _msg_"All Input Parameters Accepted. Starting to Process Write/Read Requests"
     };
     char * errors[] = {
         _err_"Main Memory Size is not a Power of 2",
         _err_"Block Size is not a Power of 2",
         _err_"Cache Size is not a Power of 2",
-        _err_"Block size is larger than cache size"
+        _err_"Block size is Larger than Cache Size"
     };
 
     /* Clear out all existing params on new/re-entry */
@@ -239,8 +248,10 @@ void enter_params(struct state *st) {
     /* If error code was set, parameters were not initialized. Do not allow further
      * menu options unless parameters are correctly initialized */
     st->params->initialzied = error_code == PARAMS_OK ? true : false;
-    if (st->params->initialzied)
+    if (st->params->initialzied) {
         initialize_cache(st);
+        printf("%s", items[PARAMS_OK-1]);
+    }
 }
 
 
