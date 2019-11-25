@@ -19,9 +19,9 @@
 #define BLOCK_SIZE_ERR 1
 #define CACHE_SIZE_ERR 2
 #define BLOCK_CACHE_ERR 3
-#define READ_ADDR_EXCEED 0
-#define READ_MISS 1
-#define CACHE_HIT 2
+#define READ_MISS 0
+#define READ_ADDR_EXCEED 1
+#define CACHE_HIT 1
 #define PARAMS_OK 4
 #define true 1
 #define false 0
@@ -30,7 +30,7 @@
 
 struct program_meta {
     int mem_size, cache_size, block_size;
-    unsigned char initialzied;
+    unsigned char initialzied, tag_bit_pos;
 };
 
 struct program_cache {
@@ -73,7 +73,7 @@ void form_content_msg(int word, int line, int tag, int val);
 int main(void) {
     struct state * st = (struct state *)malloc(sizeof(struct state *));
     st->params = (struct program_meta *)malloc(sizeof(struct program_meta *));
-    handle_selection(show_menu(), st);
+    while (true) handle_selection(show_menu(), st);
 }
 
 
@@ -89,13 +89,13 @@ int main(void) {
 
 void read_from_cache(struct state *st) {
     
-    int i, read_addr;
+    int index, tag, read_addr, hit;
     char * items[] = {
         _spc_"Enter Main Memory Address to Read:",
-        _msg_"Read Miss - First Load Block from Memory",
         _msg_"Cache hit"
     };
     char * errors[] = {
+        _err_"Read Miss - First Load Block from Memory",
         _err_"Read Address Exceeds Memory Address Space",
     };
     
@@ -108,6 +108,22 @@ void read_from_cache(struct state *st) {
         printf("%s", errors[READ_ADDR_EXCEED]);
         return;
     }
+    
+    /* Find cache index to read cache contents */
+    index = read_addr % st->params->cache_size;
+    tag = read_addr >> st->params->tag_bit_pos;
+    
+    /* Print hit or miss depending on tag match */
+    printf("%s", (hit = (st->cache->blocks[index].tag == 
+            (read_addr >> st->params->tag_bit_pos))) ? 
+            items[CACHE_HIT] : errors[READ_MISS]);
+    
+
+    //if (!hit) {
+
+
+    
+
 
 
 
@@ -164,10 +180,12 @@ void enter_params(struct state *st) {
     st->params = (struct program_meta *) malloc(sizeof(struct program_meta));
     
     /* Output prompts and input parameters */
-    for (i = 0; i < (int)(sizeof(items)/sizeof(char *)); ++i) {
-        printf("%s", items[i]);
-        scanf("%d", (int *)st->params+(sizeof(int)*i));
-    }
+    printf("%s", items[0]);
+    scanf("%d", &st->params->mem_size);
+    printf("%s", items[1]);
+    scanf("%d", &st->params->cache_size);
+    printf("%s", items[2]);
+    scanf("%d", &st->params->block_size);
     
     /* scan_args() returns with index of appropriate error code if errors are 
      * found with input parameters */
@@ -230,6 +248,11 @@ void initialize_cache(struct state *st) {
         st->cache->blocks[i].tag = -1;
         st->cache->blocks[i].line_block = NULL;
     }
+    
+    /* Determine shift amount for tag bits based on cache size */
+    for (i = 0; i < 32 && (((st->params->cache_size >> i) & 0x1) == 0x0); ++i)
+        ++st->params->tag_bit_pos;
+    ++st->params->tag_bit_pos;
 }
 
 
