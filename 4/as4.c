@@ -13,11 +13,15 @@
 #include <stdlib.h>
 #include <string.h>
 #define _spc_ "\n\n"
+#define _msg_ "\n\n*** "
 #define _err_ "\n\n*** Error - "
 #define MEM_SIZE_ERR 0
 #define BLOCK_SIZE_ERR 1
 #define CACHE_SIZE_ERR 2
 #define BLOCK_CACHE_ERR 3
+#define READ_ADDR_EXCEED 0
+#define READ_MISS 1
+#define CACHE_HIT 2
 #define PARAMS_OK 4
 #define true 1
 #define false 0
@@ -60,8 +64,9 @@ void read_from_cache(struct state *st);
 
 /* Helper functions */
 int scan_args(struct state *st);
-void initialize_cache(struct state *st);
 int is_pow2(int num);
+void initialize_cache(struct state *st);
+void form_content_msg(int word, int line, int tag, int val);
 
 
 
@@ -73,14 +78,48 @@ int main(void) {
 
 
 
+
+
+
+
+
+
+
+
+
 void read_from_cache(struct state *st) {
+    
+    int i, read_addr;
+    char * items[] = {
+        _spc_"Enter Main Memory Address to Read:",
+        _msg_"Read Miss - First Load Block from Memory",
+        _msg_"Cache hit"
+    };
+    char * errors[] = {
+        _err_"Read Address Exceeds Memory Address Space",
+    };
+    
+    /* Input/Output */
+    printf("%s", items[0]);
+    scanf("%d", &read_addr);
+    
+    /* Validate read address */
+    if (read_addr > st->params->mem_size) {
+        printf("%s", errors[READ_ADDR_EXCEED]);
+        return;
+    }
 
 
 
+
+    
 
 }
 
-
+void form_content_msg(int word, int line, int tag, int val) {
+    printf("*** Word %d of Cache Line %d with Tag %d contains Value %d",
+            word, line, tag, val);
+}
 
 
 
@@ -215,8 +254,10 @@ void initialize_cache(struct state *st) {
 /* Input handler for menu selections */
 void handle_selection(int selection, struct state * st) {
     if (selection == 1) enter_params(st);
-    if (selection == 2) enter_params(st);
-    if (selection == 3) exit_program(st);
+    else if ((selection == 2 || selection == 3) && (!st->params->initialzied))
+        printf(_err_"Invalid Menu Option Selected");
+    else if (selection == 2) enter_params(st);
+    else if (selection == 4) exit_program(st);
     return;
 }
 
