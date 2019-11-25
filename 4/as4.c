@@ -115,21 +115,20 @@ void read_from_cache(struct state *st) {
     
     /* Print hit or miss depending on tag match */
     printf("%s", (hit = (st->cache->blocks[index].tag == 
-            (read_addr >> st->params->tag_bit_pos))) ? 
-            items[CACHE_HIT] : errors[READ_MISS]);
+            tag )) ? items[CACHE_HIT] : errors[READ_MISS]);
     
+    /* On Read-Miss, free existing line block, allocate new lineblock of specified BS */
+    if (!hit) {
+        free(st->cache->blocks[index].line_block);
+        st->cache->blocks[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
 
-    //if (!hit) {
-
-
+        /* Copy data from main memory of block size spec, update tag */
+        memcpy(st->cache->blocks[index].line_block, &st->memory[read_addr], st->params->block_size);
+        st->cache->blocks[index].tag = tag;
+    }
     
-
-
-
-
-
-    
-
+    /* Output resulting content message */
+    form_content_msg(read_addr, index, tag, st->memory[read_addr]);
 }
 
 void form_content_msg(int word, int line, int tag, int val) {
@@ -279,7 +278,7 @@ void handle_selection(int selection, struct state * st) {
     if (selection == 1) enter_params(st);
     else if ((selection == 2 || selection == 3) && (!st->params->initialzied))
         printf(_err_"Invalid Menu Option Selected");
-    else if (selection == 2) enter_params(st);
+    else if (selection == 2) read_from_cache(st);
     else if (selection == 4) exit_program(st);
     return;
 }
