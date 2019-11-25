@@ -21,6 +21,7 @@
 #define BLOCK_CACHE_ERR 3
 #define READ_MISS 0
 #define READ_ADDR_EXCEED 1
+#define WRITE_ADDR_EXCEED 1
 #define CACHE_HIT 1
 #define PARAMS_OK 4
 #define true 1
@@ -61,6 +62,7 @@ void exit_program(struct state *st);
 /* Core functions */
 void enter_params(struct state *st);
 void read_from_cache(struct state *st);
+void write_to_cache(struct state *st);
 
 /* Helper functions */
 int scan_args(struct state *st);
@@ -77,6 +79,50 @@ int main(void) {
 }
 
 
+/* Write Cache Function */
+void write_to_cache(struct state *st) {
+    
+    int index, tag, write_addr, hit;
+    char * items[] = {
+        _spc_"Enter Main Memory Address to Write:",
+        _msg_"Cache hit"
+    };
+    char * errors[] = {
+        _err_"Write Miss - First Load Block from Memory",
+        _err_"Write Address Exceeds Memory Address Space",
+    };
+    
+    /* Input/Output */
+    printf("%s", items[0]);
+    scanf("%d", &write_addr);
+    
+    /* Validate read address */
+    if (write_addr > st->params->mem_size) {
+        printf("%s", errors[WRITE_ADDR_EXCEED]);
+        return;
+    }
+    
+    /* Find cache index to read cache contents */
+    index = write_addr % st->params->cache_size;
+    tag = write_addr >> st->params->tag_bit_pos;
+    
+    /* Print hit or miss depending on tag match */
+    printf("%s", (hit = (st->cache->blocks[index].tag == 
+            tag )) ? items[CACHE_HIT] : errors[write_addr]);
+    
+    /* On Read-Miss, free existing line block, allocate new lineblock of specified BS */
+    if (!hit) {
+        free(st->cache->blocks[index].line_block);
+        st->cache->blocks[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
+
+        /* Copy data from main memory of block size spec, update tag */
+        memcpy(st->cache->blocks[index].line_block, &st->memory[write_addr], st->params->block_size);
+        st->cache->blocks[index].tag = tag;
+    }
+    
+    /* Output resulting content message */
+    form_content_msg(write_addr, index, tag, st->memory[write_addr]);
+}
 
 
 
@@ -85,8 +131,7 @@ int main(void) {
 
 
 
-
-
+/* Read Cache Function */
 void read_from_cache(struct state *st) {
     
     int index, tag, read_addr, hit;
@@ -279,6 +324,7 @@ void handle_selection(int selection, struct state * st) {
     else if ((selection == 2 || selection == 3) && (!st->params->initialzied))
         printf(_err_"Invalid Menu Option Selected");
     else if (selection == 2) read_from_cache(st);
+    else if (selection == 3) write_to_cache(st);
     else if (selection == 4) exit_program(st);
     return;
 }
