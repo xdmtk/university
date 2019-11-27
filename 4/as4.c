@@ -31,9 +31,9 @@
 
 
 struct program_meta {
-    int mem_size_words, cache_size_words, block_size_words;
+    u_int32_t mem_size_words, cache_size_words, block_size_words;
     unsigned char initialzied, tag_bit_pos;
-    int mem_size_blocks, cache_size_blocks;
+    u_int32_t mem_size_blocks, cache_size_blocks;
 };
 
 struct program_cache {
@@ -81,6 +81,15 @@ int main(void) {
 }
 
 
+
+
+
+
+
+
+
+
+
 /* Write Cache Function */
 void write_to_cache(struct state *st) {
     
@@ -91,7 +100,7 @@ void write_to_cache(struct state *st) {
         _spc_"Enter Value to Write",
     };
     char * errors[] = {
-        _err_"Write Miss - First Load Block from Memory",
+        _msg_"Write Miss - First Load Block from Memory",
         _err_"Write Address Exceeds Memory Address Space",
     };
     
@@ -123,7 +132,7 @@ void write_to_cache(struct state *st) {
         st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size_words);
 
         /* Write data from val to cache */
-        memcpy(st->cache->lines[index].line_block, &val, sizeof(val));
+        memcpy(st->cache->lines[index].line_block+word_loc, &val, sizeof(val));
         
         /* Write-through to memory */
         memcpy(&st->memory[write_addr], &val, sizeof(val));
@@ -190,7 +199,7 @@ void read_from_cache(struct state *st) {
 }
 
 void form_content_msg(int word, int line, int tag, int val) {
-    printf("*** Word %d of Cache Line %d with Tag %d contains Value %d",
+    printf(_spc_"*** Word %d of Cache Line %d with Tag %d contains Value %d",
             word, line, tag, val);
 }
 
@@ -293,7 +302,7 @@ int is_pow2(int num) {
     return bit_count == 1 && (num > 1);
 }
 
-
+/* Initialize cache function */
 void initialize_cache(struct state *st) {
     
     int i;
@@ -377,7 +386,7 @@ void free_prg_mem(struct state *st) {
     free(st->memory);
     
     /* Free cache line blocks */
-    for (i = 0; i < st->params->cache_size_words; ++i)
+    for (i = 0; i < st->params->cache_size_blocks; ++i)
         free(st->cache->lines[i].line_block);
     
     /* Free cache blocks */
