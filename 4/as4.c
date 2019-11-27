@@ -107,7 +107,7 @@ void write_to_cache(struct state *st) {
     }
     
     /* Find cache index to read cache contents */
-    index = write_addr % st->params->cache_size;
+    index = write_addr % (st->params->cache_size/st->params->block_size);
     tag = write_addr >> st->params->tag_bit_pos;
     hit = st->cache->lines[index].tag == tag;
 
@@ -124,7 +124,7 @@ void write_to_cache(struct state *st) {
         memcpy(st->cache->lines[index].line_block, &val, sizeof(val));
         
         /* Write-through to memory */
-        memcpy(&st->memory[index], &val, sizeof(val));
+        memcpy(&st->memory[write_addr], &val, sizeof(val));
 
         /* Update tag */
         st->cache->lines[index].tag = tag;
@@ -188,7 +188,7 @@ void read_from_cache(struct state *st) {
 
 void form_content_msg(int word, int line, int tag, int val) {
     printf("*** Word %d of Cache Line %d with Tag %d contains Value %d",
-            ord, line, tag, val);
+            word, line, tag, val);
 }
 
 
@@ -302,7 +302,7 @@ void initialize_cache(struct state *st) {
          st->memory[i] = st->params->mem_size - i;
     
     /* Initialize cache memory */
-    for (i = 0; i < st->params->cache_size; ++i) {
+    for (i = 0; i < st->params->cache_size/st->params->block_size; ++i) {
         st->cache->lines[i].tag = -1;
         st->cache->lines[i].line_block = NULL;
     }
