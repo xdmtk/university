@@ -20,6 +20,7 @@
 #define CACHE_SIZE_ERR 2
 #define BLOCK_CACHE_ERR 3
 #define READ_MISS 0
+#define WRITE_MISS 0
 #define READ_ADDR_EXCEED 1
 #define WRITE_ADDR_EXCEED 1
 #define CACHE_HIT 1
@@ -35,10 +36,10 @@ struct program_meta {
 };
 
 struct program_cache {
-    struct cache_block * blocks;
+    struct cache_line * lines;
 };
 
-struct cache_block {
+struct cache_line {
     int tag;
     int * line_block;
 };
@@ -108,24 +109,25 @@ void write_to_cache(struct state *st) {
     /* Find cache index to read cache contents */
     index = write_addr % st->params->cache_size;
     tag = write_addr >> st->params->tag_bit_pos;
-    
+    hit = st->cache->lines[index].tag == tag;
+
+
     /* Print hit or miss depending on tag match */
-    printf("%s", (hit = (st->cache->blocks[index].tag == 
-            tag )) ? items[CACHE_HIT] : errors[write_addr]);
+    printf("%s", hit ? items[CACHE_HIT] : errors[WRITE_MISS]);
     
     /* On Write-Miss, free existing line block, allocate new lineblock of specified BS */
     if (!hit) {
-        free(st->cache->blocks[index].line_block);
-        st->cache->blocks[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
+        free(st->cache->lines[index].line_block);
+        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
 
         /* Write data from val to cache */
-        memcpy(st->cache->blocks[index].line_block, &val, sizeof(val));
+        memcpy(st->cache->lines[index].line_block, &val, sizeof(val));
         
         /* Write-through to memory */
         memcpy(&st->memory[index], &val, sizeof(val));
 
         /* Update tag */
-        st->cache->blocks[index].tag = tag;
+        st->cache->lines[index].tag = tag;
     }
     
     /* Output resulting content message */
@@ -163,21 +165,21 @@ void read_from_cache(struct state *st) {
     }
     
     /* Find cache index to read cache contents */
-    index = read_addr % st->params->cache_size;
+    index = read_addr % (st->params->cache_size/st->params->block_size);
     tag = read_addr >> st->params->tag_bit_pos;
     
     /* Print hit or miss depending on tag match */
-    printf("%s", (hit = (st->cache->blocks[index].tag == 
+    printf("%s", (hit = (st->cache->lines[index].tag == 
             tag )) ? items[CACHE_HIT] : errors[READ_MISS]);
     
     /* On Read-Miss, free existing line block, allocate new lineblock of specified BS */
     if (!hit) {
-        free(st->cache->blocks[index].line_block);
-        st->cache->blocks[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
+        free(st->cache->lines[index].line_block);
+        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
 
         /* Copy data from main memory of block size spec, update tag */
-        memcpy(st->cache->blocks[index].line_block, &st->memory[read_addr], st->params->block_size);
-        st->cache->blocks[index].tag = tag;
+        memcpy(st->cache->lines[index].line_block, &st->memory[read_addr], st->params->block_size);
+        st->cache->lines[index].tag = tag;
     }
     
     /* Output resulting content message */
@@ -186,7 +188,7 @@ void read_from_cache(struct state *st) {
 
 void form_content_msg(int word, int line, int tag, int val) {
     printf("*** Word %d of Cache Line %d with Tag %d contains Value %d",
-            word, line, tag, val);
+            ord, line, tag, val);
 }
 
 
@@ -292,7 +294,8 @@ void initialize_cache(struct state *st) {
     /* Allocate main memory and cache */
     st->memory = (int *) malloc(sizeof(int)*st->params->mem_size);
     st->cache = (struct program_cache *) malloc(sizeof(struct program_cache *));
-    st->cache->blocks = (struct cache_block *) malloc(sizeof(struct cache_block)*st->params->cache_size);
+    st->cache->lines = (struct cache_line *) malloc(sizeof(struct cache_line)*
+            (st->params->cache_size/st->params->block_size));
     
     /* Initialize main memory */
     for (i = 0; i < st->params->mem_size; ++i)
@@ -300,14 +303,13 @@ void initialize_cache(struct state *st) {
     
     /* Initialize cache memory */
     for (i = 0; i < st->params->cache_size; ++i) {
-        st->cache->blocks[i].tag = -1;
-        st->cache->blocks[i].line_block = NULL;
+        st->cache->lines[i].tag = -1;
+        st->cache->lines[i].line_block = NULL;
     }
     
     /* Determine shift amount for tag bits based on cache size */
     for (i = 0; i < 32 && (((st->params->cache_size >> i) & 0x1) == 0x0); ++i)
         ++st->params->tag_bit_pos;
-    ++st->params->tag_bit_pos;
 }
 
 
@@ -369,10 +371,10 @@ void free_prg_mem(struct state *st) {
     
     /* Free cache line blocks */
     for (i = 0; i < st->params->cache_size; ++i)
-        free(st->cache->blocks[i].line_block);
+        free(st->cache->lines[i].line_block);
     
     /* Free cache blocks */
-    free(st->cache->blocks);
+    free(st->cache->lines);
 
     /* Free cache */
     free(st->cache);
