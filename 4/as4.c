@@ -31,8 +31,9 @@
 
 
 struct program_meta {
-    int mem_size, cache_size, block_size;
+    int mem_size_words, cache_size_words, block_size_words;
     unsigned char initialzied, tag_bit_pos;
+    int mem_size_blocks, cache_size_blocks;
 };
 
 struct program_cache {
@@ -83,7 +84,7 @@ int main(void) {
 /* Write Cache Function */
 void write_to_cache(struct state *st) {
     
-    int index, tag, write_addr, hit, val;
+    u_int32_t index, tag, write_addr, hit, val, word_loc;
     char * items[] = {
         _spc_"Enter Main Memory Address to Write:",
         _msg_"Cache hit",
@@ -101,24 +102,25 @@ void write_to_cache(struct state *st) {
     scanf("%d", &val);
     
     /* Validate read address */
-    if (write_addr > st->params->mem_size) {
+    if (write_addr > st->params->mem_size_words) {
         printf("%s", errors[WRITE_ADDR_EXCEED]);
         return;
     }
     
     /* Find cache index to read cache contents */
-    index = write_addr % (st->params->cache_size/st->params->block_size);
+    index = (write_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
+    word_loc = write_addr % st->params->block_size_words;
     tag = write_addr >> st->params->tag_bit_pos;
-    hit = st->cache->lines[index].tag == tag;
 
 
     /* Print hit or miss depending on tag match */
-    printf("%s", hit ? items[CACHE_HIT] : errors[WRITE_MISS]);
-    
+    printf("%s", (hit = (st->cache->lines[index].tag ==
+                         tag )) ? items[CACHE_HIT] : errors[WRITE_MISS]);
+
     /* On Write-Miss, free existing line block, allocate new lineblock of specified BS */
     if (!hit) {
         free(st->cache->lines[index].line_block);
-        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
+        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size_words);
 
         /* Write data from val to cache */
         memcpy(st->cache->lines[index].line_block, &val, sizeof(val));
@@ -131,7 +133,7 @@ void write_to_cache(struct state *st) {
     }
     
     /* Output resulting content message */
-    form_content_msg(write_addr, index, tag, st->memory[write_addr]);
+    form_content_msg(word_loc, index, tag, val);
 }
 
 
@@ -144,7 +146,7 @@ void write_to_cache(struct state *st) {
 /* Read Cache Function */
 void read_from_cache(struct state *st) {
     
-    int index, tag, read_addr, hit;
+    int index, tag, read_addr, hit, word_loc;
     char * items[] = {
         _spc_"Enter Main Memory Address to Read:",
         _msg_"Cache hit"
@@ -159,13 +161,14 @@ void read_from_cache(struct state *st) {
     scanf("%d", &read_addr);
     
     /* Validate read address */
-    if (read_addr > st->params->mem_size) {
+    if (read_addr > st->params->mem_size_words) {
         printf("%s", errors[READ_ADDR_EXCEED]);
         return;
     }
     
     /* Find cache index to read cache contents */
-    index = read_addr % (st->params->cache_size/st->params->block_size);
+    index = (read_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
+    word_loc = read_addr % st->params->block_size_words;
     tag = read_addr >> st->params->tag_bit_pos;
     
     /* Print hit or miss depending on tag match */
@@ -175,15 +178,15 @@ void read_from_cache(struct state *st) {
     /* On Read-Miss, free existing line block, allocate new lineblock of specified BS */
     if (!hit) {
         free(st->cache->lines[index].line_block);
-        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size);
+        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size_words);
 
         /* Copy data from main memory of block size spec, update tag */
-        memcpy(st->cache->lines[index].line_block, &st->memory[read_addr], st->params->block_size);
+        memcpy(st->cache->lines[index].line_block, &st->memory[read_addr], st->params->block_size_words);
         st->cache->lines[index].tag = tag;
     }
     
     /* Output resulting content message */
-    form_content_msg(read_addr, index, tag, st->memory[read_addr]);
+    form_content_msg(word_loc, index, tag, st->memory[read_addr]);
 }
 
 void form_content_msg(int word, int line, int tag, int val) {
@@ -236,12 +239,16 @@ void enter_params(struct state *st) {
     
     /* Output prompts and input parameters */
     printf("%s", items[0]);
-    scanf("%d", &st->params->mem_size);
+    scanf("%d", &st->params->mem_size_words);
     printf("%s", items[1]);
-    scanf("%d", &st->params->cache_size);
+    scanf("%d", &st->params->cache_size_words);
     printf("%s", items[2]);
-    scanf("%d", &st->params->block_size);
-    
+    scanf("%d", &st->params->block_size_words);
+
+    /* Set block counts for memory and cache for later address computation */
+    st->params->cache_size_blocks = st->params->cache_size_words / st->params->block_size_words;
+    st->params->mem_size_blocks = st->params->mem_size_words / st->params->block_size_words;
+
     /* scan_args() returns with index of appropriate error code if errors are 
      * found with input parameters */
     if ((error_code = scan_args(st)) != PARAMS_OK)
@@ -260,13 +267,13 @@ void enter_params(struct state *st) {
 /* Parameter validation function */
 int scan_args(struct state * st) {
     
-    if (!is_pow2(st->params->mem_size))
+    if (!is_pow2(st->params->mem_size_words))
         return MEM_SIZE_ERR;;
-    if (!is_pow2(st->params->cache_size))
+    if (!is_pow2(st->params->cache_size_words))
         return CACHE_SIZE_ERR;
-    if (!is_pow2(st->params->block_size))
+    if (!is_pow2(st->params->block_size_words))
         return BLOCK_SIZE_ERR;
-    if (st->params->block_size > st->params->cache_size)
+    if (st->params->block_size_words > st->params->cache_size_words)
         return BLOCK_CACHE_ERR;;
     return PARAMS_OK;
 }
@@ -292,23 +299,23 @@ void initialize_cache(struct state *st) {
     int i;
 
     /* Allocate main memory and cache */
-    st->memory = (int *) malloc(sizeof(int)*st->params->mem_size);
+    st->memory = (int *) malloc(sizeof(int)*st->params->mem_size_words);
     st->cache = (struct program_cache *) malloc(sizeof(struct program_cache *));
     st->cache->lines = (struct cache_line *) malloc(sizeof(struct cache_line)*
-            (st->params->cache_size/st->params->block_size));
+            (st->params->cache_size_words / st->params->block_size_words));
     
     /* Initialize main memory */
-    for (i = 0; i < st->params->mem_size; ++i)
-         st->memory[i] = st->params->mem_size - i;
+    for (i = 0; i < st->params->mem_size_words; ++i)
+         st->memory[i] = st->params->mem_size_words - i;
     
     /* Initialize cache memory */
-    for (i = 0; i < st->params->cache_size/st->params->block_size; ++i) {
+    for (i = 0; i < st->params->cache_size_words / st->params->block_size_words; ++i) {
         st->cache->lines[i].tag = -1;
         st->cache->lines[i].line_block = NULL;
     }
     
     /* Determine shift amount for tag bits based on cache size */
-    for (i = 0; i < 32 && (((st->params->cache_size >> i) & 0x1) == 0x0); ++i)
+    for (i = 0; i < 32 && (((st->params->cache_size_words >> i) & 0x1) == 0x0); ++i)
         ++st->params->tag_bit_pos;
 }
 
@@ -370,7 +377,7 @@ void free_prg_mem(struct state *st) {
     free(st->memory);
     
     /* Free cache line blocks */
-    for (i = 0; i < st->params->cache_size; ++i)
+    for (i = 0; i < st->params->cache_size_words; ++i)
         free(st->cache->lines[i].line_block);
     
     /* Free cache blocks */
