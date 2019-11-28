@@ -197,12 +197,12 @@ void read_from_cache(struct state *st) {
         st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size_words);
 
         /* Copy data from main memory of block size spec, update tag */
-        memcpy(st->cache->lines[index].line_block, &st->memory[read_addr], st->params->block_size_words);
+        memcpy(st->cache->lines[index].line_block+word_loc, &st->memory[read_addr], st->params->block_size_words);
         st->cache->lines[index].tag = tag;
     }
     
     /* Output resulting content message */
-    form_content_msg(word_loc, index, tag, st->memory[read_addr]);
+    form_content_msg(word_loc, index, tag, st->cache->lines[index].line_block[word_loc]);
 }
 
 void form_content_msg(int word, int line, int tag, int val) {
@@ -235,7 +235,7 @@ void form_content_msg(int word, int line, int tag, int val) {
 /* Parameter entry function */
 void enter_params(struct state *st) {
     
-    int i, error_code;
+    int error_code;
     char * items[] = {
         _spc_"Enter main memory size (words): ",
         _spc_"Enter cache size (words): ",
@@ -395,11 +395,13 @@ void free_prg_mem(struct state *st) {
     free(st->memory);
     
     /* Free cache line blocks */
-    for (i = 0; i < st->params->cache_size_blocks; ++i)
-        free(st->cache->lines[i].line_block);
+    if (st->params->initialzied) {
+        for (i = 0; i < st->params->cache_size_blocks; ++i)
+            free(st->cache->lines[i].line_block);
     
-    /* Free cache blocks */
-    free(st->cache->lines);
+        /* Free cache blocks */
+        free(st->cache->lines);
+    }
 
     /* Free cache */
     free(st->cache);
