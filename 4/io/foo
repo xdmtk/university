@@ -1,0 +1,121 @@
+ng Assignment 4: Cache Simulation
+Comp 222 - Fall 2019
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+*** Error - Invalid Menu Option Selected
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter main memory size (words): 
+Enter cache size (words): 
+Enter block size (words/block): 
+*** Error - Cache Size is not a Power of 2
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter main memory size (words): 
+Enter cache size (words): 
+Enter block size (words/block): 
+*** Error - Block Size is Larger than Cache Size
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter main memory size (words): 
+Enter cache size (words): 
+Enter block size (words/block): 
+*** All Input Parameters Accepted.  Starting to Process Write/Read Requests
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Write: 
+*** Error – Write Address Exceeds Memory Address Space
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Write: 
+Enter Value to Write: 
+*** Write Miss - First load block from memory
+*** Word 12 of Cache Line 63 with Tag 31 contains the Value 32
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Read: 
+*** Error – Read Address Exceeds Memory Address Space
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Read: 
+*** Cache Hit
+*** Word 12 of Cache Line 63 with Tag 31 contains the Value 32
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Write: 
+Enter Value to Write: 
+*** Cache Hit
+*** Word 12 of Cache Line 63 with Tag 31 contains the Value 512
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Read: 
+*** Cache Hit
+*** Word 12 of Cache Line 63 with Tag 31 contains the Value 512
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+Enter Main Memory Address to Read: 
+*** Read Miss - First Load Block from Memory
+*** Word 0 of Cache Line 0 with Tag 0 contains the Value 32768
+Main Menu - Main Memory to Cache Memory Mapping
+------------------------------------------------
+1) Enter Configuration Parameters
+2) Read from Cache
+3) Write to Cache
+4) Quit Program
+Enter selection: 
+*** Memory Freed Up - Program Terminated Normallya

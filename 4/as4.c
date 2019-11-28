@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define _spc_ "\n\n"
+#define _spc_ "\n"
 #define _msg_ "\n\n*** "
 #define _err_ "\n\n*** Error - "
 #define MEM_SIZE_ERR 0
@@ -60,6 +60,7 @@ int show_menu(void);
 void handle_selection(int, struct state *); 
 void free_prg_mem(struct state *st);
 void exit_program(struct state *st);
+void print_header();
 
 /* Core functions */
 void enter_params(struct state *st);
@@ -75,6 +76,7 @@ void form_content_msg(int word, int line, int tag, int val);
 
 
 int main(void) {
+    print_header();
     struct state * st = (struct state *)malloc(sizeof(struct state *));
     st->params = (struct program_meta *)malloc(sizeof(struct program_meta *));
     while (true) handle_selection(show_menu(), st);
@@ -97,24 +99,28 @@ void write_to_cache(struct state *st) {
     char * items[] = {
         _spc_"Enter Main Memory Address to Write:",
         _msg_"Cache hit",
-        _spc_"Enter Value to Write",
+        _spc_"Enter Value to Write:",
     };
     char * errors[] = {
         _msg_"Write Miss - First Load Block from Memory",
         _err_"Write Address Exceeds Memory Address Space",
     };
     
-    /* Input/Output */
+    /* Input/Output Write Address*/
     printf("%s", items[0]);
     scanf("%d", &write_addr);
+
+    /* Validate write address */
+    if (write_addr > st->params->mem_size_words) {
+        printf("%s", errors[WRITE_ADDR_EXCEED]);
+        scanf("%d", &val);
+        return;
+    }
+
+    /* Input/Output Value to Write*/
     printf("%s", items[2]);
     scanf("%d", &val);
     
-    /* Validate read address */
-    if (write_addr > st->params->mem_size_words) {
-        printf("%s", errors[WRITE_ADDR_EXCEED]);
-        return;
-    }
     
     /* Find cache index to read cache contents */
     index = (write_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
@@ -199,7 +205,7 @@ void read_from_cache(struct state *st) {
 }
 
 void form_content_msg(int word, int line, int tag, int val) {
-    printf(_spc_"*** Word %d of Cache Line %d with Tag %d contains Value %d",
+    printf(_spc_"*** Word %d of Cache Line %d with Tag %d contains the Value %d",
             word, line, tag, val);
 }
 
@@ -230,16 +236,16 @@ void enter_params(struct state *st) {
     
     int i, error_code;
     char * items[] = {
-        _spc_"Enter main memory size (words):",
-        _spc_"Enter cache size (words):",
-        _spc_"Enter block size (words/block):",
+        _spc_"Enter main memory size (words): ",
+        _spc_"Enter cache size (words): ",
+        _spc_"Enter block size (words/block): ",
         _msg_"All Input Parameters Accepted. Starting to Process Write/Read Requests"
     };
     char * errors[] = {
         _err_"Main Memory Size is not a Power of 2",
         _err_"Block Size is not a Power of 2",
         _err_"Cache Size is not a Power of 2",
-        _err_"Block size is Larger than Cache Size"
+        _err_"Block Size is Larger than Cache Size"
     };
 
     /* Clear out all existing params on new/re-entry */
@@ -345,7 +351,9 @@ void initialize_cache(struct state *st) {
 
 
 
-
+void print_header() {
+    printf("Programming Assignment 4: Cache Simulation\nComp 222 - Fall 2019");
+};
 
 /* Input handler for menu selections */
 void handle_selection(int selection, struct state * st) {
@@ -368,7 +376,7 @@ int show_menu(void) {
         _spc_"2) Read from Cache",
         _spc_"3) Write to Cache",
         _spc_"4) Quit Program",
-        _spc_"Enter selection:"
+        _spc_"Enter selection: "
     };
     
     /* Output menu choices */ 
