@@ -14,7 +14,8 @@
 #include <string.h>
 #define _spc_ "\n"
 #define _msg_ "\n\n*** "
-#define _err_ "\n\n*** Error - "
+#define _err_ "\n\n*** Error – "
+#define _errdsh_ "\n\n*** Error - "
 #define MEM_SIZE_ERR 0
 #define BLOCK_SIZE_ERR 1
 #define CACHE_SIZE_ERR 2
@@ -167,7 +168,7 @@ void read_from_cache(struct state *st) {
         _msg_"Cache hit"
     };
     char * errors[] = {
-        _err_"Read Miss - First Load Block from Memory",
+        _msg_"Read Miss - First Load Block from Memory",
         _err_"Read Address Exceeds Memory Address Space",
     };
     
@@ -242,10 +243,10 @@ void enter_params(struct state *st) {
         _msg_"All Input Parameters Accepted. Starting to Process Write/Read Requests"
     };
     char * errors[] = {
-        _err_"Main Memory Size is not a Power of 2",
-        _err_"Block Size is not a Power of 2",
-        _err_"Cache Size is not a Power of 2",
-        _err_"Block Size is Larger than Cache Size"
+        _errdsh_"Main Memory Size is not a Power of 2",
+        _errdsh_"Block Size is not a Power of 2",
+        _errdsh_"Cache Size is not a Power of 2",
+        _errdsh_"Block Size is Larger than Cache Size"
     };
 
     /* Clear out all existing params on new/re-entry */
@@ -359,7 +360,7 @@ void print_header() {
 void handle_selection(int selection, struct state * st) {
     if (selection == 1) enter_params(st);
     else if ((selection == 2 || selection == 3) && (!st->params->initialzied))
-        printf(_err_"Invalid Menu Option Selected");
+        printf(_errdsh_"Invalid Menu Option Selected");
     else if (selection == 2) read_from_cache(st);
     else if (selection == 3) write_to_cache(st);
     else if (selection == 4) exit_program(st);
