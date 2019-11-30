@@ -124,7 +124,9 @@ void write_to_cache(struct state *st) {
     
     
     /* Find cache index to read cache contents */
-    index = (write_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
+    index = write_addr / st->params->cache_size_blocks < st->params->cache_size_blocks ? 
+        write_addr % st->params->cache_size_blocks : 
+        (write_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
     word_loc = write_addr % st->params->block_size_words;
     tag = write_addr >> st->params->tag_bit_pos;
 
@@ -134,19 +136,17 @@ void write_to_cache(struct state *st) {
                          tag )) ? items[CACHE_HIT] : errors[WRITE_MISS]);
 
     /* On Write-Miss, free existing line block, allocate new lineblock of specified BS */
-    if (!hit) {
-        free(st->cache->lines[index].line_block);
-        st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size_words);
+    free(st->cache->lines[index].line_block);
+    st->cache->lines[index].line_block = (int *) malloc(sizeof(int)*st->params->block_size_words);
 
-        /* Write data from val to cache */
-        memcpy(st->cache->lines[index].line_block+word_loc, &val, sizeof(val));
-        
-        /* Write-through to memory */
-        memcpy(&st->memory[write_addr], &val, sizeof(val));
+    /* Write data from val to cache */
+    memcpy(st->cache->lines[index].line_block+word_loc, &val, sizeof(val));
+    
+    /* Write-through to memory */
+    memcpy(&st->memory[write_addr], &val, sizeof(val));
 
-        /* Update tag */
-        st->cache->lines[index].tag = tag;
-    }
+    /* Update tag */
+    st->cache->lines[index].tag = tag;
     
     /* Output resulting content message */
     form_content_msg(word_loc, index, tag, val);
@@ -183,7 +183,9 @@ void read_from_cache(struct state *st) {
     }
     
     /* Find cache index to read cache contents */
-    index = (read_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
+    index = read_addr / st->params->cache_size_blocks < st->params->cache_size_blocks ? 
+        read_addr % st->params->cache_size_blocks : 
+        (read_addr / (st->params->cache_size_blocks)) % st->params->cache_size_blocks;
     word_loc = read_addr % st->params->block_size_words;
     tag = read_addr >> st->params->tag_bit_pos;
     
@@ -200,6 +202,7 @@ void read_from_cache(struct state *st) {
         memcpy(st->cache->lines[index].line_block+word_loc, &st->memory[read_addr], st->params->block_size_words);
         st->cache->lines[index].tag = tag;
     }
+    st->cache->lines[index].tag = tag;
     
     /* Output resulting content message */
     form_content_msg(word_loc, index, tag, st->cache->lines[index].line_block[word_loc]);
