@@ -391,6 +391,7 @@ int show_menu(void) {
     else return 0;
 }
 
+/* TODO: Needs work */
 void free_prg_mem(struct state *st) {
 
     int i; 
