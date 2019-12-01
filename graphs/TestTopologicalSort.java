@@ -36,7 +36,7 @@ public class TestTopologicalSort {
 		for (int i = 1; i <= 3; i++) {
 			g = new GraphTopSort();
 			g.input(GraphLocation + "Graph" + i + ".txt");
-			//g.output();
+			g.output();
 			System.out.println("Test #" + i + ":  Topological Sort  -- " + GraphTopSort.myName());
 			System.out.println("=======");
 			g.outputTopSort();

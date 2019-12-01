@@ -5,6 +5,16 @@ class GraphTopSort extends Graph {
 	// set all predecessor counts to 0
 	public void initPredCounts() {
 
+		int initialized;
+		Vertex_Node navigator;
+
+		initialized = 0;
+		navigator = head;
+		while (initialized < this.size) {
+			navigator.setPredCt(0);
+			initialized++;
+			navigator = navigator.getNext();
+		}
 	}
 
 	public void outputTopSort() {
@@ -21,7 +31,7 @@ class GraphTopSort extends Graph {
 		
 		// implement as simple nested while loops
 		while (v != null) {
-
+v = null;
 		}
 		
 		// find vertices with predecessor counts of 0 and put them on the queue
