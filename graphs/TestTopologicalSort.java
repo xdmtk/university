@@ -31,23 +31,24 @@ public class TestTopologicalSort {
 			"/home/xdmtk/school/cosci282/graphs/");
 
 
+	/*
 	public static void main(String[] args) throws IOException {
 
 		GraphTopSort testGraph = new GraphTopSort();
 		for (int testCount = 1; testCount <= 1; testCount++) {
 			testGraph.input(GraphLocation + "Graph" + testCount + ".txt");
 			testGraph.initPredCounts();
-			testGraph.output();
+			testGraph.outputTopSort();
 		}
 	}
-	/*
+	*/
 	public static void main(String[] args) throws IOException {
 		GraphTopSort g;
 
 		for (int i = 1; i <= 3; i++) {
 			g = new GraphTopSort();
 			g.input(GraphLocation + "Graph" + i + ".txt");
-			g.output();
+			//g.output();
 			System.out.println("Test #" + i + ":  Topological Sort  -- " + GraphTopSort.myName());
 			System.out.println("=======");
 			g.outputTopSort();
@@ -61,5 +62,4 @@ public class TestTopologicalSort {
 		}
 		System.out.println("Done with " + GraphTopSort.myName() + "'s test run.");
 	}
-	*/
 }

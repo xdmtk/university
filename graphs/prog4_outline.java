@@ -23,20 +23,49 @@ class GraphTopSort extends Graph {
 		Edge_Node edgeNavigator;
 		Vertex_Node navigator;
 		int queueFront, queueBack, outputCount;
+		boolean entered;
 
 		zeroPredecessorQueue = new Vertex_Node[this.size];
 		topSort = new Vertex_Node[this.size];
 		queueBack = queueFront = outputCount = 0;
+		entered = false;
 
 			initPredCounts();
-			for (navigator = head; navigator != null; navigator = navigator.getNext())
-				if (navigator.getPredCt() == 0)
-					zeroPredecessorQueue[queueBack++] = navigator;
+			while (outputCount < this.size) {
 
-			for (queueFront = queueFront; queueFront != queueBack; queueFront++)
+				/* Traverse Vertex Node list and remove nodes with 0 predecessors */
+				for (navigator = head; navigator != null; navigator = navigator.getNext())
+
+					if (navigator.getPredCt() == 0) {
+
+						/* Push the node to the queue */
+						zeroPredecessorQueue[queueBack++] = navigator;
+						navigator.setPredCt(-1);
+
+						/* Set to make sure there was at the very least, one node has no
+						 * predecessors (check for cycles)  */
+						entered = true;
+					}
 
 
+				/* If there were no nodes without predecessors, a loop exists */
+				if (!entered) {
+					System.out.println("Loop");
+					break;
+				}
 
+				/* Reset the 'entered' flag and begin processesing the queue */
+				entered = false;
+
+				while (queueFront != queueBack) {
+					for (navigator = zeroPredecessorQueue[queueFront++], edgeNavigator = navigator.getNbrList();
+						 edgeNavigator != null; edgeNavigator = edgeNavigator.getNext())
+						edgeNavigator.getTarget().setPredCt(edgeNavigator.getTarget().getPredCt() - 1);
+					topSort[outputCount++] = zeroPredecessorQueue[queueFront-1];
+				}
+			}
+			for (int i = 0; i < outputCount; ++i)
+				System.out.print(topSort[i].getName() + " ");
 	}
 
 	public static String myName() {
