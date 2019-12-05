@@ -22,13 +22,15 @@ class GraphTopSort extends Graph {
 		Vertex_Node[] topSort;
 		Edge_Node edgeNavigator;
 		Vertex_Node navigator;
-		int queueFront, queueBack, outputCount;
+
+		int frontMarker, queueFront, queueBack, outputCount;
 		boolean entered;
 
 		zeroPredecessorQueue = new Vertex_Node[this.size];
 		topSort = new Vertex_Node[this.size];
-		queueBack = queueFront = outputCount = 0;
+		frontMarker = queueBack = queueFront = outputCount = 0;
 		entered = false;
+
 
 			initPredCounts();
 			while (outputCount < this.size) {
@@ -58,14 +60,30 @@ class GraphTopSort extends Graph {
 				entered = false;
 
 				while (queueFront != queueBack) {
+					frontMarker = queueFront;
 					for (navigator = zeroPredecessorQueue[queueFront++], edgeNavigator = navigator.getNbrList();
 						 edgeNavigator != null; edgeNavigator = edgeNavigator.getNext())
 						edgeNavigator.getTarget().setPredCt(edgeNavigator.getTarget().getPredCt() - 1);
+
+					if (queueBack - frontMarker > 1)
+						sortQueueGroup(zeroPredecessorQueue, frontMarker, queueBack);
 					topSort[outputCount++] = zeroPredecessorQueue[queueFront-1];
 				}
 			}
 			for (int i = 0; i < outputCount; ++i)
 				System.out.print(topSort[i].getName() + " ");
+	}
+
+	/* Need to get the grouping in the queue to print out alphabetically - Needs work */
+	public static void sortQueueGroup(Vertex_Node[] pq, int f, int b) {
+		for (int i = f+1, x = 0; x < b-1; ++i, ++x)
+			if (pq[i].getName().compareTo(pq[i-1].getName()) > 0) {
+				Vertex_Node temp = pq[x];
+				int j = i;
+				while (j > f && temp.getName().compareTo(pq[j-1].getName()) > 0)
+					pq[i] = pq[--i];
+				pq[i] = temp;
+			}
 	}
 
 	public static String myName() {
