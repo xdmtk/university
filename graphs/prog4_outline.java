@@ -28,7 +28,12 @@ class GraphTopSort extends Graph {
 		topSort = new Vertex_Node[this.size];
 		queueBack = queueFront = outputCount = 0;
 
-		initPredCounts();
+			initPredCounts();
+			for (navigator = head; navigator != null; navigator = navigator.getNext())
+				if (navigator.getPredCt() == 0)
+					zeroPredecessorQueue[queueBack++] = navigator;
+
+			for (queueFront = queueFront; queueFront != queueBack; queueFront++)
 
 
 
