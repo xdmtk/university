@@ -1,57 +1,37 @@
 // don't forget the usual top comments
 
+import java.util.*;
+
 class GraphTopSort extends Graph {
 	
-	// set all predecessor counts to 0
 	public void initPredCounts() {
 
-		int initialized;
-		Vertex_Node navigator;
-
-		initialized = 0;
-		navigator = head;
-		while (initialized < this.size) {
+		/* Initialize to 0 */
+		for (Vertex_Node navigator = head; navigator != null; navigator = navigator.getNext())
 			navigator.setPredCt(0);
-			initialized++;
-			navigator = navigator.getNext();
-		}
+
+		/* Initialize to actual values by traversing edgelist of each vertex */
+		for (Vertex_Node navigator = head; navigator != null; navigator = navigator.getNext())
+			for (Edge_Node edgeNavigator = navigator.getNbrList(); edgeNavigator != null; edgeNavigator = edgeNavigator.getNext())
+				edgeNavigator.getTarget().setPredCt(edgeNavigator.getTarget().getPredCt()+1);
 	}
 
 	public void outputTopSort() {
-		Vertex_Node[] zeroPredecessorQueue = new Vertex_Node[this.size];
-		Vertex_Node[] topSort = new Vertex_Node[this.size];
-		int queueFront = 0, queueBack = 0, outputCt = 0;
-		Edge_Node e;
-		Vertex_Node v = this.head;
-		
+
+		Vertex_Node[] zeroPredecessorQueue;
+		Vertex_Node[] topSort;
+		Edge_Node edgeNavigator;
+		Vertex_Node navigator;
+		int queueFront, queueBack, outputCount;
+
+		zeroPredecessorQueue = new Vertex_Node[this.size];
+		topSort = new Vertex_Node[this.size];
+		queueBack = queueFront = outputCount = 0;
+
 		initPredCounts();
-		
-		// set the predecessor counts by visiting all the edges and
-		// incrementing the target predecessor counts of these edges
-		
-		// implement as simple nested while loops
-		while (v != null) {
-v = null;
-		}
-		
-		// find vertices with predecessor counts of 0 and put them on the queue
-		// this will be a while loop
-		
-		
-		// the main loop
-		// remove a vertex from the zero queue, add it to the topSort array,
-		// and traverse its edges to update target predecessor counts -- if any
-		// become 0, add to the zero queue
-		while (queueBack != queueFront) {  // while the queue is not empty
-			
-		}
-		
-		// check if every vertex has been put in the topSort array and either output it
-		// on one line or report "loop"
-		
-		// Your output should match mine exactly
-		
-		
+
+
+
 	}
 
 	public static String myName() {
