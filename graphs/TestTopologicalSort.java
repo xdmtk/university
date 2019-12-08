@@ -28,7 +28,7 @@ public class TestTopologicalSort {
 
 	// Set this string similar to the way you did it for the first (sudoku) assignment
 	final static String GraphLocation = new String(
-			"/home/xdmtk/school/cosci282/graphs/");
+			"C:\\Users\\overc\\IdeaProjects\\cosci282\\graphs\\");
 
 
 	/*
