@@ -48,61 +48,61 @@ class GraphTopSort extends Graph {
 		entered = looped = false;
 
 
-			initPredCounts();
-			while (outputCount < this.size) {
+		initPredCounts();
+		while (outputCount < this.size) {
 
-				/* Traverse Vertex Node list and remove nodes with 0 predecessors */
-				for (v = head; v != null; v = v.getNext())
+			/* Traverse Vertex Node list and remove nodes with 0 predecessors */
+			for (v = head; v != null; v = v.getNext())
 
-					if (v.getPredCt() == 0) {
+				if (v.getPredCt() == 0) {
 
-						/* Push the node to the queue */
-						zeroPredecessorQueue[queueBack++] = v;
-						v.setPredCt(-1);
+					/* Push the node to the queue */
+					zeroPredecessorQueue[queueBack++] = v;
+					v.setPredCt(-1);
 
-						/* Set to make sure there was at the very least, one node has no
-						 * predecessors (check for cycles)  */
-						entered = true;
-					}
-
-
-				/* If there were no nodes without predecessors, a loop exists */
-				if (!entered) {
-					System.out.println("Loop");
-					looped = true;
-					break;
+					/* Set to make sure there was at the very least, one node has no
+					 * predecessors (check for cycles)  */
+					entered = true;
 				}
 
-				/* Reset the 'entered' flag and begin processesing the queue */
-				entered = false;
 
-				/* Process the edgelist of each node in the Queue - Pushing newly orphaned
-				 * nodes into the Queue as well */
-				while (queueFront != queueBack) {
-
-					/* Walk the edgelist for the first unprocessed node in the Queue */
-					for (v = zeroPredecessorQueue[queueFront++], e = v.getNbrList(); e != null; e = e.getNext()) {
-
-						/* Decrement the connected vertex nodes */
-						e.getTarget().setPredCt(e.getTarget().getPredCt() - 1);
-
-						/* If the newest updated Vertex node is now without a predecessor, push it to
-						 * the queue */
-						if (e.getTarget().getPredCt() == 0) {
-							zeroPredecessorQueue[queueBack++] = e.getTarget();
-
-							/* Disconnect it from the graph by setting pred count to arbitrary negative value */
-							e.getTarget().setPredCt(-1);
-						}
-					}
-
-					topSort[outputCount++] = zeroPredecessorQueue[queueFront-1];
-				}
+			/* If there were no nodes without predecessors, a loop exists */
+			if (!entered) {
+				System.out.println("Loop");
+				looped = true;
+				break;
 			}
 
-			/* If no cycle is detected, print out the contents of the top sort */
-			for (int i = 0; !looped && i < outputCount; ++i)
-				System.out.print(topSort[i].getName() + " ");
+			/* Reset the 'entered' flag and begin processesing the queue */
+			entered = false;
+
+			/* Process the edgelist of each node in the Queue - Pushing newly orphaned
+			 * nodes into the Queue as well */
+			while (queueFront != queueBack) {
+
+				/* Walk the edgelist for the first unprocessed node in the Queue */
+				for (v = zeroPredecessorQueue[queueFront++], e = v.getNbrList(); e != null; e = e.getNext()) {
+
+					/* Decrement the connected vertex nodes */
+					e.getTarget().setPredCt(e.getTarget().getPredCt() - 1);
+
+					/* If the newest updated Vertex node is now without a predecessor, push it to
+					 * the queue */
+					if (e.getTarget().getPredCt() == 0) {
+						zeroPredecessorQueue[queueBack++] = e.getTarget();
+
+						/* Disconnect it from the graph by setting pred count to arbitrary negative value */
+						e.getTarget().setPredCt(-1);
+					}
+				}
+
+				topSort[outputCount++] = zeroPredecessorQueue[queueFront-1];
+			}
+		}
+
+		/* If no cycle is detected, print out the contents of the top sort */
+		for (int i = 0; !looped && i < outputCount; ++i)
+			System.out.print(topSort[i].getName() + " ");
 	}
 
 
