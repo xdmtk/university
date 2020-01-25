@@ -37,7 +37,7 @@ char **read_file_tokens(char *file_path, size_t *len) {
     file_tokens = malloc(sizeof(char *) * token_alloc_count);
 
     /* Parse and tokenize file contents by character */
-    while ((c = fgetc(fp)) != EOF) {
+    while ((c = (char)fgetc(fp)) != EOF) {
 
         /* Add characters to token buffer before reaching delimiter */
         if (c != ' ' && token_buffer_index < 8)
@@ -54,7 +54,7 @@ char **read_file_tokens(char *file_path, size_t *len) {
         else
             append_file_token(&token_index, &token_alloc_count, &token_buffer_index, file_tokens, token_buffer);
     }
-    /* After a successfull parse, call append_file_token again to get the last parsed token before EOF */
+    /* After a successful parse, call append_file_token again to get the last parsed token before EOF */
     append_file_token(&token_index, &token_alloc_count, &token_buffer_index, file_tokens, token_buffer);
 
     /* Write the amount of tokens successfully parsed to len */
@@ -65,9 +65,19 @@ char **read_file_tokens(char *file_path, size_t *len) {
 
 
 void append_file_token(int *i, int *j, int *k, char **file_tokens, char *token_buffer) {
+
+    /* Allocate new space for the token buffer collected in the token array */
     file_tokens[*i] = malloc(sizeof(char) * 8);
+
+    /* Copy the k's worth of tokens to the buffer */
     memcpy(file_tokens[*i], token_buffer, *k);
+
+    /* Update the indices for the token array */
     *i += 1; *j += 1;
+
+    /* Resize the token buffer for additional appending */
     file_tokens = realloc(file_tokens, sizeof(char *) * (*j));
+
+    /* Reset the token buffer counter */
     *k = 0;
 }
