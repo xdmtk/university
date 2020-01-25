@@ -4,15 +4,19 @@
 #include "convert.h"
 #include "parse.h"
 
-int *convert_tokens(char **tokens, int token_count) {
+int *convert_tokens_to_ints(char **tokens, int token_count) {
 
     int * int_list, i;
 
+    /* Dynamically allocate integer array */
     int_list = malloc(sizeof(int)*token_count);
-    for (i = 0; i < token_count; ++i) {
-        int_list[i] = bin_to_int(tokens[i]);
-    }
+    for (i = 0; i < token_count; ++i)
 
+        /* Parse each binary string and place the resulting integer
+         * into int_list */
+        int_list[i] = bin_to_int(tokens[i]);
+
+    free(tokens);
     return int_list;
 }
 
@@ -21,9 +25,42 @@ int bin_to_int(char *bin_string) {
     size_t len;
     int val, i;
 
+    /* Iterate through the binary string */
     len = strlen(bin_string);
-    for (i = val = 0; i < TOKEN_SIZE; ++i, val = val << 1)
-        val |= (i < len && bin_string[i] == '1') ? 1 : 0;
+    for (i = val = 0; i < TOKEN_SIZE; ++i)
+
+        /* Logical OR a 1 bit at the respective position if '1'
+         * is found at the given position in the binary string */
+        val |= (i < len && bin_string[7-i] == '1') ? 1 << i : 0;
 
     return val;
+}
+
+struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count) {
+
+    struct int_rep ** rep;
+    int i;
+
+    rep = malloc(sizeof(struct int_rep *)*int_count);
+    for (i = 0; i < int_count; ++i)  {
+        rep[i] = malloc(sizeof(struct int_rep));
+        rep[i]->val = int_list[i];
+        rep[i]->parity = get_parity_str(rep[i]->val);
+    }
+    return rep;
+}
+
+char * get_ascii_rep(int val) {
+
+}
+
+char * get_bin_str(int val) {
+
+}
+
+char * get_parity_str(int val) {
+    int bit_count, i;
+    for (bit_count = i = 0; i < TOKEN_SIZE; ++i)
+        bit_count += (val >> i) & 1;
+    return bit_count % 2 ? "ODD" : "EVEN";
 }

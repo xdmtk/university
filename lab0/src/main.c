@@ -9,17 +9,23 @@
 int main(int argc, char ** argv) {
 
     char **tokens;
-    int *int_list;
+    struct int_rep ** representations;
     size_t token_count;
 
+    /* Determine stdin read or file read, and parse tokens */
     if ((tokens = validate_args(argc, argv) == READ_FROM_FILE ?
             read_file_tokens(argv[FILE_PATH_ARGV], &token_count) :
             read_stdin_tokens(&token_count)) == NULL) {
+
+        /* On parse failure, print error message and terminate */
         printf(PARSE_ERROR_MSG);
         return -1;
     }
 
-    int_list = convert_tokens(tokens, token_count);
+    /* Convert binary string tokens into integers, and then collects all printable
+     * information about each integer */
+    representations = convert_ints_to_rep(convert_tokens_to_ints(tokens, token_count), 0);
+
 
 
 
