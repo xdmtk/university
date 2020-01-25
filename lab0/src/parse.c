@@ -30,7 +30,7 @@ char **read_file_tokens(char *file_path, size_t *len) {
     /* Write the amount of tokens successfully parsed to len */
     *len = t.token_alloc - 1;
 
-    return file_tokens;
+    return parse_status != PARSE_FAIL ? file_tokens : NULL;
 }
 
 
@@ -54,7 +54,7 @@ char **read_stdin_tokens(size_t *len) {
 
     /* Write the amount of tokens successfully parsed to len */
     *len = t.token_alloc - 1;
-    return tokens;
+    return parse_status != PARSE_FAIL ? tokens : NULL;
 }
 
 void append_token(char **tokens, char *token_buffer, struct token_indices *t) {

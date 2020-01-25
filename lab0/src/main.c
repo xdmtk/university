@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 #include <unistd.h>
 #include "main.h"
 #include "parse.h"
@@ -8,9 +9,12 @@ int main(int argc, char ** argv) {
     char **tokens;
     size_t token_count;
 
-    tokens = validate_args(argc, argv) == READ_FROM_FILE ?
+    if (tokens = validate_args(argc, argv) == READ_FROM_FILE ?
             read_file_tokens(argv[FILE_PATH_ARGV], &token_count) :
-            read_stdin_tokens(&token_count);
+            read_stdin_tokens(&token_count) == NULL) {
+        printf(PARSE_ERROR_MSG);
+        return -1;
+    }
 
     return 0;
 }

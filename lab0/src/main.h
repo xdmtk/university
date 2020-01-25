@@ -3,6 +3,7 @@
 #define READ_FROM_FILE 0
 #define READ_FROM_STDIN 1
 #define FILE_PATH_ARGV 1
+#define PARSE_ERROR_MSG "\nFailed to parse tokens from stdin/file. Please check your input\n"
 /**
  * First call at program execution, validates program commandline
  * arguments, validates file path specified in arguments.
