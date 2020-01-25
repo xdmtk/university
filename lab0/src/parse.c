@@ -34,7 +34,28 @@ char **read_file_tokens(char *file_path, size_t *len) {
 }
 
 
-char **read_stdin_tokens(size_t *len) {return NULL;};
+char **read_stdin_tokens(size_t *len) {
+
+    /* Declarations */
+    char ** tokens;
+    char token_buffer[8] = {'\0'}, c;
+    int parse_status;
+    struct token_indices t;
+
+    /* Set counters, open file and allocate token array */
+    t.token_index = t.buffer_index = parse_status = 0; t.token_alloc = 1;
+    tokens = malloc(sizeof(char *) * t.token_alloc);
+
+    while ((c = getchar()) != '\n' && parse_status != PARSE_FAIL)
+        parse_status = tokenize(c, token_buffer, tokens, &t);
+
+    /* After a successful parse, call append_token again to get the last parsed token before EOF */
+    append_token(tokens, token_buffer, &t);
+
+    /* Write the amount of tokens successfully parsed to len */
+    *len = t.token_alloc - 1;
+    return tokens;
+}
 
 void append_token(char **tokens, char *token_buffer, struct token_indices *t) {
 
