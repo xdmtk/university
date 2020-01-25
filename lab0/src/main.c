@@ -1,20 +1,28 @@
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 #include <unistd.h>
+
+#include "convert.h"
 #include "main.h"
 #include "parse.h"
 
 int main(int argc, char ** argv) {
 
     char **tokens;
+    int *int_list;
     size_t token_count;
 
-    if (tokens = validate_args(argc, argv) == READ_FROM_FILE ?
+    if ((tokens = validate_args(argc, argv) == READ_FROM_FILE ?
             read_file_tokens(argv[FILE_PATH_ARGV], &token_count) :
-            read_stdin_tokens(&token_count) == NULL) {
+            read_stdin_tokens(&token_count)) == NULL) {
         printf(PARSE_ERROR_MSG);
         return -1;
     }
+
+    int_list = convert_tokens(tokens, token_count);
+
+
+
 
     return 0;
 }

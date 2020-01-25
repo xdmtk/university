@@ -60,7 +60,7 @@ char **read_stdin_tokens(size_t *len) {
 void append_token(char **tokens, char *token_buffer, struct token_indices *t) {
 
     /* Allocate new space for the token buffer collected in the token array */
-    tokens[t->token_index] = malloc(sizeof(char) * 8);
+    tokens[t->token_index] = malloc(sizeof(char) * TOKEN_SIZE);
 
     /* Copy the k's worth of tokens to the buffer */
     memcpy(tokens[t->token_index], token_buffer, t->buffer_index);
@@ -78,17 +78,17 @@ void append_token(char **tokens, char *token_buffer, struct token_indices *t) {
 int tokenize(char c, char *token_buffer, char **file_tokens, struct token_indices *t) {
 
     /* Add characters to token buffer before reaching delimiter */
-    if (c != ' ' && t->buffer_index < 8)
+    if (c != ' ' && t->buffer_index < TOKEN_SIZE)
         token_buffer[t->buffer_index++] = c;
 
-        /* If we haven't reached the delimiter before 8 character maximum,
-         * the input is not correctly formatted. Terminate parsing and return NULL */
-    else if (c != ' ' && t->buffer_index >= 8)
+    /* If we haven't reached the delimiter before 8 character maximum,
+     * the input is not correctly formatted. Terminate parsing and return NULL */
+    else if (c != ' ' && t->buffer_index >= TOKEN_SIZE)
         return PARSE_FAIL;
 
-        /* Once the delimiter is reached, copy the buffer into a space allocated
-         * in the token array, reset buffer limit counters, resize the token array
-         * and continue parsing */
+    /* Once the delimiter is reached, copy the buffer into a space allocated
+     * in the token array, reset buffer limit counters, resize the token array
+     * and continue parsing */
     else
         append_token(file_tokens, token_buffer, t);
 
