@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+
 #include "convert.h"
 #include "main.h"
 #include "parse.h"
+#include "print.h"
 
 int main(int argc, char ** argv) {
 
@@ -24,11 +26,7 @@ int main(int argc, char ** argv) {
     /* Convert binary string tokens into integers, and then collects all printable
      * information about each integer */
     representations = convert_ints_to_rep(convert_tokens_to_ints(tokens, token_count), token_count);
-
-
-
-
-
+    print_table(representations, token_count);
     return 0;
 }
 
@@ -37,5 +35,5 @@ int validate_args(int argc, char **argv) {
 
     /* Require 1 argument - The input file path */
     if (argc != 2) return READ_FROM_STDIN;
-    return stat(argv[1], &buf) == 0;
+    return (stat(argv[1], &buf) == 0) ? READ_FROM_FILE : READ_FROM_STDIN;
 }

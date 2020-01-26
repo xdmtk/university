@@ -42,6 +42,8 @@ struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count) {
     int i;
 
     rep = malloc(sizeof(struct int_rep *)*int_count);
+
+    /* Walk the list of integers and fill in the representations for the value */
     for (i = 0; i < int_count; ++i)  {
 
         rep[i] = malloc(sizeof(struct int_rep));
@@ -55,6 +57,25 @@ struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count) {
 }
 
 char * get_ascii_rep(int val) {
+
+    char * ascii_val;
+    char * ascii_mneumonic[] = {
+          "NUL", "SOH", "STX", "ETX", "EOT",
+          "ENQ", "ACK", "BEL", "BS", "HT", "LF",
+          "VT", "FF", "CR", "SO", "SI", "DLE",
+          "DC1", "DC2", "DC3", "DC4", "NAK", "SYN",
+          "ETB", "CAN", "EM", "SUB", "ESC", "FS",
+          "GS", "RS", "US", "SPACE"
+    };
+
+    /* If not in printable range, select from prebuilt mneumonic table */
+    if (val < BEGIN_PRINTABLE_RANGE) return ascii_mneumonic[val];
+
+    /* Otherwise form a heap allocated, null terminated string with the ASCII value */
+    ascii_val = malloc(sizeof(char)*2);
+    ascii_val[0] = (char)val; ascii_val[1] = '\0';
+
+    return ascii_val;
 
 }
 

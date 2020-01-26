@@ -3,6 +3,7 @@
 
 #define ODD_PARITY 0
 #define EVEN_PARITY 1
+#define BEGIN_PRINTABLE_RANGE 0x20
 
 struct int_rep {
     char * original_string;
