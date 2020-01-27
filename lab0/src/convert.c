@@ -88,7 +88,7 @@ char * get_bin_str(int val) {
 
     /* Walk the bits of the given value, insert a '1' character for each 1 bit */
     for (i = 0; i < TOKEN_SIZE; ++i)
-        bin_string[i] = (val >> i) & 1 ? '1' : '0';
+        bin_string[7-i] = (val >> i) & 1 ? '1' : '0';
     bin_string[8] = '\0';
 
     return bin_string;
