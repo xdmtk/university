@@ -26,7 +26,7 @@ int bin_to_int(char *bin_string) {
     int val, i;
 
     /* Iterate through the binary string */
-    len = strlen(bin_string);
+    len = strlen(bin_string) > 8 ? 8 : strlen(bin_string);
     for (i = val = 0; i < TOKEN_SIZE; ++i)
 
         /* Logical OR a 1 bit at the respective position if '1'
@@ -63,11 +63,12 @@ char * get_bin_str(int val) {
     char * bin_string;
     int i;
 
-    bin_string = malloc(sizeof(char)*TOKEN_SIZE);
+    bin_string = malloc(sizeof(char)*TOKEN_SIZE+1);
 
     /* Walk the bits of the given value, insert a '1' character for each 1 bit */
     for (i = 0; i < TOKEN_SIZE; ++i)
         bin_string[i] = (val >> i) & 1 ? '1' : '0';
+    bin_string[8] = '\0';
 
     return bin_string;
 }

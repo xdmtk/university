@@ -38,7 +38,7 @@ char **read_stdin_tokens(size_t *len) {
 
     /* Declarations */
     char ** tokens;
-    char token_buffer[8] = {'\0'}, c;
+    char token_buffer[9] = {'\0'}, c;
     int parse_status;
     struct token_indices t;
 
@@ -60,10 +60,10 @@ char **read_stdin_tokens(size_t *len) {
 void append_token(char **tokens, char *token_buffer, struct token_indices *t) {
 
     /* Allocate new space for the token buffer collected in the token array */
-    tokens[t->token_index] = malloc(sizeof(char) * TOKEN_SIZE);
+    tokens[t->token_index] = malloc((sizeof(char) * TOKEN_SIZE)+1);
 
     /* Copy the k's worth of tokens to the buffer */
-    memcpy(tokens[t->token_index], token_buffer, t->buffer_index);
+    memcpy(tokens[t->token_index], token_buffer, t->buffer_index+1);
 
     /* Update the indices for the token array */
     t->token_index += 1; t->token_alloc += 1;
