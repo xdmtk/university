@@ -9,15 +9,16 @@
 
 int main(int argc, char ** argv) {
 
-    char **tokens;
+    char ** tokens;
     struct int_rep ** representations;
     size_t token_count;
+    int parse_mode;
 
     /* Determine stdin read or file read, and parse tokens */
-    if ((tokens = validate_args(argc, argv) == READ_FROM_FILE ?
-            read_file_tokens(argv[FILE_PATH_ARGV], &token_count) :
-            read_stdin_tokens(&token_count)) == NULL) {
+    parse_mode = validate_args(argc, argv);
+    tokens = read_tokens(argv[FILE_PATH_ARGV], &token_count, parse_mode);
 
+    if (tokens == NULL) {
         /* On parse failure, print error message and terminate */
         printf(PARSE_ERROR_MSG);
         return -1;
@@ -27,6 +28,7 @@ int main(int argc, char ** argv) {
      * information about each integer */
     representations = convert_ints_to_rep(convert_tokens_to_ints(tokens, token_count), token_count);
     print_table(representations, token_count);
+
     return 0;
 }
 

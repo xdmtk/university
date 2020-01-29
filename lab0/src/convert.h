@@ -34,7 +34,7 @@ int *convert_tokens_to_ints(char **tokens, int token_count);
  * @param bin_string - Input token
  * @return - The integer representation of the token
  */
-int bin_to_int(char *bin_string);
+int bin_to_int(const char *bin_string);
 
 /**
  * Accepts a list of integers, and returns a list of structs

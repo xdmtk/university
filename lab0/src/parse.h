@@ -4,12 +4,13 @@
 #define PARSE_FAIL -1
 #define PARSE_OK 0
 #define TOKEN_SIZE 8
+#define BUFFER_SIZE 4096*16
 #include <stddef.h>
 
 struct token_indices {
     int buffer_index;
-    int token_index;
-    int token_alloc;
+    int token_count;
+    int bit_count;
 };
 
 /**
@@ -17,37 +18,31 @@ struct token_indices {
  * file.
  * @param file_path - Input file path
  * @param len - Amount of tokens successfully parsed
+ * @param mode - Mode to read from STDIN or File
  * @return  - Pointer to array of string literals representing
  * file contents as tokens
  */
-char **read_file_tokens(char *file_path, size_t *len);
-
-/**
- * Parses and tokenizes the contents of stdin
- * @param len - Amount of tokens successfully parsed
- * @return  - Pointer to array of string literals representing
- * file contents as tokens
- */
-char **read_stdin_tokens(size_t *len);
+char ** read_tokens(char * file_path, size_t *len, int mode);
 
 /**
  * Appends a token from the token buffer to the dynamically allocated
- * list of tokens. Manages the resizing of the token list.
+ * list of tokens.
  *
  * @param tokens
  * @param token_buffer
  * @param t
  */
-void append_token(char **tokens, char *token_buffer, struct token_indices *t);
+char ** append_tokens(char *tokens, struct token_indices *t);
 
 /**
  * Called to operate on each character read and determine the current
  * status of the parse. Checks for delimiters and EOF conditions
+ *
  * @param c
  * @param token_buffer
  * @param file_tokens
  * @param t
  * @return
  */
-int tokenize(char c, char *token_buffer, char **file_tokens, struct token_indices *t);
+int tokenize(char c, char *file_tokens, struct token_indices *t);
 #endif //LAB0_PARSE_H

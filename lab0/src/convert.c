@@ -20,13 +20,11 @@ int *convert_tokens_to_ints(char **tokens, int token_count) {
     return int_list;
 }
 
-int bin_to_int(char *bin_string) {
+int bin_to_int(const char *bin_string) {
 
     size_t len;
-    int val, i;
+    unsigned int val, i;
 
-    /* Iterate through the binary string */
-    bin_string = pad_bin_string(bin_string, strlen(bin_string) > 8 ? 8 : strlen(bin_string));
     for (i = val = 0; i < TOKEN_SIZE; ++i)
 
         /* Logical OR a 1 bit at the respective position if '1'
@@ -36,20 +34,6 @@ int bin_to_int(char *bin_string) {
     return val;
 }
 
-char * pad_bin_string(char *bin_string, int len) {
-
-    if (len >= 8) return 8;
-    int i;
-    char * bin_string_padded;
-
-    bin_string_padded = malloc(sizeof(char)*9);
-    memcpy(bin_string_padded, bin_string, len);
-    for (i = len; i < 8; ++i) {
-        bin_string_padded[i] = '0';
-    }
-    bin_string_padded[8] = '\0';
-    return bin_string_padded;
-}
 
 struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count) {
 
