@@ -1,6 +1,7 @@
 #ifndef LAB0_PRINT_H
 #define LAB0_PRINT_H
 #include "convert.h"
+#include <stddef.h>
 
 #define LINE_BREAK printf("\n")
 #define HORIZONTAL_LINE "--------"

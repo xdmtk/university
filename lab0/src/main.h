@@ -5,6 +5,7 @@
 #define FILE_PATH_ARGV 1
 #define PARSE_ERROR_MSG "\nFailed to parse tokens from stdin/file. Please check your input\n"
 
+#include <stddef.h>
 /**
  * First call at program execution, validates program commandline
  * arguments, validates file path specified in arguments.

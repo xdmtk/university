@@ -5,6 +5,7 @@
 #define EVEN_PARITY 1
 #define BEGIN_PRINTABLE_RANGE 0x20
 
+#include <stddef.h>
 /**
  * int_rep structure contains all data for the given token
  * to be printed to stdout

@@ -4,6 +4,7 @@
 #define PARSE_FAIL -1
 #define PARSE_OK 0
 #define TOKEN_SIZE 8
+#include <stddef.h>
 
 struct token_indices {
     int buffer_index;
