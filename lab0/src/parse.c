@@ -20,6 +20,8 @@ char ** read_tokens(char * file_path, size_t *len, int mode) {
         fp = fopen(file_path, "r");
 
     while (((c = (mode == READ_FROM_FILE ? fgetc(fp) : getchar())) != EOF) && (parse_status != PARSE_FAIL)) {
+
+        if (mode == READ_FROM_STDIN && c == '\n') break;
         parse_status = tokenize(c, token_buffer, &t);
     }
     *len = ++t.token_count;
