@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <string.h>
 
 #include <lab0/convert.h>
 #include <lab0/parse.h>
