@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "convert.h"
-#include "parse.h"
+#include <lab0/convert.h>
+#include <lab0/parse.h>
 
 int *convert_tokens_to_ints(char **tokens, int token_count) {
 
@@ -22,7 +22,6 @@ int *convert_tokens_to_ints(char **tokens, int token_count) {
 
 int bin_to_int(const char *bin_string) {
 
-    size_t len;
     unsigned int val, i;
 
     for (i = val = 0; i < TOKEN_SIZE; ++i)
@@ -43,7 +42,7 @@ struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count) {
     rep = malloc(sizeof(struct int_rep *)*int_count);
 
     /* Walk the list of integers and fill in the representations for the value */
-    for (i = 0; i < int_count; ++i)  {
+    for (i = 0; i < (int)int_count; ++i)  {
 
         rep[i] = malloc(sizeof(struct int_rep));
 

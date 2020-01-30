@@ -2,10 +2,10 @@
 #include <string.h>
 #include <sys/stat.h>
 
-#include "convert.h"
-#include "main.h"
-#include "parse.h"
-#include "print.h"
+#include <lab0/convert.h>
+#include <lab0/main.h>
+#include <lab0/parse.h>
+#include <lab0/print.h>
 
 int main(int argc, char ** argv) {
 

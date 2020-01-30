@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "main.h"
-#include "parse.h"
+#include <lab0/main.h>
+#include <lab0/parse.h>
 
 
 char ** read_tokens(char * file_path, size_t *len, int mode) {

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "print.h"
+#include <lab0/print.h>
 
 void print_table(struct int_rep **rep, int rep_count) {
     print_header();
