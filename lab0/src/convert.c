@@ -48,6 +48,9 @@ struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count) {
         rep[i]->val = int_list[i];
         rep[i]->parity = get_parity_str(rep[i]->val);
         rep[i]->original_string = get_bin_str(rep[i]->val);
+
+        /* Ignore the left most bit */
+        rep[i]->val &= 0x7F;
         rep[i]->ascii_rep = get_ascii_rep(rep[i]->val);
     }
     return rep;

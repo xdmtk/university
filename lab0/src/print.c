@@ -13,10 +13,10 @@ void print_table(struct int_rep **rep, int rep_count) {
 void print_header() {
 
     int i;
-    char * header[] = {"Original", "ASCII", "Decimal", "Parity", "T.Error"};
+    char * header[] = {"Original", "ASCII", "Decimal", "Parity"};
 
-    for (i = 0; i < 5; ++i) print_column(header[i], JUSTIFY_LEFT); LINE_BREAK;
-    for (i = 0; i < 5; ++i) print_column(HORIZONTAL_LINE, PRINT_LB); LINE_BREAK;
+    for (i = 0; i < 4; ++i) print_column(header[i], JUSTIFY_LEFT); LINE_BREAK;
+    for (i = 0; i < 4; ++i) print_column(HORIZONTAL_LINE, PRINT_LB); LINE_BREAK;
 }
 
 void print_reps(struct int_rep **rep, int rep_count) {
@@ -32,7 +32,9 @@ void print_reps(struct int_rep **rep, int rep_count) {
         print_column(buf, JUSTIFY_RIGHT);
 
         print_column(rep[i]->parity, JUSTIFY_LEFT);
-        print_column((!strcmp(rep[i]->parity, "ODD") ? "TRUE" : "FALSE"), JUSTIFY_LEFT);
+
+        /* No T-Error column */
+        //print_column((!strcmp(rep[i]->parity, "ODD") ? "TRUE" : "FALSE"), JUSTIFY_LEFT);
 
         LINE_BREAK;
     }
