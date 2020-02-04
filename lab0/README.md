@@ -17,6 +17,10 @@ Simply run the included Makefile using `make`. This should output an executable 
 Without arguments, the executable will read characters from `stdin`, otherwise the program will parse the
 included file path, and if the file path is valid, proceed to parse text from the file.
 
+### Documentation
+All formal documentation is located in the header files. All code is documented inline as well.
+
+
 ### Notes
 **Buffer Size**: The maximum amount of characters that can be parsed by the program is 65536. The specification 
 doesn't say too much about being robust, so I decided to implement a fixed sized buffer instead of a 
