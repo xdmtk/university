@@ -1,6 +1,6 @@
 # Lab 0 -  Making Sense of Ones and Zeros
 
-
+![](https://github.com/xdmtk/comp322-spring2020/blob/master/lab0/misc/lab0.gif)
 ### Introduction
 This lab should take for input the bit level representation of regular, non-extended 7 bit ASCII, and 
 output a table with the corresponding 8 bit binary string, the ASCII character 
