@@ -6,11 +6,14 @@
 #define TOKEN_SIZE 8
 #define BUFFER_SIZE 4096*16
 #include <stddef.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 struct token_indices {
     int buffer_index;
     int token_count;
     int bit_count;
+    int read_buffer_index;
 };
 
 /**
@@ -23,6 +26,15 @@ struct token_indices {
  * file contents as tokens
  */
 char ** read_tokens(char * file_path, size_t *len, int mode);
+
+/**
+ * Since we aren't allowed to use getchar() or fgetc() for I/O, we
+ * this wrapper around read() simulates the usage of the above
+ * @param fd
+ * @param mode
+ * @return
+ */
+char read_char_primitive(FILE *file, int fd, int mode, struct token_indices *t, char *buf);
 
 /**
  * Appends a token from the token buffer to the dynamically allocated

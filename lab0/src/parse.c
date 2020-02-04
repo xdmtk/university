@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef __linux__
+#include <unistd.h>
+#elif WIN32
+#include <io.h>
+#endif
 #include <lab0/main.h>
 #include <lab0/parse.h>
 
@@ -9,21 +14,24 @@ char ** read_tokens(char * file_path, size_t *len, int mode) {
 
     /* Declarations */
     FILE * fp;
-    char * token_buffer, c;
+    char * token_buffer, read_token_buffer[BUFFER_SIZE], c;
     struct token_indices t;
     int i, parse_status = PARSE_OK;
 
     /* Zero counters, allocate the buffer space and zero it out */
-    t.buffer_index = t.token_count = t.bit_count = 0;
+    t.buffer_index = t.token_count = t.bit_count = t.read_buffer_index = 0;
     token_buffer = malloc(sizeof(char)*BUFFER_SIZE);
+
     for (i=0; i < BUFFER_SIZE; ++i) token_buffer[i] = '0';
 
     /* For file reads, get a file handle to read */
     if (mode == READ_FROM_FILE)
         fp = fopen(file_path, "r");
+    else
+        fp = NULL;
 
     /* Begin reading character by character, calling fgetc() for file reads and getchar() for stdin reads */
-    while (((c = (mode == READ_FROM_FILE ? fgetc(fp) : getchar())) != EOF) && (parse_status != PARSE_FAIL)) {
+    while (((c = read_char_primitive(fp, 0, mode, &t, read_token_buffer)) != EOF) && (parse_status != PARSE_FAIL)) {
 
         /* Terminate stdin read on newline entry */
         if (mode == READ_FROM_STDIN && c == '\n') break;
@@ -95,4 +103,21 @@ int tokenize(char c, char* token_buffer, struct token_indices *t) {
         t->bit_count++;
         return PARSE_OK;
     }
+}
+
+
+// TODO: Comment this
+char read_char_primitive(FILE *file, int fd, int mode, struct token_indices *t, char *buf) {
+
+    static int ret;
+
+    fd = mode == READ_FROM_FILE ? fileno(file) : fd;
+    if (!t->read_buffer_index) {
+        ret = read(fd,buf, BUFFER_SIZE);
+        if (!ret) return EOF;
+    }
+    if (t->read_buffer_index == ret) {
+        return EOF;
+    }
+    return buf[t->read_buffer_index++];
 }
