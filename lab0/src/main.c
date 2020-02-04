@@ -26,6 +26,7 @@ int main(int argc, char ** argv) {
     /* Convert binary string tokens into integers, and then collects all printable
      * information about each integer */
     representations = convert_ints_to_rep(convert_tokens_to_ints(tokens, token_count), token_count);
+
     print_table(representations, token_count);
 
     return 0;

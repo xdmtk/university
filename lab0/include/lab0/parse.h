@@ -28,8 +28,8 @@ struct token_indices {
 char ** read_tokens(char * file_path, size_t *len, int mode);
 
 /**
- * Since we aren't allowed to use getchar() or fgetc() for I/O, we
- * this wrapper around read() simulates the usage of the above
+ * Since we aren't allowed to use getchar() or fgetc() for I/O,
+ * this wrapper around read() simulates getchar()/fgetc()
  * @param fd
  * @param mode
  * @return

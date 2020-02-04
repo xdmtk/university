@@ -1,11 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
+/* For read() declaration - unistd.h does not exist in Windows */
 #ifdef __linux__
-#include <unistd.h>
+    #include <unistd.h>
 #elif WIN32
-#include <io.h>
+    #include <io.h>
 #endif
+
 #include <lab0/main.h>
 #include <lab0/parse.h>
 
@@ -21,16 +24,13 @@ char ** read_tokens(char * file_path, size_t *len, int mode) {
     /* Zero counters, allocate the buffer space and zero it out */
     t.buffer_index = t.token_count = t.bit_count = t.read_buffer_index = 0;
     token_buffer = malloc(sizeof(char)*BUFFER_SIZE);
-
     for (i=0; i < BUFFER_SIZE; ++i) token_buffer[i] = '0';
 
     /* For file reads, get a file handle to read */
-    if (mode == READ_FROM_FILE)
-        fp = fopen(file_path, "r");
-    else
-        fp = NULL;
+    fp = (mode == READ_FROM_FILE) ? fopen(file_path, "r") : NULL;
 
-    /* Begin reading character by character, calling fgetc() for file reads and getchar() for stdin reads */
+    /* Begin reading character by character, using read_char_primitive as a wrapper around read()
+     * and mimic the functionality of fgetc() / getchar() */
     while (((c = read_char_primitive(fp, 0, mode, &t, read_token_buffer)) != EOF) && (parse_status != PARSE_FAIL)) {
 
         /* Terminate stdin read on newline entry */
@@ -70,10 +70,20 @@ char ** append_tokens(char *tokens, struct token_indices *t) {
 
 int tokenize(char c, char* token_buffer, struct token_indices *t) {
 
+    /* If we've hit a delimiter but have no bits entered yet
+     * we can safely ignore. This can happen with input where tokens
+     * have multiple spaces separating them
+     *
+     * Example: 1101       1110 01      1000
+     */
+    if (c == ' ' && !t->bit_count)  {
+        return PARSE_OK;
+    }
+
     /* If delimiter is reached before 8 bits, advance the buffer_index pointer
      * to the next set of 8 bits, reset the current bit count, and increment
      * the token counter */
-    if (c == ' ' && t->buffer_index % 8) {
+    else if (c == ' ' && t->buffer_index % 8) {
         t->buffer_index += 8 - (t->buffer_index % 8);
         t->bit_count = 0;
         t->token_count++;
@@ -106,18 +116,25 @@ int tokenize(char c, char* token_buffer, struct token_indices *t) {
 }
 
 
-// TODO: Comment this
 char read_char_primitive(FILE *file, int fd, int mode, struct token_indices *t, char *buf) {
-
+    
+    /* Get characters read and persist data on each call */
     static int ret;
-
-    fd = mode == READ_FROM_FILE ? fileno(file) : fd;
+    
+    /* If we are reading from a file, get the file descriptor required by read(), otherwise use 0 for stdin */
+    fd = mode == READ_FROM_FILE ? fileno(file) : 0;
+    
+    /* Make a single call to call to read() a fill the given buffer */
     if (!t->read_buffer_index) {
         ret = read(fd,buf, BUFFER_SIZE);
         if (!ret) return EOF;
     }
+
+    /* As soon as our index into the buffer filled by read() is at last byte returned by read, return EOF */
     if (t->read_buffer_index == ret) {
         return EOF;
     }
+
+    /* Otherwise return a single character from the buffer indexed by values in *t */
     return buf[t->read_buffer_index++];
 }

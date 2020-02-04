@@ -69,7 +69,7 @@ char * get_ascii_rep(int val) {
     };
 
     /* If not in printable range, select from prebuilt mneumonic table */
-    if (val < BEGIN_PRINTABLE_RANGE) return ascii_mneumonic[val];
+    if (val <= BEGIN_PRINTABLE_RANGE) return ascii_mneumonic[val];
 
     /* Otherwise form a heap allocated, null terminated string with the ASCII value */
     ascii_val = malloc(sizeof(char)*2);
