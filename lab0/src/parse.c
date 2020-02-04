@@ -76,14 +76,14 @@ int tokenize(char c, char* token_buffer, struct token_indices *t) {
      *
      * Example: 1101       1110 01      1000
      */
-    if (c == ' ' && !t->bit_count)  {
+    if ((c == ' ' || c == '\n') && !t->bit_count)  {
         return PARSE_OK;
     }
 
     /* If delimiter is reached before 8 bits, advance the buffer_index pointer
      * to the next set of 8 bits, reset the current bit count, and increment
      * the token counter */
-    else if (c == ' ' && t->buffer_index % 8) {
+    else if ((c == ' ' || c == '\n') && t->buffer_index % 8) {
         t->buffer_index += 8 - (t->buffer_index % 8);
         t->bit_count = 0;
         t->token_count++;
