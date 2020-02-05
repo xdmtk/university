@@ -1,8 +1,5 @@
 #ifndef LAB0_CONVERT_H
 #define LAB0_CONVERT_H
-
-#define ODD_PARITY 0
-#define EVEN_PARITY 1
 #define BEGIN_PRINTABLE_RANGE 0x20
 
 #include <stddef.h>
@@ -45,14 +42,6 @@ int bin_to_int(const char *bin_string);
  */
 struct int_rep **convert_ints_to_rep(int *int_list, size_t int_count);
 
-/**
- * Pads the given binary string with 0's to the right
- *
- * @param bin_string - Input binary string
- * @param len - Length of binary string
- * @return - Pointer to new, padded binary string
- */
-char * pad_bin_string(char *bin_string, int len);
 
 /**
  * Calculates the parity of the given value, and returns
