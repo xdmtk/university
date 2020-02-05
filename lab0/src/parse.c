@@ -91,15 +91,15 @@ int tokenize(char c, char* token_buffer, struct token_indices *t) {
     }
 
     /* If no delimiter was found before the end of the 8 bits,
-     * the input is incorrectly formatted and should be rejected */
-    else if (c != ' ' && t->bit_count >= 8) {
-        return PARSE_FAIL;
+     * we can ignore any continued 0 or 1's */
+    else if (c != ' ' && c != '\n' && t->bit_count >= 8) {
+        return PARSE_OK;
     }
 
     /* If we've hit the delimiter at the correct position, meaning
      * the user has entered 8 bits and then hit a space, reset the bit
      * counter, increment the token count and continue parsing */
-    else if(c == ' ' && t->bit_count == 8) {
+    else if((c == ' ' || c == '\n') && t->bit_count == 8) {
         t->bit_count = 0;
         t->token_count++;
         return PARSE_OK;
