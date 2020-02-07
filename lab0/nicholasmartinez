@@ -1,3 +1,15 @@
+    
+
+GitHub: https://github.com/xdmtk/comp322-spring2020
+Email: nicholas.martinez.298@my.csun.edu
+ID: 103959425
+
+
+Readme: 
+
+
+
+
 # Lab 0 -  Making Sense of Ones and Zeros
 
 ![](https://github.com/xdmtk/comp322-spring2020/blob/master/lab0/misc/lab0.gif)
@@ -26,7 +38,6 @@ All formal documentation is located in the header files. All code is documented 
 doesn't say too much about being robust, so I decided to implement a fixed sized buffer instead of a 
 dynamically resized container. 
 
-**Stdin**: Originally this program was written to parse binary strings from `stdin` if a filename was not provided on the command line, but after closer inspection of the requirements it appears that `stdin` is only used to parse a filename if not provided on the command line. As a result there is some unused code interwoven into the parse logic.
 
 ### Activity log
 ```asm
