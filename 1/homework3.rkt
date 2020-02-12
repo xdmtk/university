@@ -24,3 +24,15 @@
 (- (max 7 50 3 4) (min 7 50 3 4))
 (- (max -4 -5 -7 9) (min -4 -5 -7 9))
 
+
+;Write an expression the determines if x lies between  200 and 500 or if x equals -1.
+;Do not use an if. Use an or.
+;Test on x  300, -1  10
+(define x 300)
+(or (and (< x 500) (> x 200)) (= x -1))
+(set! x -1)
+(or (and (< x 500) (> x 200)) (= x -1))
+(set! x 10)
+(or (and (< x 500) (> x 200)) (= x -1))
+
+

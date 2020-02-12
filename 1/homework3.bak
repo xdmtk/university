@@ -1,5 +1,0 @@
-#lang racket
-; Nicholas Martinez
-;
-
-(* (/ ( + 300 5 ) (- (* 7.0 12) 70)) 1001)
