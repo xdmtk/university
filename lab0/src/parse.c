@@ -13,31 +13,35 @@
 #include <lab0/parse.h>
 
 
-char ** read_tokens(char * file_path, size_t *len, int mode) {
+char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc) {
 
     /* Declarations */
     FILE * fp;
     char * token_buffer, read_token_buffer[BUFFER_SIZE], c;
     struct token_indices t;
-    int i, parse_status = PARSE_OK;
+    int i, k, parse_status = PARSE_OK;
 
     /* Zero counters, allocate the buffer space and zero it out */
     t.buffer_index = t.token_count = t.bit_count = t.read_buffer_index = 0;
     token_buffer = malloc(sizeof(char)*BUFFER_SIZE);
     for (i=0; i < BUFFER_SIZE; ++i) token_buffer[i] = '0';
 
-    /* For file reads, get a file handle to read */
-    fp = (mode == READ_FROM_FILE) ? fopen(file_path, "r") : NULL;
+    if (mode == READ_FROM_FILE) {
+        fp = fopen(file_path, "r");
 
-    /* Begin reading character by character, using read_char_primitive as a wrapper around read()
-     * and mimic the functionality of fgetc() / getchar() */
-    while (((c = read_char_primitive(fp, 0, mode, &t, read_token_buffer)) != EOF) && (parse_status != PARSE_FAIL)) {
+        /* Begin reading character by character, using read_char_primitive as a wrapper around read()
+         * and mimic the functionality of fgetc() / getchar() */
+        while (((c = read_char_primitive(fp, 0, mode, &t, read_token_buffer)) != EOF) && (parse_status != PARSE_FAIL)) {
 
-        /* Terminate stdin read on newline entry */
-        if (mode == READ_FROM_STDIN && c == '\n') break;
-
-        /* Parse the character and return a parse status */
-        parse_status = tokenize(c, token_buffer, &t);
+            /* Parse the character and return a parse status */
+            parse_status = tokenize(c, token_buffer, &t);
+        }
+    }
+    else {
+        for (i = 1, k = 0; i < argc; ++i) {
+            if (!strcmp(argv[i], "-")) continue;
+            memcpy(token_buffer+k, argv[i], strlen(argv[i]);
+        }
     }
 
     /* Increment the final token count after the last character has been parsed */

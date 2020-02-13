@@ -25,7 +25,7 @@ struct token_indices {
  * @return  - Pointer to array of string literals representing
  * file contents as tokens
  */
-char ** read_tokens(char * file_path, size_t *len, int mode);
+char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc);
 
 /**
  * Since we aren't allowed to use getchar() or fgetc() for I/O,

@@ -18,19 +18,7 @@ int main(int argc, char ** argv) {
     /* Determine stdin read or file read, and parse tokens */
     parse_mode = validate_args(argc, argv);
 
-
-    /* Last minute addition, misread the instructions as requirement to parse 101010 strings
-     * from stdin, not use stdin to name the file */
-    if (parse_mode == READ_FROM_STDIN) {
-        for (i = 0; i < 256; ++i) file_path[i] = '\0';
-        scanf("%s", file_path);
-        parse_mode = READ_FROM_FILE;
-    }
-    else {
-        strcpy(file_path, argv[FILE_PATH_ARGV]);
-    }
-
-    tokens = read_tokens(file_path, &token_count, parse_mode);
+    tokens = read_tokens(argv[FILE_PATH_ARGV], &token_count, parse_mode, argv, argc);
 
     if (tokens == NULL) {
         /* On parse failure, print error message and terminate */
