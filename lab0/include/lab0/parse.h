@@ -34,7 +34,7 @@ char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc
  * @param mode
  * @return
  */
-char read_char_primitive(FILE *file, int fd, int mode, struct token_indices *t, char *buf);
+char read_char_primitive(int fd, struct token_indices *t, char *buf);
 
 /**
  * Appends a token from the token buffer to the dynamically allocated

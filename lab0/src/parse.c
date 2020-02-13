@@ -5,6 +5,7 @@
 /* For read() declaration - unistd.h does not exist in Windows */
 #ifdef __linux__
     #include <unistd.h>
+    #include <fcntl.h>
 #elif WIN32
     #include <io.h>
 #endif
@@ -16,7 +17,7 @@
 char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc) {
 
     /* Declarations */
-    FILE * fp;
+    int fd;
     char * token_buffer, read_token_buffer[BUFFER_SIZE], c;
     struct token_indices t;
     int i, k, parse_status = PARSE_OK, token_arg_len;
@@ -28,11 +29,11 @@ char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc
 
 
     if (mode == READ_FROM_FILE) {
-        fp = fopen(file_path, "r");
+        fd = open(file_path, 0);
 
         /* Begin reading character by character, using read_char_primitive as a wrapper around read()
          * and mimic the functionality of fgetc() / getchar() */
-        while (((c = read_char_primitive(fp, 0, mode, &t, read_token_buffer)) != EOF) && (parse_status != PARSE_FAIL)) {
+        while (((c = read_char_primitive(fd, &t, read_token_buffer)) != EOF) && (parse_status != PARSE_FAIL)) {
 
             /* Parse the character and return a parse status */
             parse_status = tokenize(c, token_buffer, &t);
@@ -127,13 +128,10 @@ int tokenize(char c, char* token_buffer, struct token_indices *t) {
 }
 
 
-char read_char_primitive(FILE *file, int fd, int mode, struct token_indices *t, char *buf) {
+char read_char_primitive(int fd, struct token_indices *t, char *buf) {
     
     /* Get characters read and persist data on each call */
     static int ret;
-    
-    /* If we are reading from a file, get the file descriptor required by read(), otherwise use 0 for stdin */
-    fd = mode == READ_FROM_FILE ? fileno(file) : 0;
     
     /* Make a single call to call to read() a fill the given buffer */
     if (!t->read_buffer_index) {

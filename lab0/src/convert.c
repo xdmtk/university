@@ -2,6 +2,7 @@
 
 #include <lab0/convert.h>
 #include <lab0/parse.h>
+#include <lab0/main.h>
 
 int *convert_tokens_to_ints(char **tokens, int token_count) {
 
@@ -22,6 +23,15 @@ int *convert_tokens_to_ints(char **tokens, int token_count) {
 int bin_to_int(const char *bin_string) {
 
     unsigned int val, i;
+
+    /* Last minute validation for valid input */
+    for (i = 0; i < TOKEN_SIZE; ++i) {
+        if (bin_string[i] != '0' && bin_string[i] != '1')  {
+            printf(PARSE_ERROR_MSG);
+            exit(-1);
+        }
+    }
+
 
     for (i = val = 0; i < TOKEN_SIZE; ++i)
 
