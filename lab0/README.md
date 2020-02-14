@@ -12,24 +12,53 @@ Simply run the included Makefile using `make`. This should output an executable 
 
 ### Usage
 ```asm
-./lab0 <optional file path>
+./lab0 [<file path> | <-> <binary string tokens> | <binary string tokens>]
 ```
-Without arguments, the executable will read a filename from `stdin`, otherwise the program will parse the
-included file path, and if the file path is valid, proceed to parse text from the file.
+
+The binary `lab0` must be executed with arguments, namely a valid file path containing binary strings, a series of binary strings, or a '-' character followed by a series of binary strings. 
+
 
 ### Documentation
 All formal documentation is located in the header files. All code is documented inline as well.
 
 
 ### Notes
-**Buffer Size**: The maximum amount of characters that can be parsed by the program is 65536. The specification 
+**Buffer Size**: The maximum amount of characters that can be parsed via file by the program is 65536. The specification 
 doesn't say too much about being robust, so I decided to implement a fixed sized buffer instead of a 
 dynamically resized container. 
 
-**Stdin**: Originally this program was written to parse binary strings from `stdin` if a filename was not provided on the command line, but after closer inspection of the requirements it appears that `stdin` is only used to parse a filename if not provided on the command line. As a result there is some unused code interwoven into the parse logic.
 
 ### Activity log
-```asm
+```
+commit 6d730d77f7a63e5f7e4ebf848f8544b176e8a0d2
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Wed Feb 12 21:27:22 2020 -0800
+
+    Use open instead of fopen
+
+commit 3666b39be8851f0160225f640429b998dead3058
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Wed Feb 12 19:13:03 2020 -0800
+
+    Minor additional to parse tokens off the command line
+
+commit ff609077ef7e1b5e4e824525db8540b76ce9bca0
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Wed Feb 12 18:50:28 2020 -0800
+
+    Modify stdin input requirement to use argv
+
+commit 29d48562dc5dc63afa7368aa5dfed73849a8c6be
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Fri Feb 7 14:03:19 2020 -0800
+
+    Update Readme
+
+commit ac442d1feb419f44a6fa559bc8d786e2f80cbd61
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Fri Feb 7 13:56:23 2020 -0800
+
+    Update README with activity log
 
 commit 0c72cd8806c17d9c5a362f3a83d601d48087873c
 Author: Nick Martinez <nick@xdmtk.org>

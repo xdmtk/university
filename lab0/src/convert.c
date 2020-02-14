@@ -79,7 +79,13 @@ char * get_ascii_rep(int val) {
     };
 
     /* If not in printable range, select from prebuilt mneumonic table */
-    if (val <= BEGIN_PRINTABLE_RANGE) return ascii_mneumonic[val];
+    
+    // NOTE: A last minute specification says to use a function named 'iascii'
+    // There is no such function.. There is `isascii()`, but this technically 
+    // doesn't fulfull the requirements because non-printable ascii still 
+    // return true in this scenario. So for the sake of abiding by the specification,
+    // I created the 'iascii()' function to tell me whether it is a printable character
+    if (iascii(val)) return ascii_mneumonic[val];
 
     /* Otherwise form a heap allocated, null terminated string with the ASCII value */
     ascii_val = malloc(sizeof(char)*2);
@@ -115,3 +121,5 @@ char * get_parity_str(int val) {
     /* Return an EVEN/ODD string depending on the bit count */
     return bit_count % 2 ? "ODD" : "EVEN";
 }
+
+int iascii(int val) {return val <= BEGIN_PRINTABLE_RANGE;}

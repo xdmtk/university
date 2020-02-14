@@ -70,3 +70,9 @@ char * get_bin_str(int val);
  */
 char * get_ascii_rep(int val);
 #endif //LAB0_CONVERT_H
+
+
+/**
+ * Returns a boolean value whether the given value is within a printable range 
+ */
+int iascii(int val);
