@@ -30,6 +30,12 @@ dynamically resized container.
 
 ### Activity log
 ```
+commit 061a9830ab7518b4a6156e75c8cb73cc4aab5c5e (HEAD -> master)
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Fri Feb 14 15:24:10 2020 -0800
+
+    Update README, add nonexistent iascii, tidy up compiler warnings
+
 commit 6d730d77f7a63e5f7e4ebf848f8544b176e8a0d2
 Author: Nick Martinez <nick@xdmtk.org>
 Date:   Wed Feb 12 21:27:22 2020 -0800
