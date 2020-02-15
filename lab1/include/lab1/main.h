@@ -1,7 +1,7 @@
 #ifndef LAB1_MAIN_H
 #define LAB1_MAIN_H
-#define PARENT 0x0
-#define CHILD 0x1
+#define PARENT 0x1
+#define CHILD 0x0
 
 struct state {
     unsigned char identity;
@@ -12,8 +12,6 @@ struct state {
     int retval;
     time_t utime;
     time_t stime;
-    time_t c_utime;
-    time_t c_stime;
     time_t exec_end;
 };
 
@@ -28,7 +26,7 @@ void run(struct state *st);
 /**
  * Outputs all required information contained in struct state
  *
- * @param st
+ * @param parent
  */
-void out(struct state *st);
+void out(struct state *parent, struct state *child);
 #endif //LAB1_MAIN_H
