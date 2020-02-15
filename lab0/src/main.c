@@ -10,10 +10,9 @@
 int main(int argc, char ** argv) {
 
     char ** tokens;
-    char file_path[256];
     struct int_rep ** representations;
     size_t token_count;
-    int parse_mode, i;
+    int parse_mode;
 
     /* Determine stdin read or file read, and parse tokens */
     parse_mode = validate_args(argc, argv);

@@ -45,17 +45,17 @@ void print_column(char * str, int mode) {
     int i, spaces;
 
     if (mode == JUSTIFY_LEFT) {
-        printf(str);
+        printf("%s", str);
         for (i = 0, spaces = COLUMN_WIDTH - strlen(str); i < spaces; ++i)
             printf(" ");
     }
     else if (mode == JUSTIFY_RIGHT) {
         for (i = 0, spaces = COLUMN_WIDTH - strlen(str); i < spaces; ++i)
             printf(" ");
-        printf(str);
+        printf("%s", str);
     }
     else  {
-        printf(str);
+        printf("%s", str);
     }
     printf(" ");
 }
