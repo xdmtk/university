@@ -2,14 +2,17 @@
 ; Nicholas Martinez
 ; Comp 333
 ; Homework #3
-; Due Date: Feb 20
+; Due Feb 20 2020
 
 (displayln "Nicholas Martinez")
 
+
+;Problem 1
 ;Convert the following arithmetic expressions into Scheme expressions.
 ;Use Java operator precedence rules.
 ;Enter your expressions into the DR Racket Edit Window Run to confirm the results.
 ;a.( 300 + 5) / ( 7.0 *12 – 70) * (1001)
+(displayln "Problem 1")
 (* (/ ( + 300 5 ) (- (* 7.0 12) 70)) 1001)
 
 ;b. 12 + sqrt( 12*12 - 4*2*5) /( 2*2)
@@ -20,19 +23,63 @@
 ;Hint: Use min and max. To test use define to set values for a,b,c,d in the edit file.
 ;Your expression should work for any 4 numbers in any order.
 ;Test on the values  1  2  3  4;   7  50  3  4;  -4   -5  -7  9.
-(- (max 1 2 3 4) (min 1 2 3 4))
-(- (max 7 50 3 4) (min 7 50 3 4))
-(- (max -4 -5 -7 9) (min -4 -5 -7 9))
+(displayln "Problem 2")
+(define small_large_distance
+  (lambda (a b c d)
+    (- (max a b c d) (min a b c d))
+  )
+)
+(small_large_distance 1 2 3 4)
+(small_large_distance 7 50 3 4)
+(small_large_distance -3 -5 -7 9)
 
 
+;Problem 3
 ;Write an expression the determines if x lies between  200 and 500 or if x equals -1.
 ;Do not use an if. Use an or.
 ;Test on x  300, -1  10
-(define x 300)
-(or (and (< x 500) (> x 200)) (= x -1))
-(set! x -1)
-(or (and (< x 500) (> x 200)) (= x -1))
-(set! x 10)
-(or (and (< x 500) (> x 200)) (= x -1))
+(displayln "Problem 3")
+(define two_five_one 
+  (lambda (x) 
+    (or (and (< x 500) (> x 200)) (= x -1))
+  )
+)
+(two_five_one 300)
+(two_five_one -1)
+(two_five_one 10)
 
+
+;Problem 4
+;Define a lambda expression that returns the product of 3 arguments.  
+;Test on 20 30 11
+(displayln "Problem 4")
+(define p3
+  (lambda (a b c)
+    ( * a b c )
+    )
+  )
+(p3 20 30 11)
+
+
+;Problem 5
+;Define a Scheme function average that returns the average of 3 arguments.
+;( average  4 7 4 )  => 5  Test on the numbers 6 4 8;  9 10 12;  -4 8 -2
+(displayln "Problem 5")
+(define 
+  (average x y z)
+    (/ (+ x y z) 3)
+  )
+(average 6 4 8)
+(average 9 10 12)
+(average -4 8 -2)
+
+
+;Problem 6
+;Define a Scheme function evalPoly to evaluate the expression 
+;ax2 +bx + c where a, b, c and x are arguments.
+;( evalPoly   1  2  3  5  ) => eval x2 + 2x + 3 at x =5  => 38  . 
+;Test on 5 8 4 10;   -2  -3  17 13
+
+
+(displayln "Problem 6")
 
