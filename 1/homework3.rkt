@@ -80,6 +80,27 @@
 ;( evalPoly   1  2  3  5  ) => eval x2 + 2x + 3 at x =5  => 38  . 
 ;Test on 5 8 4 10;   -2  -3  17 13
 
-
 (displayln "Problem 6")
+(define 
+  (polynomial a b c x)
+   ( + ( * a (* x x) ) (* b x) c)
+)
+(polynomial 5 8 4 10)
+(polynomial -2 -3 17 13)
+
+
+;Problem 7
+;Write a Scheme function that returns the middle value from a 
+;list of 3 numbers. For example,
+; (middle  ‘ (7  2  4) ) returns 4 . Use cond. 
+;Do not use sort. Test on numbers  3 4 5;   5 3 8; 3 10 7
+
+(displayln "Problem 7")
+(define 
+  (mid a b c) 
+    (cond (not (member a (list (max a b c) (min a b c))))(displayln a)(#f))
+;    (cond (not (member b (list (max a b c) (min a b c))))(displayln b)(#f))
+;    (cond (not (member c (list (max a b c) (min a b c))))(displayln c)(#f))
+)
+(mid 3 4 5)
 
