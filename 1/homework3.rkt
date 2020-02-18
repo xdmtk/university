@@ -136,3 +136,24 @@
 (greater? (list 10 9) (list -1 -2))
 (greater? (list 3 2) (list -3 2))
 
+
+;Problem 9
+;Exercise . Define recursive Scheme function  gcd to find the greatest common 
+;divisor of two non-negative  integers.Use the following recursive definition. 
+;The is pseudo code. You need to translate this into Scheme. Use cond.  Test on the 
+;numbers    24  36;   315 30 ;  763  19835 ;   2001  179 ; 112  792
+
+;if (  a == 0  and b == 0)   
+;    “No greatest common divisor of 0 0 “
+;else if ( b == 0)
+;    a
+;else if ( a == 0)       
+;    b
+;else if ( a >= b)    
+;    gcd( a – b, b) 
+;else     
+;    gcd ( a, b-a)
+
+
+(displayln "Problem 9")
+
