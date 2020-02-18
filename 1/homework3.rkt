@@ -98,9 +98,21 @@
 (displayln "Problem 7")
 (define 
   (mid a b c) 
-    (cond (not (member a (list (max a b c) (min a b c))))(displayln a)(#f))
-;    (cond (not (member b (list (max a b c) (min a b c))))(displayln b)(#f))
-;    (cond (not (member c (list (max a b c) (min a b c))))(displayln c)(#f))
+    (cond [(not (member a (list (max a b c) (min a b c)))) (displayln a)]
+          [(not (member b (list (max a b c) (min a b c)))) (displayln b)]
+          [(not (member c (list (max a b c) (min a b c)))) (displayln c)])                                                 
 )
 (mid 3 4 5)
+(mid 5 3 8)
+(mid 3 10 7)
+
+
+;Write a Scheme function  (greater?  point1  point2) that
+;returns true if point1 is further from the origin than point2
+; otherwise returns false.  Here point1 and points2 are lists of 2 numbers.
+;For example ( greater ‘(10  6)  ‘( 2  3) )
+;returns true since the point ( 10  6) is further from the origin than point ( 2  3).
+;Test on points  ( 5 6)  ( 7 8) ;  ( 10 9) ( -1  -2) ;   ( 3 2)  ( -3  2)
+;[Hint: first write a Scheme function (distOrigin  point) that computes the distance
+;of a point from the origin. Define it as a nested function using let.]
 
