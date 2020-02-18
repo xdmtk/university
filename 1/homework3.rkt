@@ -65,10 +65,11 @@
 ;Define a Scheme function average that returns the average of 3 arguments.
 ;( average  4 7 4 )  => 5  Test on the numbers 6 4 8;  9 10 12;  -4 8 -2
 (displayln "Problem 5")
-(define 
-  (average x y z)
+(define average
+  (lambda (x y z)
     (/ (+ x y z) 3)
   )
+)
 (average 6 4 8)
 (average 9 10 12)
 (average -4 8 -2)
@@ -81,10 +82,10 @@
 ;Test on 5 8 4 10;   -2  -3  17 13
 
 (displayln "Problem 6")
-(define 
-  (polynomial a b c x)
+(define polynomial
+  (lambda (a b c x)
    ( + ( * a (* x x) ) (* b x) c)
-)
+))
 (polynomial 5 8 4 10)
 (polynomial -2 -3 17 13)
 
@@ -96,17 +97,18 @@
 ;Do not use sort. Test on numbers  3 4 5;   5 3 8; 3 10 7
 
 (displayln "Problem 7")
-(define 
-  (mid a b c) 
+(define mid
+  (lambda (a b c) 
     (cond [(not (member a (list (max a b c) (min a b c)))) (displayln a)]
           [(not (member b (list (max a b c) (min a b c)))) (displayln b)]
           [(not (member c (list (max a b c) (min a b c)))) (displayln c)])                                                 
-)
+))
 (mid 3 4 5)
 (mid 5 3 8)
 (mid 3 10 7)
 
 
+;Problem 8
 ;Write a Scheme function  (greater?  point1  point2) that
 ;returns true if point1 is further from the origin than point2
 ; otherwise returns false.  Here point1 and points2 are lists of 2 numbers.
@@ -115,4 +117,22 @@
 ;Test on points  ( 5 6)  ( 7 8) ;  ( 10 9) ( -1  -2) ;   ( 3 2)  ( -3  2)
 ;[Hint: first write a Scheme function (distOrigin  point) that computes the distance
 ;of a point from the origin. Define it as a nested function using let.]
+
+
+(displayln "Problem 8")
+(define greater? 
+  (lambda (point1 point2)
+    (let 
+      ([
+          distOrigin (lambda (point)
+            (sqrt (+ (* (car point) (car point)) (* (cadr point) (cadr point))))
+          )
+        ])
+      (> (distOrigin point1) (distOrigin point2) )
+    )
+  )
+)
+(greater? (list 5 6) (list 7 8))
+(greater? (list 10 9) (list -1 -2))
+(greater? (list 3 2) (list -3 2))
 
