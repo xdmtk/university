@@ -9,6 +9,7 @@
 
 
 int main(int argc, char ** argv) {
+
     struct state stp, stc;
     unsigned char self_identity;
     stp.identity = PARENT;
