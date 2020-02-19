@@ -156,4 +156,20 @@
 
 
 (displayln "Problem 9")
-
+(define gcd 
+    (lambda (a b)
+        (cond 
+            [(and (= a 0) (= b 0)) (displayln "No greatest common divisor of 0 0")] 
+            [(= b 0) (displayln a)] 
+            [(= a 0) (displayln b)] 
+            [(>= a b) (gcd (- a b) b)] 
+            [else (gcd a (- b a))] 
+        )
+    )
+)
+(gcd 24 36)
+(gcd 315 30)
+(gcd 763 19835)
+(gcd 2001 179)
+(gcd 112 792)
+(gcd 315 30)
