@@ -1,2 +1,3 @@
 cmake-build-debug
 .idea/
+.ycm_extra_conf.py
