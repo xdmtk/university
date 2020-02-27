@@ -13,6 +13,17 @@
 ;
 ;Example:  (countZeros   ‘( a  b  0   4 6  0  q  3   “red” 0  0 ) ) => 4
 
+(define countZeros
+  (lambda ( lst )
+    (cond [ (= 0 (length lst) ) 0 ]
+          [ (and (number? (car lst)) (= 0 (car lst))) (+ (countZeros (cdr lst)) 1)] 
+          [ (and (number? (car lst)) (not (= 0 (car lst)))) (+ (countZeros (cdr lst)) 0)] 
+          [ (not (number? (car lst))) (+ (countZeros (cdr lst)) 0)]
+    )
+  )
+)
+(countZeros   '( a  b  0   4 6  0  q  3   “red” 0  0 ) )
+
 
 
 ;Problem 2
