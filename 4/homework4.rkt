@@ -33,6 +33,17 @@
 ;
 ;Example:  (areaOfTriangle ‘( 3 5)  ‘( 2 9)  (10  -2) ) =>  10.4999
 
+(define areaOfTriangle 
+  (lambda (v1 v2 v3)
+    (let (sqrt (+ (expt (- (car v2) (car v1)) 2) (- (expt (cadr v2) (cadr v1) 2)))) a)
+    (let (sqrt (+ (expt (- (car v3) (car v2)) 2) (- (expt (cadr v3) (cadr v2) 2)))) b)
+    (let (sqrt (+ (expt (- (car v1) (car v3)) 2) (- (expt (cadr v1) (cadr v3) 2)))) c)
+    (let (/ (+ a b c) 2) s)
+    (sqrt (* s (- s a) (- s b) (- s c)))
+  )
+)
+(areaOfTriangle '( 3 5)  '( 2 9)  '(10  -2) ) 
+
 
 
 ;Problem 3
