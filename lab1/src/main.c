@@ -10,7 +10,7 @@
 #include <lab1/main.h>
 
 
-int main(int argc, char ** argv) {
+int main() {
 
     int shmid;
     void *shm;
