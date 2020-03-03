@@ -56,6 +56,17 @@
 ;
 ;Example:  ( delete  5 ‘( 3 5 6 7 5 9 ( 5 6 5)  )  => ‘( 3  6  7  9  (5 6 5) )
 ;Example: ( delete ‘a  ‘(3 4  b c a a ) ) => ‘(3 4   b  c)
+(define delete
+  (lambda (x lst)
+    (cond [(null? lst) `()]
+          [(if (eqv? x (car lst)) (delete x (cdr lst)) (cons (car lst) (delete x (cdr lst))))]
+    )
+  )
+)
+(delete 5 '(3 4 5))
+(delete 'a '(3 4 b c a a ))
+    
+
 
 
 
