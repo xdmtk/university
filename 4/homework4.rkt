@@ -13,6 +13,7 @@
 ;
 ;Example:  (countZeros   ‘( a  b  0   4 6  0  q  3   “red” 0  0 ) ) => 4
 
+(displayln "Problem 1")
 (define countZeros
   (lambda ( lst )
     (cond [ (= 0 (length lst) ) 0 ]
@@ -33,6 +34,7 @@
 ;
 ;Example:  (areaOfTriangle ‘( 3 5)  ‘( 2 9)  (10  -2) ) =>  10.4999
 
+(displayln "Problem 2")
 (define areaOfTriangle 
   (lambda (v1 v2 v3)
     (let ([a (sqrt (+ (expt (- (car v2) (car v1)) 2) (expt (- (cadr v2) (cadr v1)) 2)))]) 
@@ -56,6 +58,7 @@
 ;
 ;Example:  ( delete  5 ‘( 3 5 6 7 5 9 ( 5 6 5)  )  => ‘( 3  6  7  9  (5 6 5) )
 ;Example: ( delete ‘a  ‘(3 4  b c a a ) ) => ‘(3 4   b  c)
+(displayln "Problem 3")
 (define delete
   (lambda (x lst)
     (cond [(null? lst) `()]
@@ -76,6 +79,7 @@
 ;Your answer must have no duplicates.
 ;
 ;Example:  (intersection   ‘(  a r d b c  e)  ‘( q w e r d t b ) ) => ‘( r d  b  e)
+(displayln "Problem 4")
 (define intersection
   (lambda (l1 l2)
     (remove-duplicates (filter (lambda (x)  (member x l2)) l1))
@@ -93,6 +97,7 @@
 ;
 ;Hint: Use recursion  and use member to test if the (car lst)  is a member of  ( cdr lst) 
 ;Example:(removeDups  ‘( pink  yellow red  green green  yellow) ) => ‘(pink red green yellow)
+(displayln "Problem 5")
 (define removeDups 
   (lambda (lst)
     (cond [(null? lst) `()]
@@ -113,11 +118,33 @@
 ;‘(  ( 4  7)  (  10 )  )     
 ;‘(  ( 4.5  5.5)  (  7  8)  )   
 ;‘(  ) 
-;‘(  3   4   5   6)     789    “greenlist”Write a Scheme predicate, ( greenlist?    z)   
+;‘(  3   4   5   6)     789    “greenlist
+;”Write a Scheme predicate, ( greenlist?    z)   
 ;that returns #t if z is a greenlist; 
 ;otherwise return false. Check ALL conditions.  Use integer? to test for an integer and list? 
 ;to test for aa list. Use and  and  andmap.  Write a helper function goodpair? 
 ;that tests if a pair meets the specifications above.
+(displayln "Problem 6")
+
+(define greenlist? 
+  (lambda (lst)
+    (define goodpair?
+      (lambda (pair)
+        (if (and (list? pair) (integer? (car pair)) (integer? (cadr pair)))
+          (if (= 1 (- (cadr pair) (car pair))) #t #f)
+          (#f)
+        )
+      )
+    )
+    (= (length lst) (length (filter (lambda (x) (goodpair? x)) lst)))
+  )
+)
+(greenlist? '(  ( 5 6)  ( 3  4)  ( 2  3)  ( -5  -4)  ))
+
+
+
+
+
 
 
 
