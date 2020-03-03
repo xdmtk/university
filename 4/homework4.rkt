@@ -130,7 +130,7 @@
   (lambda (lst)
     (define goodpair?
       (lambda (pair)
-        (if (and (list? pair) (integer? (car pair)) (integer? (cadr pair)))
+        (if (and (list? pair)  (= 2 (length pair)) (integer? (car pair)) (integer? (cadr pair)))
           (if (= 1 (- (cadr pair) (car pair))) #t #f)
           (#f)
         )
@@ -139,7 +139,13 @@
     (= (length lst) (length (filter (lambda (x) (goodpair? x)) lst)))
   )
 )
+;(require racket/trace)
+;(trace greenlist?)
 (greenlist? '(  ( 5 6)  ( 3  4)  ( 2  3)  ( -5  -4)  ))
+(greenlist? '(  ( 4  7)  ( 10 )  )  )
+;(greenlist? '(  ( 4  5)  (  7  8)  )   )
+;(greenlist? '(  ) )
+;(greenlist? '((  3   4   5   6)     789))
 
 
 
