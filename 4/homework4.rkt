@@ -76,6 +76,16 @@
 ;Your answer must have no duplicates.
 ;
 ;Example:  (intersection   ‘(  a r d b c  e)  ‘( q w e r d t b ) ) => ‘( r d  b  e)
+(define intersection
+  (lambda (l1 l2)
+    (filter (member l2) l1)
+  )
+) 
+(intersection   ‘(  a r d b c  e)  ‘( q w e r d t b ) )
+
+
+
+
 
 
 
