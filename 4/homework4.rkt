@@ -175,7 +175,17 @@
 ;Use an anonymous function, filter and length. Example: (countStatus  lst  “employed” )  returns 2 on the 
 ;above list. 
 ;(countStatus lst  “unemployed” ) returns 1 on the above list.
+(displayln "Problem 8")
+(define countStatus
+  (lambda (lst status)
+    (length (filter (lambda (sublist) 
+      (and (list? sublist) (= 3 (length sublist)) (> (length (filter (lambda (x) (equal? x status)) sublist)) 0))
+      ) lst)
+    )
+  )  
+) 
 
+(countStatus '( '(joe  21  “employed”)  '( ann 19 “unemployed”)  '(sue 18 “employed” )  ) "unemployed")
 
 
 ;Problem 9
