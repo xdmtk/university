@@ -146,14 +146,6 @@
 (greenlist? '(  ( 4.5  5.5)  (  7  8)  )   )
 (greenlist? '(  ) )
 (greenlist? '((  3   4   5   6)     789))
-;(define foo '( ( 4 7 ) ( 10 ) ))
-;(if (and (list? foo) (= 2 (length foo)) (integer? (car foo)) (integer? (cadr foo)))
-;  (if (= 1 (- (cadr foo) (car foo))) #t #f)
-;  '(#f)
-;  )
-
-
-
 
 
 
@@ -162,6 +154,15 @@
 ;Write a non-recursive Scheme function that take a list of integers as an argument and returns a 
 ;list of the squares of the even numbers in the list.  Use filter, map and even?.  Do not use recursion.
 ;Example:  (evenSquares '( 3 5 6 2 8 9 11 10) )  =  '(36 4 64 100)
+(displayln "Problem 7")
+(define evenSquares
+  (lambda (lst)
+    (map (lambda (x) (* x x)) (filter even? lst))
+  )
+)
+(evenSquares '( 3 5 6 2 8 9 11 10) ) 
+
+
 
 
 
