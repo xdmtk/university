@@ -178,14 +178,16 @@
 (displayln "Problem 8")
 (define countStatus
   (lambda (lst status)
-    (length (filter (lambda (sublist) 
-      (and (list? sublist) (= 3 (length sublist)) (> (length (filter (lambda (x) (equal? x status)) sublist)) 0))
-      ) lst)
+    (length 
+      (filter (lambda (sublist) 
+        (and (list? sublist) (> (length (filter (lambda (x) (displayln x) (displayln (string? x)) (displayln (string? status)) (displayln (eq? x status))) sublist)) 0))
+        ) 
+      lst)
     )
   )  
 ) 
 
-(countStatus '( '(joe  21  “employed”)  '( ann 19 “unemployed”)  '(sue 18 “employed” )  ) "unemployed")
+(countStatus '( (joe  21  “employed”)  ( ann 19 unemployed)  (sue 18 “employed” )  ) "unemployed")
 
 
 ;Problem 9
