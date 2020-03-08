@@ -179,19 +179,29 @@
 (define countStatus
   (lambda (lst status)
     (length 
-      (filter (lambda (sublist) 
-        (and (list? sublist) (> (length (filter (lambda (x) (displayln x) (displayln (string? x)) (displayln (string? status)) (displayln (eq? x status))) sublist)) 0))
-        ) 
+      (filter (lambda (sublist) (and (list? sublist) (> (length (filter (lambda (x) (equal? x status) ) sublist)) 0))) 
       lst)
     )
   )  
 ) 
 
-(countStatus '( (joe  21  “employed”)  ( ann 19 unemployed)  (sue 18 “employed” )  ) "unemployed")
+(countStatus '( (joe  21  "employed")  ( ann 19 "unemployed")  (sue 18 "employed" )  ) "unemployed")
 
 
 ;Problem 9
 ;Write a non-recursive Scheme function that finds the average of the ages of the persons in the list of persons 
 ;from Problem 8  that have a given status. Use map, filter and foldr .Example (averageAge   lst  “employed) 
 ;returns (21+18)/2 = 19.5 on above list.
+;(displayln "Problem 9")
+;(define averageAge
+;  (lambda (lst)
+
+
+
+
+
+
+
+
+
 
