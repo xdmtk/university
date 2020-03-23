@@ -18,14 +18,14 @@ int term_count = 0;
 
 int main(int argc, char ** argv) {
    
-    int len;
+    int len, total_signals_caught;
     struct signal_tag ** signal_arguments;
 
     /* First things first, the PID of the program is printed to stderr */
     fprintf(stderr, "catcher: $$ = %d\n", getpid());
 
     /* `len` is used to keep track of how many signals were parsed */
-    len = 0;
+    len = total_signals_caught = 0;
     
     /* The call to validate_args returns either an array of structs
      * representing the signals parsed from the CLI args, or NULL on 
@@ -48,11 +48,19 @@ int main(int argc, char ** argv) {
      * The second condition reinstalls the signal handlers to manage
      * unreliable signals 
      *
+     * The third condition really isn't a condition, however it increments for
+     * each time execution is continued after pause(), thereby keeping tally
+     * of the total signals caught over the program lifespan
+     *
      * The last condition checks whether SIGTERM has been caught more than 3
      * times. As soon as it has, the main() function returns.
      */
-    while (pause() && register_signals(signal_arguments, len) != REG_FAIL && term_count < 3) {}
+    while (pause() && register_signals(signal_arguments, len) 
+            && ++total_signals_caught != REG_FAIL && term_count < 3) {}
 
+    
+    /* Print out the total count of signals caught */
+    fprintf(stderr, "catcher: Total signals count = %d\n", total_signals_caught);
 
     return 0;
 }
