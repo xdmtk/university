@@ -40,6 +40,30 @@ Code is heavily documented in the source files.
 
 ### Activity Log 
 ```
+commit b0fc208bb493a412a45f97f98a641c81cc51f202 (HEAD -> master)
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Mon Mar 23 09:42:20 2020 -0700
+
+    Last minute addition to count total signals caught by program
+
+commit 53367db8200b1913776db7f84500ae265be9ac62 (origin/master, origin/HEAD)
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Mon Mar 23 09:28:39 2020 -0700
+
+    Remove catcher executable
+
+commit 67067a3d4c35c9a6f959d0dc324686ce931f1baf
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Mon Mar 23 09:28:17 2020 -0700
+
+    Decrypt Lab3
+
+commit a7bca02ddbed51be267983e20b2f69ace3be3b19
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Sun Mar 22 14:44:17 2020 -0700
+
+    Add git log output to README and make demo gif
+
 commit 508478358eaad85bf6a4766a0869a5c4fd560980 (HEAD -> master, origin/master, origin/HEAD)
 Author: Nick Martinez <nick@xdmtk.org>
 Date:   Sun Mar 22 14:05:40 2020 -0700
