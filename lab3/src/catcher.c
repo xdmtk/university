@@ -13,7 +13,7 @@
 
 #include <lab3/catcher.h>
 
-/* See line 104 for global variable justification */
+/* See line 112 for global variable justification */
 int term_count = 0;
 
 int main(int argc, char ** argv) {
