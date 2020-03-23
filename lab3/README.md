@@ -7,8 +7,12 @@ _catcher demo_
 
 This lab contains the source for the `catcher` program. On exeuction, the user passes a space delimited list of valid signals (without the SIG prefix) 
 to the program. The program then registers the CLI signal arguments against a unified handler that prints out the name of the signal caught, and
-the time it was caught at. After handler registration, the program enters an infinite `pause()` loop, re-registering the signal handlers after
-each signal caught (to catch unreliable signals that uninstall its handler after being caught). If `SIGTERM` was specified as a signal `catcher` should
+the time it was caught at. 
+
+After handler registration, the program enters an infinite `pause()` loop, re-registering the signal handlers after
+each signal caught (to catch unreliable signals that uninstall its handler after being caught).
+
+If `SIGTERM` was specified as a signal `catcher` should
 handle, the program will exit naturally after `SIGTERM` has been caught and handled 3 times. 
 
 ### Building 
