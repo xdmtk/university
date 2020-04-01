@@ -42,3 +42,17 @@
 )
 (sortStrings listb)
 (sortStrings '("pink" "red" "orange" "blue" "yellow"))
+
+
+(define g
+  (lambda ( a b)
+    (cond
+      ( (null? a)'())
+      ( (null? b) '() )
+      (  (and (list? a) (list? b))
+              (cons (list (car a)(car b))
+                      (g (cdr a) (cdr b))))
+      (else ( list a b))
+      )
+))
+(g '(333) null)
