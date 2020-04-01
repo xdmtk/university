@@ -23,7 +23,22 @@
 
 (define sortNums
   (lambda (lst)
-    (sort lst < )
+    (sort lst (lambda (a b) (< a b) ))
   )
 )
 (sortNums lista)
+
+
+(define sortStrings
+  (lambda (lst)
+    (sort lst 
+          (lambda (a b) 
+            (if (= (string-length a) (string-length b))
+            (string<? a b)
+            (< (string-length a) (string-length b)))
+          )
+    )
+  )
+)
+(sortStrings listb)
+(sortStrings '("pink" "red" "orange" "blue" "yellow"))
