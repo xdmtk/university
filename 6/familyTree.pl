@@ -10,7 +10,7 @@
 
 
 
-
+% Problem 1
 /***************************************************
  * Facts
  ****************************************************/
@@ -67,9 +67,9 @@ parent(maria,gloria).
 /***************************************************
  * Rules
  ****************************************************/
-*
 mother(X,Y) :- female(X),parent(X,Y).
 father(X,Y) :- male(X),parent(X,Y).
+
 grandparent(X,Y) :- parent(X,Z),parent(Z,Y).
 
 ancestor(X,Y) :- parent(X,Y).
@@ -81,10 +81,8 @@ descendant(X,Y) :- parent(Y,Z), descendant(X,Z).
 grandfather(X,Y) :- male(X),parent(X,Z),parent(Z,Y).
 grandmother(X,Y) :- female(X),parent(X,Z),parent(Z,Y).
 
-greatGrandfather(X,Y) :-
-    male(X),parent(X,W),parent(W,Z),parent(Z,Y).
-greatGrandmother(X,Y) :-
-    female(X),parent(X,W),parent(W,Z),parent(Z,Y).
+greatGrandfather(X,Y) :- male(X),parent(X,W),parent(W,Z),parent(Z,Y).
+greatGrandmother(X,Y) :- female(X),parent(X,W),parent(W,Z),parent(Z,Y).
 
 child(X,Y) :- parent(Y,X).
 
@@ -101,7 +99,7 @@ uncle(X,Y) :- siblings(X,Z),parent(Z,Y),male(X).
 
 
 
-
+% Problem 2
 /***************************************************
  * Test Runs
  ****************************************************
