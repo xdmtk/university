@@ -1,1 +1,0 @@
-kill -TERM -- -1191; rm kill_philosophers
