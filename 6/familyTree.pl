@@ -1,6 +1,19 @@
-/*
- * Rules 
- */
+/*********************************
+* 
+* Name: Nicholas Martinez
+* Course: COMP 333
+* Homework #6
+* Due Date: April 17th 2020
+*
+*/
+
+
+
+
+
+/***************************************************
+ * Facts
+ ****************************************************/
 
 /* Women */
 female(evangeline).
@@ -51,7 +64,10 @@ parent(maria,gloria).
 % Great Grandparents (Dads side)
 
 
-
+/***************************************************
+ * Rules
+ ****************************************************/
+*
 mother(X,Y) :- female(X),parent(X,Y).
 father(X,Y) :- male(X),parent(X,Y).
 grandparent(X,Y) :- parent(X,Z),parent(Z,Y).
@@ -81,3 +97,38 @@ sister(X,Y) :- siblings(X,Y),female(X).
 aunt(X,Y) :- siblings(X,Z),parent(Z,Y),female(X).
 
 uncle(X,Y) :- siblings(X,Z),parent(Z,Y),male(X).
+
+
+
+
+
+/***************************************************
+ * Test Runs
+ ****************************************************
+
+
+1. List of fathers siblings 
+    ?- father(F, nick), setof(Z, siblings(Z,F), FatherSiblings).
+    F = harold,
+    FatherSiblings = [karen, laura, leonard] 
+
+2. List of all your aunts and uncles
+    ?- setof(A, aunt(A, nick), Aunts).
+    Aunts = [karen, laura, natalie].
+
+3. List of all your siblings
+    ?- setof(S, siblings(S, nick), Siblings).
+    Siblings = [ariel].
+
+4. A list of all your grandmothers children (Pick one grandmother)
+    ?- setof(C, parent(evangeline, C), GrandMothersChildren).
+    GrandMothersChildren = [harold, karen, laura, leonard].
+
+5. A list of myour ancestors
+    ?- setof(A, ancestor(A, nick), Ancestors).
+    Ancestors = [ben, evangeline, gloria, gonzalo, harold, lynette, maria, richard].
+
+6. A list of descendents of one of your great grandfathers.
+    ?- setof(D, descendant(D, richard), Descendents).
+    Descendents = [ariel, gloria, lynette, natalie, nick].
+ */
