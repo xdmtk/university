@@ -22,6 +22,6 @@ mother(X,Y) :- female(X),parent(X,Y).
 father(X,Y) :- male(X),parent(X,Y).
 grandparent(X,Y) :- parent(X,Z),parent(Z,Y).
 ancestor(X,Y) :- parent(X,Y).
-ancestor(X,Y) :- parent(X,Y), ancestor(Z,Y).
+ancestor(X,Y) :- parent(X,Z), ancestor(Z,Y).
 descendant(X,Y) :- parent(Y,X).
-descendant(X,Y) :- parent(Y,Z), descendant(Z,X).
+descendant(X,Y) :- parent(Y,Z), descendant(X,Z).
