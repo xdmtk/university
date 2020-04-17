@@ -3,3 +3,5 @@ cmake-build-debug
 .ycm_extra_conf.py
 .gdb_history
 .gdb_history.cpt
+*.pdf
+*.pdf.cpt
