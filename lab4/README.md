@@ -1,6 +1,6 @@
-# Lab 3 - Catcher
+# Lab 4 - Rice Rice Rice
 
-![](https://github.com/xdmtk/comp322-spring2020/blob/master/lab3/misc/dining-p.gif)
+![](https://github.com/xdmtk/comp322-spring2020/blob/master/lab4/misc/dining-p.gif)
 
 ### Introduction
 
@@ -47,6 +47,12 @@ Code is heavily documented in the source files.
 
 
 ```
+commit f55a4c47d3c0dfac7a4fb4691c2361351f236dd1
+Author: Nick Martinez <nick@xdmtk.org>
+Date:   Mon Apr 20 09:20:51 2020 -0700
+
+    Decrypt Lab4
+
 commit 06bb537d4e3370f086f49a914ef1eae8b0bc53b0
 Author: Nick Martinez <nick@xdmtk.org>
 Date:   Thu Apr 16 21:57:28 2020 -0700
