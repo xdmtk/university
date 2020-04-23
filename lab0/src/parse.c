@@ -14,6 +14,15 @@
 #include <lab0/parse.h>
 
 
+/**
+ * Parses and tokenizes the contents of the specified
+ * file.
+ * @param file_path - Input file path
+ * @param len - Amount of tokens successfully parsed
+ * @param mode - Mode to read from STDIN or File
+ * @return  - Pointer to array of string literals representing
+ * file contents as tokens
+ */
 char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc) {
 
     /* Declarations */
@@ -60,6 +69,15 @@ char **read_tokens(char *file_path, size_t *len, int mode, char **argv, int argc
     return parse_status != PARSE_FAIL ? append_tokens(token_buffer, &t) : NULL;
 }
 
+
+/**
+ * Appends a token from the token buffer to the dynamically allocated
+ * list of tokens.
+ *
+ * @param tokens
+ * @param token_buffer
+ * @param t
+ */
 char ** append_tokens(char *tokens, struct token_indices *t) {
 
     int i;
@@ -80,6 +98,17 @@ char ** append_tokens(char *tokens, struct token_indices *t) {
     return token_list;
 }
 
+
+/**
+ * Called to operate on each character read and determine the current
+ * status of the parse. Checks for delimiters and EOF conditions
+ *
+ * @param c
+ * @param token_buffer
+ * @param file_tokens
+ * @param t
+ * @return
+ */
 int tokenize(char c, char* token_buffer, struct token_indices *t) {
 
     /* If we've hit a delimiter but have no bits entered yet
@@ -128,6 +157,14 @@ int tokenize(char c, char* token_buffer, struct token_indices *t) {
 }
 
 
+
+/**
+ * Since we aren't allowed to use getchar() or fgetc() for I/O,
+ * this wrapper around read() simulates getchar()/fgetc()
+ * @param fd
+ * @param mode
+ * @return
+ */
 char read_char_primitive(int fd, struct token_indices *t, char *buf) {
     
     /* Get characters read and persist data on each call */

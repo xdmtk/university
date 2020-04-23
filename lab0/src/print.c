@@ -4,12 +4,24 @@
 
 #include <lab0/print.h>
 
+
+/**
+ * Master function that prints the table of information
+ * for each binary token
+ *
+ * @param rep - Pointer to int_rep structure containing token information
+ * @param rep_count - Amount of tokens in the structure array
+ */
 void print_table(struct int_rep **rep, int rep_count) {
     print_header();
     print_reps(rep, rep_count);
     free(rep);
 }
 
+
+/**
+ * Function to print out the header of the table
+ */
 void print_header() {
 
     int i;
@@ -19,6 +31,14 @@ void print_header() {
     for (i = 0; i < 4; ++i) print_column(HORIZONTAL_LINE, PRINT_LB); LINE_BREAK;
 }
 
+
+/**
+ * Slave function to print_table() that prints the actual data
+ * contained in the int_rep structure
+ *
+ * @param rep
+ * @param rep_count
+ */
 void print_reps(struct int_rep **rep, int rep_count) {
 
     int i;
@@ -40,6 +60,14 @@ void print_reps(struct int_rep **rep, int rep_count) {
     }
 }
 
+
+/**
+ * Function to print a column with a given string, with
+ * either a left, right, or center justification
+ *
+ * @param str - The given string to print
+ * @param mode - The justification macros JUSTIFY_LEFT/JUSTIFY_RIGHT/PRINT_LB
+ */
 void print_column(char * str, int mode) {
 
     int i, spaces;
