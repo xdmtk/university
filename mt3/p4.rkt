@@ -40,4 +40,8 @@ Which evaluates to ( + 80 40 3 )
 
 Which results in 123
 
+
+
+
+For `(poly 4 6 2)`
 |#
