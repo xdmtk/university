@@ -25,3 +25,17 @@ R = -3 .
 false.
 
 */
+
+
+% Problem 2
+remdumps([], []).
+remdups([H|T], R) :- .
+remdups([H|T], R) :- .
+
+
+
+% Problem 3
+
+
+
+
