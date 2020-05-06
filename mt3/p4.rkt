@@ -21,6 +21,7 @@
 
 
 #|
+a)
 What is the value of   ( f   4)  when the code above is run in Dr Racket?  Show, in detail, how the answer was computed
 in Scheme. Trace the main steps of the computation by hand (typing ok).  That is, how do you get from ( f  4) to the
 numeric answer?  Do not include the Prolog trace.
@@ -42,6 +43,18 @@ Which results in 123
 
 
 
+b)
+For `(poly 4 6 2)`, poly is defined as a lambda function taking parameters a,b and c.
+The same binding happens like it did with f, except in this case, a b and c are locally defined
+so the global scope a = 10 does not need to be used. But a is still bound locally afterwards to 5.
 
-For `(poly 4 6 2)`
+However, since the next lambda down the line requires an additional variable x, this is implicitly bound
+to the a = 10 global scope
+
+This results in (+ ( * 5 10 10 ) (* 4 10) 2)
+
+Which evaluates to ( + 500 40 2 )
+
+Which results in 542
+
 |#
