@@ -21,7 +21,7 @@ volatile sig_atomic_t usr1 = 0;
 volatile sig_atomic_t usr2 = 0;
 
 
-int main(int argc, char ** argv) {
+int main(void) {
     
     struct state st;
     st.moles[0] = st.moles[1] = 0;

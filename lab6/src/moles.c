@@ -10,6 +10,9 @@
 
 int main(int argc, char ** argv) {
     
+    /* Get rid of the unused variable compiler error lol */
+    argc=argc;
+
     /* Open log file for appending */
     FILE * fp = fopen(generate_log_path(argv[0]), "a");
     
