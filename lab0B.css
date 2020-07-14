@@ -50,7 +50,13 @@ h2 {
     margin-right: 12px;
     float: right;
     text-align: left;
-    padding: 4px;
+}
+
+.entry {
+    background-color: #ccc1da;
+    width: 99%;
     border: 2px solid black;
+    margin-bottom: 16px;
+
 }
 
