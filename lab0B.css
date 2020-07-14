@@ -1,0 +1,37 @@
+html {
+    background-color: #17374e;
+}
+
+#main-div {
+    width: 90%;
+    height: 98%;
+    background-color: white;
+    margin: 10px auto;
+    border: 4px solid black;
+
+}
+
+#page-title {
+    margin: 20px auto;
+    width: 87%;
+    height: 100px;
+    text-align: right;
+    font-family: sans-serif;
+    font-size: 24px;
+    background-color: #d7e4bd;
+    border: 1px solid black;
+}
+
+.page-title-text {
+    font-size: 34px;
+    margin-top: 16px;
+    padding-right: 30px;
+}
+
+.page-title-subtext {
+    font-size: 20px;
+    margin-top: 4px;
+    padding-right: 30px;
+}
+
+
