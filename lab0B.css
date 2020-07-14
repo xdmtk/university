@@ -1,5 +1,6 @@
 html {
     background-color: #17374e;
+    font-family: sans-serif;
 }
 
 h1 {
@@ -25,13 +26,12 @@ h2 {
     width: 97%;
     height: 100px;
     text-align: right;
-    font-family: sans-serif;
     background-color: #d7e4bd;
     border: 1px solid black;
 }
 
 #friends {
-    width: 32%;
+    width: 31%;
     height: 180px;
     background-color: red;
     margin: 8px auto;
@@ -39,7 +39,7 @@ h2 {
     float: left;
     color: white;
     text-align: left;
-    padding: 4px;
+    padding-left: 10px;
     border: 2px solid black;
 }
 
@@ -54,9 +54,21 @@ h2 {
 
 .entry {
     background-color: #ccc1da;
-    width: 99%;
+    width: 95%;
+    height: 300px;
+    padding-top: 5px;
+    padding-left: 20px;
     border: 2px solid black;
     margin-bottom: 16px;
 
 }
 
+.entry-img {
+    float: right;
+    height: 150px;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+
+.entry-text {
+}
