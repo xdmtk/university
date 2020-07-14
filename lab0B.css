@@ -2,6 +2,15 @@ html {
     background-color: #17374e;
 }
 
+h1 {
+    margin-top: 12px;
+    margin-bottom: -14px;
+    margin-right: 16px;
+}
+h2 {
+    margin-right: 16px;
+}
+
 #main-div {
     width: 90%;
     height: 98%;
@@ -13,25 +22,35 @@ html {
 
 #page-title {
     margin: 20px auto;
-    width: 87%;
+    width: 97%;
     height: 100px;
     text-align: right;
     font-family: sans-serif;
-    font-size: 24px;
     background-color: #d7e4bd;
     border: 1px solid black;
 }
 
-.page-title-text {
-    font-size: 34px;
-    margin-top: 16px;
-    padding-right: 30px;
+#friends {
+    width: 32%;
+    height: 180px;
+    background-color: red;
+    margin: 8px auto;
+    margin-left: 12px;
+    float: left;
+    color: white;
+    text-align: left;
+    padding: 4px;
+    border: 2px solid black;
 }
 
-.page-title-subtext {
-    font-size: 20px;
-    margin-top: 4px;
-    padding-right: 30px;
+.entries{
+    width: 62%;
+    height: 180px;
+    margin: 8px auto;
+    margin-right: 12px;
+    float: right;
+    text-align: left;
+    padding: 4px;
+    border: 2px solid black;
 }
-
 
