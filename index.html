@@ -24,8 +24,8 @@
         </style>
 
         <script>
-            /* The only line of code not in a function as specified by the instructions */
-            window.addEventListener('load', init);
+/* The only line of code not in a function as specified by the instructions */
+window.addEventListener('load', init);
 
 /**
  * Called on page load. Finds the input/textarea/button DOM 
@@ -47,6 +47,7 @@ function getRelevantDomObjects() {
         'username' : document.getElementById('username'),
         'password' : document.getElementById('password'),
         'studentId' : document.getElementById('studentid')
+        'message' : document.getElementById('message')
     }
 }
 
@@ -59,9 +60,61 @@ function getRelevantDomObjects() {
  */
 function registerDomEventHandlers(domObjects) {
     domObjects['submit'].addEventListener('click', () => {
-        alert('hi'); 
+        
+
+    });
+
+    domObjects['message'].addEventListener('input', () => {
+
+
     });
 }
+
+function validateForms(username, password, studentId) {
+    
+    /* Dictionary of potential error messages for input fields */
+    const errors = {};
+    
+    /* Regex for various input field validation */
+    const onlyLettersRegex = /^[A-Za-z]+$/;
+    const oneUpperOneLowerOneNumberRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/;
+    const onlyNumbersRegex = /^[0-9]+$/;
+    
+    /* Match username against the only letters requirement */
+    if (!username.match(onlyLettersRegex) {
+
+        /* Add appropriate error message if regex fails */
+        errors['username'] = "Username field must only contain letters";
+    }
+    
+    /* Match password against the one upper, one lower, and one number requirement */
+    if (!password.match(oneUpperOneLowerOneNumberRegex)) {
+        
+        /* Add appropriate error message if regex fails */
+        errors['password'] = "Password must contain at least 1 uppercase letter, " +
+            "1 lowercase letter, and 1 number";
+    }
+
+    /* Make sure stedent ID is 9 characters in length */
+    if (studentId.length !== 9) {
+
+        /* Add appropriate error message if regex fails */
+        errors['studentid'] = "Student ID must be 9 digits."
+    }
+
+    /* Match student id against the only numbers requirement */
+    if (!studentId.match(onlyNumbersRegex)) {
+
+        /* Add appropriate error message if regex fails - Additionally check whether to append this
+           error message to an existing error message */
+        errors['studentid'] = (errors['studentid'] === undefined ? "" : errors['studentid'] + " ") +
+            "Student ID must be only numbers";
+    }
+    
+    return errors;
+}
+
+
 
         </script>
 
