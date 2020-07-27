@@ -16,10 +16,56 @@
                 width: 30%;
                 height: 50%;
                 margin: 10px auto;
-                
+                padding: 10px;
+                border-radius: 5px;
+                border: 2px solid green;
 
             }
         </style>
+
+        <script>
+            /* The only line of code not in a function as specified by the instructions */
+            window.addEventListener('load', init);
+
+/**
+ * Called on page load. Finds the input/textarea/button DOM 
+ * objects and registers them to event handlers that handle 
+ * the submit button click
+ */
+function init() {
+    registerDomEventHandlers(getRelevantDomObjects());
+}
+
+
+/**
+ * Returns a dictionary of DOM objects tagged to their name 
+ * identifiers
+ */
+function getRelevantDomObjects() {
+    return {
+        'submit' : document.getElementById('submit'),
+        'username' : document.getElementById('username'),
+        'password' : document.getElementById('password'),
+        'studentId' : document.getElementById('studentid')
+    }
+}
+
+
+/**
+ * Given a dictionary of DOM objects representing the input fields
+ * submit button of the page, this function registers the 'click' event
+ * of the submit button DOM object to an anonymous function handling form 
+ * validation
+ */
+function registerDomEventHandlers(domObjects) {
+    domObjects['submit'].addEventListener('click', () => {
+        alert('hi'); 
+    });
+}
+
+        </script>
+
+
     </head>
     
     <body>
