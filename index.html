@@ -46,7 +46,7 @@ function getRelevantDomObjects() {
         'submit' : document.getElementById('submit'),
         'username' : document.getElementById('username'),
         'password' : document.getElementById('password'),
-        'studentId' : document.getElementById('studentid')
+        'studentId' : document.getElementById('studentid'),
         'message' : document.getElementById('message')
     }
 }
@@ -75,17 +75,28 @@ function validateForms(username, password, studentId) {
     /* Dictionary of potential error messages for input fields */
     const errors = {};
     
-    /* Regex for various input field validation */
+    validateUsername(errors);
+    validatePassword(errors);
+    validateStudentId(errors);
+
+    return errors;
+}
+
+
+function validateUsername(errors) {
     const onlyLettersRegex = /^[A-Za-z]+$/;
-    const oneUpperOneLowerOneNumberRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/;
-    const onlyNumbersRegex = /^[0-9]+$/;
-    
+
     /* Match username against the only letters requirement */
-    if (!username.match(onlyLettersRegex) {
+    if (!username.match(onlyLettersRegex)) {
 
         /* Add appropriate error message if regex fails */
         errors['username'] = "Username field must only contain letters";
     }
+}
+
+
+function validatePassword(errors) {
+    const oneUpperOneLowerOneNumberRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/;
     
     /* Match password against the one upper, one lower, and one number requirement */
     if (!password.match(oneUpperOneLowerOneNumberRegex)) {
@@ -94,6 +105,10 @@ function validateForms(username, password, studentId) {
         errors['password'] = "Password must contain at least 1 uppercase letter, " +
             "1 lowercase letter, and 1 number";
     }
+}
+
+function validateStudentId(errors) {
+    const onlyNumbersRegex = /^[0-9]+$/;
 
     /* Make sure stedent ID is 9 characters in length */
     if (studentId.length !== 9) {
@@ -110,10 +125,7 @@ function validateForms(username, password, studentId) {
         errors['studentid'] = (errors['studentid'] === undefined ? "" : errors['studentid'] + " ") +
             "Student ID must be only numbers";
     }
-    
-    return errors;
 }
-
 
 
         </script>
