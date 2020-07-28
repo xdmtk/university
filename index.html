@@ -10,6 +10,8 @@
             html {
                 /* Set the background color for the page */
                 background-color: #edebeb;
+                font-family: monospace;
+                transition: 1s;
             }
 
             #form-box {
@@ -41,12 +43,13 @@
                 background: transparent;
                 border: 0;
                 outline: 0;
+                color: #ff2509;
             }
 
             .non-labels {
                 text-align: center;
                 margin-bottom: 30px;
-                font-family: monospace;
+                color: black;
             }
 
             textarea {
@@ -99,9 +102,9 @@ function getRelevantDomObjects() {
         'username-span' : document.getElementById('username-span'),
         'password-span' : document.getElementById('password-span'),
         'studentid-span' : document.getElementById('studentid-span'),
-        'message-span' : document.getElementById('message-span'),
+        'message-word-count' : document.getElementById('message-span'),
 
-        'background-box' : document.getElementById('background-box')
+        'background-box' : document.getElementsByTagName('html')[0]
     }
 }
 
@@ -140,7 +143,7 @@ function registerDomEventHandlers(domObjects) {
             }
 
             /* Modify the background color of the page as indicated by the instructions */
-            domObjects['background-box'].style.backgroundColor = "red";
+            domObjects['background-box'].style.backgroundColor = "#ff2509";
         }
         else {
 
@@ -169,7 +172,7 @@ function registerDomEventHandlers(domObjects) {
         }
 
         /* Show the word count in the span */
-        domObjects['message-span'].innerHTML = wordCount;
+        domObjects['message-word-count'].innerHTML = wordCount;
 
 
 
