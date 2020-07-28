@@ -108,10 +108,25 @@ function registerDomEventHandlers(domObjects) {
     /* Register anonymous function to input event of the text area */
     domObjects['message'].addEventListener('input', () => {
 
+        const messageText = domObjects['message'].value;
+
         /* Subtract from 25 the total amount of words found in the value of the textarea
         by splitting the value and filtering out empty entries */
-        domObjects['message-span'].innerHTML = 25 - domObjects['message'].value
-            .split(' ').filter(word => word !== '').length;
+        const wordCount = 25 - messageText.split(' ').filter(word => word !== '').length;
+
+        /* If maximum words are entered, do not allow additional words to be entered */
+        if (wordCount === 0 && messageText[messageText.length-1] === ' ') {
+
+            /* This is accomplished by rejecting additional spaces after the word
+            count has been reached. */
+            domObjects['message'].value = messageText.substring(0, messageText.length-1);
+        }
+
+        /* Show the word count in the span */
+        domObjects['message-span'].innerHTML = wordCount;
+
+
+
     });
 }
 
@@ -135,6 +150,7 @@ function validateForms(domObjects) {
     validatePassword(errors, domObjects['password'].value);
     validateStudentId(errors, domObjects['studentid'].value);
 
+    /* Return error dictionary */
     return errors;
 }
 
@@ -209,8 +225,14 @@ function validateStudentId(errors, studentId) {
  * values
  */
 function clearErrorSpans(domObjects) {
+
+    /* Iterate the domObjects */
     for (let domObject in domObjects) {
+
+        /* Target the 'span' domObjects */
         if (domObject.includes('-span')) {
+
+            /* Clear any existing error message */
             domObjects[domObject].innerHTML = "";
         }
     }
