@@ -228,7 +228,7 @@ function validateUsername(errors, username) {
  * @param password - Value of password input field
  */
 function validatePassword(errors, password) {
-    const oneUpperOneLowerOneNumberRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/;
+    const oneUpperOneLowerOneNumberRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*/;
     
     /* Match password against the one upper, one lower, and one number requirement */
     if (!password.match(oneUpperOneLowerOneNumberRegex)) {
