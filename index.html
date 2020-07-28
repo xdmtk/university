@@ -27,9 +27,10 @@
 /* The only line of code not in a function as specified by the instructions */
 window.addEventListener('load', init);
 
+
 /**
- * Called on page load. Finds the input/textarea/button DOM 
- * objects and registers them to event handlers that handle 
+ * Called on page load. Finds the input/textarea/button DOM
+ * objects and registers them to event handlers that handle
  * the submit button click
  */
 function init() {
@@ -46,44 +47,104 @@ function getRelevantDomObjects() {
         'submit' : document.getElementById('submit'),
         'username' : document.getElementById('username'),
         'password' : document.getElementById('password'),
-        'studentId' : document.getElementById('studentid'),
-        'message' : document.getElementById('message')
+        'studentid' : document.getElementById('studentid'),
+        'message' : document.getElementById('message'),
+
+        'username-span' : document.getElementById('username-span'),
+        'password-span' : document.getElementById('password-span'),
+        'studentid-span' : document.getElementById('studentid-span'),
+        'message-span' : document.getElementById('message-span'),
+
+        'background-box' : document.getElementById('background-box')
     }
 }
 
 
 /**
- * Given a dictionary of DOM objects representing the input fields
+ * Given a dictionary of DOM objects representing the input fields and
  * submit button of the page, this function registers the 'click' event
  * of the submit button DOM object to an anonymous function handling form 
- * validation
+ * validation, and registers the input event for the textarea message box
+ * to dynamically count words and update a word counter span
+ *
+ * @param domObjects - Dictionary of DOM object title keys with DOM object
+ * values
  */
 function registerDomEventHandlers(domObjects) {
+
+    /* Register anonymous function to handle Submit button click */
     domObjects['submit'].addEventListener('click', () => {
-        
+
+        /* Get form validation errors in dictionary */
+        const errors = validateForms(domObjects);
+
+        /* Clear out existing text from spans that display error messages */
+        clearErrorSpans(domObjects);
+
+        /* If any form validation errors were found */
+        if (Object.keys(errors).length) {
+
+            /* Iterate through errors */
+            for (let domObject in errors) {
+
+                /* Use the domObject title, append the -span suffix, and use it to
+                 * address the corresponding span element of the errored form, and apply
+                 * the appropriate error message */
+                domObjects[domObject + '-span'].innerHTML = errors[domObject];
+            }
+
+            /* Modify the background color of the page as indicated by the instructions */
+            domObjects['background-box'].style.backgroundColor = "red";
+        }
+        else {
+
+            /* Restore the background color of the page if no errors found */
+            domObjects['background-box'].style.backgroundColor = "#edebeb";
+        }
+
 
     });
 
+    /* Register anonymous function to input event of the text area */
     domObjects['message'].addEventListener('input', () => {
 
-
+        /* Subtract from 25 the total amount of words found in the value of the textarea
+        by splitting the value and filtering out empty entries */
+        domObjects['message-span'].innerHTML = 25 - domObjects['message'].value
+            .split(' ').filter(word => word !== '').length;
     });
 }
 
-function validateForms(username, password, studentId) {
+
+/**
+ * Validates the username, password, and student ID input fields
+ * by the given requirements of the lab. Returns a dictionary of
+ * error messages tagged by their error source
+ *
+ * @param domObjects - Dictionary of DOM object title keys with DOM object
+ * values
+ * @returns - Dictionary of DOM object titles with corresponding errors as keys
+ */
+function validateForms(domObjects) {
     
     /* Dictionary of potential error messages for input fields */
     const errors = {};
-    
-    validateUsername(errors);
-    validatePassword(errors);
-    validateStudentId(errors);
+
+    /* Validate forms */
+    validateUsername(errors, domObjects['username'].value);
+    validatePassword(errors, domObjects['password'].value);
+    validateStudentId(errors, domObjects['studentid'].value);
 
     return errors;
 }
 
-
-function validateUsername(errors) {
+/**
+ * Uses Regex to validate the username supplied
+ *
+ * @param errors - Dictionary of DOM object titles with corresponding errors as keys
+ * @param username - Value of username input field
+ */
+function validateUsername(errors, username) {
     const onlyLettersRegex = /^[A-Za-z]+$/;
 
     /* Match username against the only letters requirement */
@@ -95,7 +156,13 @@ function validateUsername(errors) {
 }
 
 
-function validatePassword(errors) {
+/**
+ * Uses Regex to validate the password supplied
+
+ * @param errors - Dictionary of DOM object titles with corresponding errors as keys
+ * @param password - Value of password input field
+ */
+function validatePassword(errors, password) {
     const oneUpperOneLowerOneNumberRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{3,}$/;
     
     /* Match password against the one upper, one lower, and one number requirement */
@@ -107,13 +174,20 @@ function validatePassword(errors) {
     }
 }
 
-function validateStudentId(errors) {
+
+/**
+ * Uses Regex to validate the student ID supplied
+
+ * @param errors - Dictionary of DOM object titles with corresponding errors as keys
+ * @param studentId - Value of student ID input field
+ */
+function validateStudentId(errors, studentId) {
     const onlyNumbersRegex = /^[0-9]+$/;
 
-    /* Make sure stedent ID is 9 characters in length */
+    /* Make sure student ID is 9 characters in length */
     if (studentId.length !== 9) {
 
-        /* Add appropriate error message if regex fails */
+        /* Add appropriate error message if length check fails */
         errors['studentid'] = "Student ID must be 9 digits."
     }
 
@@ -128,21 +202,39 @@ function validateStudentId(errors) {
 }
 
 
+/**
+ * Clears the error message text of each span to its corresponding input field
+ *
+ * @param domObjects - Dictionary of DOM object title keys with DOM object
+ * values
+ */
+function clearErrorSpans(domObjects) {
+    for (let domObject in domObjects) {
+        if (domObject.includes('-span')) {
+            domObjects[domObject].innerHTML = "";
+        }
+    }
+}
+
         </script>
 
 
     </head>
     
     <body>
-        
-        <div id="form-box">
-            <input type="text" id="username">
-            <input type="password" id="password">
-            <input type="text" id="studentid">
-            <textarea id="message"></textarea>
-            <input type="button" value="Submit" id="submit"></button>
-        </div>
-
+       <div id="background-box">
+            <div id="form-box">
+                <span id="username-span"></span>
+                <input type="text" id="username">
+                <span id="password-span"></span>
+                <input type="password" id="password">
+                <span id="studentid-span"></span>
+                <input type="text" id="studentid">
+                <span id="message-span">25</span>
+                <textarea id="message"></textarea>
+                <input type="button" value="Submit" id="submit"></button>
+            </div>
+       </div>
 
     </body>
 </html>
