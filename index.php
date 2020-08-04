@@ -2,7 +2,7 @@
    
     <!-- Basic document head -->
     <head>
-        <title>Lab 1</title>
+        <title>Lab 2</title>
 
         <!-- Inline styles -->
         <style>
@@ -14,15 +14,6 @@
             }
 
             #form-box {
-                margin: 0 auto;
-                margin-top: 100px;
-                width: 275px;
-                padding: 20px;
-                background: #fefefe;
-                border-radius: 7px;
-            }
-
-            #success-box {
                 margin: 0 auto;
                 margin-top: 100px;
                 width: 275px;
@@ -50,20 +41,6 @@
                 color: #ff2509;
             }
 
-            .non-labels {
-                text-align: center;
-                margin-top: 5px;
-                margin-bottom: 30px;
-                color: black;
-            }
-
-            textarea {
-                margin-top: 30px;
-                width: 100%;
-                height: 200px;
-                resize: none;
-            }
-
             #submit {
                 padding: 7px 20px;
                 background: #2fbd91;
@@ -72,13 +49,12 @@
                 cursor: pointer;
                 border: 0;
                 display: block;
-                margin: 0 auto;
+                margin: 24px auto;
                 text-shadow: 1px 1px 2px #1a8966;
             }
         </style>
 
         <script>
-            /* The only line of code not in a function as specified by the instructions */
             window.addEventListener('load', init);
 
 
@@ -101,13 +77,9 @@
                     'submit' : document.getElementById('submit'),
                     'username' : document.getElementById('username'),
                     'password' : document.getElementById('password'),
-                    'studentid' : document.getElementById('studentid'),
-                    'message' : document.getElementById('message'),
 
                     'username-span' : document.getElementById('username-span'),
                     'password-span' : document.getElementById('password-span'),
-                    'studentid-span' : document.getElementById('studentid-span'),
-                    'message-word-count' : document.getElementById('message-word-count'),
 
                     'background-box' : document.getElementsByTagName('html')[0]
                 }
@@ -115,19 +87,20 @@
 
 
             /**
-             * Given a dictionary of DOM objects representing the input fields and
-             * submit button of the page, this function registers the 'click' event
-             * of the submit button DOM object to an anonymous function handling form
-             * validation, and registers the input event for the textarea message box
-             * to dynamically count words and update a word counter span
-             *
-             * @param domObjects - Dictionary of DOM object title keys with DOM object
-             * values
              */
             function registerDomEventHandlers(domObjects) {
 
                 /* Register anonymous function to handle Submit button click */
                 domObjects['submit'].addEventListener('click', () => {
+                    
+                    /* If client-side form validation suceeds, make AJAX call to server */
+                    if (validateForms()) {
+                    }
+                });
+
+            }
+            
+            function validateForms() {
 
                     /* Get form validation errors in dictionary */
                     const errors = validateForms(domObjects);
@@ -149,52 +122,19 @@
 
                         /* Modify the background color of the page as indicated by the instructions */
                         domObjects['background-box'].style.backgroundColor = "#ff2509";
+                        return false;
                     }
                     else {
 
                         /* Restore the background color of the page if no errors found */
                         domObjects['background-box'].style.backgroundColor = "#edebeb";
+                        return true;
                     }
-
-
-                });
-
-                /* Register anonymous function to input event of the textarea */
-                domObjects['message'].addEventListener('input', () => {
-
-                    const messageText = domObjects['message'].value;
-
-                    /* Subtract from 25 the total amount of words found in the value of the textarea
-                    by splitting the value by spaces and filtering out empty entries */
-                    const wordCount = 25 - messageText.split(' ').filter(word => word !== '').length;
-
-                    /* If maximum words are entered, do not allow additional words to be entered */
-                    if (wordCount === 0 && messageText[messageText.length-1] === ' ') {
-
-                        /* This is accomplished by rejecting additional spaces after the word
-                        count has been reached. */
-                        domObjects['message'].value = messageText.substring(0, messageText.length-1);
-                    }
-
-                    /* Show the word count in the span */
-                    domObjects['message-word-count'].innerHTML = wordCount;
-
-
-
-                });
             }
 
-
             /**
-             * Validates the username, password, and student ID input fields
-             * by the given requirements of the lab. Returns a dictionary of
-             * error messages tagged by their error source
-             *
-             * @param domObjects - Dictionary of DOM object title keys with DOM object
-             * values
-             * @returns - Dictionary of DOM object titles with corresponding errors as keys
              */
-            function validateForms(domObjects) {
+            function _validateForms(domObjects) {
 
                 /* Dictionary of potential error messages for input fields */
                 const errors = {};
@@ -202,7 +142,6 @@
                 /* Validate forms */
                 validateUsername(errors, domObjects['username'].value);
                 validatePassword(errors, domObjects['password'].value);
-                validateStudentId(errors, domObjects['studentid'].value);
 
                 /* Return error dictionary */
                 return errors;
@@ -243,35 +182,6 @@
                         "1 lowercase letter, and 1 number";
                 }
             }
-
-
-            /**
-             * Uses Regex to validate the student ID supplied
-
-             * @param errors - Dictionary of DOM object titles with corresponding errors as keys
-             * @param studentId - Value of student ID input field
-             */
-            function validateStudentId(errors, studentId) {
-                const onlyNumbersRegex = /^[0-9]+$/;
-
-                /* Make sure student ID is 9 characters in length */
-                if (studentId.length !== 9) {
-
-                    /* Add appropriate error message if length check fails */
-                    errors['studentid'] = "Student ID must be 9 digits."
-                }
-
-                /* Match student id against the only numbers requirement */
-                if (!studentId.match(onlyNumbersRegex)) {
-
-                    /* Add appropriate error message if regex fails - Additionally check whether to append this
-                       error message to an existing error message */
-                    errors['studentid'] = (errors['studentid'] === undefined ? "" : errors['studentid'] + " ") +
-                        "Student ID must be only numbers";
-                }
-            }
-
-
             /**
              * Clears the error message text of each span to its corresponding input field
              *
@@ -297,15 +207,10 @@
     <body>
        <div id="background-box">
             <div id="form-box">
-                <span id="title" class="non-labels">Lab 1</span>
                 <input type="text" id="username" placeholder="Username" autocomplete="off">
                 <span id="username-span"></span>
                 <input type="password" id="password" placeholder="Password" autocomplete="off">
                 <span id="password-span"></span>
-                <input type="text" id="studentid" placeholder="Student ID" autocomplete="off">
-                <span id="studentid-span"></span>
-                <textarea id="message"></textarea>
-                <span id="message-word-count" class="non-labels">25</span>
                 <input type="button" value="Submit" id="submit"></button>
             </div>
        </div>
