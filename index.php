@@ -57,15 +57,6 @@
                 color: black;
             }
 
-            #success {
-
-                text-align: center;
-                margin-bottom: 0;
-                font-size: 30px;
-                color: #2fbd91;
-                display: none;
-            }
-
             textarea {
                 margin-top: 30px;
                 width: 100%;
@@ -118,8 +109,7 @@
                     'studentid-span' : document.getElementById('studentid-span'),
                     'message-word-count' : document.getElementById('message-word-count'),
 
-                    'background-box' : document.getElementsByTagName('html')[0],
-                    'success' : document.getElementById('success')
+                    'background-box' : document.getElementsByTagName('html')[0]
                 }
             }
 
@@ -159,13 +149,11 @@
 
                         /* Modify the background color of the page as indicated by the instructions */
                         domObjects['background-box'].style.backgroundColor = "#ff2509";
-                        domObjects['success'].style.display = 'none';
                     }
                     else {
 
                         /* Restore the background color of the page if no errors found */
                         domObjects['background-box'].style.backgroundColor = "#edebeb";
-                        domObjects['success'].style.display = 'block';
                     }
 
 
@@ -320,9 +308,6 @@
                 <span id="message-word-count" class="non-labels">25</span>
                 <input type="button" value="Submit" id="submit"></button>
             </div>
-           <div id="success-box">
-               <span id="success" class="non-labels">Success!</span>
-           </div>
        </div>
     </body>
 
