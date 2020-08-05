@@ -1,3 +1,5 @@
+
+/* All of this is probably more complicated than it should be without any global scope */
 window.addEventListener('load', init);
 
 
@@ -7,7 +9,7 @@ window.addEventListener('load', init);
  * the submit button click
  */
 function init() {
-    registerDomEventHandlers(getRelevantDomObjects(), getGlobalStateObjects());
+    registerLoginDomEventHandlers(getRelevantDomObjects(), getGlobalStateObjects());
 }
 
 
@@ -51,7 +53,7 @@ function getGlobalStateObjects() {
 
 /**
  */
-function registerDomEventHandlers(domObjects, globalStates) {
+function registerLoginDomEventHandlers(domObjects, globalStates) {
 
     /* Register anonymous function to handle Submit button click */
     domObjects['submit'].addEventListener('click', () => {
@@ -103,7 +105,12 @@ function getUserContent(domObjects, globalStates) {
 
 }
 
-
+/**
+ * Tricky function to map event listeners to dynamic DOM content that is yet to originate.
+ *
+ * @param domObjects
+ * @param globalStates
+ */
 function registerLoggedInDomEventHandlers(domObjects, globalStates) {
     (domObjects['log-out-span'] = document.getElementById('log-out-span')).addEventListener('click', () => {
         globalStates.logged_in = false;
@@ -116,9 +123,10 @@ function registerLoggedInDomEventHandlers(domObjects, globalStates) {
         formBox.style.margin = "200px auto";
         formBox.style = globalStates.form_box_styles;
 
+        /* Wait for login page DOM objects to be present */
         setTimeout(() => {
             domObjects = getRelevantDomObjects();
-            registerDomEventHandlers(domObjects, globalStates);
+            registerLoginDomEventHandlers(domObjects, globalStates);
         }, 2000);
     });
 
