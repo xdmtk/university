@@ -32,7 +32,7 @@ span {
     border-radius: 7px;
     border: 1px solid #2fbd91;
     transition: 2s;
-    transition: width 2s;
+    opacity: 1.0;
 }
 
 #form-box-title {

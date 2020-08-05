@@ -25,6 +25,7 @@ function getRelevantDomObjects() {
         'password-span' : document.getElementById('password-span'),
 
         'form-box' : document.getElementById('form-box'),
+        'form-box-content' : document.getElementById('form-box-content'),
         'form-box-title' : document.getElementById('form-box-title'),
         'login-modal' : document.getElementById('login-modal'),
         'login-register-switch' : document.getElementById('login-register-switch')
@@ -41,7 +42,8 @@ function getRelevantDomObjects() {
 function getGlobalStateObjects() {
     return {
         form_action : 'login',
-        form_box_contents : ''
+        form_box_contents : '',
+        form_box_styles : ''
     }
 }
 
@@ -55,12 +57,7 @@ function registerDomEventHandlers(domObjects, globalStates) {
 
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
-            const formBox = domObjects['form-box'];
-            globalStates.form_box_contents = formBox.innerHTML;
-            formBox.innerHTML = "";
-            formBox.style.width = "600px";
-            formBox.style.height = "700px";
-            formBox.style.margin = "100px auto";
+            loginSuccess(domObjects, globalStates);
         }
     });
 
@@ -68,6 +65,55 @@ function registerDomEventHandlers(domObjects, globalStates) {
     domObjects['login-register-switch'].addEventListener('click', () => {
         switchLoginOrRegister(domObjects, globalStates);
     });
+}
+
+
+/**
+ * Dynamic page content loads after successfully logging in
+ * @param domObjects
+ * @param globalStates
+ */
+function loginSuccess(domObjects, globalStates) {
+
+    const formBoxContent = domObjects['form-box-content'];
+    const formBox = domObjects['form-box'];
+    globalStates.form_box_contents = formBox.innerHTML;
+    globalStates.form_box_styles = getComputedStyle(formBox);
+
+    setTimeout(() => {
+        formBoxContent.innerHTML = getUserContent(domObjects, globalStates);
+        const fadeIn = setInterval(() => {
+            formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) + .01);
+            if (parseFloat(formBoxContent.style.opacity) === 1.0) {
+                clearInterval(fadeIn);
+            }
+        }, 10);
+    }, 2000);
+
+    formBoxContent.style.opacity = "1.0";
+    const fadeOut = setInterval(() => {
+        formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) - .01);
+        console.log(formBoxContent.style.opacity);
+        if (!parseFloat(formBoxContent.style.opacity)) {
+            clearInterval(fadeOut);
+        }
+    }, 1);
+    formBox.style.width = "600px";
+    formBox.style.height = "700px";
+    formBox.style.margin = "100px auto";
+
+}
+
+
+/**
+ * Returns dynamic content from API call based on user login credentials
+ *
+ * @param domObjects
+ * @param globalStates
+ * @returns {string}
+ */
+function getUserContent(domObjects, globalStates) {
+    return "hi"
 }
 
 
