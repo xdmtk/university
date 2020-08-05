@@ -43,7 +43,8 @@ function getGlobalStateObjects() {
     return {
         form_action : 'login',
         form_box_contents : '',
-        form_box_styles : ''
+        form_box_styles : '',
+        logged_in : false,
     }
 }
 
@@ -54,7 +55,7 @@ function registerDomEventHandlers(domObjects, globalStates) {
 
     /* Register anonymous function to handle Submit button click */
     domObjects['submit'].addEventListener('click', () => {
-
+        console.log("In submit");
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
             loginSuccess(domObjects, globalStates);
@@ -75,13 +76,70 @@ function registerDomEventHandlers(domObjects, globalStates) {
  */
 function loginSuccess(domObjects, globalStates) {
 
-    const formBoxContent = domObjects['form-box-content'];
     const formBox = domObjects['form-box'];
+
     globalStates.form_box_contents = formBox.innerHTML;
     globalStates.form_box_styles = getComputedStyle(formBox);
 
+    domContentFadeIn(domObjects, globalStates, getUserContent(domObjects, globalStates), true);
+    domContentFadeOut(domObjects, globalStates);
+
+    formBox.style.width = "600px";
+    formBox.style.height = "700px";
+    formBox.style.margin = "100px auto";
+}
+
+
+/**
+ * Returns dynamic content for logged in users from API call based
+ * on user login credentials
+ *
+ * @param domObjects
+ * @param globalStates
+ * @returns {string}
+ */
+function getUserContent(domObjects, globalStates) {
+    return `<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>`;
+
+}
+
+
+function registerLoggedInDomEventHandlers(domObjects, globalStates) {
+    (domObjects['log-out-span'] = document.getElementById('log-out-span')).addEventListener('click', () => {
+        globalStates.logged_in = false;
+        const formBox = domObjects['form-box'];
+
+        domContentFadeIn(domObjects, globalStates, globalStates.form_box_contents);
+        domContentFadeOut(domObjects, globalStates);
+        formBox.style.width = "275px";
+        formBox.style.height = "";
+        formBox.style.margin = "200px auto";
+        formBox.style = globalStates.form_box_styles;
+
+        setTimeout(() => {
+            domObjects = getRelevantDomObjects();
+            registerDomEventHandlers(domObjects, globalStates);
+        }, 2000);
+    });
+
+}
+
+/**
+ * Custom mimic of the jQuery fadeout function using vanilla JS
+ * @param domObjects
+ * @param globalStates
+ */
+function domContentFadeIn(domObjects, globalStates, content, loggingIn = false) {
+
+    const formBoxContent = domObjects['form-box-content'];
     setTimeout(() => {
-        formBoxContent.innerHTML = getUserContent(domObjects, globalStates);
+
+        globalStates.logged_in = true;
+        formBoxContent.innerHTML = content;
+        if (loggingIn) {
+            registerLoggedInDomEventHandlers(domObjects, globalStates);
+        }
+
         const fadeIn = setInterval(() => {
             formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) + .01);
             if (parseFloat(formBoxContent.style.opacity) === 1.0) {
@@ -90,6 +148,16 @@ function loginSuccess(domObjects, globalStates) {
         }, 10);
     }, 2000);
 
+}
+
+/**
+ * Custom mimic of the jQuery fadein function using vanilla JS
+ * @param domObjects
+ * @param globalStates
+ */
+function domContentFadeOut(domObjects, globalStates) {
+
+    const formBoxContent = domObjects['form-box-content'];
     formBoxContent.style.opacity = "1.0";
     const fadeOut = setInterval(() => {
         formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) - .01);
@@ -98,24 +166,11 @@ function loginSuccess(domObjects, globalStates) {
             clearInterval(fadeOut);
         }
     }, 1);
-    formBox.style.width = "600px";
-    formBox.style.height = "700px";
-    formBox.style.margin = "100px auto";
-
 }
 
+function logOut(domObjects, globalStates) {
 
-/**
- * Returns dynamic content from API call based on user login credentials
- *
- * @param domObjects
- * @param globalStates
- * @returns {string}
- */
-function getUserContent(domObjects, globalStates) {
-    return "hi"
 }
-
 
 /**
  * Handles text changes when switching the form action from 'Login' to 'Register'
