@@ -24,27 +24,21 @@ span {
     color: #ff2509;
 }
 
-#login-modal {
-    position: absolute;
-    margin-left: -177px;
-    left: 50%;
-    top: 0;
-    transition: 2s;
-}
-
 #form-box {
-    margin: 85% auto 0;
+    margin: 200px auto;
     width: 275px;
     padding: 20px;
     background: #303338;
     border-radius: 7px;
     border: 1px solid #2fbd91;
+    transition: 2s;
+    transition: width 2s;
 }
 
 #form-box-title {
     color: #a9a9a9;
     text-align: center;
-    font-size: 34px;
+    font-size: 28px;
 }
 
 #login-register-switch {
@@ -52,6 +46,7 @@ span {
     color: #2fbd91;
     margin-top: 30px;
     text-align: center;
+    text-decoration: underline;
 }
 
 #login-register-switch:hover {

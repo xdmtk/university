@@ -7,7 +7,7 @@ window.addEventListener('load', init);
  * the submit button click
  */
 function init() {
-    registerDomEventHandlers(getRelevantDomObjects());
+    registerDomEventHandlers(getRelevantDomObjects(), getGlobalStateObjects());
 }
 
 
@@ -24,32 +24,91 @@ function getRelevantDomObjects() {
         'username-span' : document.getElementById('username-span'),
         'password-span' : document.getElementById('password-span'),
 
-        'login-link' : document.getElementById('login-link'),
-        'login-modal' : document.getElementsByTagName('html')[0]
+        'form-box' : document.getElementById('form-box'),
+        'form-box-title' : document.getElementById('form-box-title'),
+        'login-modal' : document.getElementById('login-modal'),
+        'login-register-switch' : document.getElementById('login-register-switch')
+    }
+}
+
+
+/**
+ * Constructs a dictionary to pass around state variables to various functions
+ * that require them, while maintaining the 'no code outside of functions' requirement
+ *
+ * @returns - Dictionary of states
+ */
+function getGlobalStateObjects() {
+    return {
+        form_action : 'login',
+        form_box_contents : ''
     }
 }
 
 
 /**
  */
-function registerDomEventHandlers(domObjects) {
+function registerDomEventHandlers(domObjects, globalStates) {
 
     /* Register anonymous function to handle Submit button click */
     domObjects['submit'].addEventListener('click', () => {
 
-        * If client-side form validation suceeds, make AJAX call to server */
+        /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
+            const formBox = domObjects['form-box'];
+            globalStates.form_box_contents = formBox.innerHTML;
+            formBox.innerHTML = "";
+            formBox.style.width = "600px";
+            formBox.style.height = "700px";
+            formBox.style.margin = "100px auto";
         }
     });
 
-
-
+    /* Register anonymous function to handle the login/register switch link click */
+    domObjects['login-register-switch'].addEventListener('click', () => {
+        switchLoginOrRegister(domObjects, globalStates);
+    });
 }
 
+
+/**
+ * Handles text changes when switching the form action from 'Login' to 'Register'
+ * and vice versa
+ * @param domObjects
+ * @param globalStates
+ */
+function switchLoginOrRegister(domObjects, globalStates) {
+    if (globalStates.form_action === 'login') {
+        domObjects['form-box-title'].innerHTML = 'Lab 2 Register';
+        domObjects['submit'].value = 'Register';
+        domObjects['login-register-switch'].innerHTML = 'Already have an account? Click Here'
+        globalStates.form_action = 'register';
+    }
+    else {
+        domObjects['form-box-title'].innerHTML = 'Lab 2 Login';
+        domObjects['submit'].value = 'Login';
+        domObjects['login-register-switch'].innerHTML = 'Don\'t have an account? Click Here'
+        globalStates.form_action = 'login';
+    }
+}
+
+
+/**
+ * Master function encapsulating form validation functions, returning
+ * simple true or false based on validation success. Slightly repurposed
+ * code from Lab 1
+ *
+ * @param domObjects
+ * @returns {boolean}
+ */
 function validateForms(domObjects) {
 
     /* Get form validation errors in dictionary */
-    const errors = _validateForms(domObjects);
+    const errors = {};
+
+    /* Validate forms */
+    validateUsername(errors, domObjects['username'].value);
+    validatePassword(errors, domObjects['password'].value);
 
     /* Clear out existing text from spans that display error messages */
     clearErrorSpans(domObjects);
@@ -65,32 +124,9 @@ function validateForms(domObjects) {
              * the appropriate error message */
             domObjects[domObject + '-span'].innerHTML = errors[domObject];
         }
-
-        /* Modify the background color of the page as indicated by the instructions */
-        domObjects['login-modal'].style.backgroundColor = "#ff2509";
         return false;
     }
-    else {
-
-        /* Restore the background color of the page if no errors found */
-        domObjects['login-modal'].style.backgroundColor = "#202225";
-        return true;
-    }
-}
-
-/**
- */
-function _validateForms(domObjects) {
-
-    /* Dictionary of potential error messages for input fields */
-    const errors = {};
-
-    /* Validate forms */
-    validateUsername(errors, domObjects['username'].value);
-    validatePassword(errors, domObjects['password'].value);
-
-    /* Return error dictionary */
-    return errors;
+    return true;
 }
 
 /**
