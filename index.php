@@ -56,9 +56,9 @@
         }
     }
 
-    function login() {return '';}
-    function logout() {return '';}
-    function get_content() {return '';}
+    function login() {return 'foo';}
+    function logout() {return 'bar';}
+    function get_content() {return 'baz';}
 
     echo router();
 ?>
