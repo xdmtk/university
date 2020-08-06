@@ -90,7 +90,9 @@
      * Called after logging in, returns dynamic content based on the user
      * permissions (admin gets a database dump, regular user gets a color changer button
      */
-    function get_content() {return 'baz';}
+    function get_content() {
+        return '<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>';
+    }
 
-    echo router();
+echo router();
 ?>

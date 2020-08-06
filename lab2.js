@@ -60,7 +60,9 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
         console.log("In submit");
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
-            loginSuccess(domObjects, globalStates);
+            post('/', {'api':'login'},
+                () => {loginSuccess(domObjects, globalStates)},
+                () => {alert('login failed')});
         }
     });
 
@@ -86,32 +88,21 @@ function loginSuccess(domObjects, globalStates) {
     globalStates.form_box_contents = formBox.innerHTML;
     globalStates.form_box_styles = getComputedStyle(formBox);
 
-    /* Fade out formbox content and fade in new user content based on server AJAX response */
+    post('/', {'api' : 'get_content'}, (response) => {
+        /* Fade out formbox content and fade in new user content based on server AJAX response */
+        domContentFadeIn(domObjects, globalStates, response, true);
+        domContentFadeOut(domObjects, globalStates);
 
-        // TODO: MAke AJAX call here and put these functions in the success callback
-    domContentFadeIn(domObjects, globalStates, getUserContent(domObjects, globalStates), true);
-    domContentFadeOut(domObjects, globalStates);
+        /* Manual CSS set to new content area */
+        formBox.style.width = "600px";
+        formBox.style.height = "700px";
+        formBox.style.margin = "100px auto";
+    },() => {
+        alert('get_Content failed');
+    });
 
-    /* Manual CSS set to new content area */
-    formBox.style.width = "600px";
-    formBox.style.height = "700px";
-    formBox.style.margin = "100px auto";
 }
 
-
-/**
- * Returns dynamic content for logged in users from API call based
- * on user login credentials
- *
- * @param domObjects
- * @param globalStates
- * @returns {string}
- */
-function getUserContent(domObjects, globalStates) {
-
-    // TODO: Return this from API call
-    return `<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>`;
-}
 
 /**
  * Tricky function to map event listeners to dynamic DOM content that is yet to originate,
