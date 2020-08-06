@@ -64,3 +64,100 @@ ____________________________________________________________
 
 Server: Apache/2.2.3 (Red Hat)
 
+
+
+
+
+
+
+
+2)  A  fictional  webserver  at  adamkaplan.org  is  configured  so  that  its  DocumentRoot  (root
+  directory  for  web  files)  is  /var/www
+
+  Consider  the  following  URL...  https://adamkaplan.org/the/last/djedhi.html
+
+a.   What  is  the  complete  path  of  the  file  djedhi.html  on  the  server?
+____________________________________________________________
+
+/var/www/the/last/djedhi.html
+
+
+
+b.   What  is  the  domain  name  of  the  server?
+____________________________________________________________
+
+adamkaplan.org
+
+
+
+c.   What  is  the  protocol  being  used?
+____________________________________________________________
+
+HTTPS
+
+
+
+d.   What  port  (on  the  server)  will  the  web  browser  try  to  connect  to  for  this  request?
+____________________________________________________________
+
+443
+
+
+
+
+
+
+
+3)  Use  the  website  mxtoolbox.com  to  run  a  DNS  Lookup  (see  tab  labeled  “DNS  Lookup”).  At  the
+prompt,  enter  a  domain.  Then,  in  the  results,  click  Transcript  (link  toward  lower  right  of  results
+div)  for  full  “Session  Transcript”  of  the  search.
+
+a.   What  is  the  Session  Transcript  for  the  domain  www.cs.ucla.edu?
+____________________________________________________________
+
+Connecting to http://www.cs.ucla.edu
+Response time '0.3163291'
+LookupServer 552ms
+
+
+
+b.   What  is  the  Session  Transcript  for  the  fictional  domain  adamkaplan.org?
+____________________________________________________________
+
+Connecting to http://adamkaplan.org
+Response time '0.0156922'
+LookupServer 16ms
+
+
+
+4)  Show  the  entire  URL  in  the  browser’s  address  bar  after  the  following  form  is  submitted.  Assume
+the  user  did  not  change  any  defaults  before  clicking  the  Submit  button.
+____________________________________________________________
+
+http://akaplan.edu/echo.php?a=b&q=15&d=funk&c=4&b=2&e=z
+
+
+
+5)  Using  the  tracert  command  in  your  Windows  command  prompt  (or  traceroute  in  a  Mac  terminal  
+or  Linux  shell),  trace  the  route  through  the  internet  to  the  following  servers...  
+  
+In  your  answer,  write  how  many  hops  were  needed  from  your  machine  to  the  destination.  
+
+
+a)   csun.edu
+________________________________
+
+11
+
+
+b)   youtube.com
+________________________________
+
+11
+
+c)   www.cs.vu.nl
+________________________________
+
+14
+
+
