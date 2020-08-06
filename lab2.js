@@ -87,6 +87,8 @@ function loginSuccess(domObjects, globalStates) {
     globalStates.form_box_styles = getComputedStyle(formBox);
 
     /* Fade out formbox content and fade in new user content based on server AJAX response */
+
+        // TODO: MAke AJAX call here and put these functions in the success callback
     domContentFadeIn(domObjects, globalStates, getUserContent(domObjects, globalStates), true);
     domContentFadeOut(domObjects, globalStates);
 
@@ -181,6 +183,13 @@ function domContentFadeOut(domObjects, globalStates) {
     }, 10);
 }
 
+
+/**
+ * Executes all visual prep for re-adding the login box to the DOM
+ *
+ * @param domObjects
+ * @param globalStates
+ */
 function logOut(domObjects, globalStates) {
 
     const formBox = domObjects['form-box'];
