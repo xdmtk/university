@@ -72,20 +72,25 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
 
 
 /**
- * Dynamic page content loads after successfully logging in
+ * Dynamic page content load called after passing clientside
+ * validation
  * @param domObjects
  * @param globalStates
  */
 function loginSuccess(domObjects, globalStates) {
 
+    /* Save DOM form box to operate on via shorthand */
     const formBox = domObjects['form-box'];
 
+    /* Save current formbox contents and style elements */
     globalStates.form_box_contents = formBox.innerHTML;
     globalStates.form_box_styles = getComputedStyle(formBox);
 
+    /* Fade out formbox content and fade in new user content based on server AJAX response */
     domContentFadeIn(domObjects, globalStates, getUserContent(domObjects, globalStates), true);
     domContentFadeOut(domObjects, globalStates);
 
+    /* Manual CSS set to new content area */
     formBox.style.width = "600px";
     formBox.style.height = "700px";
     formBox.style.margin = "100px auto";
@@ -101,34 +106,26 @@ function loginSuccess(domObjects, globalStates) {
  * @returns {string}
  */
 function getUserContent(domObjects, globalStates) {
-    return `<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>`;
 
+    // TODO: Return this from API call
+    return `<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>`;
 }
 
 /**
- * Tricky function to map event listeners to dynamic DOM content that is yet to originate.
+ * Tricky function to map event listeners to dynamic DOM content that is yet to originate,
+ * namely the log out button, and the button to change the background color as specified
+ * by the lab instructions
  *
  * @param domObjects
  * @param globalStates
  */
 function registerLoggedInDomEventHandlers(domObjects, globalStates) {
-    (domObjects['log-out-span'] = document.getElementById('log-out-span')).addEventListener('click', () => {
-        globalStates.logged_in = false;
-        const formBox = domObjects['form-box'];
-
-        domContentFadeIn(domObjects, globalStates, globalStates.form_box_contents);
-        domContentFadeOut(domObjects, globalStates);
-        formBox.style.width = "275px";
-        formBox.style.height = "";
-        formBox.style.margin = "200px auto";
-        formBox.style = globalStates.form_box_styles;
-
-        /* Wait for login page DOM objects to be present */
-        setTimeout(() => {
-            domObjects = getRelevantDomObjects();
-            registerLoginDomEventHandlers(domObjects, globalStates);
-        }, 2000);
-    });
+    /* Add the logout button to the global domObjects dictionary and add the logout event handler */
+    (domObjects['log-out-span'] = document.getElementById('log-out-span'))
+        .addEventListener('click', () => {
+            logOut(domObjects, globalStates);
+        }
+    );
 
 }
 
@@ -142,14 +139,19 @@ function domContentFadeIn(domObjects, globalStates, content, loggingIn = false) 
     const formBoxContent = domObjects['form-box-content'];
     setTimeout(() => {
 
-        globalStates.logged_in = true;
+        /* Fade in the content set by the caller */
         formBoxContent.innerHTML = content;
+
+        /* Setup the event handlers for elements you might find if you're logged in */
         if (loggingIn) {
             registerLoggedInDomEventHandlers(domObjects, globalStates);
+            globalStates.logged_in = true;
         }
 
+        /* Ramp up opacity with an interval timer and cut it when opacity is 100% */
         const fadeIn = setInterval(() => {
-            formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) + .01);
+
+            formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) + .01).toString();
             if (parseFloat(formBoxContent.style.opacity) === 1.0) {
                 clearInterval(fadeIn);
             }
@@ -166,18 +168,46 @@ function domContentFadeIn(domObjects, globalStates, content, loggingIn = false) 
 function domContentFadeOut(domObjects, globalStates) {
 
     const formBoxContent = domObjects['form-box-content'];
+
+    /* Since the opacity wouldn't have come through without computed styles
+    manually set it to full before fading out */
     formBoxContent.style.opacity = "1.0";
+
     const fadeOut = setInterval(() => {
-        formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) - .01);
-        console.log(formBoxContent.style.opacity);
+        formBoxContent.style.opacity = (parseFloat(formBoxContent.style.opacity) - .01).toString();
         if (!parseFloat(formBoxContent.style.opacity)) {
             clearInterval(fadeOut);
         }
-    }, 1);
+    }, 10);
 }
 
 function logOut(domObjects, globalStates) {
 
+    const formBox = domObjects['form-box'];
+
+    /* On logout click, reset global session state */
+    globalStates.logged_in = false;
+
+    /* Fade in old login box saved in globalStates and fadeout current content */
+    domContentFadeIn(domObjects, globalStates, globalStates.form_box_contents);
+    domContentFadeOut(domObjects, globalStates);
+
+    /* Manual CSS reset back to login box dimensions */
+    formBox.style.width = "275px";
+    formBox.style.height = "";
+    formBox.style.margin = "200px auto";
+
+    /* For some reason the computer styles don't include the original
+    width height and margin, so set those first manually before bringing
+    the rest of the stylesheet back */
+    formBox.style = globalStates.form_box_styles;
+
+    /* HACK: Wait at least a couple seconds for login page DOM objects to be
+    present before re-registering login event handlers */
+    setTimeout(() => {
+        domObjects = getRelevantDomObjects();
+        registerLoginDomEventHandlers(domObjects, globalStates);
+    }, 2000);
 }
 
 /**
