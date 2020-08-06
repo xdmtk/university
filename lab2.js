@@ -347,11 +347,12 @@ function post(endpoint, params, success, error) {
 
     /* Setup POST method XHR object */
     xhr.open("POST", endpoint);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function() {
 
         /* Assign the callback function when the request returns based on HTTP status codes */
         if (this.readyState === XMLHttpRequest.DONE) {
-            (callback = this.status === 200 ? success : error)();
+            (callback = this.status === 200 ? success : error)(xhr.response);
         }
     }
 

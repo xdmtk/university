@@ -38,6 +38,7 @@
      */
     function router() {
         if (!isset($_POST['api'])) {
+            echo "no api";
             return main_site;
         }
         switch ($_POST['api']) {
