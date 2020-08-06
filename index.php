@@ -41,7 +41,6 @@
         /* Return the main site static HTML if not specifying
         an API call */
         if (!isset($_POST['api'])) {
-            echo "no api";
             return main_site;
         }
 
@@ -52,6 +51,8 @@
             /* Main routes */
             case 'login':
                 return login();
+            case 'register':
+                return register();
             case 'logout':
                 return logout();
             case 'get_content':
@@ -75,6 +76,16 @@
     function login() {
         session_start();
         return 'foo';
+    }
+
+    /**
+     * Called on the register API route. Checks for valid registration params,
+     * scans database for username/password pair to see if already exists, and if
+     * not, adds user/pass combo into the table
+     * @return string
+     */
+    function register() {
+        return 'quz';
     }
 
     /**
