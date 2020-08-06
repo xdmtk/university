@@ -1,0 +1,66 @@
+d.   What  is  the  first  line  received  from  the  server?    
+____________________________________________________________
+
+HTTP/1.0 302 Found
+
+
+
+e.   What  is  the  meaning  of  the  numeric  status  code  you  receive  in  this  line  (from  prior
+question)?
+____________________________________________________________
+
+The request URL has been moved to a new URL specified in the following 
+Location header. Most browsers will redirect automatically, but a telnet session
+will not.
+
+
+
+f.   In  general,  what  does  the  command  “GET  /”  do?
+____________________________________________________________
+
+Requests the server for the index page, (often index.html, index.htm, or index.php)
+via the GET protocol.
+
+
+
+g.   Write  the  equivalent  URL  to  access  this  site  in  part  g...
+____________________________________________________________
+
+Not 100% what is meant by this. https://csun.edu? 
+
+
+
+h.   Now  retry  with  the  command  “GET  /index.html  HTTP/1.1”  (and  be  sure  to  put  Host:
+www.csun.edu  on  the  next  line)  What  do  you  receive?
+____________________________________________________________
+
+HTTP/1.1 200 OK
+Plus the rest of the site.
+
+
+
+i.   In  the  received  HTML  part  of  the  response  in  part  i,  what  is  the  very  last  tag  (after  
+the  </html>)? 
+____________________________________________________________
+
+A comment that says <!-- Dream on. -->
+
+
+
+j.   Does  the  command  “GET  /xxyz.html  HTTP/1.1”  (with  Host:  on  the  next  line)  return  
+an   HTML   file?   What   is   the   first   line   received   from   the   server   now?   What   is   the  
+meaning  of  this  status  code?  
+____________________________________________________________
+
+Yes, it does return an HTML file, but the file is a reserved file specified by the web server that
+is served exclusively in the event of 404 status code. The first line is: HTTP/1.1 404 Not Found. 
+The status code means the requested page was not found on the server.
+
+
+
+k.   What  web-­server  type  and  version  is  being  run  at  www.csun.edu  from  the  info  in  
+Question  1  (this  question),  sections  h  and  j?  
+____________________________________________________________
+
+Server: Apache/2.2.3 (Red Hat)
+
