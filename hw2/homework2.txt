@@ -161,3 +161,147 @@ ________________________________
 14
 
 
+
+
+
+
+
+
+
+6) Host A initiates a connection to host B via TCP, and A’s random number generator provides
+sequence #42. Host B’s random number generator provides sequence #109. What are the
+packets exchanged to establish the connection (i.e. the 3-way handshake packets)? For each
+packet, show the source host (A or B), the destination host (A or B), the sequence number,
+acknowledgment number (if applicable), and the flags that are set.
+
+Packet #1: Source __A__ Dest __B__ Seq# _42__ ACK# __1___ flags: ____________
+Packet #2: Source __B__ Dest __A__ Seq# _109_ ACK# __2___ flags: ____________
+Packet #3: Source __A__ Dest __B__ Seq# _42__ ACK# __3___ flags: ____________
+
+
+
+
+
+
+
+Production site: https://calstatepays.org
+Sandbox site: https://www.sandbox.csun.edu/~calstatepays
+7) Based on the URL of the Sandbox site, what is the likely directory/path arrangement on the
+web-server? (Hint: see Lecture 2, slide 6 on Paths in URLs)
+____________________________________________________________
+
+/home/calstatepays/www/ ** Note: Not mentioned in the slides but subdomains also often have different 
+directories than the primary domain of the server.
+
+
+
+
+
+8) Using your web browser, find your default User-Agent request header. What does your
+browser report?
+____________________________________________________________
+
+"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
+
+
+
+
+
+
+9) Try setting 5 other User-Agents, including one that reports your browser as being on a mobile
+device, and also one nonsensical User-Agent (example: the one on Lecture 2, Slide 19 showing
+an HTTP Post in raw ASCII). Try these User-Agents against both the Production and Sandbox
+sites and briefly report the results below.
+List the User-Agents you used here, followed by the results…
+____________________________________________________________
+
+i. User-Agent: Mozilla/5.0 (Linux; U; Android 4.0.2; en-us; Galaxy Nexus Build/ICL53F) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30
+a. How did this affect the user interface/user experience on the Production site? No effect
+b. How did this affect the user interface/user experience on the Sandbox site? No effect
+
+ii. User-Agent: Mozilla/5.0 (iPad; CPU OS 9_1 like Mac OS X) AppleWebKit/601.1 (KHTML, like Gecko) CriOS/77.0.3865.90 Mobile/13B143 Safari/601.1.46
+a. How did this affect the user interface/user experience on the Production site? No effect
+b. How did this affect the user interface/user experience on the Sandbox site? No effect
+
+iii. User-Agent: Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html
+a. How did this affect the user interface/user experience on the Production site? No effect
+b. How did this affect the user interface/user experience on the Sandbox site? No effect
+
+iv. User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.75.14 (KHTML, like Gecko) Version/7.0.3 Safari/7046A194A
+a. How did this affect the user interface/user experience on the Production site? No effect
+b. How did this affect the user interface/user experience on the Sandbox site? No effect
+
+v. User-Agent: Opera/9.80 (iPhone; Opera Mini/8.0.0/34.2336; U; en) Presto/2.8.119 Version/11.10
+a. How did this affect the user interface/user experience on the Production site? No effect
+b. How did this affect the user interface/user experience on the Sandbox site? No effect
+
+
+
+
+10) Using your browser’s responsiveness design tools (Responsiveness Design Mode on
+Firefox, or Device Mode in Chrome Dev Tools) on the Production site, change your display
+size making it smaller and larger until the site responds. What screen sizes forced a change,
+and how did the site respond? Did you encounter any bugs or issues with UI/UX as the page
+layout changed?
+
+11) Repeat Question 10 on the Sandbox site, changing your display size making it smaller and
+larger until the site responds. What screen sizes forced a change, and how did the site
+respond? Did you encounter any bugs or issues with UI/UX as the page layout changed?
+____________________________________________________________
+
+Around 580px Width mark changes nav bar of prod site. Sandbox site responded fine with all width/height combos
+
+
+
+
+
+
+
+
+12) On either the Production or Sandbox site, find the CSS @media rules (the media queries)
+that produce this responsiveness feature.
+Where are these rules? (what file/location?)
+What are these rules?
+____________________________________________________________
+
+@media screen and (max-width: 576px) {
+  .site-header {
+    min-height: 4rem;
+    font-size: 1.3rem;
+  }
+}
+
+/css/app.css
+
+
+
+
+
+
+
+
+
+13) Open your browser’s Console (under Developer Tools) and click around the Production
+site until you see Warning or Error messages in the Console?
+For each set of warnings and errors you encounter…?
+• What page did these appear on?
+• What interaction did you perform (if any) to produce this error? Be specific. If this
+error occurred at page load, simply specify “page load”
+____________________________________________________________
+
+All pages get an net::ERR_BLOCKED_BY_CLIENT error, likely from my browsers ad-blocker.
+There was also some informative outputs letting me know the site is running Vue, also
+some cross site cookie warnings as well. 
+
+
+
+
+
+14) Repeat Question 13 on the Sandbox site.
+For each set of warnings and errors you encounter…?
+• What page did these appear on?
+• What interaction did you perform (if any) to produce this error? Be specific. If this
+error occurred at page load, simply specify “page load”
+____________________________________________________________
+
+No errors except a warning failure to parse the CSS source map. All on page load
