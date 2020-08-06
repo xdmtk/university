@@ -37,17 +37,27 @@
      * a specialized task returning JSON
      */
     function router() {
+
+        /* Return the main site static HTML if not specifying
+        an API call */
         if (!isset($_POST['api'])) {
             echo "no api";
             return main_site;
         }
+
+        /* Otherwise, take a look at the api parameter to determine
+        which route to call */
         switch ($_POST['api']) {
+
+            /* Main routes */
             case 'login':
                 return login();
             case 'logout':
                 return logout();
             case 'get_content':
                 return get_content();
+
+            /* Invalid API specification results in a 400 with failure JSON */
             default:
                 http_response_code(400);
                 return json_encode([
@@ -57,8 +67,29 @@
         }
     }
 
-    function login() {return 'foo';}
-    function logout() {return 'bar';}
+    /**
+     * Called on the login API route. Checks for valid login params,
+     * scans database for username/password pair, and starts a session
+     * @return string
+     */
+    function login() {
+        session_start();
+        return 'foo';
+    }
+
+    /**
+     * Called on the logout API route. Destroys the current session
+     */
+    function logout() {
+        session_unset();
+        session_destroy();
+        return 'bar';
+    }
+
+    /**
+     * Called after logging in, returns dynamic content based on the user
+     * permissions (admin gets a database dump, regular user gets a color changer button
+     */
     function get_content() {return 'baz';}
 
     echo router();
