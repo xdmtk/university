@@ -80,12 +80,9 @@
                 $row = $res->fetch_array();
                 if ($row) {
                     $password_ret = $row['password'];
-                    DB::debug('Sent password ' . $password);
-                    DB::debug('Returned password ' . $password_ret);
                     return password_verify($password, $password_ret);
                 }
             }
-            DB::debug('Res is false');
             return false;
         }
 
@@ -157,6 +154,13 @@
         }
     }
 
+
+    /**
+     * Helper function to organize and simplify JSON API responses
+     * @param $code
+     * @param $reason
+     * @return false|string
+     */
     function api_response($code, $reason) {
         http_response_code($code);
         return json_encode([
@@ -172,15 +176,18 @@
      */
     function login() {
 
+        /* Make sure username and password are specified in the request */
         if (!(isset($_POST['username']) && isset($_POST['password']))) {
             return api_response(400, 'Client did not specify username and password');
         }
 
+        /* Look for the user/pass combo in the database */
         $db = new DB();
         if (!$db->verify_user($_POST['username'], $_POST['password'])) {
             return api_response(401, 'Invalid username and/or password');
         }
 
+        /* On success, start a session, save the username and return 200 OK */
         session_start();
         $_SESSION['username'] = $_POST['username'];
         return api_response(200, 'Successful login');

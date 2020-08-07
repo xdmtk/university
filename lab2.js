@@ -60,16 +60,22 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
 
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
+
+            /* Make a post API call to login */
             post('/', {
                 'api':'login',
                 'username' : domObjects['username'].value,
                 'password' : domObjects['password'].value
             },
-    (response) => {
+
+            /* Handle success response from API */
+            (response) => {
                 console.log(response);
                 loginSuccess(domObjects, globalStates)
             },
-       (response) => {
+
+            /* TODO: Make span for errors on login page and display server complaint */
+            (response) => {
                 alert(response);
             });
         }
@@ -97,18 +103,25 @@ function loginSuccess(domObjects, globalStates) {
     globalStates.form_box_contents = formBox.innerHTML;
     globalStates.form_box_styles = getComputedStyle(formBox);
 
-    post('/', {'api' : 'get_content'}, (response) => {
-        /* Fade out formbox content and fade in new user content based on server AJAX response */
-        domContentFadeIn(domObjects, globalStates, response, true);
-        domContentFadeOut(domObjects, globalStates);
+    post('/', {
+        'api' : 'get_content',
+        'username' : domObjects['username'].value
+        },
 
-        /* Manual CSS set to new content area */
-        formBox.style.width = "600px";
-        formBox.style.height = "700px";
-        formBox.style.margin = "100px auto";
-    },() => {
-        alert('get_Content failed');
-    });
+        (response) => {
+            /* Fade out form box content and fade in new user content based on server AJAX response */
+            domContentFadeIn(domObjects, globalStates, response, true);
+            domContentFadeOut(domObjects, globalStates);
+
+            /* Manual CSS set to new content area */
+            formBox.style.width = "600px";
+            formBox.style.height = "700px";
+            formBox.style.margin = "100px auto";
+
+        },(response) => {
+            alert(response);
+        }
+    );
 
 }
 
