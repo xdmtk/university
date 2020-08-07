@@ -31,6 +31,77 @@
     </html>
     ';
 
+    class DB {
+
+        /* Typically these would be in an .env file */
+        const DB_HOST = 'localhost';
+        const DB_PORT = '3306';
+        const DB_USER = 'admin';
+        const DB_PASS = 'php484';
+        const DB_NAME = 'lab2';
+
+        public $conn;
+
+        /**
+         * DB constructor. Opens a connection to the Database.
+         */
+        public function __construct() {
+            $this->conn = new mysqli(self::DB_HOST,
+                            self::DB_USER,
+                             self::DB_PASS,
+                             self::DB_NAME);
+
+            if ($this->conn->connect_error) {
+                die("Couldn't connect to DB");
+            }
+        }
+
+        /**
+         * Closes the active connection to the Database if it exists.
+         */
+        public function __destruct() {
+            if ($this->conn) {
+                $this->conn->close();
+            }
+        }
+
+        /**
+         * Looks for a matching row with the given username/password combo. Returns a truthy/false
+         * integer representing whether the user was found or not.
+         *
+         * @param $username
+         * @param $password
+         * @return int
+         */
+        public function verify_user($username, $password) {
+            $sql = "SELECT * FROM user WHERE username = ${username} AND password = ${password};";
+
+            return count($this->conn->query($sql)->fetch_array(MYSQLI_ASSOC));
+        }
+
+        /**
+         * Inserts new username/password combo into Database if username doesn't already
+         * exist.
+         * @param $username
+         * @param $password
+         * @return bool - Success/failure registering user
+         */
+        public function register_user($username, $password) {
+            $sql = "SELECT * FROM user WHERE username = ${username};";
+            if (count($this->conn->query($sql)->fetch_array(MYSQLI_ASSOC))) {
+                return false;
+            }
+
+            $sql = "INSERT INTO user (username, password) VALUES (${username}, ${password});";
+            $this->conn->query($sql);
+
+            if ($this->conn->error) {
+                return false;
+            }
+            return true;
+        }
+    }
+
     /**
      * Main function for all requests to the index page. Serves basic HTML
      * content when no 'api' post keyword is specified, otherwise performs
@@ -60,12 +131,16 @@
 
             /* Invalid API specification results in a 400 with failure JSON */
             default:
-                http_response_code(400);
-                return json_encode([
-                    'status' => 'failure',
-                    'reason' => 'No API call specified'
-                ]);
+                return api_response(400, 'No API call specified');
         }
+    }
+
+    function api_response($code, $reason) {
+        http_response_code($code);
+        return json_encode([
+            'status' => ($code == 200 ? 'success' : 'failure'),
+            'reason' => $reason
+        ]);
     }
 
     /**
@@ -74,6 +149,16 @@
      * @return string
      */
     function login() {
+
+        if (!(isset($_POST['username']) && isset($_POST['password']))) {
+            return api_response(400, 'Client did not specify username and password');
+        }
+
+        $db = new DB();
+        if (!$db->verify_user($_POST['username'], password_hash($_POST['password'], PASSWORD_DEFAULT))) {
+            return api_response(401, 'Invalid username and/or password');
+        }
+
         session_start();
         return 'foo';
     }

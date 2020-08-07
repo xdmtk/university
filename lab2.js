@@ -57,7 +57,7 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
 
     /* Register anonymous function to handle Submit button click */
     domObjects['submit'].addEventListener('click', () => {
-        console.log("In submit");
+
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
             post('/', {'api':'login'},
