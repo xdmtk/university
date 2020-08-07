@@ -160,7 +160,8 @@
         }
 
         session_start();
-        return 'foo';
+        $_SESSION['username'] = $_POST['username'];
+        return api_response(200, 'Successful login');
     }
 
     /**
@@ -170,16 +171,31 @@
      * @return string
      */
     function register() {
-        return 'quz';
+        if (session_status() == PHP_SESSION_ACTIVE) {
+            return api_response(400, 'Cant register new user while already logged in');
+        }
+
+        if (!(isset($_POST['username']) && isset($_POST['password']))) {
+            return api_response(400, 'Client did not specify username and password');
+        }
+
+        $db = new DB();
+        $res = $db->register_user($_POST['username'], password_hash($_POST['password'], PASSWORD_DEFAULT));
+
+        return api_response($res ? 200 : 418, $res ? 'Succesfully registered user' : 'I\'m a teapot');
     }
 
     /**
      * Called on the logout API route. Destroys the current session
      */
     function logout() {
+        if (session_status() != PHP_SESSION_ACTIVE) {
+            return api_response(400, 'Cant log out, no active session');
+        }
+
         session_unset();
         session_destroy();
-        return 'bar';
+        return api_response(200, 'Successfully logged out');
     }
 
     /**
