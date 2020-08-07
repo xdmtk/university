@@ -60,9 +60,18 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
 
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
-            post('/', {'api':'login'},
-                () => {loginSuccess(domObjects, globalStates)},
-                () => {alert('login failed')});
+            post('/', {
+                'api':'login',
+                'username' : domObjects['username'].value,
+                'password' : domObjects['password'].value
+            },
+    (response) => {
+                console.log(response);
+                loginSuccess(domObjects, globalStates)
+            },
+       (response) => {
+                alert(response);
+            });
         }
     });
 
@@ -84,7 +93,7 @@ function loginSuccess(domObjects, globalStates) {
     /* Save DOM form box to operate on via shorthand */
     const formBox = domObjects['form-box'];
 
-    /* Save current formbox contents and style elements */
+    /* Save current form box contents and style elements */
     globalStates.form_box_contents = formBox.innerHTML;
     globalStates.form_box_styles = getComputedStyle(formBox);
 

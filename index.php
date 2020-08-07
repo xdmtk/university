@@ -74,9 +74,19 @@
          * @return int
          */
         public function verify_user($username, $password) {
-            $sql = "SELECT * FROM user WHERE username = ${username} AND password = ${password};";
+            $sql = "SELECT * FROM user WHERE username = '${username}'";
 
-            return count($this->conn->query($sql)->fetch_array(MYSQLI_ASSOC));
+            if ($res = $this->conn->query($sql)) {
+                $row = $res->fetch_array();
+                if ($row) {
+                    $password_ret = $row['password'];
+                    DB::debug('Sent password ' . $password);
+                    DB::debug('Returned password ' . $password_ret);
+                    return password_verify($password, $password_ret);
+                }
+            }
+            DB::debug('Res is false');
+            return false;
         }
 
         /**
@@ -99,6 +109,18 @@
                 return false;
             }
             return true;
+        }
+
+        public static function debug($msg) {
+            date_default_timezone_set("America/Los_Angeles");
+            $log_file = '/home/xdmtk/phplog.log';
+            $mode = (file_exists($log_file) ? "a" : "w");
+
+            $log_handle = fopen($log_file, $mode);
+            flock($log_handle, LOCK_EX);
+            fwrite($log_handle, "[" . date("Y-m-d H:i:s") . "] - " . $msg . "\n");
+            flock($log_handle, LOCK_UN);
+            fclose($log_handle);
         }
     }
 
@@ -155,7 +177,7 @@
         }
 
         $db = new DB();
-        if (!$db->verify_user($_POST['username'], password_hash($_POST['password'], PASSWORD_DEFAULT))) {
+        if (!$db->verify_user($_POST['username'], $_POST['password'])) {
             return api_response(401, 'Invalid username and/or password');
         }
 
