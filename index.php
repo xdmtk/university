@@ -1,6 +1,7 @@
 <?php
+session_start();
 
-    const main_site = '
+const main_site = '
     <html>
 
 
@@ -95,12 +96,15 @@
          * @return bool - Success/failure registering user
          */
         public function register_user($username, $password) {
-            $sql = "SELECT * FROM user WHERE username = ${username};";
-            if (count($this->conn->query($sql)->fetch_array(MYSQLI_ASSOC))) {
-                return false;
+            $sql = "SELECT * FROM user WHERE username = '${username}';";
+            if ($res = $this->conn->query($sql)) {
+                $row = $res->fetch_array();
+                if ($row) {
+                    return false;
+                }
             }
 
-            $sql = "INSERT INTO user (username, password) VALUES (${username}, ${password});";
+            $sql = "INSERT INTO user (username, password) VALUES ('${username}', '${password}');";
             $this->conn->query($sql);
 
             if ($this->conn->error) {
@@ -188,8 +192,6 @@
             return api_response(401, 'Invalid username and/or password');
         }
 
-        /* On success, start a session, save the username and return 200 OK */
-        session_start();
         $_SESSION['username'] = $_POST['username'];
         return api_response(200, 'Successful login');
     }
@@ -201,7 +203,7 @@
      * @return string
      */
     function register() {
-        if (session_status() == PHP_SESSION_ACTIVE) {
+        if (session_status() == PHP_SESSION_ACTIVE && isset($_SESSION['username']))  {
             return api_response(400, 'Cant register new user while already logged in');
         }
 
@@ -220,7 +222,7 @@
      */
     function logout() {
         if (session_status() != PHP_SESSION_ACTIVE) {
-            return api_response(400, 'Cant log out, no active session');
+            return api_response(400, 'Cant log out, no active session: ' . session_status());
         }
 
         session_unset();
@@ -233,6 +235,10 @@
      * permissions (admin gets a database dump, regular user gets a color changer button
      */
     function get_content() {
+        $content = '';
+        if ($_SESSION['username'] == 'Administrator') {
+
+        }
         return '<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>';
     }
 

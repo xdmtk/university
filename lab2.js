@@ -62,21 +62,29 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
         /* If client-side form validation succeeds, make AJAX call to server */
         if (validateForms(domObjects)) {
 
-            /* Make a post API call to login */
+            /* Make a post API call to login or register (depending on form state) */
             post('/', {
-                'api':'login',
+                'api': globalStates.form_action,
                 'username' : domObjects['username'].value,
                 'password' : domObjects['password'].value
             },
 
             /* Handle success response from API */
             () => {
+
                 domObjects['general-error-span'].style.visibility = "hidden";
-                loginSuccess(domObjects, globalStates)
+
+                /* Depending on the configured submit action, execute the proper callback */
+                if (globalStates.form_action === 'login') {
+                    loginSuccess(domObjects, globalStates)
+                }
+                else {
+                    registerSuccess(domObjects, globalStates) ;
+                }
             },
 
             (response) => {
-                showLoginError(domObjects, globalStates, JSON.parse(response));
+                showLoginOrRegisterError(domObjects, globalStates, JSON.parse(response));
             });
         }
     });
@@ -87,7 +95,7 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
     });
 }
 
-function showLoginError(domObjects, globalStates, errorMsg) {
+function showLoginOrRegisterError(domObjects, globalStates, errorMsg) {
 
     const errorSpan = domObjects['general-error-span'];
     errorSpan.innerHTML = errorMsg['reason'];
@@ -112,7 +120,6 @@ function loginSuccess(domObjects, globalStates) {
 
     post('/', {
         'api' : 'get_content',
-        'username' : domObjects['username'].value
         },
 
         (response) => {
@@ -129,6 +136,79 @@ function loginSuccess(domObjects, globalStates) {
             alert(response);
         }
     );
+
+}
+
+
+function registerSuccess(domObjects, globalStates) {
+
+    /* Custom Register success page to display with fade-in/fade-out effects */
+    const registerSuccessContent = `
+    <style>
+        svg {
+          display: block;
+          height: 23vw;
+          width: 5vw;
+          color: #2fbd91;
+          margin: 0 auto;
+          /* SVG path use currentColor to inherit this */
+        }
+
+        .circle {
+          stroke-dasharray: 76;
+          stroke-dashoffset: 76;
+          -webkit-animation: draw 1s forwards;
+                  animation: draw 1s forwards;
+        }
+
+        .tick {
+          stroke-dasharray: 18;
+          stroke-dashoffset: 18;
+          -webkit-animation: draw 1s forwards 1s;
+                  animation: draw 1s forwards 1s;
+        }
+
+        @-webkit-keyframes draw {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+
+        @keyframes draw {
+          to {
+            stroke-dashoffset: 0;
+          }
+        }
+    </style> 
+    <span id="form-box-title">Register Success</span>
+    <svg viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" stroke-width="2" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+            <path class="circle" d="M13 1C6.372583 1 1 6.372583 1 13s5.372583 12 12 12 12-5.372583 12-12S19.627417 1 13 1z"/>
+            <path class="tick" d="M6.5 13.5L10 17 l8.808621-8.308621"/>
+        </g>
+    </svg>
+    `;
+
+    /* Save the original contents */
+    const formBoxContentsOriginal = domObjects['form-box'].innerHTML;
+
+    /* Fadeout original content, fadein register success */
+    domContentFadeIn(domObjects, globalStates, registerSuccessContent, false);
+    domContentFadeOut(domObjects, globalStates);
+
+    /* Fade back to login/register page */
+    setTimeout(() => {
+        domContentFadeIn(domObjects, globalStates, formBoxContentsOriginal, false);
+        domContentFadeOut(domObjects, globalStates);
+
+        /* Same hack as above, need to wait for login DOM objects to reappear before reinstalling
+        their original event handlers */
+        setTimeout(() => {
+            domObjects = getRelevantDomObjects();
+            registerLoginDomEventHandlers(domObjects, globalStates);
+        }, 2000);
+
+    }, 4000);
 
 }
 
