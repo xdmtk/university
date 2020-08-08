@@ -157,10 +157,11 @@ const main_site = '
         }
 
         public static function generate_color_button() {
-           return '<a href="#" id="color-changer"><span id="color-changer-span">Click Me</span></a>';
+
+           return "<a href=\"#\" id=\"color-changer\" 
+               onclick=\"changeBackgroundColor()\"><span id=\"color-changer-span\">Click Me</span></a>";
 
         }
-
 
         public static function generate_logout_span() {
             return '<span id="log-out-span" style="text-decoration: underline; cursor: pointer; 

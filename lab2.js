@@ -314,6 +314,8 @@ function logOut(domObjects, globalStates) {
         width height and margin, so set those first manually before bringing
         the rest of the stylesheet back */
         formBox.style = globalStates.form_box_styles;
+        document.getElementsByTagName('html')[0].style.background = '#202225';
+
 
         /* HACK: Wait at least a couple seconds for login page DOM objects to be
         present before re-registering login event handlers */
@@ -438,6 +440,11 @@ function clearErrorSpans(domObjects) {
             domObjects[domObject].innerHTML = "";
         }
     }
+}
+
+function changeBackgroundColor() {
+    document.getElementsByTagName('html')[0].style.background = '#' +
+        Math.floor(Math.random()*16777215).toString(16);
 }
 
 

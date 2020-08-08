@@ -141,37 +141,18 @@ span {
     font-size: 28px;
 }
 
-/* motion */
 @-moz-keyframes gradient {
-    0% {
-        background-position: 14% 0%;
-    }
-    50% {
-        background-position: 87% 100%;
-    }
-    100% {
-        background-position: 14% 0%;
-    }
+    0% {background-position: 14% 0%;}
+    50% {background-position: 87% 100%;}
+    100% {background-position: 14% 0%;}
 }
 @-webkit-keyframes gradient {
-    0% {
-        background-position: 14% 0%;
-    }
-    50% {
-        background-position: 87% 100%;
-    }
-    100% {
-        background-position: 14% 0%;
-    }
+    0% {background-position: 14% 0%;}
+    50% {background-position: 87% 100%;}
+    100% {background-position: 14% 0%;}
 }
 @keyframes gradient {
-    0% {
-        background-position: 14% 0%;
-    }
-    50% {
-        background-position: 87% 100%;
-    }
-    100% {
-        background-position: 14% 0%;
-    }
+    0% {background-position: 14% 0%;}
+    50% {background-position: 87% 100%;}
+    100% {background-position: 14% 0%;}
 }
