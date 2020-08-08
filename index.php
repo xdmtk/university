@@ -156,12 +156,16 @@ const main_site = '
             return $content;
         }
 
+        public static function generate_color_button() {
+           return '<a href="#" id="color-changer"><span id="color-changer-span">Click Me</span></a>';
+
+        }
+
+
         public static function generate_logout_span() {
             return '<span id="log-out-span" style="text-decoration: underline; cursor: pointer; 
                         text-align: center; margin-top: 40px;" onclick="">Log out</span>';
         }
-
-
     }
 
     /**
@@ -283,6 +287,7 @@ const main_site = '
                 'Failed to get user table!';
         }
         else {
+            $content .= HTMLGenerator::generate_color_button();
         }
         $content .= HTMLGenerator::generate_logout_span();
 
