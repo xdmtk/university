@@ -113,6 +113,18 @@ const main_site = '
             return true;
         }
 
+        public function get_user_table() {
+            $sql = "SELECT * FROM user ORDER BY username ASC";
+            $rows = [];
+            if ($res = $this->conn->query($sql)) {
+                while ($row = $res->fetch_array(MYSQLI_ASSOC)) {
+                    array_push($rows, $row);
+                }
+                return $rows;
+            }
+            return false;
+        }
+
         public static function debug($msg) {
             date_default_timezone_set("America/Los_Angeles");
             $log_file = '/home/xdmtk/phplog.log';
@@ -124,6 +136,32 @@ const main_site = '
             flock($log_handle, LOCK_UN);
             fclose($log_handle);
         }
+    }
+
+    class HTMLGenerator {
+
+        public static function generate_user_table($row_data) {
+            $content = '<table><tr><th>User ID</th><th>Username</th><th>Password</th></tr>';
+            $row_num = 0;
+            foreach ($row_data as $row) {
+                $content .= '<tr>';
+                $content .= '<td ' . ($row_num % 2 ? ' id="mod-two"' : '') . '>' . $row['userid'] . '</td>';
+                $content .= '<td' . ($row_num % 2 ? ' id="mod-two"' : '') . '>' . $row['username'] . '</td>';
+                $content .= '<td' . ($row_num % 2 ? ' id="mod-two"' : '') . '>' . $row['password'] . '</td>';
+                $content .= '</tr>';
+                $row_num++;
+            }
+            $content .= '</table>';
+
+            return $content;
+        }
+
+        public static function generate_logout_span() {
+            return '<span id="log-out-span" style="text-decoration: underline; cursor: pointer; 
+                        text-align: center; margin-top: 40px;" onclick="">Log out</span>';
+        }
+
+
     }
 
     /**
@@ -214,7 +252,8 @@ const main_site = '
         $db = new DB();
         $res = $db->register_user($_POST['username'], password_hash($_POST['password'], PASSWORD_DEFAULT));
 
-        return api_response($res ? 200 : 418, $res ? 'Succesfully registered user' : 'I\'m a teapot');
+        return api_response($res ? 200 : 418, $res ? 'Successfully registered user' :
+            'User already exists with this username');
     }
 
     /**
@@ -235,11 +274,19 @@ const main_site = '
      * permissions (admin gets a database dump, regular user gets a color changer button
      */
     function get_content() {
+
         $content = '';
         if ($_SESSION['username'] == 'Administrator') {
 
+            $DB = new DB();
+            $content .= ($row_data = $DB->get_user_table()) ? HTMLGenerator::generate_user_table($row_data) :
+                'Failed to get user table!';
         }
-        return '<span id="log-out-span" style="text-decoration: underline; cursor: pointer; text-align: center" onclick="">Log out</span>';
+        else {
+        }
+        $content .= HTMLGenerator::generate_logout_span();
+
+        return $content;
     }
 
 echo router();

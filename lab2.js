@@ -128,7 +128,7 @@ function loginSuccess(domObjects, globalStates) {
             domContentFadeOut(domObjects, globalStates);
 
             /* Manual CSS set to new content area */
-            formBox.style.width = "600px";
+            formBox.style.width = "680px";
             formBox.style.height = "700px";
             formBox.style.margin = "100px auto";
 

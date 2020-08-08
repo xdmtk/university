@@ -3,6 +3,28 @@ html {
     font-family: monospace;
     transition: 1s;
 }
+table {
+    margin: 0 auto;
+    border-spacing: 0px;
+}
+
+td {
+    padding: 8px;
+    color: #a9a9a9;
+}
+
+#mod-two {
+    background: #3f4348;
+}
+
+th {
+    padding-bottom: 8px;
+    color: aliceblue;
+}
+
+th, td {
+    border-bottom: 1px solid #2fbd91;
+}
 
 input {
     display: block;
