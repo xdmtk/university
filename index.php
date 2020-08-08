@@ -21,6 +21,7 @@
                         <span id="username-span"></span>
                         <input type="password" id="password" placeholder="Password" autocomplete="off">
                         <span id="password-span"></span>
+                        <span id="general-error-span">Hi</span>
                         <input type="button" value="Login" id="submit"></button>
                         <span id="login-register-switch">Don\'t have an account? Click Here</span>
                     </div>

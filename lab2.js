@@ -25,6 +25,7 @@ function getRelevantDomObjects() {
 
         'username-span' : document.getElementById('username-span'),
         'password-span' : document.getElementById('password-span'),
+        'general-error-span' : document.getElementById('general-error-span'),
 
         'form-box' : document.getElementById('form-box'),
         'form-box-content' : document.getElementById('form-box-content'),
@@ -69,14 +70,13 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
             },
 
             /* Handle success response from API */
-            (response) => {
-                console.log(response);
+            () => {
+                domObjects['general-error-span'].style.visibility = "hidden";
                 loginSuccess(domObjects, globalStates)
             },
 
-            /* TODO: Make span for errors on login page and display server complaint */
             (response) => {
-                alert(response);
+                showLoginError(domObjects, globalStates, JSON.parse(response));
             });
         }
     });
@@ -85,6 +85,13 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
     domObjects['login-register-switch'].addEventListener('click', () => {
         switchLoginOrRegister(domObjects, globalStates);
     });
+}
+
+function showLoginError(domObjects, globalStates, errorMsg) {
+
+    const errorSpan = domObjects['general-error-span'];
+    errorSpan.innerHTML = errorMsg['reason'];
+    errorSpan.style.visibility = "visible";
 }
 
 
@@ -205,31 +212,39 @@ function domContentFadeOut(domObjects, globalStates) {
  */
 function logOut(domObjects, globalStates) {
 
-    const formBox = domObjects['form-box'];
+    post("/", {
+        'api' : 'logout'
+    },
+    () => {
+        const formBox = domObjects['form-box'];
 
-    /* On logout click, reset global session state */
-    globalStates.logged_in = false;
+        /* On logout click, reset global session state */
+        globalStates.logged_in = false;
 
-    /* Fade in old login box saved in globalStates and fadeout current content */
-    domContentFadeIn(domObjects, globalStates, globalStates.form_box_contents);
-    domContentFadeOut(domObjects, globalStates);
+        /* Fade in old login box saved in globalStates and fadeout current content */
+        domContentFadeIn(domObjects, globalStates, globalStates.form_box_contents);
+        domContentFadeOut(domObjects, globalStates);
 
-    /* Manual CSS reset back to login box dimensions */
-    formBox.style.width = "275px";
-    formBox.style.height = "";
-    formBox.style.margin = "200px auto";
+        /* Manual CSS reset back to login box dimensions */
+        formBox.style.width = "275px";
+        formBox.style.height = "";
+        formBox.style.margin = "200px auto";
 
-    /* For some reason the computer styles don't include the original
-    width height and margin, so set those first manually before bringing
-    the rest of the stylesheet back */
-    formBox.style = globalStates.form_box_styles;
+        /* For some reason the computer styles don't include the original
+        width height and margin, so set those first manually before bringing
+        the rest of the stylesheet back */
+        formBox.style = globalStates.form_box_styles;
 
-    /* HACK: Wait at least a couple seconds for login page DOM objects to be
-    present before re-registering login event handlers */
-    setTimeout(() => {
-        domObjects = getRelevantDomObjects();
-        registerLoginDomEventHandlers(domObjects, globalStates);
-    }, 2000);
+        /* HACK: Wait at least a couple seconds for login page DOM objects to be
+        present before re-registering login event handlers */
+        setTimeout(() => {
+            domObjects = getRelevantDomObjects();
+            registerLoginDomEventHandlers(domObjects, globalStates);
+        }, 2000);
+    },
+    (response) => {
+        alert('Failed to logout. Reason: ' + JSON.parse(response)['reason']);
+    });
 }
 
 /**

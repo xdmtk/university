@@ -53,6 +53,13 @@ span {
    cursor: pointer;
 }
 
+#general-error-span {
+    visibility: hidden;
+    margin-top: 15px;
+    margin-bottom: -20px;
+    text-align: center;
+}
+
 #submit {
     padding: 7px 20px;
     background: #2fbd91;
