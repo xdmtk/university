@@ -53,6 +53,12 @@ function getGlobalStateObjects() {
 
 
 /**
+ * Called when Login page DOM objects becomes available. Registers various event
+ * handlers to DOM objects of the page,  including the submit button, and the span
+ * that allows users to switch from login -> registration
+ *
+ * @param domObjects
+ * @param globalStates
  */
 function registerLoginDomEventHandlers(domObjects, globalStates) {
 
@@ -95,6 +101,16 @@ function registerLoginDomEventHandlers(domObjects, globalStates) {
     });
 }
 
+
+/**
+ * Callback function after sending a request to the login _or_ register
+ * API. Error message is returned in JSON errorMsg variable and is displayed
+ * on the spans styled under the login inputs
+ *
+ * @param domObjects
+ * @param globalStates
+ * @param errorMsg
+ */
 function showLoginOrRegisterError(domObjects, globalStates, errorMsg) {
 
     const errorSpan = domObjects['general-error-span'];
@@ -128,7 +144,7 @@ function loginSuccess(domObjects, globalStates) {
             domContentFadeOut(domObjects, globalStates);
 
             /* Manual CSS set to new content area */
-            formBox.style.width = "680px";
+            formBox.style.width = "710px";
             formBox.style.height = "700px";
             formBox.style.margin = "100px auto";
 
@@ -140,6 +156,13 @@ function loginSuccess(domObjects, globalStates) {
 }
 
 
+/**
+ * Called after a successful request is sent to the register API,
+ * displays some fancy SVG checkmark and a message to the user.
+ *
+ * @param domObjects
+ * @param globalStates
+ */
 function registerSuccess(domObjects, globalStates) {
 
     /* Custom Register success page to display with fade-in/fade-out effects */
@@ -214,9 +237,9 @@ function registerSuccess(domObjects, globalStates) {
 
 
 /**
- * Tricky function to map event listeners to dynamic DOM content that is yet to originate,
+ * Function to map event listeners to dynamic DOM content that is yet to originate,
  * namely the log out button, and the button to change the background color as specified
- * by the lab instructions
+ * by the lab instructions.
  *
  * @param domObjects
  * @param globalStates
@@ -225,11 +248,13 @@ function registerLoggedInDomEventHandlers(domObjects, globalStates) {
     /* Add the logout button to the global domObjects dictionary and add the logout event handler */
     (domObjects['log-out-span'] = document.getElementById('log-out-span'))
         .addEventListener('click', () => {
+
             logOut(domObjects, globalStates);
         }
     );
 
 }
+
 
 /**
  * Custom mimic of the jQuery fadeout function using vanilla JS
@@ -261,6 +286,7 @@ function domContentFadeIn(domObjects, globalStates, content, loggingIn = false) 
     }, 2000);
 
 }
+
 
 /**
  * Custom mimic of the jQuery fadein function using vanilla JS
@@ -329,6 +355,7 @@ function logOut(domObjects, globalStates) {
     });
 }
 
+
 /**
  * Handles text changes when switching the form action from 'Login' to 'Register'
  * and vice versa
@@ -387,6 +414,7 @@ function validateForms(domObjects) {
     return true;
 }
 
+
 /**
  * Uses Regex to validate the username supplied
  *
@@ -422,6 +450,8 @@ function validatePassword(errors, password) {
             "1 lowercase letter, and 1 number";
     }
 }
+
+
 /**
  * Clears the error message text of each span to its corresponding input field
  *
@@ -442,6 +472,11 @@ function clearErrorSpans(domObjects) {
     }
 }
 
+
+/**
+ * Called via the onclick event of the color changer button that is dynamically
+ * placed into the DOM after a user logs in.
+ */
 function changeBackgroundColor() {
     document.getElementsByTagName('html')[0].style.background = '#' +
         Math.floor(Math.random()*16777215).toString(16);

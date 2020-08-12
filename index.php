@@ -212,6 +212,11 @@ class HTMLGenerator {
     }
 
 
+    public static function generate_welcome_span() {
+        return "<span id='welcome-span'>Welcome " . $_SESSION['username'] . "!</span>";
+    }
+
+
     /**
      * Returns a link-like span that logs the user out when clicked (handler is bound dynamically with JS)
      * @return string
@@ -362,7 +367,7 @@ function get_content() {
 
     /* For regular users, get the color changing button and welcome message */
     else {
-        $content .= HTMLGenerator::generate_color_button();
+        $content .= HTMLGenerator::generate_welcome_span() . HTMLGenerator::generate_color_button();
     }
 
     /* For all users generate the logout link */

@@ -82,6 +82,14 @@ span {
     text-align: center;
 }
 
+#welcome-span {
+    color: #2fbd91;
+    text-align: center;
+    font-size: 65px;
+    font-family: monospace;
+    margin-top: 68px;
+}
+
 #submit {
     padding: 7px 20px;
     background: #2fbd91;
