@@ -1,0 +1,57 @@
+    ██╗      █████╗ ██████╗ ██████╗
+    ██║     ██╔══██╗██╔══██╗╚════██╗
+    ██║     ███████║██████╔╝ █████╔╝
+    ██║     ██╔══██║██╔══██╗██╔═══╝
+    ███████╗██║  ██║██████╔╝███████╗
+    ╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝
+/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
+
+FILES:
+---------
+
+1. lab2.php
+    Contains main site HTML + PHP API functions
+
+2. lab2.js
+    Contains JS for main site, including JS POST functions to call on PHP API's
+
+3. lab2.css
+    Styles for main site
+
+4. lab2.mysql
+    Database scheme + data dump
+
+
+
+BRIEF:
+---------
+
+Project is 100% complete. Performs all described behavior in instructions
+
+1. Login Form -> Interacts with Login API
+    - Rejects logins with invalid usernames/passwords
+
+2. Registration Form -> Interacts with Registration API
+    - Rejects registrations for usernames that already exist in the DB
+
+3. Administrator Login -> Produces a dump of the user table contents sorted alphabetically by username
+
+4. Normal Login -> Produces a welcome message with a button that changes the background color of the site
+
+5. Logout Link -> Returns the user back to the login/registration page
+    - Destroys the PHP session set at login
+
+
+
+EXTRA CREDIT:
+---------
+
+1. Registration stores a salted hash of the users password. Hashed using PHP's builtin `password_hash()`
+function and verified using PHP's builtin 'password_verify()' function. Rejects login attempts that fail
+this verification
+
+
+2. The main page never refreshes nor submits to any other page. Basically all of the API's are reached through
+XHR POST calls via JS event handlers. Data is returned in JSON format and handled by the JS accordingly.
+
+
