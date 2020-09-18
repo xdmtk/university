@@ -8,10 +8,6 @@ class Server {
 public:
     Server(char *portArg);
     void listenForClientConnections();
-    void updateConnectionList();
-    void killAllConnections();
-    void broadcastMessageToClients(std::string msg);
-    std::string getConnectedUserListCSV();
 
 private:
     std::vector<Client *> connectedClientList;
