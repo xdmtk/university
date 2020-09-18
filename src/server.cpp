@@ -12,7 +12,7 @@
 Server::Server(char *portArg) {
 
     try {
-        bindPort = std::atoi(portArg);
+        bindPort = std::stoi(portArg);
     }
     catch (std::exception &e) {
         Logger::fatal(e.what());
