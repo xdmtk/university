@@ -6,7 +6,7 @@ set(SOURCE_FILES
         src/shell.cpp
         src/utils.cpp
         src/logger.cpp
-        src/connector.cpp
+        src/server.cpp
         src/client.cpp
         )
 include_directories(include)
