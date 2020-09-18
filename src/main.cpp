@@ -1,6 +1,6 @@
 #include <chat/shell.h>
 #include <chat/defs.h>
-#include <chat/connector.h>
+#include <chat/server.h>
 
 #include <iostream>
 
