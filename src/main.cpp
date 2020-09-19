@@ -1,11 +1,15 @@
 #include <chat/shell.h>
 #include <chat/defs.h>
 #include <chat/server.h>
+#include <chat/signals.h>
 
 #include <iostream>
 
 int main(int argc, char ** argv) {
+    Shell * shellUi;
     ShellCommand userCommand;
+    Signals * signals;
+    Server * server;
 
     /* Parse the port parameter */
     if (argc != 2) {
@@ -13,11 +17,9 @@ int main(int argc, char ** argv) {
         std::exit(-1);
     }
 
-    /* Start a listener */
-    auto server = new Server(argv[1]);
-
-    /* Launch the Shell UI */
-    auto shellUi = new Shell();
+    server = new Server(argv[1]);
+    server->setSignalHandler(signals = new Signals(server));
+    shellUi = new Shell();
 
     /* Respond to user input */
     while ((userCommand = shellUi->getUserCommand()) != ShellCommand::QuitProgram) {

@@ -1,13 +1,10 @@
 #include <chat/defs.h>
 #include <algorithm>
 #include <cctype>
-#include <locale>
+#include <cstring>
 
-#include <cstdio>
-#include <sys/types.h>
 #include <ifaddrs.h>
 #include <netinet/in.h>
-#include <cstring>
 #include <arpa/inet.h>
 
 std::vector<std::string> splitString(std::string s, const std::string& delimiter) {

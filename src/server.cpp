@@ -47,7 +47,7 @@ void Server::listenForClientConnections() {
         }
         std::thread([&] {
             // Push the client onto the connectedClientList and begin send/receive loop
-            connectedClientList.emplace_back(new Client(incomingSocket));
+            connectedClientList.emplace_back(new Client(this, incomingSocket));
             connectedClientList.back()->mainConnectionLoop();
         }).detach();
     }

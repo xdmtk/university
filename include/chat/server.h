@@ -4,13 +4,17 @@
 #include <vector>
 
 class Client;
+class Signals;
 class Server {
 public:
     Server(char *portArg);
     void listenForClientConnections();
     int getListeningPort() {return bindPort;}
+    void setSignalHandler(Signals * signalHandler) {this->signalHandler = signalHandler;}
+    Signals * getSignalHandler() {return this->signalHandler;}
 
 private:
+    Signals * signalHandler;
     std::vector<Client *> connectedClientList;
     int bindPort, connectionBacklogMaxLimit;
 
