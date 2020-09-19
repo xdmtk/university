@@ -1,6 +1,7 @@
 #include <chat/server.h>
 #include <chat/logger.h>
 #include <chat/client.h>
+#include <chat/defs.h>
 
 #include <thread>
 #include <algorithm>
@@ -9,7 +10,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-Server::Server(char *portArg) {
+Server::Server(char *portArg, ClientVector * connectedClientList) {
 
     try {
         bindPort = std::stoi(portArg);
@@ -34,7 +35,7 @@ void Server::listenForClientConnections() {
 
     setupSocket(&bindSocket, &optionValue, &address);
 
-    /* On new client connection, get the socket fd, and detatch a thread dedicated to communicating
+    /* On new client connection, get the socket fd, and detach a thread dedicated to communicating
      * with the client */
     while ((incomingSocket = accept(bindSocket,NULL,NULL))) {
 
@@ -47,8 +48,8 @@ void Server::listenForClientConnections() {
         }
         std::thread([&] {
             // Push the client onto the connectedClientList and begin send/receive loop
-            connectedClientList.emplace_back(new Client(this, incomingSocket));
-            connectedClientList.back()->mainConnectionLoop();
+            connectedClientList->emplace_back(new Client(this, incomingSocket, bindPort));
+            connectedClientList->back()->mainConnectionLoop();
         }).detach();
     }
 }

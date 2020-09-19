@@ -1,5 +1,6 @@
 #ifndef CHAT_SERVER_H
 #define CHAT_SERVER_H
+#include <chat/defs.h>
 #include <string>
 #include <vector>
 
@@ -7,7 +8,7 @@ class Client;
 class Signals;
 class Server {
 public:
-    Server(char *portArg);
+    Server(char *portArg, ClientVector * connectedClientList);
     void listenForClientConnections();
     int getListeningPort() {return bindPort;}
     void setSignalHandler(Signals * signalHandler) {this->signalHandler = signalHandler;}
@@ -15,7 +16,7 @@ public:
 
 private:
     Signals * signalHandler;
-    std::vector<Client *> connectedClientList;
+    std::vector<Client *> * connectedClientList;
     int bindPort, connectionBacklogMaxLimit;
 
     void setupSocket(int *bindSocket, int *optionValue, struct sockaddr_in *address);
