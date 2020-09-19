@@ -128,5 +128,8 @@ std::string Logger::getCurrentTimeString() {
  * @return
  */
 std::string Logger::getHomeDirectory() {
+    // TODO: Implement a Windows log path
+#ifdef __linux__
     return "/home/" + std::string(getenv("USER"));
+#endif
 }
