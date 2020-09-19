@@ -5,6 +5,13 @@
 #include <chat/signals.h>
 #include <vector>
 
+struct ChatFacade {
+    Shell * shell;
+    Signals * signals;
+    Server * server;
+    ClientVector * clientVector;
+};
+
 #define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./chat [PORT]"
 
 typedef Shell::ShellCommand ShellCommand;
@@ -17,6 +24,6 @@ inline void trim(std::string &s);
 
 std::string getIpAddress();
 void maintainConnectedClientList(ClientVector * connectedClients);
-void facadeInjector(char *, Shell *, Signals *, Server *, ClientVector *);
+void facadeInjector(char *, ChatFacade * chat);
 
 #endif

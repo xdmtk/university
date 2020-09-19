@@ -10,25 +10,14 @@
 
 int main(int argc, char ** argv) {
 
-    Shell * shellUi;
-    ShellCommand userCommand;
-    Signals * signals;
-    Server * server;
-    ClientVector * connectedClients;
-
+    auto chat = new ChatFacade();
     /* Parse the port parameter */
     if (argc != 2) {
         std::cout << ERR_INVALID_ARGS << std::endl;
         std::exit(-1);
     }
 
-    facadeInjector(
-            argv[1],
-            shellUi,
-            signals,
-            server,
-            connectedClients
-            );
+    facadeInjector(argv[1], chat);
 
 
     /* Respond to user input */
@@ -36,7 +25,7 @@ int main(int argc, char ** argv) {
         switch (userCommand) {
             case ShellCommand::Help:
                 Logger::info("Got help command");
-                shellUi->printHelpPage();
+                chat->shell->printHelpPage();
                 break;
             case Shell::GetIp:
                 Logger::info("Got myip command");
@@ -44,7 +33,7 @@ int main(int argc, char ** argv) {
                 break;
             case Shell::GetPort:
                 Logger::info("Got myport command");
-                std::cout << server->getListeningPort() << std::endl;
+                std::cout << chat->server->getListeningPort() << std::endl;
                 break;
             case Shell::Connect:
                 Logger::info("Got connect command");
@@ -60,7 +49,7 @@ int main(int argc, char ** argv) {
                 break;
             case Shell::InvalidCommand:
                 Logger::info("Got invalid command");
-                std::cout << "Invalid command \"" << shellUi->getLastUserInput() << "\"" << std::endl;
+                std::cout << "Invalid command \"" << chat->shell->getLastUserInput() << "\"" << std::endl;
             case Shell::EmptyCommand:
             default:
                 break;
@@ -80,13 +69,13 @@ int main(int argc, char ** argv) {
  * @param se - Server pointer
  * @param c - Connected Client List pointer
  */
-void facadeInjector(char * p, Shell * s, Signals * si, Server * se, ClientVector * c){
+void facadeInjector(char * p, ChatFacade * chat) {
 
-    se = new Server(p, c = new ClientVector);
-    se->setSignalHandler(si = new Signals(se));
-    s = new Shell();
+    chat->server = new Server(p, chat->clientVector = new ClientVector);
+    chat->server->setSignalHandler(chat->signals = new Signals(chat->server));
+    chat->shell = new Shell();
     std::thread([&] {
-        maintainConnectedClientList(c);
+        maintainConnectedClientList(chat->clientVector);
     }).detach();
 }
 
