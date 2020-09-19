@@ -15,10 +15,16 @@ ShellCommand Shell::getUserCommand() {
     auto tokens = splitString(userInput," ");
 
     if (tokens.empty()) {
-        return ShellCommand::InvalidCommand;
+        return ShellCommand::EmptyCommand;
     }
     else if (tokens[0] == "help") {
         return ShellCommand::Help;
+    }
+    else if (tokens[0] == "exit") {
+        return ShellCommand::QuitProgram;
+    }
+    else {
+        return ShellCommand::InvalidCommand;
     }
 }
 

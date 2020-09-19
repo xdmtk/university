@@ -38,8 +38,9 @@ int main(int argc, char ** argv) {
             case Shell::SendMessage:
                 break;
             case Shell::InvalidCommand:
-                break;
-            case Shell::QuitProgram:
+                std::cout << "Invalid command \"" << shellUi->getLastUserInput() << "\"" << std::endl;
+            case Shell::EmptyCommand:
+            default:
                 break;
         }
     }
