@@ -14,7 +14,7 @@ int main(int argc, char ** argv) {
     }
 
     /* Start a listener */
-    //auto connector = new Server(argv[1]);
+    auto server = new Server(argv[1]);
 
     /* Launch the Shell UI */
     auto shellUi = new Shell();
@@ -28,6 +28,7 @@ int main(int argc, char ** argv) {
             case Shell::GetIp:
                 break;
             case Shell::GetPort:
+                std::cout << server->getListeningPort() << std::endl;
                 break;
             case Shell::Connect:
                 break;

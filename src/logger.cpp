@@ -11,7 +11,7 @@
  * Logger configuration settings
  */
 bool Logger::writeToConsole = false;
-bool Logger::writeToFile = false;
+bool Logger::writeToFile = true;
 bool Logger::terminateOnFatal = true;
 
 /**
@@ -36,7 +36,7 @@ void Logger::error(std::string msg){
 }
 
 void Logger::fatal(std::string msg){
-    log(std::move(msg), LogLevel::Info);
+    log(std::move(msg), LogLevel::Fatal);
 }
 
 

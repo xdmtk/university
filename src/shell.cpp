@@ -23,6 +23,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "exit") {
         return ShellCommand::QuitProgram;
     }
+    else if (tokens[0] == "myport") {
+        return ShellCommand::GetPort;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }

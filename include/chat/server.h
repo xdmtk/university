@@ -8,6 +8,7 @@ class Server {
 public:
     Server(char *portArg);
     void listenForClientConnections();
+    int getListeningPort() {return bindPort;}
 
 private:
     std::vector<Client *> connectedClientList;
