@@ -12,4 +12,6 @@ inline void ltrim(std::string &s);
 inline void rtrim(std::string &s);
 inline void trim(std::string &s);
 
+std::string getIpAddress();
+
 #endif

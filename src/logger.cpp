@@ -10,8 +10,8 @@
 /**
  * Logger configuration settings
  */
-bool Logger::writeToConsole = true;
-bool Logger::writeToFile = false;
+bool Logger::writeToConsole = false;
+bool Logger::writeToFile = true;
 bool Logger::terminateOnFatal = true;
 
 /**
@@ -36,7 +36,7 @@ void Logger::error(std::string msg){
 }
 
 void Logger::fatal(std::string msg){
-    log(std::move(msg), LogLevel::Info);
+    log(std::move(msg), LogLevel::Fatal);
 }
 
 
@@ -128,5 +128,8 @@ std::string Logger::getCurrentTimeString() {
  * @return
  */
 std::string Logger::getHomeDirectory() {
+    // TODO: Implement a Windows log path
+#ifdef __linux__
     return "/home/" + std::string(getenv("USER"));
+#endif
 }
