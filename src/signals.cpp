@@ -25,6 +25,8 @@ Signals::Signals(Server * s){
 }
 
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wmissing-noreturn"
 /**
  * Opens a listener thread that polls the current signal number every second
  * to determine if a signal has been caught. If so, handleSignal() is called
@@ -40,6 +42,8 @@ void Signals::listenForSignals() {
         }
     }).detach();
 }
+#pragma clang diagnostic pop
+
 
 /**
  * Registers common signals that require special handling
@@ -133,7 +137,6 @@ void Signals::handleSigKill() {
 void Signals::handleSigPipe() {
     Logger::warn("Caught SIGPIPE");
 }
-
 void Signals::handleSigTerm() {
     Logger::warn("Caught SIGTERM");
     std::exit(0);

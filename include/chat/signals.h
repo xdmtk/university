@@ -18,13 +18,13 @@ private:
     void listenForSignals();
     static void updateSignalNumber(int sn);
 
-    void handleSignal();
-    void handleSigAbort();
-    void handleSigSegfault();
-    void handleSigInterrupt();
-    void handleSigKill();
-    void handleSigPipe();
-    void handleSigTerm();
+    static void handleSignal();
+    static void handleSigAbort();
+    static void handleSigSegfault();
+    static void handleSigInterrupt();
+    static void handleSigKill();
+    static void handleSigPipe();
+    static void handleSigTerm();
 };
 
 #endif

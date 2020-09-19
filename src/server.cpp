@@ -10,6 +10,16 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+
+/**
+ * Constructor for the Server class. Serves as the connector for incoming
+ * socket connections. Adds incoming clients to the provided ClientVector
+ * by the caller and triggers the main send/receive loop for each Client.
+ *
+ * @param portArg - Port to listen on
+ * @param connectedClientList - Vector of Client objects for incoming/outgoing
+ * connections
+ */
 Server::Server(char *portArg, ClientVector * connectedClientList) {
 
     try {

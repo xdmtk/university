@@ -69,6 +69,17 @@ int main(int argc, char ** argv) {
     return 0;
 }
 
+
+/**
+ * Helper function to manage class dependencies. Also sets in motion the client
+ * list pruning function on a separate thread.
+ *
+ * @param p - Port number for server to listen on
+ * @param s - Shell pointer
+ * @param si - Signals pointer
+ * @param se - Server pointer
+ * @param c - Connected Client List pointer
+ */
 void facadeInjector(char * p, Shell * s, Signals * si, Server * se, ClientVector * c){
 
     se = new Server(p, c = new ClientVector);
@@ -82,6 +93,13 @@ void facadeInjector(char * p, Shell * s, Signals * si, Server * se, ClientVector
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
+/**
+ * Pruning function to scan the connected client list and remove
+ * clients that have disconnected.
+ *
+ * @param connectedClients - Client Vector pointer holding all currently
+ * connected clients
+ */
 void maintainConnectedClientList(ClientVector * connectedClients) {
     while (true)  {
         auto it = connectedClients->begin();

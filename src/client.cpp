@@ -1,7 +1,6 @@
 #include <chat/client.h>
 #include <chat/logger.h>
 #include <chat/server.h>
-#include <chat/signals.h>
 #include <chat/shell.h>
 
 #include <iostream>
@@ -11,6 +10,16 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+
+/**
+ * Constructor for the Client class. Represents a connected client and holds
+ * methods to communicate with the client and update state information for
+ * that client.
+ *
+ * @param server - Pointer to the server class
+ * @param socketFd - The socket file descriptor connected on
+ * @param bindPort - The port number the client is connected on
+ */
 Client::Client(Server *server, int socketFd, int bindPort) {
     this->socketFd = socketFd;
     this->server = server;
@@ -20,6 +29,12 @@ Client::Client(Server *server, int socketFd, int bindPort) {
         + std::to_string(socketFd));
 }
 
+
+/**
+ * Main receive loop for the client. Waits for incoming data and prints it to
+ * the screen when received. On termination, the `terminated` flag is set and
+ * is eventually pruned from the ClientVector.
+ */
 void Client::mainConnectionLoop() {
     char buffer[4096] = {'\0'};
     std::string msg;
@@ -34,6 +49,13 @@ void Client::mainConnectionLoop() {
     terminated = true;
 }
 
+
+/**
+ * Helper function to print to the console the received message from the
+ * client.
+ *
+ * @param msg - Message received
+ */
 void Client::printReceivedMessage(const std::string& msg) {
     std::cout << std::endl
     << "Message Received from: "  << ipAddress << std::endl
