@@ -26,6 +26,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "myport") {
         return ShellCommand::GetPort;
     }
+    else if (tokens[0] == "myip") {
+        return ShellCommand::GetIp;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }

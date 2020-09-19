@@ -26,6 +26,7 @@ int main(int argc, char ** argv) {
                 shellUi->printHelpPage();
                 break;
             case Shell::GetIp:
+                std::cout << getIpAddress() << std::endl;
                 break;
             case Shell::GetPort:
                 std::cout << server->getListeningPort() << std::endl;
