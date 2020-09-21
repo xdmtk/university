@@ -34,12 +34,20 @@ ShellCommand Shell::getUserCommand() {
     }
 }
 
-
+/**
+ * Helper function to output the user prompt and receive
+ * user input
+ */
 inline void Shell::emitPrompt() {
     std::cout << USER_PROMPT;
     std::getline(std::cin, userInput);
 }
 
+
+/**
+ * Formats and prints the help page, listing all available commands, their
+ * required arguments, and their descriptions
+ */
 void Shell::printHelpPage() {
     std::string commands[] = {
         "help", "myip", "myport", "connect",
@@ -61,6 +69,15 @@ void Shell::printHelpPage() {
     }
 }
 
+
+/**
+ * Helper function when formatting the help page. Given a comma delimited
+ * list of arguments, returns a < arg > formatted string with each specified
+ * argument
+ *
+ * @param args - Comma delimited argument list
+ * @return - string - Formatted argument string
+ */
 std::string Shell::formatHelpPageArguments(std::string args) {
     std::string out;
     auto argTokens = splitString(std::move(args), ",");

@@ -1,6 +1,7 @@
 #include <chat/server.h>
 #include <chat/logger.h>
 #include <chat/client.h>
+#include <chat/defs.h>
 
 #include <thread>
 #include <algorithm>
@@ -9,10 +10,21 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
-Server::Server(char *portArg) {
+
+/**
+ * Constructor for the Server class. Serves as the connector for incoming
+ * socket connections. Adds incoming clients to the provided ClientVector
+ * by the caller and triggers the main send/receive loop for each Client.
+ *
+ * @param portArg - Port to listen on
+ * @param connectedClientList - Vector of Client objects for incoming/outgoing
+ * connections
+ */
+Server::Server(char *portArg, ChatFacade *chat) {
 
     try {
         bindPort = std::stoi(portArg);
+        this->chat = chat;
     }
     catch (std::exception &e) {
         Logger::fatal(e.what());
@@ -34,7 +46,7 @@ void Server::listenForClientConnections() {
 
     setupSocket(&bindSocket, &optionValue, &address);
 
-    /* On new client connection, get the socket fd, and detatch a thread dedicated to communicating
+    /* On new client connection, get the socket fd, and detach a thread dedicated to communicating
      * with the client */
     while ((incomingSocket = accept(bindSocket,NULL,NULL))) {
 
@@ -46,9 +58,8 @@ void Server::listenForClientConnections() {
             continue;
         }
         std::thread([&] {
-            // Push the client onto the connectedClientList and begin send/receive loop
-            connectedClientList.emplace_back(new Client(incomingSocket));
-            connectedClientList.back()->mainConnectionLoop();
+            chat->clientVector->emplace_back(new Client(this, incomingSocket, bindPort));
+            chat->clientVector->back()->mainConnectionLoop();
         }).detach();
     }
 }

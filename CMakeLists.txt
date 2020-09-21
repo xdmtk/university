@@ -8,6 +8,8 @@ set(SOURCE_FILES
         src/logger.cpp
         src/server.cpp
         src/client.cpp
+        src/signals.cpp
+        src/connector.cpp
         )
 include_directories(include)
 add_executable(chat ${SOURCE_FILES})

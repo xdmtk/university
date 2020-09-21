@@ -1,17 +1,20 @@
 #ifndef CHAT_SERVER_H
 #define CHAT_SERVER_H
+#include <chat/defs.h>
 #include <string>
 #include <vector>
 
 class Client;
+class Signals;
 class Server {
 public:
-    Server(char *portArg);
+    Server(char *portArg, ChatFacade * chat);
     void listenForClientConnections();
     int getListeningPort() {return bindPort;}
+    Signals * getSignalHandler() {return chat->signals;}
 
 private:
-    std::vector<Client *> connectedClientList;
+    ChatFacade * chat;
     int bindPort, connectionBacklogMaxLimit;
 
     void setupSocket(int *bindSocket, int *optionValue, struct sockaddr_in *address);
