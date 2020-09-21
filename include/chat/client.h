@@ -2,6 +2,7 @@
 #define CHAT_CLIENT_H
 
 #include <string>
+#include <utility>
 
 class Server;
 class Client {
@@ -9,7 +10,7 @@ class Client {
 public:
     Client(Server *server, int socketFd, int bindPort);
     void mainConnectionLoop();
-    void setClientIpAddress(std::string ipAddress) {this->ipAddress = ipAddress;}
+    void setClientIpAddress(std::string addr) { this->ipAddress = std::move(addr);}
     bool isAlive() {return !terminated;}
 
 private:

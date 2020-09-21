@@ -9,7 +9,7 @@ class Connector {
 public:
     Connector(ChatFacade * chat);
 
-    bool connectToClient(std::string address, std::string port);
+    bool connectToClient(const std::string& address, const std::string& port);
     std::string getFailureReason() {return reason;}
 
 private:
@@ -17,8 +17,8 @@ private:
     std::string reason;
 
     void setFailureReason(std::string r) {reason = std::move(r);}
-    int validateConnectionParameters(std::string address,
-            std::string port, struct sockaddr_in * s);
+    int validateConnectionParameters(const std::string& address,
+            const std::string& port, struct sockaddr_in * s);
 };
 
 

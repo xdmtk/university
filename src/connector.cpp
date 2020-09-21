@@ -9,7 +9,7 @@ Connector::Connector(ChatFacade *chat) {
     this->chat = chat;
 }
 
-bool Connector::connectToClient(std::string address, std::string port) {
+bool Connector::connectToClient(const std::string& address, const std::string& port) {
 
     struct sockaddr_in destination;
     int outgoingSocket, outgoingPort;
@@ -39,7 +39,7 @@ bool Connector::connectToClient(std::string address, std::string port) {
 }
 
 
-int Connector::validateConnectionParameters(std::string address, std::string port,
+int Connector::validateConnectionParameters(const std::string& address, const std::string& port,
         struct sockaddr_in * s) {
 
     if (inet_pton(AF_INET, address.c_str(), &s->sin_addr) <= 0) {
