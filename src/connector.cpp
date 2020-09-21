@@ -2,7 +2,7 @@
 #include <chat/connector.h>
 #include <chat/client.h>
 
-#include <arpa/inet.h>j
+#include <arpa/inet.h>
 #include <utility>
 
 Connector::Connector(ChatFacade *chat) {
