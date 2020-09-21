@@ -11,6 +11,8 @@ public:
     Client(Server *server, int socketFd, int bindPort);
     void mainConnectionLoop();
     void setClientIpAddress(std::string addr) { this->ipAddress = std::move(addr);}
+    std::string getClientIpAddress() { return this->ipAddress;}
+    int getClientBindPort() { return this->bindPort;}
     bool isAlive() {return !terminated;}
 
 private:

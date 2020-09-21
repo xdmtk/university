@@ -44,6 +44,7 @@ void Client::mainConnectionLoop() {
            && !server->getSignalHandler()->trappedSignal(SIGPIPE) && strlen(buffer)) {
 
         Logger::info("Received message from client: " + (msg = std::string(buffer)));
+
         printReceivedMessage(msg);
         memset(buffer, '\0', 4096);
     }

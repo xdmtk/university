@@ -98,6 +98,8 @@ void maintainConnectedClientList(ClientVector * connectedClients) {
     while (true)  {
         for (auto it = connectedClients->begin(); it != connectedClients->end(); ){
             if (!(*it)->isAlive()) {
+                Logger::info("Pruned client at " + (*it)->getClientIpAddress() + " on port "
+                + std::to_string((*it)->getClientBindPort()));
                 it = connectedClients->erase(it);
             }
             else {
