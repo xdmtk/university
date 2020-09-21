@@ -71,7 +71,11 @@ void stopped() {
     }
     else if (ret == 0x1) {
         Serial.println("1 and without currVelocity");
-        state = State::RunningSlowest;
+        currVelocity = (state = State::RunningSlowest);
+    }
+    else if (ret == 0x2) {
+        currVelocity ^= currVelocity;
+        Serial.println("2 and cleared currVelocity");
     }
     else {
         Serial.println("xor the currvelocity");
@@ -83,7 +87,8 @@ void runningSlowest() {
     Serial.println("Slowest");
     stall();
     if (ret == 0x1) 
-        state = ( state != State::RunningFastest ? ((State) (state << 1)) : state);
+        state = currVelocity = (( state != State::RunningFastest 
+        ? ((State) (state << 1)) : state));
     else if (ret == 0x2) 
         stopAndRemember();
 }
@@ -92,11 +97,11 @@ char getInput() {
     char r = 0x0;;
     if (digitalRead(INPUT_ONE)) {
         Serial.println("got input 1");
-        r = 0x2;
+        r = 0x1;
     }
     else if (digitalRead(INPUT_TWO)) { 
         Serial.println("got input 2");
-        r = 0x1;
+        r = 0x2;
     }
     if (r) {
         while (digitalRead(INPUT_ONE) || digitalRead(INPUT_TWO)) {};
@@ -112,8 +117,7 @@ void setLedState() {
 }
 
 inline void stopAndRemember() {
-    lastVelocity = currVelocity;
-    currVelocity ^= currVelocity;
+    state = State::Stopped;
 } 
 
 inline void stall() { while (!(ret = getInput())); }
