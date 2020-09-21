@@ -7,7 +7,7 @@ def receive_server_msg():
         print(s.recv(4096))
 
 s = socket.socket()
-s.connect((sys.argv[1], sys.argv[2]))
+s.connect((sys.argv[1], int(sys.argv[2])))
 t = threading.Thread(target=receive_server_msg)
 t.start()
 

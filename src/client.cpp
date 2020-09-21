@@ -45,6 +45,7 @@ void Client::mainConnectionLoop() {
 
         Logger::info("Received message from client: " + (msg = std::string(buffer)));
         printReceivedMessage(msg);
+        memset(buffer, '\0', 4096);
     }
     close(socketFd);
     terminated = true;
