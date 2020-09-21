@@ -23,15 +23,25 @@ enum State {
     Stopped = 0x1,
     RunningSlowest = 0x2, 
     RunningSlow = 0x4,
-    RunningFast = 0x8
+    RunningFast = 0x8,
     RunningFastest = 0x10
 } state;
 
-State lastVelocity;
+char velocities[] = {0x2, 0x4, 0x8, 0x10};
+char currVelocity, lastVelocity;
 int ret;
 
 void setup() {
-    state = lastVelocity = State::Stopped;
+    state = State::Stopped;
+    currVelocity = lastVelocity = 0;
+    
+    for (char i = STOPPED_LED; i <= FASTEST_LED; ++i)
+        pinMode(i, OUTPUT);
+    for (char i = INPUT_ONE; i <= INPUT_TWO; ++i)
+        pinMode(i, INPUT);
+
+
+    Serial.begin(9600);
 }
 
 void loop() {
@@ -39,46 +49,81 @@ void loop() {
     setLedState(); 
     switch (state) {
         case State::Stopped:
-        break;
+            stopped(); break;
         case State::RunningSlowest:
-        break;
+            runningSlowest(); break;
         case State::RunningSlow:
-        break;
+            runningSlow(); break;
         case State::RunningFast:
-        break;
+            runningFast(); break;
         case State::RunningFastest:
-        break;
+            runningFastest(); break;
     }
 }
 
 void stopped() {
-    while (!(ret = getInput())) {
+    Serial.println("Stopped");
+    stall();
+
+    if (ret == 0x1 && currVelocity)  {
+        Serial.println("1 and with currVelocity");
+        state = (State) currVelocity;
+    }
+    else if (ret == 0x1) {
+        Serial.println("1 and without currVelocity");
+        state = State::RunningSlowest;
+    }
+    else {
+        Serial.println("xor the currvelocity");
+        currVelocity ^= currVelocity;
     }
 }
+    
 void runningSlowest() {
-    while (!(ret = getInput())) {
-    }
-}
-void runningSlow() {
-    while (!(ret = getInput())) {
-    }
-}
-void runningFast() {
-    while (!(ret = getInput())) {
-    }
-}
-void runningFastest() {
-    while (!(ret = getInput())) {
-    }
+    Serial.println("Slowest");
+    stall();
+    if (ret == 0x1) 
+        state = ( state != State::RunningFastest ? ((State) (state << 1)) : state);
+    else if (ret == 0x2) 
+        stopAndRemember();
 }
 
 char getInput() {
-    if (digitalRead(INPUT_ONE)) return 0x1;
-    else if (digitalRead(INPUT_ONE)) return 0x2;
-    else return 0x0;
+    char r = 0x0;;
+    if (digitalRead(INPUT_ONE)) {
+        Serial.println("got input 1");
+        r = 0x2;
+    }
+    else if (digitalRead(INPUT_TWO)) { 
+        Serial.println("got input 2");
+        r = 0x1;
+    }
+    if (r) {
+        while (digitalRead(INPUT_ONE) || digitalRead(INPUT_TWO)) {};
+    }
+    return r;
 }
 
 void setLedState() {
-    for (char i = STOPPED_LED, j = 0; i <= FASTEST_LED; ++i, ++j)
+    for (char i = STOPPED_LED, j = 0; i <= FASTEST_LED; ++i, ++j) {
+        Serial.println(String((state >> j) & 0x1));
         digitalWrite(i, (state >> j) & 0x1);
+    }
 }
+
+inline void stopAndRemember() {
+    lastVelocity = currVelocity;
+    currVelocity ^= currVelocity;
+} 
+
+inline void stall() { while (!(ret = getInput())); }
+inline void runningSlow() {
+
+    Serial.println("Slow");
+    runningSlowest(); }
+inline void runningFast() {
+    Serial.println("Fast");
+    runningSlowest(); }
+inline void runningFastest() { 
+    Serial.println("Fastest");
+    runningSlowest(); }
