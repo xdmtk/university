@@ -78,6 +78,7 @@ void facadeInjector(char * p, ChatFacade * chat) {
     chat->server = new Server(p, chat);
     chat->connector = new Connector(chat);
     chat->shell = new Shell();
+    chat->clientVector = new ClientVector();
     std::thread([&] {
         maintainConnectedClientList(chat->clientVector);
     }).detach();
@@ -95,12 +96,13 @@ void facadeInjector(char * p, ChatFacade * chat) {
  */
 void maintainConnectedClientList(ClientVector * connectedClients) {
     while (true)  {
-        auto it = connectedClients->begin();
-        if (!(*it)->isAlive()) {
-            it = connectedClients->erase(it);
-        }
-        else {
-            it++;
+        for (auto it = connectedClients->begin(); it != connectedClients->end(); ){
+            if (!(*it)->isAlive()) {
+                it = connectedClients->erase(it);
+            }
+            else {
+                it++;
+            }
         }
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
