@@ -1,8 +1,10 @@
 #include <chat/shell.h>
+#include <chat/client.h>
 #include <chat/defs.h>
 #include <chat/server.h>
 #include <chat/signals.h>
 #include <chat/logger.h>
+#include <chat/connector.h>
 
 #include <iostream>
 #include <chrono>
@@ -10,7 +12,9 @@
 
 int main(int argc, char ** argv) {
 
+    ShellCommand userCommand;
     auto chat = new ChatFacade();
+
     /* Parse the port parameter */
     if (argc != 2) {
         std::cout << ERR_INVALID_ARGS << std::endl;
@@ -21,7 +25,7 @@ int main(int argc, char ** argv) {
 
 
     /* Respond to user input */
-    while ((userCommand = shellUi->getUserCommand()) != ShellCommand::QuitProgram) {
+    while ((userCommand = chat->shell->getUserCommand()) != ShellCommand::QuitProgram) {
         switch (userCommand) {
             case ShellCommand::Help:
                 Logger::info("Got help command");
@@ -71,8 +75,8 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(char * p, ChatFacade * chat) {
 
-    chat->server = new Server(p, chat->clientVector = new ClientVector);
-    chat->server->setSignalHandler(chat->signals = new Signals(chat->server));
+    chat->server = new Server(p, chat);
+    chat->connector = new Connector(chat);
     chat->shell = new Shell();
     std::thread([&] {
         maintainConnectedClientList(chat->clientVector);

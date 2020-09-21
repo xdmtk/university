@@ -2,6 +2,7 @@
 #include <chat/logger.h>
 #include <chat/server.h>
 #include <chat/shell.h>
+#include <chat/signals.h>
 
 #include <iostream>
 #include <csignal>

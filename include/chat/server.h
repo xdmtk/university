@@ -8,15 +8,13 @@ class Client;
 class Signals;
 class Server {
 public:
-    Server(char *portArg, ClientVector * connectedClientList);
+    Server(char *portArg, ChatFacade * chat);
     void listenForClientConnections();
     int getListeningPort() {return bindPort;}
-    void setSignalHandler(Signals * signalHandler) {this->signalHandler = signalHandler;}
-    Signals * getSignalHandler() {return this->signalHandler;}
+    Signals * getSignalHandler() {return chat->signals;}
 
 private:
-    Signals * signalHandler;
-    std::vector<Client *> * connectedClientList;
+    ChatFacade * chat;
     int bindPort, connectionBacklogMaxLimit;
 
     void setupSocket(int *bindSocket, int *optionValue, struct sockaddr_in *address);

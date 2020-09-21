@@ -20,10 +20,11 @@
  * @param connectedClientList - Vector of Client objects for incoming/outgoing
  * connections
  */
-Server::Server(char *portArg, ClientVector * connectedClientList) {
+Server::Server(char *portArg, ChatFacade *chat) {
 
     try {
         bindPort = std::stoi(portArg);
+        this->chat = chat;
     }
     catch (std::exception &e) {
         Logger::fatal(e.what());
@@ -57,9 +58,8 @@ void Server::listenForClientConnections() {
             continue;
         }
         std::thread([&] {
-            // Push the client onto the connectedClientList and begin send/receive loop
-            connectedClientList->emplace_back(new Client(this, incomingSocket, bindPort));
-            connectedClientList->back()->mainConnectionLoop();
+            chat->clientVector->emplace_back(new Client(this, incomingSocket, bindPort));
+            chat->clientVector->back()->mainConnectionLoop();
         }).detach();
     }
 }
