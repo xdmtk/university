@@ -11,6 +11,7 @@
 #!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!#!*/
 
 
+/* Pin definitions */
 #define STOPPED_LED  5
 #define SLOWEST_LED 6
 #define SLOW_LED 7
@@ -19,6 +20,8 @@
 #define INPUT_ONE 3
 #define INPUT_TWO 4
 
+
+/* State enums - 5 total states, stopped + velocities */
 enum State {
     Stopped = 0x1,
     RunningSlowest = 0x2, 
@@ -27,26 +30,38 @@ enum State {
     RunningFastest = 0x10
 } state;
 
+/* Velocity mapping mirroring enum values */
 char velocities[] = {0x2, 0x4, 0x8, 0x10};
-char currVelocity, lastVelocity;
+
+/* Current velocity and input response placeholders */
+char currVelocity;
 int ret;
 
+
+/* Set initial states and pin modes */
 void setup() {
     state = State::Stopped;
-    currVelocity = lastVelocity = 0;
+    currVelocity = 0;
     
+    /* Hit the output pins */
     for (char i = STOPPED_LED; i <= FASTEST_LED; ++i)
         pinMode(i, OUTPUT);
+    /* Hit the input pins */
     for (char i = INPUT_ONE; i <= INPUT_TWO; ++i)
         pinMode(i, INPUT);
-
-
-    Serial.begin(9600);
 }
 
+/* Loop function with the switch, targeting the switch enum value
+and triggering a function to respond to each respective state */
 void loop() {
-
+    
+    /* The portion of code that is executed only once when a new state is entered.
+    This sets a series of 5 LED's I have set up for easily identifying the current 
+    state - Each of the state functions busy wait until they receive input that transitions
+    them out of that state */
     setLedState(); 
+    
+    /* The switch against the state enum, updated globally from each state function */
     switch (state) {
         case State::Stopped:
             stopped(); break;
@@ -61,73 +76,92 @@ void loop() {
     }
 }
 
+
+/* Function reacting to input when the current state is Stopped */
 void stopped() {
-    Serial.println("Stopped");
+
+    /* Wait for user input */
+    stall();
+    
+    /* `if there is a currVelocity set, the motor rotates at this velocity` */
+    if (ret == 0x1 && currVelocity) 
+        state = (State) currVelocity;
+
+    /* `if currVelocity has not been set, the motor rotates at an initial slow 
+    velocity (chosen by you)` */
+    else if (ret == 0x1) 
+        currVelocity = (state = State::RunningSlowest);
+
+    /* `if the motor is stopped, and the user activates INPUT2, the currVelocity 
+    is cleared (reset to 0)` */
+    else if (ret == 0x2)
+        currVelocity ^= currVelocity;
+}
+
+
+/* Main response for all non-stopped states (behavior is similar for all speeds) */
+void runningSlowest() {
+
+    /* Wait for user input */
     stall();
 
-    if (ret == 0x1 && currVelocity)  {
-        Serial.println("1 and with currVelocity");
-        state = (State) currVelocity;
-    }
-    else if (ret == 0x1) {
-        Serial.println("1 and without currVelocity");
-        currVelocity = (state = State::RunningSlowest);
-    }
-    else if (ret == 0x2) {
-        currVelocity ^= currVelocity;
-        Serial.println("2 and cleared currVelocity");
-    }
-    else {
-        Serial.println("xor the currvelocity");
-        currVelocity ^= currVelocity;
-    }
-}
-    
-void runningSlowest() {
-    Serial.println("Slowest");
-    stall();
+    /* `if the motor is running, when the user pushes the push-button INPUT1, the motor 
+    speeds up again (to 2nd velocity, and beyond). Once the motor reaches the maximum velocity, 
+    additional pushes of INPUT1 have no effect.` */
     if (ret == 0x1) 
         state = currVelocity = (( state != State::RunningFastest 
         ? ((State) (state << 1)) : state));
+
+    /* `if the motor is running, and the user activates another piece of input hardware 
+    (*YOUR CHOICE*...but I will call it INPUT2) the motor stops, but remembers its current velocity 
+    in variable currVelocity` */
     else if (ret == 0x2) 
         stopAndRemember();
 }
 
+/* Function to collect user input from push buttons */
 char getInput() {
-    char r = 0x0;;
-    if (digitalRead(INPUT_ONE)) {
-        Serial.println("got input 1");
-        r = 0x1;
-    }
-    else if (digitalRead(INPUT_TWO)) { 
-        Serial.println("got input 2");
-        r = 0x2;
-    }
-    if (r) {
-        while (digitalRead(INPUT_ONE) || digitalRead(INPUT_TWO)) {};
-    }
+
+    char r = 0x0;
+    
+    /* Set `r` for push button 1 */
+    if (digitalRead(INPUT_ONE))  r = 0x1;
+    
+    /* Set `r` for push button 2 */
+    else if (digitalRead(INPUT_TWO)) r = 0x2;
+
+    /* If either push button was pressed, wait for it to clear (finger off the button)
+    so we don't trigger multiple state changes in a single press */
+    if (r) while (digitalRead(INPUT_ONE) || digitalRead(INPUT_TWO)) {};
+
+    /* Return the pushbutton selection */
     return r;
 }
 
+
+/* Iterates the LED state pins and illuminates the LED representing the 
+current state */
 void setLedState() {
-    for (char i = STOPPED_LED, j = 0; i <= FASTEST_LED; ++i, ++j) {
-        Serial.println(String((state >> j) & 0x1));
+
+    /* Iterate the LEDs */
+    for (char i = STOPPED_LED, j = 0; i <= FASTEST_LED; ++i, ++j)
+
+        /* Since the enums are mapped to certain bits of the button, shift left 
+        against the current iteration and bitwise AND by 0x1 to write the correct
+        value to the LED */
         digitalWrite(i, (state >> j) & 0x1);
-    }
 }
 
+/* Just a helpful wrapper for clarity */
 inline void stopAndRemember() {
     state = State::Stopped;
 } 
 
+/* This helper busy waits for push button input */
 inline void stall() { while (!(ret = getInput())); }
-inline void runningSlow() {
 
-    Serial.println("Slow");
-    runningSlowest(); }
-inline void runningFast() {
-    Serial.println("Fast");
-    runningSlowest(); }
-inline void runningFastest() { 
-    Serial.println("Fastest");
-    runningSlowest(); }
+/* These inline helpers are essentially clarity aliases for what is really identical state
+behavior when the motor is running. */
+inline void runningSlow() { runningSlowest(); }
+inline void runningFast() { runningSlowest(); }
+inline void runningFastest() { runningSlowest(); }
