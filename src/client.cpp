@@ -68,7 +68,8 @@ void Client::printReceivedMessage(const std::string& msg) {
 }
 
 
-void Client::sendMessage(std::string msg) {
-    send(socketFd, msg.c_str(), sizeof(msg.c_str()), 0);
-
+void Client::sendMessage(const std::string& msg) {
+    Logger::info("About to send message:  `" + msg + "` with size of: " +
+        std::to_string(msg.size()));
+    send(socketFd, msg.c_str(), msg.size(), 0);
 }

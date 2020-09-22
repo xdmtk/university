@@ -56,7 +56,7 @@ void Handler::handleConnectCommand() {
         return;
     }
     std::cout << "Successfully made connection to " << tokens[1]
-              << " on port " << tokens[2] << std::endl << USER_PROMPT;
+              << " on port " << tokens[2] << std::endl;
 }
 
 
@@ -64,7 +64,7 @@ void Handler::handleSendCommand() {
     Logger::info("Got send command");
     std::vector<std::string> tokens = splitString(std::move(chat->shell->getLastUserInput()), " ");
 
-    if (tokens.size() >= 3) {
+    if (tokens.size() < 3) {
         std::cout << "Invalid # of arguments for `send` command. "
                   << "Usage: send <connection id> <message>"
                   << std::endl;

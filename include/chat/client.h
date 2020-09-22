@@ -14,7 +14,7 @@ public:
     std::string getClientIpAddress() { return this->ipAddress;}
     int getClientBindPort() { return this->bindPort;}
     bool isAlive() {return !terminated;}
-    void sendMessage(std::string msg);
+    void sendMessage(const std::string& msg);
 
 private:
     Server * server;

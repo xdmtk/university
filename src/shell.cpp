@@ -32,6 +32,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "connect") {
         return ShellCommand::Connect;
     }
+    else if (tokens[0] == "send") {
+        return ShellCommand::SendMessage;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }
