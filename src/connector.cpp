@@ -1,6 +1,7 @@
 #include <chat/defs.h>
 #include <chat/connector.h>
 #include <chat/client.h>
+#include <chat/logger.h>
 
 #include <arpa/inet.h>
 #include <utility>
@@ -16,6 +17,7 @@ bool Connector::connectToClient(const std::string& address, const std::string& p
 
     if (!(outgoingPort = validateConnectionParameters(std::move(address), std::move(port),
             &destination))) {
+        setFailureReason("Could not validate connection parameters " + address + "and " + port);
         return false;
     }
 
@@ -25,7 +27,14 @@ bool Connector::connectToClient(const std::string& address, const std::string& p
     }
 
     destination.sin_family = AF_INET;
-    destination.sin_port = outgoingPort;
+    destination.sin_port = htons(outgoingPort);
+
+    if (inet_pton(AF_INET, address.c_str(), &destination.sin_addr)<=0) {
+        setFailureReason("Invalid address: " + address);
+        return false;
+    }
+
+    Logger::debug ("About to connect to address: " + address + " on port: " + port);
 
     if (connect(outgoingSocket, (struct sockaddr *)&destination, sizeof(destination)) < 0) {
         setFailureReason("Could not connect to destination!");

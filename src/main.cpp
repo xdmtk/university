@@ -115,12 +115,13 @@ void maintainConnectedClientList(ClientVector * connectedClients) {
 
 
 void handleConnectCommand(ChatFacade * chat, std::string userInput) {
-    std::vector<std::string> tokens = splitString(std::move(userInput), ",");
+    std::vector<std::string> tokens = splitString(std::move(userInput), " ");
 
     if (tokens.size() != 3) {
         std::cout << "Invalid # of arguments for `connect` command. "
             << "Usage: connect <destinaton> <port no>"
             << std::endl;
+        Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
         return;
     }
 

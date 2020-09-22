@@ -29,6 +29,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "myip") {
         return ShellCommand::GetIp;
     }
+    else if (tokens[0] == "connect") {
+        return ShellCommand::Connect;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }
