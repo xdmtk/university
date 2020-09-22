@@ -10,6 +10,7 @@ set(SOURCE_FILES
         src/client.cpp
         src/signals.cpp
         src/connector.cpp
+        src/handler.cpp
         )
 include_directories(include)
 add_executable(chat ${SOURCE_FILES})

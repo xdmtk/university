@@ -5,11 +5,10 @@
 #include <chat/signals.h>
 #include <chat/logger.h>
 #include <chat/connector.h>
+#include <chat/handler.h>
 
 #include <iostream>
-#include <chrono>
 #include <thread>
-#include <utility>
 
 int main(int argc, char ** argv) {
 
@@ -29,20 +28,17 @@ int main(int argc, char ** argv) {
     while ((userCommand = chat->shell->getUserCommand()) != ShellCommand::QuitProgram) {
         switch (userCommand) {
             case ShellCommand::Help:
-                Logger::info("Got help command");
-                chat->shell->printHelpPage();
+                chat->handler->handleHelpCommand();
                 break;
             case Shell::GetIp:
-                Logger::info("Got myip command");
-                std::cout << getIpAddress() << std::endl;
+                chat->handler->handleGetIpCommand();
                 break;
             case Shell::GetPort:
-                Logger::info("Got myport command");
-                std::cout << chat->server->getListeningPort() << std::endl;
+                chat->handler->handleGetPortCommand();
                 break;
             case Shell::Connect:
                 Logger::info("Got connect command");
-                handleConnectCommand(chat, chat->shell->getLastUserInput());
+                chat->handler->handleConnectCommand(chat, chat->shell->getLastUserInput());
                 break;
             case Shell::ListConnections:
                 Logger::info("Got list command");
@@ -81,58 +77,11 @@ void facadeInjector(char * p, ChatFacade * chat) {
     chat->connector = new Connector(chat);
     chat->shell = new Shell();
     chat->clientVector = new ClientVector();
+    chat->handler = new Handler(chat);
+
     std::thread([&] {
-        maintainConnectedClientList(chat->clientVector);
+        chat->handler->maintainConnectedClientList(chat->clientVector);
     }).detach();
-}
-
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
-/**
- * Pruning function to scan the connected client list and remove
- * clients that have disconnected.
- *
- * @param connectedClients - Client Vector pointer holding all currently
- * connected clients
- */
-void maintainConnectedClientList(ClientVector * connectedClients) {
-    while (true)  {
-        for (auto it = connectedClients->begin(); it != connectedClients->end(); ){
-            if (!(*it)->isAlive()) {
-                Logger::info("Pruned client at " + (*it)->getClientIpAddress() + " on port "
-                + std::to_string((*it)->getClientBindPort()));
-                it = connectedClients->erase(it);
-            }
-            else {
-                it++;
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-}
-#pragma clang diagnostic pop
-
-
-void handleConnectCommand(ChatFacade * chat, std::string userInput) {
-    std::vector<std::string> tokens = splitString(std::move(userInput), " ");
-
-    if (tokens.size() != 3) {
-        std::cout << "Invalid # of arguments for `connect` command. "
-            << "Usage: connect <destinaton> <port no>"
-            << std::endl;
-        Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
-        return;
-    }
-
-    if (!chat->connector->connectToClient(tokens[1], tokens[2])) {
-        Logger::error(chat->connector->getFailureReason());
-        std::cout << chat->connector->getFailureReason();
-
-        return;
-    }
-    std::cout << "Sucessfully made connection to " << tokens[1]
-        << " on port " << tokens[2];
 }
 
 

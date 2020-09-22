@@ -8,6 +8,7 @@ class Server;
 class Signals;
 class Client;
 class Shell;
+class Handler;
 
 typedef Shell::ShellCommand ShellCommand;
 typedef std::vector<Client *> ClientVector;
@@ -17,6 +18,7 @@ struct ChatFacade {
     Signals * signals;
     Server * server;
     Connector * connector;
+    Handler * handler;
     ClientVector * clientVector;
 };
 
@@ -30,6 +32,5 @@ inline void trim(std::string &s);
 std::string getIpAddress();
 void maintainConnectedClientList(ClientVector * connectedClients);
 void facadeInjector(char *, ChatFacade * chat);
-void handleConnectCommand(ChatFacade * chat, std::string userInput);
 
 #endif
