@@ -155,10 +155,21 @@ void setLedState() {
 /* Just a helpful wrapper for clarity */
 inline void stopAndRemember() {
     state = State::Stopped;
+
+    /* Doesn't actually need to explicitly remember here because currVelocity is saved
+    each time the state is updated */
 } 
 
 /* This helper busy waits for push button input */
-inline void stall() { while (!(ret = getInput())); }
+inline void stall() { 
+    while (!(ret = getInput())) {
+
+        /* If the motor required synchronous action to get it to spin (instead of simply turning it on
+        or setting it at a different voltage) I would perform that action here, in this busy wait section
+        since it is most frequently executed throughout the program - But since I don't have a stepper motor, 
+        and the LED state indicators have already updated, this section is blank */
+    }; 
+}
 
 /* These inline helpers are essentially clarity aliases for what is really identical state
 behavior when the motor is running. */
