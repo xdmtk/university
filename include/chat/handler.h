@@ -6,11 +6,14 @@ class Handler {
 
 public:
     Handler(ChatFacade * chat);
+
     void handleHelpCommand();
     static void handleGetIpCommand();
     void handleGetPortCommand();
-    static void handleConnectCommand(ChatFacade * chat, std::string userInput);
-    void maintainConnectedClientList(ClientVector * connectedClients);
+    void handleConnectCommand();
+    static void maintainConnectedClientList(ClientVector * connectedClients);
+    void handleInvalidCommand();
+    void handleSendCommand();
 
 private:
     ChatFacade * chat;

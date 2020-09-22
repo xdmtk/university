@@ -66,3 +66,9 @@ void Client::printReceivedMessage(const std::string& msg) {
     << "Message: " << msg << std::endl  << std::endl
     << USER_PROMPT;
 }
+
+
+void Client::sendMessage(std::string msg) {
+    send(socketFd, msg.c_str(), sizeof(msg.c_str()), 0);
+
+}

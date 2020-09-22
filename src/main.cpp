@@ -38,7 +38,7 @@ int main(int argc, char ** argv) {
                 break;
             case Shell::Connect:
                 Logger::info("Got connect command");
-                chat->handler->handleConnectCommand(chat, chat->shell->getLastUserInput());
+                chat->handler->handleConnectCommand();
                 break;
             case Shell::ListConnections:
                 Logger::info("Got list command");
@@ -47,11 +47,10 @@ int main(int argc, char ** argv) {
                 Logger::info("Got terminate command");
                 break;
             case Shell::SendMessage:
-                Logger::info("Got send command");
+                chat->handler->handleSendCommand();
                 break;
             case Shell::InvalidCommand:
-                Logger::info("Got invalid command");
-                std::cout << "Invalid command \"" << chat->shell->getLastUserInput() << "\"" << std::endl;
+                chat->handler->handleInvalidCommand();
             case Shell::EmptyCommand:
             default:
                 break;

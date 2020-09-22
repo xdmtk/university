@@ -38,8 +38,8 @@ void Handler::handleHelpCommand() {
  * @param chat - Chat Facade including the Connector class
  * @param userInput - The full command string entered by the user
  */
-void Handler::handleConnectCommand(ChatFacade * chat, std::string userInput) {
-    std::vector<std::string> tokens = splitString(std::move(userInput), " ");
+void Handler::handleConnectCommand() {
+    std::vector<std::string> tokens = splitString(std::move(chat->shell->getLastUserInput()), " ");
 
     if (tokens.size() != 3) {
         std::cout << "Invalid # of arguments for `connect` command. "
@@ -59,6 +59,36 @@ void Handler::handleConnectCommand(ChatFacade * chat, std::string userInput) {
               << " on port " << tokens[2] << std::endl << USER_PROMPT;
 }
 
+
+void Handler::handleSendCommand() {
+    Logger::info("Got send command");
+    std::vector<std::string> tokens = splitString(std::move(chat->shell->getLastUserInput()), " ");
+
+    if (tokens.size() >= 3) {
+        std::cout << "Invalid # of arguments for `send` command. "
+                  << "Usage: send <connection id> <message>"
+                  << std::endl;
+        Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
+        return;
+    }
+    std::string msg = collapseTokens(tokens, 2, tokens.size());
+    try {
+        int clientIndex = std::stoi(tokens[1]);
+        if (clientIndex > 0 && clientIndex <= chat->clientVector->size()) {
+            chat->clientVector->at(clientIndex-1)->sendMessage(msg);
+        }
+    }
+    catch (std::exception &e) {
+        Logger::error(msg = ("Could not send message with exception: " + std::string(e.what())));
+        std::cout << msg << std::endl << USER_PROMPT;
+    }
+
+}
+
+void Handler::handleInvalidCommand() {
+    Logger::info("Got invalid command");
+    std::cout << "Invalid command \"" << chat->shell->getLastUserInput() << "\"" << std::endl;
+}
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wmissing-noreturn"
