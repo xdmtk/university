@@ -9,6 +9,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <utility>
 
 int main(int argc, char ** argv) {
 
@@ -41,6 +42,7 @@ int main(int argc, char ** argv) {
                 break;
             case Shell::Connect:
                 Logger::info("Got connect command");
+                handleConnectCommand(chat, chat->shell->getLastUserInput());
                 break;
             case Shell::ListConnections:
                 Logger::info("Got list command");
@@ -110,4 +112,27 @@ void maintainConnectedClientList(ClientVector * connectedClients) {
     }
 }
 #pragma clang diagnostic pop
+
+
+void handleConnectCommand(ChatFacade * chat, std::string userInput) {
+    std::vector<std::string> tokens = splitString(std::move(userInput), ",");
+
+    if (tokens.size() != 3) {
+        std::cout << "Invalid # of arguments for `connect` command. "
+            << "Usage: connect <destinaton> <port no>"
+            << std::endl;
+        return;
+    }
+
+    if (!chat->connector->connectToClient(tokens[1], tokens[2])) {
+        Logger::error(chat->connector->getFailureReason());
+        std::cout << chat->connector->getFailureReason();
+
+        return;
+    }
+    std::cout << "Sucessfully made connection to " << tokens[1]
+        << " on port " << tokens[2];
+}
+
+
 

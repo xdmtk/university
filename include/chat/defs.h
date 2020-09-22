@@ -30,5 +30,6 @@ inline void trim(std::string &s);
 std::string getIpAddress();
 void maintainConnectedClientList(ClientVector * connectedClients);
 void facadeInjector(char *, ChatFacade * chat);
+void handleConnectCommand(ChatFacade * chat, std::string userInput);
 
 #endif
