@@ -59,7 +59,11 @@ void loop() {
     /* The portion of code that is executed only once when a new state is entered.
     This sets a series of 5 LED's I have set up for easily identifying the current 
     state - Each of the state functions busy wait until they receive input that transitions
-    them out of that state */
+    them out of that state
+
+     Technically the specs wants this in the state functions, but since its the same exact call
+     executed before each and every entrance to a state function, its virtually the same thing.
+     */
     setLedState();
 
     /* The switch against the state enum, updated globally from each state function */
