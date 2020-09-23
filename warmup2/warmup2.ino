@@ -42,6 +42,7 @@ int ret;
 void setup() {
     state = State::Stopped;
     currVelocity = 0;
+    Serial.begin(9600);
     
     /* Hit the output pins */
     for (char i = STOPPED_LED; i <= FASTEST_LED; ++i)
@@ -59,19 +60,24 @@ void loop() {
     This sets a series of 5 LED's I have set up for easily identifying the current 
     state - Each of the state functions busy wait until they receive input that transitions
     them out of that state */
-    setLedState(); 
-    
+    setLedState();
+
     /* The switch against the state enum, updated globally from each state function */
     switch (state) {
         case State::Stopped:
+            Serial.println("Stopped");
             stopped(); break;
         case State::RunningSlowest:
+            Serial.println("Slowest");
             runningSlowest(); break;
         case State::RunningSlow:
+            Serial.println("Slow");
             runningSlow(); break;
         case State::RunningFast:
+            Serial.println("Fast");
             runningFast(); break;
         case State::RunningFastest:
+            Serial.println("Fastest");
             runningFastest(); break;
     }
 }
@@ -134,6 +140,7 @@ char getInput() {
     so we don't trigger multiple state changes in a single press */
     if (r) while (digitalRead(INPUT_ONE) || digitalRead(INPUT_TWO)) {};
 
+    if (r) Serial.println(r == 0x1 ? "Got button 1" : "Got button 2");
     /* Return the pushbutton selection */
     return r;
 }
@@ -144,12 +151,14 @@ current state */
 void setLedState() {
 
     /* Iterate the LEDs */
-    for (char i = STOPPED_LED, j = 0; i <= FASTEST_LED; ++i, ++j)
+    for (char i = STOPPED_LED, j = 0; i <= FASTEST_LED; ++i, ++j) {
 
         /* Since the enums are mapped to certain bits of the button, shift left 
         against the current iteration and bitwise AND by 0x1 to write the correct
         value to the LED */
         digitalWrite(i, (state >> j) & 0x1);
+        Serial.println("Pin #" + String((int)i) + ": " + String((state >> j) & 0x1));
+    }
 }
 
 /* Just a helpful wrapper for clarity */
