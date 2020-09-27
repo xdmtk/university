@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.9)
+cmake_minimum_required(VERSION 3.7)
 project(chat)
 
 set(SOURCE_FILES
@@ -10,6 +10,7 @@ set(SOURCE_FILES
         src/client.cpp
         src/signals.cpp
         src/connector.cpp
+        src/handler.cpp
         )
 include_directories(include)
 add_executable(chat ${SOURCE_FILES})

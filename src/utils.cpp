@@ -42,6 +42,15 @@ inline void trim(std::string &s) {
     rtrim(s);
 }
 
+std::string collapseTokens(std::vector<std::string> tokens, int begin, int end) {
+
+    std::string out;
+    for (int i = begin; i < end; ++i) {
+        out += tokens[i] + " ";
+    }
+    return out.substr(0, out.size()-1);
+}
+
 std::string getIpAddress() {
     struct ifaddrs * ifAddrStruct=NULL;
     struct ifaddrs * ifa=NULL;

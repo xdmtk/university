@@ -66,3 +66,16 @@ void Client::printReceivedMessage(const std::string& msg) {
     << "Message: " << msg << std::endl  << std::endl
     << USER_PROMPT;
 }
+
+
+/**
+ * Given the socket file descriptor assigned to this Client object, use it to send
+ * the given message supplied with `msg`
+ *
+ * @param msg - Message string to send
+ */
+void Client::sendMessage(const std::string& msg) {
+    Logger::info("About to send message:  `" + msg + "` with size of: " +
+        std::to_string(msg.size()));
+    send(socketFd, msg.c_str(), msg.size(), 0);
+}
