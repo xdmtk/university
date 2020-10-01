@@ -1,0 +1,12 @@
+cmake_minimum_required(VERSION 3.9)
+project(hw2)
+
+set(SOURCE_FILES src/main.cpp src/glad.c include/stb_image.h include/MyCamera.h)
+include_directories(include)
+link_directories(lib)
+add_executable(hw2 ${SOURCE_FILES})
+if (WIN32)
+target_link_libraries(hw2 glfw3 opengl32)
+elseif(UNIX)
+target_link_libraries(hw2 glfw dl)
+endif()

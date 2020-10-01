@@ -1,0 +1,134 @@
+> Nicholas Martinez
+
+> COMP 465/L - Section 16513/16526
+
+> Instructor: Karamian
+
+> Date: 9/13/2020
+
+
+# WRITE-UP:
+---
+
+
+
+### Problem/Objective
+
+In this homework, we are given the vertex data for a cube primitive and its corresponding vertex attributes for 
+applying a texture to the 6 surfaces of the cube. We are tasked to manipulate the cube primitives, apply a wooden crate
+looking texture to them and generate a 10x10 base level pyramid, with the final level cube scaled down and rotating on 
+all 6 axis. 
+
+### Textures
+
+Aside from the boilerplate code needed to actually apply the texture to the cube primitive, the chapter that covered
+textures was pretty straight forward. Essentially the texture image is mapped to a set of normalized coordinates between 
+-1 and 1, very similar to how vertex coordinates for shape primitives are mapped. Because of their similarities, applying
+a texture is also pretty straight forward. It basically boils down to passing the texture coordinates specified in the vertex
+data to the vertex shader, then mapping the texture image loaded in the by image library and passing that to the fragment
+shader, and then from within the fragment shader calling `texture()` against the image data and the texture coordinates
+passed in by the GL program and the vertex shader respectively. This results in the application of the texture image
+to the texture coordinates on the shape primitive, in our case a cube, and having a texturized shape as a result.
+
+
+### Vector Multiplication / Scaling-Translation-Rotation
+
+While the chapter on Transformations was interesting as a refresher of general linear algebra, ultimately it turned
+out that while actually writing the program, most of the logic dealing with vector operations was handled exclusively
+by the `glm` library, thus abstracting a lot of the math involved. However, as these operations relate to OpenGL, it was 
+interesting to see how operations performed by glm to rotate and scale the cube primitives were done on the CPU in the main program,
+and passed into the vertex shader as a uniform, instead of doing these calculations directly in the vertex shader. With 
+this being said, OpenGL doesn't really 'handle' anything in this regard, as the matrix calculations are done entirely
+on the CPU, and passed as uniforms to the vertex shader which generates the output as if it were any regular set of
+vertices.
+
+### Coordinate System
+
+The coordinate systems in OpenGL are broken up into 4 distinct spaces that ultimately represent various combinations
+of camera perspective, object in focus, and object positioning relative to the viewport. 
+
+##### Local Space
+
+Starting with local space, this coordinate system is of the object itself. As it relates specifically to OpenGL, this 
+object is the primitive shape passed into the vertex shader via the vertex data. Like all coordinate spaces in OpenGL, 
+they are normalized in a range from -1 to 1. In local space, the object occupies this entire coordinate space.
+
+##### World Space
+
+World space is exactly what it sounds like, the coordinate system of the 'virtual world' OpenGL constructs which
+includes not only the object, but the camera and its position relative to the object as well. Except OpenGL itself
+really doesn't 'know' about this virtual world per se, as to OpenGL it is simply an abstraction of a matrix that 
+contains within it objects imported by the raw vertex data. World space adds perspective and scaling transformations
+to these imported objects to make it appear as if these objects exist in a virtual world.
+
+##### View Space
+
+View space can really be seen as a more granular concept of world space, as it is the specific parts of world space that
+are visible to where the camera is currently pointing to. 
+
+
+##### Clip Space
+
+Likewise this view can be expressed as an even more granular version of view space, and the internal details that go on
+to construct it. This view specifically clips out objects in the world space that aren't in the viewing projection of 
+the camera by transforming coordinates projected by the objects and mapping them to the apparent viewport of the 
+camera. This also can be affected by being in either orthographic projection mode or perspective projection mode.
+
+
+### Projections
+
+Projections in OpenGL relate how the camera processes depth and the size of the viewport. There are two different
+types of projection modes in OpenGL
+
+##### Orthographic Projection
+
+In Orthographic projection mode, depth essentially is eliminated from the perspective of the viewer, as any object
+within the viewport appear at exactly the same scaling, despite some objects being actually further away from the 
+camera than others. 
+
+##### Perspective Projection
+
+In Perspective projection mode, the natural depth perception of the human eye is emulated where objects closer
+to the camera are scaled larger then objects further from the camera. This mode most realistically depicts the 
+experience of perception in real life.
+
+### Camera
+
+In OpenGL, the camera is actually a very interesting mathematical abstraction on scaling and positioning. At a high level,
+the camera in OpenGL is quite comparable to envisioning a regular video camera floating about in world space coordinates,
+giving the viewer a look wherever the camera is pointing to. In OpenGL however, the camera is simply a series of 
+transformations on the world space matrix. The camera really doesn't 'exist' in OpenGL, but it exists as a manifestation
+of parameters of where the camera 'would be' in world space, and how this positioning may affect the scaling, lighting,
+and rotational properties of the objects the camera is looking at. For instance, when moving the camera backwards in the 
+'y' dimension of the world, what you are really doing is just scaling down all objects in view you are moving away from.
+Likewise when you are 'moving' the camera from one point to another, you are really just rotating the object the camera
+is actually looking it, the camera itself isn't technically 'moving'. However, while actually writing the code it seems
+that most of these calculations are abstracted by the `glm` library.
+
+
+### Challenges / What did I learn?
+
+The main challenge of this assignment for me was actually getting the LearnOpenGL examples working correctly on my 
+machine. Once this was taken care of the rest of the assignment was fairly straight forward. Basically for some reason
+or another, the default field of view in the LearnOpenGL examples `(45.0f)` was _way_ too close. When I was experimenting
+with just simply loading texture data onto the cube primitive, I ended up with an **ultra zoomed in** picture of the 
+crate texture, which led me to believe at first it might have been a driver issue with my machine. But after loading
+the same code on many different machines getting the same results, I then had to begin playing with various settings in
+the code to determine where the source of the problem actually came from. When I finally adjusted the field of view 
+setting and got a different result on the screen, I realized the default value for field of view needed to be closer to
+`2000.0f` to get a good view of the world space. 
+
+Once this was accomplished, figuring out how to generate the pyramid with the `cubePositions` vector was fairly simple, 
+with the exception of figuring out how to generate the correct offset for centering each level of the pyramid (my 
+original attempts at the pyramid resulted in something that more represented a triangle than a pyramid). Lastly I needed
+to figure out how to isolate the top cube and cause it to rotate every frame. When I examined the OpenGL book example
+rendering loop, I saw that I could focus and manipulate cube models individually and thus was able to cause only the
+top cube of the pyramid to rotate on it's axis. 
+
+As a result, I learned a lot on how vertex data can be manipulated into producing transformations that resulted in 
+movement and rotation in the OpenGL scene. I'm still curious to know whether most of these operations can be done 
+in the vertex shader themselves, instead of having to pass them in as uniforms. Like I mentioned in my previous write up,
+I play around alot with fragment shaders on shadertoy.com and glslsandbox.com, and for these sandbox sites you are
+only given 3 uniforms to work with (time, resolution, and mouse), and the rest of the calculations must be done
+in the shaders themselves. 
+
