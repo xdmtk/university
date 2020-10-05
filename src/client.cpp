@@ -45,7 +45,11 @@ void Client::mainConnectionLoop() {
 
         Logger::info("Received message from client: " + (msg = std::string(buffer)));
 
-        printReceivedMessage(msg);
+        if (msg[0] == IP_RECV)
+            setClientIpAddress(msg.substr(1));
+        else
+            printReceivedMessage(msg);
+
         memset(buffer, '\0', 4096);
     }
     close(socketFd);

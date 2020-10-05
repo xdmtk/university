@@ -59,6 +59,9 @@ bool Connector::connectToClient(const std::string& address, const std::string& p
     chat->clientVector->emplace_back(
             new Client(chat->server, outgoingSocket, outgoingPort));
 
+    /* Transmit client IPv4 */
+    chat->clientVector->at(chat->clientVector->size()-1)->sendMessage(std::string((char *)IP_RECV) + getIpAddress());
+
     return true;
 }
 
