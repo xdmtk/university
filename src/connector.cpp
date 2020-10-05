@@ -59,8 +59,13 @@ bool Connector::connectToClient(const std::string& address, const std::string& p
     chat->clientVector->emplace_back(
             new Client(chat->server, outgoingSocket, outgoingPort));
 
+    /* Form string with special character at beginning to indicate IPv4 transmission */
+    std::string ipTransmit;
+    ipTransmit += IP_RECV;
+    ipTransmit += getIpAddress();
+
     /* Transmit client IPv4 */
-    chat->clientVector->at(chat->clientVector->size()-1)->sendMessage(std::string((char *)IP_RECV) + getIpAddress());
+    chat->clientVector->at(chat->clientVector->size()-1)->sendMessage(ipTransmit);
 
     return true;
 }
