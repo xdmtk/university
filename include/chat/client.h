@@ -1,6 +1,8 @@
 #ifndef CHAT_CLIENT_H
 #define CHAT_CLIENT_H
 
+#define IP_RECV 0x5
+
 #include <string>
 #include <utility>
 

@@ -72,17 +72,7 @@ std::string getIpAddress() {
             if (std::string(addressBuffer) == "127.0.0.1") {
                 continue;
             }
-            address += "IPv4: " + std::string(addressBuffer) + "\n";
-        } else if (ifa->ifa_addr->sa_family == AF_INET6) { // check it is IP6
-
-            tmpAddrPtr=&((struct sockaddr_in6 *)ifa->ifa_addr)->sin6_addr;
-            char addressBuffer[INET6_ADDRSTRLEN];
-            inet_ntop(AF_INET6, tmpAddrPtr, addressBuffer, INET6_ADDRSTRLEN);
-
-            if (std::string(addressBuffer) == "::1") {
-                continue;
-            }
-            address += "IPv6: " + std::string(addressBuffer) + "\n";
+            address += std::string(addressBuffer);
         }
     }
     return address;
