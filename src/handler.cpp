@@ -113,6 +113,26 @@ void Handler::handleSendCommand() {
 
 }
 
+void Handler::handleListConnectionsCommand() {
+    Logger::info("Got list command");
+
+}
+
+void Handler::handleTerminateConnectionCommand() {
+    Logger::info("Got terminate command");
+    std::vector<std::string> tokens = splitString(std::move(chat->shell->getLastUserInput()), " ");
+
+    if (tokens.size() < 2) {
+        std::cout << "Invalid # of arguments for `terminate` command. "
+                  << "Usage: terminate <connection id>"
+                  << std::endl;
+        Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
+        return;
+    }
+    
+}
+
+
 /**
  * Response function for invalid commands entered at the shell prompt
  */

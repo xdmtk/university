@@ -35,6 +35,12 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "send") {
         return ShellCommand::SendMessage;
     }
+    else if(tokens[0] == "list") {
+        return ShellCommand::ListConnections;
+    }
+    else if(tokens[0] == "terminate") {
+        return ShellCommand::TerminateConnection;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }

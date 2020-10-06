@@ -14,6 +14,8 @@ public:
     static void maintainConnectedClientList(ClientVector * connectedClients);
     void handleInvalidCommand();
     void handleSendCommand();
+    void handleListConnectionsCommand();
+    void handleTerminateConnectionCommand();
 
 private:
     ChatFacade * chat;
