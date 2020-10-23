@@ -124,8 +124,11 @@ void Handler::handleListConnectionsCommand(ClientVector* connectedList) {
     }
     else{
         std::cout << "id:\t IP address\t Port No." << std::endl;
-        for (std::vector<Client*>::iterator it = connectedList->begin(); it != connectedList->end(); ++it)
-            std::cout << id <<".\t " << (*it)->getClientIpAddress() << "\t " << (*it)->getClientBindPort() << std::endl;
+        for (std::vector<Client*>::iterator it = connectedList->begin(); it != connectedList->end(); ++it) {
+            std::cout << id <<".\t " << (*it)->getClientIpAddress() 
+                            << "\t " << (*it)->getClientBindPort() << std::endl;
+            id++;
+        }
     }
 
 }
@@ -141,6 +144,14 @@ void Handler::handleTerminateConnectionCommand() {
         Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
         return;
     }
+    int clientIndex = std::stoi(tokens[1]);
+        if (clientIndex > 0 && clientIndex <= chat->clientVector->size()) {
+            chat->clientVector->at(clientIndex-1)->terminateConnection();
+        }
+        else {
+            std::cout << "A valid connection does not exist with id: " << clientIndex << std::endl;
+        }
+
     
 }
 

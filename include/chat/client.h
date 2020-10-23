@@ -18,6 +18,7 @@ public:
     int getClientBindPort() { return this->bindPort;}
     bool isAlive() {return !terminated;}
     void sendMessage(const std::string& msg);
+    bool terminateConnection() {return this->terminated = true;}
 
 private:
     Server * server;
