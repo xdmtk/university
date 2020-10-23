@@ -74,6 +74,7 @@ void Handler::handleConnectCommand() {
 
     std::cout << "Successfully made connection to " << tokens[1]
               << " on port " << tokens[2] << std::endl;
+              chat->clientVector->at(chat->clientVector->size()-1)->setClientIpAddress(tokens[1]);
 }
 
 /**
@@ -113,8 +114,19 @@ void Handler::handleSendCommand() {
 
 }
 
-void Handler::handleListConnectionsCommand() {
+void Handler::handleListConnectionsCommand(ClientVector* connectedList) {
+    
     Logger::info("Got list command");
+    int id = 1;
+    
+    if(connectedList->empty()) {
+        std::cout << "No connections at this moment!" << std::endl;
+    }
+    else{
+        std::cout << "id:\t IP address\t Port No." << std::endl;
+        for (std::vector<Client*>::iterator it = connectedList->begin(); it != connectedList->end(); ++it)
+            std::cout << id <<".\t " << (*it)->getClientIpAddress() << "\t " << (*it)->getClientBindPort() << std::endl;
+    }
 
 }
 

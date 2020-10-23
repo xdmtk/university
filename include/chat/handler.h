@@ -14,7 +14,7 @@ public:
     static void maintainConnectedClientList(ClientVector * connectedClients);
     void handleInvalidCommand();
     void handleSendCommand();
-    void handleListConnectionsCommand();
+    void handleListConnectionsCommand(ClientVector* connectedList);
     void handleTerminateConnectionCommand();
 
 private:

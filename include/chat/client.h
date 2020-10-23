@@ -5,6 +5,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 class Server;
 class Client {
@@ -23,7 +24,6 @@ private:
     int socketFd, bindPort;
     bool terminated;
     std::string ipAddress;
-
     void printReceivedMessage(const std::string&);
 
 };
