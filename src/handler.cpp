@@ -146,13 +146,13 @@ void Handler::handleTerminateConnectionCommand() {
     }
     int clientIndex = std::stoi(tokens[1]);
         if (clientIndex > 0 && clientIndex <= chat->clientVector->size()) {
+            chat->clientVector->at(clientIndex-1)->sendMessage("-- Connection Terminated!");
             chat->clientVector->at(clientIndex-1)->terminateConnection();
         }
         else {
             std::cout << "A valid connection does not exist with id: " << clientIndex << std::endl;
         }
 
-    
 }
 
 
@@ -179,14 +179,17 @@ void Handler::maintainConnectedClientList(ClientVector * connectedClients) {
             if (!(*it)->isAlive()) {
                 Logger::info("Pruned client at " + (*it)->getClientIpAddress() + " on port "
                              + std::to_string((*it)->getClientBindPort()));
+                
                 it = connectedClients->erase(it);
             }
             else {
                 it++;
             }
         }
+        
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    
 }
 #pragma clang diagnostic pop
 
