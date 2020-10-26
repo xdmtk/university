@@ -179,7 +179,6 @@ void Handler::maintainConnectedClientList(ClientVector * connectedClients) {
             if (!(*it)->isAlive()) {
                 Logger::info("Pruned client at " + (*it)->getClientIpAddress() + " on port "
                              + std::to_string((*it)->getClientBindPort()));
-                
                 it = connectedClients->erase(it);
             }
             else {

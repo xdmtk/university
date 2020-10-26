@@ -50,6 +50,9 @@ void Client::mainConnectionLoop() {
         else
             printReceivedMessage(msg);
 
+        if (msg == "-- Connection Terminated!")
+            this->terminateConnection();
+
         memset(buffer, '\0', 4096);
     }
     close(socketFd);
