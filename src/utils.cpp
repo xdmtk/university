@@ -75,6 +75,7 @@ std::string getIpAddress() {
 
             if (strncmp(addressBuffer ,"192.x.x.xxx", 3) == 0) {
                 address += std::string(addressBuffer);
+                break;
             }
         }
             

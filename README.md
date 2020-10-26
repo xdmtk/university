@@ -11,7 +11,7 @@ program, both client and server functionality are implemented.
 
 This application is implemented with no additional library dependencies outside of the
 standard `pthread` library. As a result, the application can be built by simply running
-the included make file at the root project directory.
+the included Makefile at the root project directory.
 
 ```
 make
