@@ -72,3 +72,12 @@ If today's date was 10/26/2020.
     * `connect`
     * `send`
     * `exit`
+
+##### Shant Melikyan
+
+* Commands implemented:
+    * `list`
+    * `terminate`
+* Command modification:
+    * `myip` ip filter added
+* Program testing
