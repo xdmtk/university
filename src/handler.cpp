@@ -74,6 +74,7 @@ void Handler::handleConnectCommand() {
 
     std::cout << "Successfully made connection to " << tokens[1]
               << " on port " << tokens[2] << std::endl;
+              chat->clientVector->at(chat->clientVector->size()-1)->setClientIpAddress(tokens[1]);
 }
 
 /**
@@ -113,6 +114,48 @@ void Handler::handleSendCommand() {
 
 }
 
+void Handler::handleListConnectionsCommand(ClientVector* connectedList) {
+    
+    Logger::info("Got list command");
+    int id = 1;
+    
+    if(connectedList->empty()) {
+        std::cout << "No connections at this moment!" << std::endl;
+    }
+    else{
+        std::cout << "id:\t IP address\t Port No." << std::endl;
+        for (std::vector<Client*>::iterator it = connectedList->begin(); it != connectedList->end(); ++it) {
+            std::cout << id <<".\t " << (*it)->getClientIpAddress() 
+                            << "\t " << (*it)->getClientBindPort() << std::endl;
+            id++;
+        }
+    }
+
+}
+
+void Handler::handleTerminateConnectionCommand() {
+    Logger::info("Got terminate command");
+    std::vector<std::string> tokens = splitString(std::move(chat->shell->getLastUserInput()), " ");
+
+    if (tokens.size() < 2) {
+        std::cout << "Invalid # of arguments for `terminate` command. "
+                  << "Usage: terminate <connection id>"
+                  << std::endl;
+        Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
+        return;
+    }
+    int clientIndex = std::stoi(tokens[1]);
+        if (clientIndex > 0 && clientIndex <= chat->clientVector->size()) {
+            chat->clientVector->at(clientIndex-1)->sendMessage("-- Connection Terminated!");
+            chat->clientVector->at(clientIndex-1)->terminateConnection();
+        }
+        else {
+            std::cout << "A valid connection does not exist with id: " << clientIndex << std::endl;
+        }
+
+}
+
+
 /**
  * Response function for invalid commands entered at the shell prompt
  */
@@ -142,8 +185,10 @@ void Handler::maintainConnectedClientList(ClientVector * connectedClients) {
                 it++;
             }
         }
+        
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
+    
 }
 #pragma clang diagnostic pop
 

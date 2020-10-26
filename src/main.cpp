@@ -42,9 +42,11 @@ int main(int argc, char ** argv) {
                 break;
             case Shell::ListConnections:
                 Logger::info("Got list command");
+                chat->handler->handleListConnectionsCommand(chat->clientVector);
                 break;
             case Shell::TerminateConnection:
                 Logger::info("Got terminate command");
+                chat->handler->handleTerminateConnectionCommand();
                 break;
             case Shell::SendMessage:
                 chat->handler->handleSendCommand();
