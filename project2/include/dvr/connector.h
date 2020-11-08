@@ -1,5 +1,5 @@
-#ifndef CHAT_CONNECTOR_H
-#define CHAT_CONNECTOR_H
+#ifndef DVR_CONNECTOR_H
+#define DVR_CONNECTOR_H
 #include <netinet/in.h>
 #include <dvr/defs.h>
 

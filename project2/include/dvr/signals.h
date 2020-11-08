@@ -1,5 +1,5 @@
-#ifndef CHAT_SIGNALS_H
-#define CHAT_SIGNALS_H
+#ifndef DVR_SIGNALS_H
+#define DVR_SIGNALS_H
 #include <csignal>
 
 class Server;

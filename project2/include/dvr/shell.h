@@ -1,5 +1,5 @@
-#ifndef CHAT_SHELL_H
-#define CHAT_SHELL_H
+#ifndef DVR_SHELL_H
+#define DVR_SHELL_H
 #include <string>
 
 #define USER_PROMPT ">> "

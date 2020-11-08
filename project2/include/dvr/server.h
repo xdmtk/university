@@ -1,5 +1,5 @@
-#ifndef CHAT_SERVER_H
-#define CHAT_SERVER_H
+#ifndef DVR_SERVER_H
+#define DVR_SERVER_H
 #include <dvr/defs.h>
 #include <string>
 #include <vector>

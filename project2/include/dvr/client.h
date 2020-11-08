@@ -1,5 +1,5 @@
-#ifndef CHAT_CLIENT_H
-#define CHAT_CLIENT_H
+#ifndef DVR_CLIENT_H
+#define DVR_CLIENT_H
 
 #define IP_RECV 0x5
 

@@ -1,5 +1,5 @@
-#ifndef CHAT_LOGGER_H
-#define CHAT_LOGGER_H
+#ifndef DVR_LOGGER_H
+#define DVR_LOGGER_H
 
 #include <string>
 

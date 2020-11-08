@@ -1,5 +1,5 @@
-#ifndef CHAT_HANDLER_H
-#define CHAT_HANDLER_H
+#ifndef DVR_HANDLER_H
+#define DVR_HANDLER_H
 #include <dvr/defs.h>
 
 class Handler {
@@ -14,4 +14,4 @@ private:
 };
 
 
-#endif //CHAT_HANDLER_H
+#endif
