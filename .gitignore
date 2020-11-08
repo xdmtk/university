@@ -3,6 +3,5 @@ cmake-build-debug
 *.swp
 /CMakeFiles
 CMakeCache.txt
-chat
 cmake_install.cmake
 .vscode/
