@@ -29,8 +29,6 @@ inline void ltrim(std::string &s);
 inline void rtrim(std::string &s);
 inline void trim(std::string &s);
 
-std::string getIpAddress();
 void facadeInjector(char *, DvrFacade * dvr);
-std::string collapseTokens(std::vector<std::string> tokens, int begin, int end);
 
 #endif

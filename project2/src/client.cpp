@@ -52,16 +52,6 @@ void Client::mainConnectionLoop() {
 
 
 /**
- * Helper function to print to the console the received message from the
- * client.
- *
- * @param msg - Message received
- */
-void Client::printReceivedMessage(const std::string& msg) {
-}
-
-
-/**
  * Given the socket file descriptor assigned to this Client object, use it to send
  * the given message supplied with `msg`
  *

@@ -10,7 +10,6 @@ class Server {
 public:
     Server(char *portArg, DvrFacade * chat);
     void listenForClientConnections();
-    int getListeningPort() {return bindPort;}
     Signals * getSignalHandler() {return dvr->signals;}
 
 private:

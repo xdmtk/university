@@ -7,15 +7,7 @@ class Handler {
 public:
     Handler(DvrFacade * dvr);
 
-    void handleHelpCommand();
-    static void handleGetIpCommand();
-    void handleGetPortCommand();
-    void handleConnectCommand();
     static void maintainConnectedClientList(ClientVector * connectedClients);
-    void handleInvalidCommand();
-    void handleSendCommand();
-    void handleListConnectionsCommand(ClientVector* connectedList);
-    void handleTerminateConnectionCommand();
 
 private:
     DvrFacade * dvr;
