@@ -80,7 +80,7 @@ void Logger::log(std::string msg, Logger::LogLevel level) {
  * @return
  */
 std::string Logger::getLogDirectory() {
-    std::string logDirectoryPath = getHomeDirectory() + "/.chatlogs/";
+    std::string logDirectoryPath = getHomeDirectory() + "/.dvrlogs/";
     mkdir(logDirectoryPath.c_str(), 0777);
     return logDirectoryPath;
 }

@@ -5,7 +5,7 @@
 class Handler {
 
 public:
-    Handler(DvrFacade * chat);
+    Handler(DvrFacade * dvr);
 
     void handleHelpCommand();
     static void handleGetIpCommand();
@@ -18,7 +18,7 @@ public:
     void handleTerminateConnectionCommand();
 
 private:
-    DvrFacade * chat;
+    DvrFacade * dvr;
 };
 
 

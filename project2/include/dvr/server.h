@@ -11,10 +11,10 @@ public:
     Server(char *portArg, DvrFacade * chat);
     void listenForClientConnections();
     int getListeningPort() {return bindPort;}
-    Signals * getSignalHandler() {return chat->signals;}
+    Signals * getSignalHandler() {return dvr->signals;}
 
 private:
-    DvrFacade * chat;
+    DvrFacade * dvr;
     int bindPort, connectionBacklogMaxLimit;
 
     void setupSocket(int *bindSocket, int *optionValue, struct sockaddr_in *address);

@@ -51,35 +51,3 @@ std::string collapseTokens(std::vector<std::string> tokens, int begin, int end) 
     return out.substr(0, out.size()-1);
 }
 
-std::string getIpAddress() {
-    struct ifaddrs * ifAddrStruct=NULL;
-    struct ifaddrs * ifa=NULL;
-    void * tmpAddrPtr=NULL;
-    std::string address;
-
-    getifaddrs(&ifAddrStruct);
-
-    for (ifa = ifAddrStruct; ifa != NULL; ifa = ifa->ifa_next) {
-        if (!ifa->ifa_addr) {
-            continue;
-        }
-        if (ifa->ifa_addr->sa_family == AF_INET) { // check it is IP4
-
-            tmpAddrPtr=&((struct sockaddr_in *)ifa->ifa_addr)->sin_addr;
-            char addressBuffer[INET_ADDRSTRLEN];
-            inet_ntop(AF_INET, tmpAddrPtr, addressBuffer, INET_ADDRSTRLEN);
-
-            if (std::string(addressBuffer) == "127.0.0.1") {
-                continue;
-            }
-
-            if (strncmp(addressBuffer ,"192.x.x.xxx", 3) == 0) {
-                address += std::string(addressBuffer);
-                break;
-            }
-        }
-            
-    }
-    
-    return address;
-}

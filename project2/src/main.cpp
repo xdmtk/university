@@ -13,46 +13,20 @@
 int main(int argc, char ** argv) {
 
     ShellCommand userCommand;
-    auto chat = new DvrFacade();
+    auto dvr = new DvrFacade();
 
-    /* Parse the port parameter */
-    if (argc != 2) {
+    /* Verify topology/update interval parameters */
+    if (argc != 5) {
         std::cout << ERR_INVALID_ARGS << std::endl;
         std::exit(-1);
     }
 
-    facadeInjector(argv[1], chat);
+    facadeInjector(argv[1], dvr);
 
 
     /* Respond to user input */
-    while ((userCommand = chat->shell->getUserCommand()) != ShellCommand::QuitProgram) {
+    while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
         switch (userCommand) {
-            case ShellCommand::Help:
-                chat->handler->handleHelpCommand();
-                break;
-            case Shell::GetIp:
-                chat->handler->handleGetIpCommand();
-                break;
-            case Shell::GetPort:
-                chat->handler->handleGetPortCommand();
-                break;
-            case Shell::Connect:
-                Logger::info("Got connect command");
-                chat->handler->handleConnectCommand();
-                break;
-            case Shell::ListConnections:
-                Logger::info("Got list command");
-                chat->handler->handleListConnectionsCommand(chat->clientVector);
-                break;
-            case Shell::TerminateConnection:
-                Logger::info("Got terminate command");
-                chat->handler->handleTerminateConnectionCommand();
-                break;
-            case Shell::SendMessage:
-                chat->handler->handleSendCommand();
-                break;
-            case Shell::InvalidCommand:
-                chat->handler->handleInvalidCommand();
             case Shell::EmptyCommand:
             default:
                 break;
@@ -72,16 +46,16 @@ int main(int argc, char ** argv) {
  * @param se - Server pointer
  * @param c - Connected Client List pointer
  */
-void facadeInjector(char * p, DvrFacade * chat) {
+void facadeInjector(char * p, DvrFacade * dvr) {
 
-    chat->server = new Server(p, chat);
-    chat->connector = new Connector(chat);
-    chat->shell = new Shell();
-    chat->clientVector = new ClientVector();
-    chat->handler = new Handler(chat);
+    dvr->server = new Server(p, dvr);
+    dvr->connector = new Connector(dvr);
+    dvr->shell = new Shell();
+    dvr->clientVector = new ClientVector();
+    dvr->handler = new Handler(dvr);
 
     std::thread([&] {
-        chat->handler->maintainConnectedClientList(chat->clientVector);
+        dvr->handler->maintainConnectedClientList(dvr->clientVector);
     }).detach();
 }
 

@@ -24,7 +24,7 @@ Server::Server(char *portArg, DvrFacade *chat) {
 
     try {
         bindPort = std::stoi(portArg);
-        this->chat = chat;
+        this->dvr = chat;
     }
     catch (std::exception &e) {
         Logger::fatal(e.what());
@@ -58,8 +58,8 @@ void Server::listenForClientConnections() {
             continue;
         }
         std::thread([&] {
-            chat->clientVector->emplace_back(new Client(this, incomingSocket, bindPort));
-            chat->clientVector->back()->mainConnectionLoop();
+            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort));
+            dvr->clientVector->back()->mainConnectionLoop();
         }).detach();
     }
 }
