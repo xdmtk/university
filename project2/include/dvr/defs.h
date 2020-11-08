@@ -29,6 +29,6 @@ inline void ltrim(std::string &s);
 inline void rtrim(std::string &s);
 inline void trim(std::string &s);
 
-void facadeInjector(char *, DvrFacade * dvr);
+void facadeInjector(DvrFacade *dvr);
 
 #endif

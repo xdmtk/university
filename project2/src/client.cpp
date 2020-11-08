@@ -1,10 +1,8 @@
 #include <dvr/client.h>
 #include <dvr/logger.h>
 #include <dvr/server.h>
-#include <dvr/shell.h>
 #include <dvr/signals.h>
 
-#include <iostream>
 #include <csignal>
 #include <cstring>
 #include <unistd.h>

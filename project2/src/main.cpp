@@ -21,11 +21,15 @@ int main(int argc, char ** argv) {
         std::exit(-1);
     }
 
-    facadeInjector(argv[1], dvr);
+    /* Inject class dependencies in DvrFacade object - Easier to pass around
+     * the program structure */
+    facadeInjector(dvr);
 
 
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
+
+        // TODO: Implement DVR spec commands
         switch (userCommand) {
             case Shell::EmptyCommand:
             default:
@@ -39,16 +43,10 @@ int main(int argc, char ** argv) {
 /**
  * Helper function to manage class dependencies. Also sets in motion the client
  * list pruning function on a separate thread.
- *
- * @param p - Port number for server to listen on
- * @param s - Shell pointer
- * @param si - Signals pointer
- * @param se - Server pointer
- * @param c - Connected Client List pointer
  */
-void facadeInjector(char * p, DvrFacade * dvr) {
+void facadeInjector(DvrFacade *dvr) {
 
-    dvr->server = new Server(p, dvr);
+    dvr->server = new Server("6666" ,dvr); // TODO: Specs indicate port # should be assigned from topology file
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();
     dvr->clientVector = new ClientVector();

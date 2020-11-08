@@ -2,7 +2,6 @@
 #include <dvr/defs.h>
 
 #include <iostream>
-#include <utility>
 
 /**
  * Emits a user prompts and parses user input into tokens, and returns an

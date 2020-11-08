@@ -48,7 +48,7 @@ void Server::listenForClientConnections() {
 
     /* On new client connection, get the socket fd, and detach a thread dedicated to communicating
      * with the client */
-    while ((incomingSocket = accept(bindSocket,NULL,NULL))) {
+    while ((incomingSocket = accept(bindSocket, NULL, NULL))) {
 
         Logger::info("Got new connection on socket fd: " + std::to_string(incomingSocket));
 

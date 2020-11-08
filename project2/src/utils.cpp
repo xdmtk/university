@@ -3,10 +3,6 @@
 #include <cctype>
 #include <cstring>
 
-#include <ifaddrs.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-
 std::vector<std::string> splitString(std::string s, const std::string& delimiter) {
 
     size_t pos = 0;
