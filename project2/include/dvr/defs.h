@@ -22,7 +22,7 @@ struct DvrFacade {
     ClientVector * clientVector;
 };
 
-#define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr [PORT]"
+#define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
 
 std::vector<std::string> splitString(std::string s, const std::string& delimiter);
 inline void ltrim(std::string &s);
