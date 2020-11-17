@@ -14,6 +14,8 @@ class Topology;
 
 typedef Shell::ShellCommand ShellCommand;
 typedef std::vector<Client *> ClientVector;
+typedef std::tuple<int, std::string, int> ServerEntry;
+typedef std::tuple<int, int, int> CostEntry;
 
 struct DvrFacade {
     Shell * shell;

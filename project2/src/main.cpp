@@ -19,7 +19,10 @@ int main(int argc, char ** argv) {
     auto args = new Args(argc, argv);
 
     /* Parse and validate command line arguments -t and -i */
-    if (!args->parseCliArgs()) return -1;
+    if (!args->parseCliArgs()) {
+        Logger::error("Failed to parse CLI args");
+        return -1;
+    }
 
     /* Inject class dependencies in DvrFacade object */
     facadeInjector(dvr, args);
@@ -44,12 +47,12 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
 
-    dvr->server = new Server("6666" ,dvr); // TODO: Specs indicate port # should be assigned from topology file
+    dvr->topology = new Topology(args->getTopologyFilepath());
+    dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();
     dvr->clientVector = new ClientVector();
     dvr->handler = new Handler(dvr);
-    dvr->topology = new Topology(args->getTopologyFilepath());
 
     std::thread([&] {
         dvr->handler->maintainConnectedClientList(dvr->clientVector);
