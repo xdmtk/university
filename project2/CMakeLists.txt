@@ -11,7 +11,9 @@ set(SOURCE_FILES
         src/signals.cpp
         src/connector.cpp
         src/handler.cpp
-        )
+        src/topology.cpp
+        src/args.cpp
+)
 include_directories(include)
 add_executable(dvr ${SOURCE_FILES})
 target_link_libraries(dvr pthread)
