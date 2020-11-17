@@ -4,7 +4,7 @@
 #include <iostream>
 
 /**
- * Class servers to isolate the argument parsing logic from the main program.
+ * Class serves to isolate the argument parsing logic from the main program.
  */
 Args::Args(int argc, char **argv) {
     this->argc = argc;
