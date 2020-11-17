@@ -14,13 +14,29 @@ class Topology {
         std::vector<CostEntry> costList;
     };
 
+    struct ServerEntryLine {
+        int serverId;
+        std::string serverIp;
+        int serverPort;
+    };
+
+    struct CostEntryLine {
+        int serverId;
+        int neighborId;
+        int cost;
+    };
+
 public:
     Topology(std::string filename);
     std::string getServerPort() {return serverPort;}
 
 private:
+    TopologyData topologyData;
     std::string serverPort;
     bool parseTopologyFile(std::string filename);
+
+    ServerEntryLine parseServerEntryLine(std::string line);
+    CostEntryLine parseCostEntryLine(std::string line);
 };
 
 
