@@ -2,7 +2,7 @@
 #define DVR_DEFS_H
 #include <vector>
 #include <dvr/shell.h>
-#include "args.h"
+#include <dvr/args.h>
 
 class Connector;
 class Server;
