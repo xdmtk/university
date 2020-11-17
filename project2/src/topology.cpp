@@ -55,11 +55,25 @@ bool Topology::parseTopologyFile(std::string filename) {
 }
 
 Topology::ServerEntryLine Topology::parseServerEntryLine(std::string line) {
-
-
+    auto slices = splitString(line, " ");
+    if (slices.size() != 3) {
+        Logger::fatal("Malformed Server entry line!");
+    }
+    return ServerEntryLine {
+        std::atoi(slices[0].c_str()),
+        slices[1],
+        std::atoi(slices[2].c_str())
+    };
 }
 
 Topology::CostEntryLine Topology::parseCostEntryLine(std::string line) {
-
-
+    auto slices = splitString(line, " ");
+    if (slices.size() != 3) {
+        Logger::fatal("Malformed Cost entry line!");
+    }
+    return CostEntryLine {
+            std::atoi(slices[0].c_str()),
+            std::atoi(slices[1].c_str()),
+            std::atoi(slices[2].c_str())
+    };
 }
