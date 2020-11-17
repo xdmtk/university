@@ -26,6 +26,8 @@ struct DvrFacade {
 };
 
 #define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
+#define ERR_MALFORMED_ARGS "Invalid argument structure! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
+
 
 std::vector<std::string> splitString(std::string s, const std::string& delimiter);
 inline void ltrim(std::string &s);
