@@ -3,11 +3,20 @@
 #include <dvr/logger.h>
 #include <iostream>
 
+/**
+ * Class servers to isolate the argument parsing logic from the main program.
+ */
 Args::Args(int argc, char **argv) {
     this->argc = argc;
     this->argv = argv;
 }
 
+/**
+ * Detects argument count and flags set in the CLI arguments, and
+ * parses the strings that follow the argument flags.
+ *
+ * @return True on succes - False on failure
+ */
 bool Args::parseCliArgs() {
     if (argc != 5) {
         std::cout << ERR_INVALID_ARGS << std::endl;
