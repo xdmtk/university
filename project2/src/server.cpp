@@ -20,14 +20,14 @@
  * @param connectedClientList - Vector of Client objects for incoming/outgoing
  * connections
  */
-Server::Server(char *portArg, DvrFacade *chat) {
+Server::Server(std::string portArg, DvrFacade *chat) {
 
     try {
         bindPort = std::stoi(portArg);
         this->dvr = chat;
     }
     catch (std::exception &e) {
-        Logger::fatal(e.what());
+        Logger::fatal("Exception caught while starting server: " + std::string(e.what()));
         std::exit(-1);
     }
     std::thread([&] {

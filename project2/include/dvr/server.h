@@ -8,7 +8,7 @@ class Client;
 class Signals;
 class Server {
 public:
-    Server(char *portArg, DvrFacade * chat);
+    Server(std::string portArg, DvrFacade * chat);
     void listenForClientConnections();
     Signals * getSignalHandler() {return dvr->signals;}
 
