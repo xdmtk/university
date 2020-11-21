@@ -58,9 +58,6 @@ void facadeInjector(DvrFacade *dvr, Args * args) {
     dvr->clientVector = new ClientVector();
     dvr->handler = new Handler(dvr);
 
-    std::thread([&] {
-        dvr->handler->maintainConnectedClientList(dvr->clientVector);
-    }).detach();
 }
 
 
@@ -77,16 +74,18 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
     std::vector<std::thread *> connectorThreads;
     for (ServerEntry serverEntry : dvr->topology->getTopologyData().serverList) {
 
-        std::string address = std::get<1>(serverEntry);
-        std::string port = std::to_string(std::get<2>(serverEntry));
-        std::string serverId = std::to_string(std::get<0>(serverEntry));
 
         // Skip connecting the running instance (this/itself)
-        if (serverId == "1") continue;
+        if (std::get<0>(serverEntry) == 1) continue;
 
         // Generate a new thread that attempts to connect to the given neighbor every
         // 3 seconds
-        auto connectorWait = new std::thread([&] {
+        auto connectorWait = new std::thread([serverEntry, &dvr] {
+
+            std::string address = std::get<1>(serverEntry);
+            std::string port = std::to_string(std::get<2>(serverEntry));
+            std::string serverId = std::to_string(std::get<0>(serverEntry));
+
             while (!dvr->connector->connectToClient(address, port)) {
                 Logger::info("Waiting for neighbor ID " + serverId
                     + " at address " + address + " on port " + port
@@ -95,7 +94,7 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
             }
             Logger::info("Neighbor ID " + serverId + " has connected");
         });
-
+        std::this_thread::sleep_for(std::chrono::seconds(1));
         // Save these threads and join them at the end of the function
         connectorThreads.emplace_back(connectorWait);
     }
@@ -103,5 +102,11 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
         Logger::info("Joining");
         connectorWait->join();
     }
+
+    // Once Clients are connected - begin scanning Client list, pruning
+    // for disconnects
+    std::thread([&] {
+        dvr->handler->maintainConnectedClientList(dvr->clientVector);
+    }).detach();
 }
 
