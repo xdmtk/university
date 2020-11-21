@@ -10,7 +10,7 @@
 /**
  * Logger configuration settings
  */
-bool Logger::writeToConsole = true;
+bool Logger::writeToConsole = false;
 bool Logger::writeToFile = true;
 bool Logger::terminateOnFatal = true;
 

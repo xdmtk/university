@@ -37,6 +37,6 @@ inline void rtrim(std::string &s);
 inline void trim(std::string &s);
 
 void facadeInjector(DvrFacade *dvr, Args * args);
-bool connectAndWaitForNeighbors(DvrFacade *dvr);
+void connectAndWaitForNeighbors(DvrFacade *dvr);
 
 #endif

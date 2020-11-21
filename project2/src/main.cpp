@@ -28,6 +28,9 @@ int main(int argc, char ** argv) {
     /* Inject class dependencies in DvrFacade object */
     facadeInjector(dvr, args);
 
+    /* Block here until all specified neighbors are connected */
+    connectAndWaitForNeighbors(dvr);
+
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
 
@@ -67,7 +70,10 @@ void facadeInjector(DvrFacade *dvr, Args * args) {
  * program to make sure all neighbors are connected before starting
  * the distance vector routing protocol routines
  */
-bool connectAndWaitForNeighbors(DvrFacade *dvr) {
+void connectAndWaitForNeighbors(DvrFacade *dvr) {
+
+    std::cout << "Waiting for connection to specified neighbors" << std::endl;
+
     std::vector<std::thread *> connectorThreads;
     for (ServerEntry serverEntry : dvr->topology->getTopologyData().serverList) {
 
@@ -87,12 +93,14 @@ bool connectAndWaitForNeighbors(DvrFacade *dvr) {
                     + " to come online");
                 std::this_thread::sleep_for(std::chrono::seconds(3));
             }
+            Logger::info("Neighbor ID " + serverId + " has connected");
         });
 
         // Save these threads and join them at the end of the function
         connectorThreads.emplace_back(connectorWait);
     }
     for (std::thread * connectorWait : connectorThreads) {
+        Logger::info("Joining");
         connectorWait->join();
     }
 }
