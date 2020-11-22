@@ -106,7 +106,7 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
     // Once Clients are connected - begin scanning Client list, pruning
     // for disconnects
     std::thread([&] {
-        dvr->handler->maintainConnectedClientList(dvr->clientVector);
+        Handler::maintainConnectedClientList(dvr->clientVector);
     }).detach();
 }
 
