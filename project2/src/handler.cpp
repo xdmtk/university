@@ -48,8 +48,4 @@ void Handler::maintainConnectedClientList() {
 }
 #pragma clang diagnostic pop
 
-void Handler::test() {
-
-}
-
 
