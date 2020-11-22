@@ -74,15 +74,14 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
     std::vector<std::thread *> connectorThreads;
     for (ServerEntry serverEntry : dvr->topology->getTopologyData().serverList) {
 
-
         // Skip connecting the running instance (this/itself)
         if (std::get<0>(serverEntry) == 1) continue;
 
-        // Generate a new thread that attempts to connect to the given neighbor every
-        // 3 seconds
+        /* Generate a new thread that attempts to connect to the given neighbor every
+        3 seconds */
         auto connectorWait = new std::thread([serverEntry, &dvr] {
 
-            std::string address = std::get<1>(serverEntry);
+            const std::string& address = std::get<1>(serverEntry);
             std::string port = std::to_string(std::get<2>(serverEntry));
             std::string serverId = std::to_string(std::get<0>(serverEntry));
 
@@ -95,11 +94,11 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
             Logger::info("Neighbor ID " + serverId + " has connected");
         });
         std::this_thread::sleep_for(std::chrono::seconds(1));
+
         // Save these threads and join them at the end of the function
         connectorThreads.emplace_back(connectorWait);
     }
     for (std::thread * connectorWait : connectorThreads) {
-        Logger::info("Joining");
         connectorWait->join();
     }
 
