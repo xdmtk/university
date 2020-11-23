@@ -29,13 +29,13 @@ Handler::Handler(DvrFacade *dvr) {
  * @param connectedClients - Client Vector pointer holding all currently
  * connected clients
  */
-void Handler::maintainConnectedClientList(ClientVector * connectedClients) {
+void Handler::maintainConnectedClientList() {
     while (true)  {
-        for (auto it = connectedClients->begin(); it != connectedClients->end(); ){
+        for (auto it = dvr->clientVector->begin(); it != dvr->clientVector->end(); ){
             if (!(*it)->isAlive()) {
                 Logger::info("Pruned client at " + (*it)->getClientIpAddress() + " on port "
                              + std::to_string((*it)->getClientBindPort()));
-                it = connectedClients->erase(it);
+                it = dvr->clientVector->erase(it);
             }
             else {
                 it++;

@@ -7,7 +7,7 @@ class Handler {
 public:
     Handler(DvrFacade * dvr);
 
-    static void maintainConnectedClientList(ClientVector * connectedClients);
+    void maintainConnectedClientList();
 
 private:
     DvrFacade * dvr;
