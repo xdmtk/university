@@ -8,6 +8,9 @@ public:
     Handler(DvrFacade * dvr);
 
     void maintainConnectedClientList();
+    void handleDisplayCommand();
+    void handleCrashCommand();
+    void handleInvalidCommand();
 
 private:
     DvrFacade * dvr;
