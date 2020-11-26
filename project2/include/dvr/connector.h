@@ -1,10 +1,9 @@
 #ifndef DVR_CONNECTOR_H
 #define DVR_CONNECTOR_H
 #include <netinet/in.h>
-#include <dvr/defs.h>
 
 #include <utility>
-
+class DvrFacade;
 class Connector {
 public:
     Connector(DvrFacade * dvr);

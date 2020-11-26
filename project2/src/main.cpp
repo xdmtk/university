@@ -29,13 +29,16 @@ int main(int argc, char ** argv) {
     facadeInjector(dvr, args);
 
     /* Block here until all specified neighbors are connected */
-    connectAndWaitForNeighbors(dvr);
+    // connectAndWaitForNeighbors(dvr);
 
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
 
         // TODO: Implement DVR spec commands
         switch (userCommand) {
+            case ShellCommand::UpdateCommand:
+                dvr->handler->handleUpdateCommand();
+                break;
             case ShellCommand::EmptyCommand:
             default:
                 break;
@@ -72,7 +75,7 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
     std::cout << "Waiting for connection to specified neighbors" << std::endl;
 
     std::vector<std::thread *> connectorThreads;
-    for (ServerEntry serverEntry : dvr->topology->getTopologyData().serverList) {
+    for (ServerEntry serverEntry : dvr->topology->getTopologyData()->serverList) {
 
         // Skip connecting the running instance (this/itself)
         if (std::get<0>(serverEntry) == 1) continue;

@@ -122,3 +122,4 @@ void Server::bindAndListen(int * bindSocket, struct sockaddr_in * address) {
     }
 
 }
+Signals * Server::getSignalHandler() {return dvr->signals;}
