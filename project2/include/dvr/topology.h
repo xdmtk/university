@@ -33,7 +33,7 @@ class Topology {
 public:
     Topology(std::string filename);
     std::string getServerPort() {return serverPort;}
-    TopologyData getTopologyData() {return topologyData;};
+    TopologyData * getTopologyData() {return &topologyData;};
 
 private:
     TopologyData topologyData;

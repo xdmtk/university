@@ -75,7 +75,7 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
     std::cout << "Waiting for connection to specified neighbors" << std::endl;
 
     std::vector<std::thread *> connectorThreads;
-    for (ServerEntry serverEntry : dvr->topology->getTopologyData().serverList) {
+    for (ServerEntry serverEntry : dvr->topology->getTopologyData()->serverList) {
 
         // Skip connecting the running instance (this/itself)
         if (std::get<0>(serverEntry) == 1) continue;

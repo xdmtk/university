@@ -47,7 +47,7 @@ void Handler::handleUpdateCommand() {
     bool updated = false;
 
     // Find link specified by arguments and update cost
-    for (CostEntry &costEntry : dvr->topology->getTopologyData().costList) {
+    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
         if (std::get<0>(costEntry) == serverIdOne && std::get<1>(costEntry) == serverIdTwo) {
             std::get<2>(costEntry) = cost;
             updated = true;
