@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 #include <tuple>
-#include <dvr/defs.h>
 
+class DvrFacade;
+typedef std::tuple<int, std::string, int> ServerEntry;
+typedef std::tuple<int, int, int> CostEntry;
 class Topology {
 
     struct TopologyData {

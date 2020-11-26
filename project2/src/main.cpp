@@ -29,7 +29,7 @@ int main(int argc, char ** argv) {
     facadeInjector(dvr, args);
 
     /* Block here until all specified neighbors are connected */
-    connectAndWaitForNeighbors(dvr);
+    // connectAndWaitForNeighbors(dvr);
 
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {

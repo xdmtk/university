@@ -3,6 +3,7 @@
 #include <dvr/server.h>
 #include <dvr/client.h>
 #include <dvr/connector.h>
+#include <dvr/defs.h>
 
 #include <iostream>
 #include <chrono>
@@ -18,6 +19,25 @@
  */
 Handler::Handler(DvrFacade *dvr) {
     this->dvr = dvr;
+}
+
+void Handler::handleUpdateCommand() {
+    auto tokens = splitString(dvr->shell->getLastUserInput(), " ");
+
+    if (tokens.size() != 3) {
+        std::cout << ERR_INVALID_UPDATE_ARGS << std::endl;
+        dvr->shell->emitPrompt();
+        return;
+    }
+
+    if (!(is_num(tokens[0]) && is_num(tokens[1])) || (
+            !(is_num(tokens[2]) || tokens[2] == "inf")))  {
+        std::cout << ERR_MALFORMED_UPDATE_ARGS << std::endl;
+        dvr->shell->emitPrompt();
+        return;
+    }
+
+
 }
 
 #pragma clang diagnostic push

@@ -1,5 +1,6 @@
 #include <dvr/topology.h>
 #include <dvr/logger.h>
+#include <dvr/defs.h>
 #include <iostream>
 #include <fstream>
 #include <tuple>

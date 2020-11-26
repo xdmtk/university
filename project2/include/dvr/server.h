@@ -1,17 +1,16 @@
 #ifndef DVR_SERVER_H
 #define DVR_SERVER_H
-#include <dvr/defs.h>
 #include <string>
 #include <vector>
 
+class DvrFacade;
 class Client;
 class Signals;
 class Server {
 public:
     Server(std::string portArg, DvrFacade * chat);
     void listenForClientConnections();
-    Signals * getSignalHandler() {return dvr->signals;}
-
+    Signals * getSignalHandler();
 private:
     DvrFacade * dvr;
     int bindPort, connectionBacklogMaxLimit;

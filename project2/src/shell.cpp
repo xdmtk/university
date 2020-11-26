@@ -25,7 +25,7 @@ ShellCommand Shell::getUserCommand() {
  * Helper function to output the user prompt and receive
  * user input
  */
-inline void Shell::emitPrompt() {
+void Shell::emitPrompt() {
     std::cout << USER_PROMPT;
     std::getline(std::cin, userInput);
 }

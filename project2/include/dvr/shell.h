@@ -11,10 +11,10 @@ public:
     };
     ShellCommand getUserCommand();
     std::string getLastUserInput() {return userInput;}
+    void emitPrompt();
 
 private:
     std::string userInput;
-    inline void emitPrompt();
 };
 
 
