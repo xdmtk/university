@@ -36,6 +36,9 @@ int main(int argc, char ** argv) {
 
         // TODO: Implement DVR spec commands
         switch (userCommand) {
+            case ShellCommand::UpdateCommand:
+                dvr->handler->handleUpdateCommand();
+                break;
             case ShellCommand::EmptyCommand:
             default:
                 break;

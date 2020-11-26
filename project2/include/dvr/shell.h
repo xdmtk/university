@@ -7,7 +7,7 @@ class Shell {
 
 public:
     enum ShellCommand {
-        InvalidCommand, EmptyCommand, QuitProgram
+        UpdateCommand, InvalidCommand, EmptyCommand, QuitProgram
     };
     ShellCommand getUserCommand();
     std::string getLastUserInput() {return userInput;}

@@ -24,14 +24,13 @@ Handler::Handler(DvrFacade *dvr) {
 void Handler::handleUpdateCommand() {
     auto tokens = splitString(dvr->shell->getLastUserInput(), " ");
 
-    if (tokens.size() != 3) {
+    if (tokens.size() != 4) {
         std::cout << ERR_INVALID_UPDATE_ARGS << std::endl;
         dvr->shell->emitPrompt();
         return;
     }
-
-    if (!(is_num(tokens[0]) && is_num(tokens[1])) || (
-            !(is_num(tokens[2]) || tokens[2] == "inf")))  {
+    if (!(is_num(tokens[1]) && is_num(tokens[2])) || (
+            !(is_num(tokens[3]) || tokens[3] == "inf")))  {
         std::cout << ERR_MALFORMED_UPDATE_ARGS << std::endl;
         dvr->shell->emitPrompt();
         return;

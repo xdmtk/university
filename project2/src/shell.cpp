@@ -16,6 +16,9 @@ ShellCommand Shell::getUserCommand() {
     if (tokens.empty()) {
         return ShellCommand::EmptyCommand;
     }
+    else if (tokens[0] == "update") {
+        return ShellCommand::UpdateCommand;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }
@@ -25,7 +28,7 @@ ShellCommand Shell::getUserCommand() {
  * Helper function to output the user prompt and receive
  * user input
  */
-void Shell::emitPrompt() {
+inline void Shell::emitPrompt() {
     std::cout << USER_PROMPT;
     std::getline(std::cin, userInput);
 }
