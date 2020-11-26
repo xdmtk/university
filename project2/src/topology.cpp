@@ -16,7 +16,8 @@
  *
  * @param filename - File path of the topology file
  */
-Topology::Topology(std::string filename) {
+Topology::Topology(DvrFacade *dvr, std::string filename) {
+    this->dvr = dvr;
     if (!parseTopologyFile(filename)) {
         throw std::runtime_error("Failed to parse topology file!");
     }
@@ -117,4 +118,21 @@ Topology::CostEntryLine Topology::parseCostEntryLine(std::string line) {
             std::atoi(slices[1].c_str()),
             std::atoi(slices[2].c_str())
     };
+}
+
+bool Topology::updateCostEntry(int serverOne, int serverTwo, int cost) {
+
+    bool updated = false;
+    // Find link specified by arguments and update cost
+    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
+        if (std::get<0>(costEntry) == serverOne && std::get<1>(costEntry) == serverTwo) {
+            std::get<2>(costEntry) = cost;
+            updated = true;
+            std::string success_str = ("Successfully updated cost for Server ID " + std::to_string(serverOne) +
+                                       " to " + std::to_string(serverTwo) + " with cost " + std::to_string(cost));
+            std::cout << success_str << std::endl;
+            Logger::info(success_str);
+        }
+    }
+    return updated;
 }

@@ -54,7 +54,7 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
 
-    dvr->topology = new Topology(args->getTopologyFilepath());
+    dvr->topology = new Topology(nullptr, args->getTopologyFilepath());
     dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();

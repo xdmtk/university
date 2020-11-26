@@ -44,22 +44,11 @@ void Handler::handleUpdateCommand() {
     int serverIdOne = std::atoi(tokens[1].c_str());
     int serverIdTwo = std::atoi(tokens[2].c_str());
     int cost = tokens[3] != "inf" ? std::atoi(tokens[3].c_str()) : COST_INF;
-    bool updated = false;
 
     // Find link specified by arguments and update cost
-    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
-        if (std::get<0>(costEntry) == serverIdOne && std::get<1>(costEntry) == serverIdTwo) {
-            std::get<2>(costEntry) = cost;
-            updated = true;
-            std::string success_str = ("Successfully updated cost for Server ID " + std::to_string(serverIdOne) +
-                " to " + std::to_string(serverIdTwo) + " with cost " + std::to_string(cost));
-            std::cout << success_str << std::endl;
-            Logger::info(success_str);
-        }
-    }
+    if (!dvr->topology->updateCostEntry(serverIdOne, serverIdTwo, cost)) {
 
-    // Print and log error if unable to find specified link
-    if (!updated) {
+        // Print and log error if unable to find specified link
         std::string error_str = ("Could not update cost for Server ID " + std::to_string(serverIdOne) +
                      " to " + std::to_string(serverIdTwo) + " with cost " + std::to_string(cost)
                      + ". Unable to find this link the topology data struct!");

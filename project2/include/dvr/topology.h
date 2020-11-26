@@ -31,11 +31,14 @@ class Topology {
     };
 
 public:
-    Topology(std::string filename);
+    Topology(DvrFacade *dvr, std::string filename);
     std::string getServerPort() {return serverPort;}
     TopologyData * getTopologyData() {return &topologyData;};
 
+    bool updateCostEntry(int serverOne, int serverTwo, int cost);
+
 private:
+    DvrFacade * dvr;
     TopologyData topologyData;
     std::string serverPort;
     bool parseTopologyFile(std::string filename);
