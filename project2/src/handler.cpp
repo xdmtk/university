@@ -51,8 +51,10 @@ void Handler::handleUpdateCommand() {
         if (std::get<0>(costEntry) == serverIdOne && std::get<1>(costEntry) == serverIdTwo) {
             std::get<2>(costEntry) = cost;
             updated = true;
-            Logger::info("Successfully updated cost for Server ID " + std::to_string(serverIdOne) +
+            std::string success_str = ("Successfully updated cost for Server ID " + std::to_string(serverIdOne) +
                 " to " + std::to_string(serverIdTwo) + " with cost " + std::to_string(cost));
+            std::cout << success_str << std::endl;
+            Logger::info(success_str);
         }
     }
 
