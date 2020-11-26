@@ -1,8 +1,10 @@
 #ifndef DVR_TOPOLOGY_H
 #define DVR_TOPOLOGY_H
+
 #include <string>
 #include <vector>
 #include <tuple>
+
 
 class DvrFacade;
 typedef std::tuple<int, std::string, int> ServerEntry;

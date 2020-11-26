@@ -4,6 +4,8 @@
 #include <dvr/shell.h>
 #include <dvr/args.h>
 
+#define COST_INF -1
+
 class Connector;
 class Server;
 class Signals;
