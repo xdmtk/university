@@ -27,7 +27,7 @@ GeneralMessage Updater::generateGeneralMessageFormat() {
     generalMessage.serverIp = addr.s_addr;
     generalMessage.serverUpdates = new std::vector<ServerCostMessage>();
 
-    for (int i = 0; i < dvr->topology->getTopologyData()->serverList.size(); ++i) {
+    for (int i = 0; i < dvr->topology->getTopologyData()->costList.size(); ++i) {
 
         ServerCostMessage serverCostMessage;
         struct in_addr addr;
@@ -47,4 +47,10 @@ GeneralMessage Updater::generateGeneralMessageFormat() {
     }
 
     return generalMessage;
+}
+
+std::string serializeGeneralMessage(GeneralMessage gm) {
+    std::string serialized;
+
+
 }

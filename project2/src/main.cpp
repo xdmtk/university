@@ -7,6 +7,7 @@
 #include <dvr/connector.h>
 #include <dvr/handler.h>
 #include <dvr/topology.h>
+#include <dvr/updater.h>
 #include <dvr/args.h>
 
 #include <iostream>
@@ -39,6 +40,9 @@ int main(int argc, char ** argv) {
             case ShellCommand::UpdateCommand:
                 dvr->handler->handleUpdateCommand();
                 break;
+            case ShellCommand::StepCommand:
+                dvr->handler->handleStepCommand();
+                break;
             case ShellCommand::EmptyCommand:
             default:
                 break;
@@ -54,7 +58,8 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
 
-    dvr->topology = new Topology(nullptr, args->getTopologyFilepath());
+    dvr->updater = new Updater(dvr);
+    dvr->topology = new Topology(dvr, args->getTopologyFilepath());
     dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();

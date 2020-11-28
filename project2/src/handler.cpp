@@ -4,6 +4,7 @@
 #include <dvr/client.h>
 #include <dvr/connector.h>
 #include <dvr/topology.h>
+#include <dvr/updater.h>
 #include <dvr/defs.h>
 
 #include <iostream>
@@ -21,6 +22,16 @@
 Handler::Handler(DvrFacade *dvr) {
     this->dvr = dvr;
 }
+
+void Handler::handleStepCommand() {
+    std::string serialized = dvr->updater->serializeGeneralMessage(
+            dvr->updater->generateGeneralMessageFormat()
+            );
+    for (auto client : *dvr->clientVector) {
+        client->sendMessage(serialized);
+    }
+}
+
 
 void Handler::handleUpdateCommand() {
     auto tokens = splitString(dvr->shell->getLastUserInput(), " ");

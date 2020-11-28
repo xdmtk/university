@@ -13,6 +13,7 @@ class Client;
 class Shell;
 class Handler;
 class Topology;
+class Updater;
 
 typedef Shell::ShellCommand ShellCommand;
 typedef std::vector<Client *> ClientVector;
@@ -25,6 +26,7 @@ struct DvrFacade {
     Handler * handler;
     ClientVector * clientVector;
     Topology * topology;
+    Updater * updater;
 };
 
 struct ServerCostMessage {
