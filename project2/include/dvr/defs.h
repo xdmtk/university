@@ -38,7 +38,7 @@ struct GeneralMessage {
     unsigned short updateFields;
     unsigned short serverPort;
     unsigned int serverIp;
-    ServerCostMessage ** serverUpdates;
+    std::vector<ServerCostMessage> * serverUpdates;
 };
 
 #define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
