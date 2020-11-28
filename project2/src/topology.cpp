@@ -79,6 +79,7 @@ bool Topology::parseTopologyFile(std::string filename) {
             );
         }
     }
+    serverIp = std::get<1>(topologyData.serverList[0]);
     serverPort = std::to_string(std::get<2>(topologyData.serverList[0]));
 
     topologyFile.close();

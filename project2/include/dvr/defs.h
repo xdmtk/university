@@ -27,6 +27,20 @@ struct DvrFacade {
     Topology * topology;
 };
 
+struct ServerCostMessage {
+    unsigned int serverIp;
+    unsigned short serverPort;
+    unsigned short serverId;
+    unsigned short serverCost;
+};
+
+struct GeneralMessage {
+    unsigned short updateFields;
+    unsigned short serverPort;
+    unsigned int serverIp;
+    ServerCostMessage ** serverUpdates;
+};
+
 #define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
 #define ERR_MALFORMED_ARGS "Invalid argument structure! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
 
