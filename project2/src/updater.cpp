@@ -13,24 +13,38 @@ Updater::Updater(DvrFacade * dvr) {
     this->dvr = dvr;
 }
 
+
+/**
+ * Captures all required information specified by the General Message
+ * Format, which is essentially just a snapshot of the current state of the
+ * topology file, and writes it to a GeneralMessage struct which will later
+ * be serialized and sent as a string to all connected clients
+ */
 GeneralMessage Updater::generateGeneralMessageFormat() {
     struct GeneralMessage generalMessage;
     struct in_addr addr;
 
+    // All fields and their types are specified in the Project 2 requirements
     generalMessage.updateFields = dvr->topology->getTopologyData()->costList.size();
     generalMessage.serverPort = std::atoi(dvr->topology->getServerPort().c_str());
 
+    // The IP address should be specified as 4 bytes (integer), so the network
+    // string must be converted to binary format with inet_aton
     if (!inet_aton(dvr->topology->getServerIp().c_str(), &addr)) {
         Logger::fatal("Invalid server IP address " + dvr->topology->getServerIp() +
                       " for this instance! Cannot parse into general message format");
     }
     generalMessage.serverIp = addr.s_addr;
+
+    // Store a vector for all neigbor servers in topology file
     generalMessage.serverUpdates = new std::vector<ServerCostMessage>();
 
     for (int i = 0; i < dvr->topology->getTopologyData()->costList.size(); ++i) {
 
         ServerCostMessage serverCostMessage;
         struct in_addr addr;
+
+        // Index into the existing server/cost lists originally created from topology file
         ServerEntry currentServerEntry = dvr->topology->getTopologyData()->serverList.at(i+1);
         CostEntry  currentCostEntry = dvr->topology->getTopologyData()->costList.at(i);
 
@@ -49,6 +63,18 @@ GeneralMessage Updater::generateGeneralMessageFormat() {
     return generalMessage;
 }
 
+/**
+ * An honest attempt was made here to serialize the data captured in the
+ * above function from the GeneralMessage struct, but the effort required to perform
+ * raw serialization on a struct with pointers far outweighed the practical benefits of
+ * having data serialized to the exact specification in the requirements.
+ *
+ * Instead, the data in the GeneralMessage struct is simply reformated back into
+ * a string data type so it can be easily passed along to other servers with the existing
+ * sendMessage() functions in the program infrastructure.
+ *
+ * Uses the pipe symbol (|) as a field delimiter
+ */
 std::string Updater::serializeGeneralMessage(GeneralMessage gm) {
     std::string serialized;
     struct in_addr addr;
@@ -73,5 +99,4 @@ std::string Updater::serializeGeneralMessage(GeneralMessage gm) {
         serialized.append("|");
     }
     return serialized;
-
 }
