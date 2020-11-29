@@ -30,8 +30,9 @@ int main(int argc, char ** argv) {
     facadeInjector(dvr, args);
 
     /* Block here until all specified neighbors are connected */
-    // connectAndWaitForNeighbors(dvr);
+    connectAndWaitForNeighbors(dvr);
 
+    /* Set in motion periodic routing table updates */
     dvr->updater->enableRoutingUpdates();
 
     /* Respond to user input */

@@ -44,6 +44,8 @@ void Client::mainConnectionLoop() {
            && !server->getSignalHandler()->trappedSignal(SIGPIPE) && strlen(buffer)) {
 
         Logger::info("Received message from client: " + (msg = std::string(buffer)));
+
+        // Parse incoming routing updates and make updates to routing table
         dvr->updater->parseIncomingRoutingUpdate(std::string(buffer));
         memset(buffer, '\0', 4096);
     }

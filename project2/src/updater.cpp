@@ -130,7 +130,21 @@ void Updater::enableRoutingUpdates() {
  * routing table according to the data contained in the message received.
  */
 void Updater::parseIncomingRoutingUpdate(std::string msg) {
+    auto tokens = splitString(msg, "|");
+    int numberOfUpdateFields = std::atoi(tokens.at(0).c_str());
 
+    for (int i = 0, offset = 3; i < numberOfUpdateFields; ++i, offset += 4) {
+        auto serverId = std::atoi(tokens.at(offset+2).c_str());
+        auto cost = std::atoi(tokens.at(offset+3).c_str());
 
+        if (dvr->topology->updateCostEntry(1, serverId, cost)) {
+            Logger::info("Successfully updated cost on server ID " +
+                std::to_string(serverId) + " from routing update");
+        }
+        else {
+            Logger::error("Could not update cost on server ID " +
+                         std::to_string(serverId) + " from routing update");
+        }
 
+    }
 }
