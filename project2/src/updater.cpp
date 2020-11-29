@@ -104,15 +104,34 @@ std::string Updater::serializeGeneralMessage(GeneralMessage gm) {
     return serialized;
 }
 
+
+/**
+ * Sets a thread in motion to continuously send routing updates to
+ * all connected clients at an interval specified by the routingUpdateInterval
+ * variable set in the arguments on startup
+ */
 void Updater::enableRoutingUpdates() {
     std::thread([&] {
-        Logger::info("Sending routing update to neighbors..");
-        std::string serialized = dvr->updater->serializeGeneralMessage(
-                dvr->updater->generateGeneralMessageFormat()
-        );
-        for (auto client : *dvr->clientVector) {
-            client->sendMessage(serialized);
+        while (true) {
+
+            Logger::info("Sending routing update to neighbors..");
+            std::string serialized = dvr->updater->serializeGeneralMessage(
+                    dvr->updater->generateGeneralMessageFormat()
+            );
+            for (auto client : *dvr->clientVector) {
+                client->sendMessage(serialized);
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(routingUpdateInterval));
         }
-        std::this_thread::sleep_for(std::chrono::seconds(routingUpdateInterval));
     }).detach();
+}
+
+/**
+ * Called after receiving an incoming message from a Client. Updates the
+ * routing table according to the data contained in the message received.
+ */
+void Updater::parseIncomingRoutingUpdate(std::string msg) {
+
+
+
 }
