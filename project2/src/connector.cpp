@@ -57,7 +57,7 @@ bool Connector::connectToClient(const std::string& address, const std::string& p
 
     /* On successful connection, add client to connect clients list */
     dvr->clientVector->emplace_back(
-            new Client(dvr->server, outgoingSocket, outgoingPort, nullptr));
+            new Client(dvr->server, outgoingSocket, outgoingPort, dvr));
 
     return true;
 }
