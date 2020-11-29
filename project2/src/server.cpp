@@ -58,7 +58,7 @@ void Server::listenForClientConnections() {
             continue;
         }
         std::thread([&] {
-            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort, nullptr));
+            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort, dvr));
             dvr->clientVector->back()->mainConnectionLoop();
         }).detach();
     }
