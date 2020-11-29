@@ -70,8 +70,6 @@ void Handler::handleUpdateCommand() {
     }
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
 /**
  * Pruning function to scan the connected client list and remove
  * clients that have disconnected.
@@ -96,6 +94,4 @@ void Handler::maintainConnectedClientList() {
     }
     
 }
-#pragma clang diagnostic pop
-
 

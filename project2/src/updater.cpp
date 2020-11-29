@@ -24,8 +24,8 @@ Updater::Updater(DvrFacade * dvr, int routingUpdateInterval) {
  * be serialized and sent as a string to all connected clients
  */
 GeneralMessage Updater::generateGeneralMessageFormat() {
-    struct GeneralMessage generalMessage;
-    struct in_addr addr;
+    struct GeneralMessage generalMessage{};
+    struct in_addr addr{};
 
     // All fields and their types are specified in the Project 2 requirements
     generalMessage.updateFields = dvr->topology->getTopologyData()->costList.size();
@@ -39,13 +39,12 @@ GeneralMessage Updater::generateGeneralMessageFormat() {
     }
     generalMessage.serverIp = addr.s_addr;
 
-    // Store a vector for all neigbor servers in topology file
+    // Store a vector for all neighbor servers in topology file
     generalMessage.serverUpdates = new std::vector<ServerCostMessage>();
 
     for (int i = 0; i < dvr->topology->getTopologyData()->costList.size(); ++i) {
 
-        ServerCostMessage serverCostMessage;
-        struct in_addr addr;
+        ServerCostMessage serverCostMessage{};
 
         // Index into the existing server/cost lists originally created from topology file
         ServerEntry currentServerEntry = dvr->topology->getTopologyData()->serverList.at(i+1);
