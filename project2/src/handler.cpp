@@ -30,7 +30,8 @@ void Handler::handleStepCommand() {
     for (auto client : *dvr->clientVector) {
         client->sendMessage(serialized);
     }
-    return;
+    std::cout << "Successfully forced routing update to neighbors" << std::endl;
+    dvr->shell->emitPrompt();
 }
 
 

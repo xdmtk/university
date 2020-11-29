@@ -1,4 +1,5 @@
 #include <dvr/updater.h>
+#include <dvr/client.h>
 #include <dvr/server.h>
 #include <dvr/topology.h>
 #include <dvr/defs.h>
@@ -7,10 +8,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <vector>
-#include <cstring>
+#include <thread>
+#include <chrono>
 
-Updater::Updater(DvrFacade * dvr) {
+Updater::Updater(DvrFacade * dvr, int routingUpdateInterval) {
     this->dvr = dvr;
+    this->routingUpdateInterval = routingUpdateInterval;
 }
 
 
@@ -99,4 +102,17 @@ std::string Updater::serializeGeneralMessage(GeneralMessage gm) {
         serialized.append("|");
     }
     return serialized;
+}
+
+void Updater::enableRoutingUpdates() {
+    std::thread([&] {
+        Logger::info("Sending routing update to neighbors..");
+        std::string serialized = dvr->updater->serializeGeneralMessage(
+                dvr->updater->generateGeneralMessageFormat()
+        );
+        for (auto client : *dvr->clientVector) {
+            client->sendMessage(serialized);
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(routingUpdateInterval));
+    }).detach();
 }

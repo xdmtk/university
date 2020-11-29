@@ -32,6 +32,8 @@ int main(int argc, char ** argv) {
     /* Block here until all specified neighbors are connected */
     // connectAndWaitForNeighbors(dvr);
 
+    dvr->updater->enableRoutingUpdates();
+
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
 
@@ -58,8 +60,9 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
 
-    dvr->updater = new Updater(dvr);
+    dvr->updater = new Updater(dvr, args->getRoutingUpdateInterval());
     dvr->topology = new Topology(dvr, args->getTopologyFilepath());
+
     dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();
