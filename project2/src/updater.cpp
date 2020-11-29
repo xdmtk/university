@@ -4,10 +4,10 @@
 #include <dvr/defs.h>
 #include <dvr/logger.h>
 
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <vector>
+#include <cstring>
 
 Updater::Updater(DvrFacade * dvr) {
     this->dvr = dvr;
@@ -49,8 +49,29 @@ GeneralMessage Updater::generateGeneralMessageFormat() {
     return generalMessage;
 }
 
-std::string serializeGeneralMessage(GeneralMessage gm) {
+std::string Updater::serializeGeneralMessage(GeneralMessage gm) {
     std::string serialized;
+    struct in_addr addr;
 
+    serialized.append(std::to_string(gm.updateFields));
+    serialized.append("|");
+    serialized.append(std::to_string(gm.serverPort));
+    serialized.append("|");
+    addr.s_addr = gm.serverIp;
+    serialized.append(inet_ntoa(addr));
+    serialized.append("|");
+
+    for (ServerCostMessage serverCostMessage : *gm.serverUpdates) {
+        addr.s_addr = serverCostMessage.serverIp;
+        serialized.append(inet_ntoa(addr));
+        serialized.append("|");
+        serialized.append(std::to_string(serverCostMessage.serverPort));
+        serialized.append("|");
+        serialized.append(std::to_string(serverCostMessage.serverId));
+        serialized.append("|");
+        serialized.append(std::to_string(serverCostMessage.serverCost));
+        serialized.append("|");
+    }
+    return serialized;
 
 }

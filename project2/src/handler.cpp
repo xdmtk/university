@@ -30,6 +30,7 @@ void Handler::handleStepCommand() {
     for (auto client : *dvr->clientVector) {
         client->sendMessage(serialized);
     }
+    return;
 }
 
 
