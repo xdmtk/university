@@ -137,7 +137,7 @@ void Updater::parseIncomingRoutingUpdate(std::string msg) {
     int senderPort = std::atoi(tokens.at(1).c_str());
     std::string senderIP = tokens.at(2);
 
-    for (int i = 3; i < 3 + (5 * numberOfUpdateFields); i += 5) { // each update block has 5 fields * # of updates
+    for (int i = 3; i < 2 + (5 * numberOfUpdateFields); i += 5) { // each update block has 5 fields * # of updates
 	std::string updateeIP = tokens.at(i);
 	int updateePort = std::atoi(tokens.at(i+1).c_str());
 	int updateeId = std::atoi(tokens.at(i+3).c_str());
