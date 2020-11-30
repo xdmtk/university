@@ -13,6 +13,7 @@ class Client;
 class Shell;
 class Handler;
 class Topology;
+class Updater;
 
 typedef Shell::ShellCommand ShellCommand;
 typedef std::vector<Client *> ClientVector;
@@ -25,6 +26,21 @@ struct DvrFacade {
     Handler * handler;
     ClientVector * clientVector;
     Topology * topology;
+    Updater * updater;
+};
+
+struct ServerCostMessage {
+    unsigned int serverIp;
+    unsigned short serverPort;
+    unsigned short serverId;
+    unsigned short serverCost;
+};
+
+struct GeneralMessage {
+    unsigned short updateFields;
+    unsigned short serverPort;
+    unsigned int serverIp;
+    std::vector<ServerCostMessage> * serverUpdates;
 };
 
 #define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"

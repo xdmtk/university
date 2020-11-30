@@ -10,6 +10,8 @@ public:
     static void warn(std::string);
     static void error(std::string);
     static void fatal(std::string);
+
+    static std::string getCurrentTimeString();
 private:
     enum LogLevel {Info, Debug, Warn, Error, Fatal};
     static bool writeToConsole;
@@ -19,7 +21,6 @@ private:
     static void log(std::string, LogLevel);
 
     static std::string getCurrentDateString();
-    static std::string getCurrentTimeString();
     static std::string getLogDirectory();
     static std::string getHomeDirectory();
 };

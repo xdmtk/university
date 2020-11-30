@@ -7,6 +7,7 @@
 #include <dvr/connector.h>
 #include <dvr/handler.h>
 #include <dvr/topology.h>
+#include <dvr/updater.h>
 #include <dvr/args.h>
 
 #include <iostream>
@@ -29,7 +30,10 @@ int main(int argc, char ** argv) {
     facadeInjector(dvr, args);
 
     /* Block here until all specified neighbors are connected */
-    // connectAndWaitForNeighbors(dvr);
+    connectAndWaitForNeighbors(dvr);
+
+    /* Set in motion periodic routing table updates */
+    dvr->updater->enableRoutingUpdates();
 
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
@@ -38,6 +42,9 @@ int main(int argc, char ** argv) {
         switch (userCommand) {
             case ShellCommand::UpdateCommand:
                 dvr->handler->handleUpdateCommand();
+                break;
+            case ShellCommand::StepCommand:
+                dvr->handler->handleStepCommand();
                 break;
             case ShellCommand::EmptyCommand:
             default:
@@ -54,12 +61,15 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
 
-    dvr->topology = new Topology(args->getTopologyFilepath());
+    dvr->updater = new Updater(dvr, args->getRoutingUpdateInterval());
+    dvr->topology = new Topology(dvr, args->getTopologyFilepath());
+
     dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();
     dvr->clientVector = new ClientVector();
     dvr->handler = new Handler(dvr);
+    dvr->signals = new Signals(dvr->server);
 
 }
 

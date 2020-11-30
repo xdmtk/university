@@ -13,6 +13,7 @@ set(SOURCE_FILES
         src/handler.cpp
         src/topology.cpp
         src/args.cpp
+        src/updater.cpp
 )
 include_directories(include)
 add_executable(dvr ${SOURCE_FILES})

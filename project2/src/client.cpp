@@ -2,6 +2,7 @@
 #include <dvr/logger.h>
 #include <dvr/server.h>
 #include <dvr/signals.h>
+#include <dvr/updater.h>
 
 #include <csignal>
 #include <cstring>
@@ -19,10 +20,11 @@
  * @param socketFd - The socket file descriptor connected on
  * @param bindPort - The port number the client is connected on
  */
-Client::Client(Server *server, int socketFd, int bindPort) {
+Client::Client(Server *server, int socketFd, int bindPort, DvrFacade *dvr) {
     this->socketFd = socketFd;
     this->server = server;
     this->bindPort = bindPort;
+    this->dvr = dvr;
     terminated = false;
     Logger::info("New client established at socket file descriptor: "
         + std::to_string(socketFd));
@@ -42,6 +44,9 @@ void Client::mainConnectionLoop() {
            && !server->getSignalHandler()->trappedSignal(SIGPIPE) && strlen(buffer)) {
 
         Logger::info("Received message from client: " + (msg = std::string(buffer)));
+
+        // Parse incoming routing updates and make updates to routing table
+        dvr->updater->parseIncomingRoutingUpdate(std::string(buffer));
         memset(buffer, '\0', 4096);
     }
     close(socketFd);

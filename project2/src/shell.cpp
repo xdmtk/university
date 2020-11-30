@@ -19,6 +19,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "update") {
         return ShellCommand::UpdateCommand;
     }
+    else if (tokens[0] == "step") {
+        return ShellCommand::StepCommand;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }

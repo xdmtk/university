@@ -6,12 +6,14 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "defs.h"
 
 class Server;
+class DvrFacade;
 class Client {
 
 public:
-    Client(Server *server, int socketFd, int bindPort);
+    Client(Server *server, int socketFd, int bindPort, DvrFacade *dvr);
     void mainConnectionLoop();
     std::string getClientIpAddress() { return this->ipAddress;}
 
@@ -20,6 +22,7 @@ public:
     void sendMessage(const std::string &msg);
 
 private:
+    DvrFacade * dvr;
     Server * server;
     int socketFd, bindPort;
     bool terminated;

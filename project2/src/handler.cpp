@@ -4,6 +4,7 @@
 #include <dvr/client.h>
 #include <dvr/connector.h>
 #include <dvr/topology.h>
+#include <dvr/updater.h>
 #include <dvr/defs.h>
 
 #include <iostream>
@@ -21,6 +22,18 @@
 Handler::Handler(DvrFacade *dvr) {
     this->dvr = dvr;
 }
+
+void Handler::handleStepCommand() {
+    std::string serialized = dvr->updater->serializeGeneralMessage(
+            dvr->updater->generateGeneralMessageFormat()
+            );
+    for (auto client : *dvr->clientVector) {
+        client->sendMessage(serialized);
+    }
+    std::cout << "Successfully forced routing update to neighbors" << std::endl;
+    dvr->shell->emitPrompt();
+}
+
 
 void Handler::handleUpdateCommand() {
     auto tokens = splitString(dvr->shell->getLastUserInput(), " ");
@@ -44,22 +57,11 @@ void Handler::handleUpdateCommand() {
     int serverIdOne = std::atoi(tokens[1].c_str());
     int serverIdTwo = std::atoi(tokens[2].c_str());
     int cost = tokens[3] != "inf" ? std::atoi(tokens[3].c_str()) : COST_INF;
-    bool updated = false;
 
     // Find link specified by arguments and update cost
-    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
-        if (std::get<0>(costEntry) == serverIdOne && std::get<1>(costEntry) == serverIdTwo) {
-            std::get<2>(costEntry) = cost;
-            updated = true;
-            std::string success_str = ("Successfully updated cost for Server ID " + std::to_string(serverIdOne) +
-                " to " + std::to_string(serverIdTwo) + " with cost " + std::to_string(cost));
-            std::cout << success_str << std::endl;
-            Logger::info(success_str);
-        }
-    }
+    if (!dvr->topology->updateCostEntry(serverIdOne, serverIdTwo, cost)) {
 
-    // Print and log error if unable to find specified link
-    if (!updated) {
+        // Print and log error if unable to find specified link
         std::string error_str = ("Could not update cost for Server ID " + std::to_string(serverIdOne) +
                      " to " + std::to_string(serverIdTwo) + " with cost " + std::to_string(cost)
                      + ". Unable to find this link the topology data struct!");
@@ -68,8 +70,6 @@ void Handler::handleUpdateCommand() {
     }
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmissing-noreturn"
 /**
  * Pruning function to scan the connected client list and remove
  * clients that have disconnected.
@@ -94,6 +94,4 @@ void Handler::maintainConnectedClientList() {
     }
     
 }
-#pragma clang diagnostic pop
-
 
