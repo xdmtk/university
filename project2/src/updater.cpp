@@ -137,17 +137,17 @@ void Updater::parseIncomingRoutingUpdate(std::string msg) {
     int senderPort = std::atoi(tokens.at(1).c_str());
     std::string senderIP = tokens.at(2);
 
-    for (int i = 3, i < 3 + (5 * numberOfUpdateFields); i += 5) { // each update block has 5 fields * # of updates
+    for (int i = 3; i < 3 + (5 * numberOfUpdateFields); i += 5) { // each update block has 5 fields * # of updates
 	std::string updateeIP = tokens.at(i);
-	int updateePort = std::atoi(tokens.at(i+1));
-	int updateeId = std::atoi(tokens.at(i+3));
-        int newCost = std::atoi(tokens.at(offset+3).c_str());
+	int updateePort = std::atoi(tokens.at(i+1).c_str());
+	int updateeId = std::atoi(tokens.at(i+3).c_str());
+        int newCost = std::atoi(tokens.at(i+4).c_str());
 
-	if (updateeIP.compare(dvr->topology->getServerIp()) == 0 && updateePort == std::atoi(dvr->topology->getServerPort)) { // it's us, the only entry we care about
+	if (updateeIP.compare(dvr->topology->getServerIp()) == 0 && updateePort == std::atoi(dvr->topology->getServerPort().c_str())) { // it's us, the only entry we care about
 
 	        if (!dvr->topology->updateCostEntry(1, dvr->topology->lookupServerId(senderIP, senderPort), newCost)) {
         	    Logger::error("Could not update cost on server ID " +
-                	         std::to_string(serverId) + " from routing update");
+                	         std::to_string(dvr->topology->lookupServerId(senderIP, senderPort)) + " from routing update");
         	}
 	}
     }

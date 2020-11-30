@@ -65,8 +65,8 @@ bool Topology::parseTopologyFile(std::string filename) {
                             sel.serverPort
                     )
             );
-	    serverIdLookupTable.insert(std::pair<std::string, int>(sel.serverIp + sel.serverPort.to_string(), sel.serverId));
-	    serverIpLookupTable.insert(std::make_pair(sel.serverId, std::make_pair(sel.serverIp, sel.serverPort));
+	    serverIdLookupTable.insert(std::pair<std::string, int>(sel.serverIp + std::to_string(sel.serverPort), sel.serverId));
+	    serverIpLookupTable.insert(std::make_pair(sel.serverId, std::make_pair(sel.serverIp, sel.serverPort)));
         }
 
         // All subsequent lines contain cost information
@@ -151,7 +151,7 @@ bool Topology::updateCostEntry(int serverOne, int serverTwo, int cost) {
  * @return server_id
  */
 int Topology::lookupServerId(std::string ip, int port) {
-	int id = serverIdLookupTable.find(ip + port.to_string());
+	int id = serverIdLookupTable.find(ip + std::to_string(port))->second;
 	
 	return id;
 }
