@@ -137,11 +137,7 @@ void Updater::parseIncomingRoutingUpdate(std::string msg) {
         auto serverId = std::atoi(tokens.at(offset+2).c_str());
         auto cost = std::atoi(tokens.at(offset+3).c_str());
 
-        if (dvr->topology->updateCostEntry(1, serverId, cost)) {
-            Logger::info("Successfully updated cost on server ID " +
-                std::to_string(serverId) + " from routing update");
-        }
-        else {
+        if (!dvr->topology->updateCostEntry(1, serverId, cost)) {
             Logger::error("Could not update cost on server ID " +
                          std::to_string(serverId) + " from routing update");
         }

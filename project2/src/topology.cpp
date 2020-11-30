@@ -123,17 +123,22 @@ Topology::CostEntryLine Topology::parseCostEntryLine(std::string line) {
 
 bool Topology::updateCostEntry(int serverOne, int serverTwo, int cost) {
 
+    bool hit = false;
     bool updated = false;
     // Find link specified by arguments and update cost
     for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
         if (std::get<0>(costEntry) == serverOne && std::get<1>(costEntry) == serverTwo) {
+            updated = std::get<2>(costEntry) != cost;
             std::get<2>(costEntry) = cost;
-            updated = true;
-            std::string success_str = ("Successfully updated cost for Server ID " + std::to_string(serverOne) +
-                                       " to " + std::to_string(serverTwo) + " with cost " + std::to_string(cost));
-            std::cout << success_str << std::endl;
-            Logger::info(success_str);
+            hit = true;
+            if (updated) {
+                std::string success_str = (Logger::getCurrentTimeString() +  " Successfully updated cost for Server ID " + std::to_string(serverOne) +
+                                           " to " + std::to_string(serverTwo) + " with cost " + std::to_string(cost));
+                std::cout << success_str << std::endl;
+                dvr->shell->emitPrompt();
+                Logger::info(success_str);
+            }
         }
     }
-    return updated;
+    return hit;
 }

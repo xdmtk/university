@@ -69,6 +69,7 @@ void facadeInjector(DvrFacade *dvr, Args * args) {
     dvr->shell = new Shell();
     dvr->clientVector = new ClientVector();
     dvr->handler = new Handler(dvr);
+    dvr->signals = new Signals(dvr->server);
 
 }
 
