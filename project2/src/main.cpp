@@ -46,6 +46,12 @@ int main(int argc, char ** argv) {
             case ShellCommand::StepCommand:
                 dvr->handler->handleStepCommand();
                 break;
+            case ShellCommand::DisplayCommand:
+                dvr->handler->handleDisplayCommand();
+                break;
+            case ShellCommand::CrashCommand:
+                dvr->handler->handleCrashCommand();
+                break;
             case ShellCommand::EmptyCommand:
             default:
                 break;
