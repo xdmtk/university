@@ -6,12 +6,12 @@ set(SOURCE_FILES
         src/shell.cpp
         src/utils.cpp
         src/logger.cpp
+	src/topology.cpp
         src/server.cpp
         src/client.cpp
         src/signals.cpp
         src/connector.cpp
         src/handler.cpp
-        src/topology.cpp
         src/args.cpp
         src/updater.cpp
 )

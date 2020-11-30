@@ -1,5 +1,6 @@
 #include <dvr/defs.h>
 #include <dvr/connector.h>
+#include <dvr/topology.h>
 #include <dvr/client.h>
 #include <dvr/logger.h>
 
@@ -55,9 +56,13 @@ bool Connector::connectToClient(const std::string& address, const std::string& p
         return false;
     }
 
+    std::string outgoingIp(inet_ntoa(destination.sin_addr));
+
+    int outgoingId = dvr->topology->lookupServerId(outgoingIp, outgoingPort);
+
     /* On successful connection, add client to connect clients list */
     dvr->clientVector->emplace_back(
-            new Client(dvr->server, outgoingSocket, outgoingPort, dvr));
+            new Client(dvr->server, outgoingSocket, outgoingPort, outgoingId, dvr));
 
     return true;
 }

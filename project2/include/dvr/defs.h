@@ -7,12 +7,12 @@
 #define COST_INF -1
 
 class Connector;
+class Topology;
 class Server;
 class Signals;
 class Client;
 class Shell;
 class Handler;
-class Topology;
 class Updater;
 
 typedef Shell::ShellCommand ShellCommand;

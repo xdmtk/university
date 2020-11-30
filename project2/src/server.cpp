@@ -1,5 +1,6 @@
 #include <dvr/server.h>
 #include <dvr/logger.h>
+#include <dvr/topology.h>
 #include <dvr/client.h>
 #include <dvr/defs.h>
 
@@ -9,6 +10,7 @@
 #include <cerrno>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 
 
 /**
@@ -57,8 +59,22 @@ void Server::listenForClientConnections() {
             Logger::error("Socket fd returned is negative! Errno:" + std::string(strerror(errno)));
             continue;
         }
+
+	struct sockaddr_in connectee;
+	socklen_t len = sizeof(connectee);
+
+	if (getsockname(incomingSocket, (struct sockaddr *)&connectee, &len) == -1) {
+		Logger::error("Problem with getsockname! Errno:" + std::string(strerror(errno)));
+		continue;
+	}
+
+	std::string connecteeIp(inet_ntoa(connectee.sin_addr));
+	int connecteePort = connectee.sin_port;
+
+	int connecteeId = dvr->topology->lookupServerId(connecteeIp, connecteePort);
+
         std::thread([&] {
-            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort, dvr));
+            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort, connecteeId,dvr));
             dvr->clientVector->back()->mainConnectionLoop();
         }).detach();
     }
