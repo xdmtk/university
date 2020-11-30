@@ -7,8 +7,12 @@ public:
     Handler(DvrFacade * dvr);
 
     void maintainConnectedClientList();
+    void handleDisplayCommand();
+    void handleCrashCommand();
+    void handleInvalidCommand();
     void handleUpdateCommand();
     void handleStepCommand();
+
 private:
     DvrFacade * dvr;
 };
