@@ -9,6 +9,7 @@ public:
     void maintainConnectedClientList();
     void handleUpdateCommand();
     void handleStepCommand();
+    void handlePacketCommand();
 private:
     DvrFacade * dvr;
 };

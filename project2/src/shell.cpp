@@ -22,6 +22,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "step") {
         return ShellCommand::StepCommand;
     }
+    else if (tokens[0] == "packets") {
+	return ShellCommand::PacketCommand;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }

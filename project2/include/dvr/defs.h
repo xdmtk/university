@@ -27,6 +27,7 @@ struct DvrFacade {
     ClientVector * clientVector;
     Topology * topology;
     Updater * updater;
+    int packetCounter;
 };
 
 struct ServerCostMessage {

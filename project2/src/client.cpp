@@ -47,6 +47,7 @@ void Client::mainConnectionLoop() {
 
         // Parse incoming routing updates and make updates to routing table
         dvr->updater->parseIncomingRoutingUpdate(std::string(buffer));
+	dvr->packetCounter++;
         memset(buffer, '\0', 4096);
     }
     close(socketFd);
