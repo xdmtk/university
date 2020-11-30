@@ -23,6 +23,12 @@ Handler::Handler(DvrFacade *dvr) {
     this->dvr = dvr;
 }
 
+void Handler::handlePacketCommand() {
+    std::cout << "Packets received since last invocation: " << dvr->packetCounter << std::endl;
+    std::cout << "`packets` SUCCESS" << std::endl;
+    dvr->packetCounter = 0;
+}
+
 void Handler::handleStepCommand() {
     std::string serialized = dvr->updater->serializeGeneralMessage(
             dvr->updater->generateGeneralMessageFormat()

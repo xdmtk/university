@@ -11,6 +11,7 @@
 #include <thread>
 #include <chrono>
 #include <string>
+#include <iostream>
 
 Updater::Updater(DvrFacade * dvr, int routingUpdateInterval) {
     this->dvr = dvr;
@@ -136,6 +137,10 @@ void Updater::parseIncomingRoutingUpdate(std::string msg) {
     int numberOfUpdateFields = std::atoi(tokens.at(0).c_str());
     int senderPort = std::atoi(tokens.at(1).c_str());
     std::string senderIP = tokens.at(2);
+    int senderId = dvr->topology->lookupServerId(senderIP, senderPort);
+
+    /* Message received notification */
+    std::cout << "RECEIVED A MESSAGE FROM SERVER " << senderId << std::endl;
 
     for (int i = 3; i < 2 + (5 * numberOfUpdateFields); i += 4) { // each update block has 4 fields * # of updates
 	std::string updateeIP = tokens.at(i);
@@ -145,9 +150,9 @@ void Updater::parseIncomingRoutingUpdate(std::string msg) {
 
 	if (updateeIP.compare(dvr->topology->getServerIp()) == 0 && updateePort == std::atoi(dvr->topology->getServerPort().c_str())) { // it's us, the only entry we care about
 
-	        if (!dvr->topology->updateCostEntry(1, dvr->topology->lookupServerId(senderIP, senderPort), newCost)) {
+	        if (!dvr->topology->updateCostEntry(1, senderId, newCost)) {
         	    Logger::error("Could not update cost on server ID " +
-                	         std::to_string(dvr->topology->lookupServerId(senderIP, senderPort)) + " from routing update");
+                	         std::to_string(senderId) + " from routing update");
         	}
 	}
     }
