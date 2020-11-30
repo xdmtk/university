@@ -137,11 +137,11 @@ void Updater::parseIncomingRoutingUpdate(std::string msg) {
     int senderPort = std::atoi(tokens.at(1).c_str());
     std::string senderIP = tokens.at(2);
 
-    for (int i = 3; i < 2 + (5 * numberOfUpdateFields); i += 5) { // each update block has 5 fields * # of updates
+    for (int i = 3; i < 2 + (5 * numberOfUpdateFields); i += 4) { // each update block has 4 fields * # of updates
 	std::string updateeIP = tokens.at(i);
 	int updateePort = std::atoi(tokens.at(i+1).c_str());
-	int updateeId = std::atoi(tokens.at(i+3).c_str());
-        int newCost = std::atoi(tokens.at(i+4).c_str());
+	int updateeId = std::atoi(tokens.at(i+2).c_str());
+        int newCost = std::atoi(tokens.at(i+3).c_str());
 
 	if (updateeIP.compare(dvr->topology->getServerIp()) == 0 && updateePort == std::atoi(dvr->topology->getServerPort().c_str())) { // it's us, the only entry we care about
 
