@@ -58,7 +58,7 @@ void Server::listenForClientConnections() {
             continue;
         }
         std::thread([&] {
-            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort));
+            dvr->clientVector->emplace_back(new Client(this, incomingSocket, bindPort, dvr));
             dvr->clientVector->back()->mainConnectionLoop();
         }).detach();
     }
@@ -122,3 +122,4 @@ void Server::bindAndListen(int * bindSocket, struct sockaddr_in * address) {
     }
 
 }
+Signals * Server::getSignalHandler() {return dvr->signals;}

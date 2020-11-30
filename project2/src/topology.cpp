@@ -1,5 +1,6 @@
 #include <dvr/topology.h>
 #include <dvr/logger.h>
+#include <dvr/defs.h>
 #include <iostream>
 #include <fstream>
 #include <tuple>
@@ -15,7 +16,8 @@
  *
  * @param filename - File path of the topology file
  */
-Topology::Topology(std::string filename) {
+Topology::Topology(DvrFacade *dvr, std::string filename) {
+    this->dvr = dvr;
     if (!parseTopologyFile(filename)) {
         throw std::runtime_error("Failed to parse topology file!");
     }
@@ -77,6 +79,7 @@ bool Topology::parseTopologyFile(std::string filename) {
             );
         }
     }
+    serverIp = std::get<1>(topologyData.serverList[0]);
     serverPort = std::to_string(std::get<2>(topologyData.serverList[0]));
 
     topologyFile.close();
@@ -116,4 +119,26 @@ Topology::CostEntryLine Topology::parseCostEntryLine(std::string line) {
             std::atoi(slices[1].c_str()),
             std::atoi(slices[2].c_str())
     };
+}
+
+bool Topology::updateCostEntry(int serverOne, int serverTwo, int cost) {
+
+    bool hit = false;
+    bool updated = false;
+    // Find link specified by arguments and update cost
+    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
+        if (std::get<0>(costEntry) == serverOne && std::get<1>(costEntry) == serverTwo) {
+            updated = std::get<2>(costEntry) != cost;
+            std::get<2>(costEntry) = cost;
+            hit = true;
+            if (updated) {
+                std::string success_str = (Logger::getCurrentTimeString() +  " Successfully updated cost for Server ID " + std::to_string(serverOne) +
+                                           " to " + std::to_string(serverTwo) + " with cost " + std::to_string(cost));
+                std::cout << success_str << std::endl;
+                dvr->shell->emitPrompt();
+                Logger::info(success_str);
+            }
+        }
+    }
+    return hit;
 }

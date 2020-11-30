@@ -7,6 +7,7 @@
 #include <dvr/connector.h>
 #include <dvr/handler.h>
 #include <dvr/topology.h>
+#include <dvr/updater.h>
 #include <dvr/args.h>
 
 #include <iostream>
@@ -31,11 +32,20 @@ int main(int argc, char ** argv) {
     /* Block here until all specified neighbors are connected */
     connectAndWaitForNeighbors(dvr);
 
+    /* Set in motion periodic routing table updates */
+    dvr->updater->enableRoutingUpdates();
+
     /* Respond to user input */
     while ((userCommand = dvr->shell->getUserCommand()) != ShellCommand::QuitProgram) {
 
         // TODO: Implement DVR spec commands
         switch (userCommand) {
+            case ShellCommand::UpdateCommand:
+                dvr->handler->handleUpdateCommand();
+                break;
+            case ShellCommand::StepCommand:
+                dvr->handler->handleStepCommand();
+                break;
             case ShellCommand::EmptyCommand:
             default:
                 break;
@@ -51,12 +61,15 @@ int main(int argc, char ** argv) {
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
 
-    dvr->topology = new Topology(args->getTopologyFilepath());
+    dvr->updater = new Updater(dvr, args->getRoutingUpdateInterval());
+    dvr->topology = new Topology(dvr, args->getTopologyFilepath());
+
     dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);
     dvr->shell = new Shell();
     dvr->clientVector = new ClientVector();
     dvr->handler = new Handler(dvr);
+    dvr->signals = new Signals(dvr->server);
 
 }
 
@@ -72,7 +85,7 @@ void connectAndWaitForNeighbors(DvrFacade *dvr) {
     std::cout << "Waiting for connection to specified neighbors" << std::endl;
 
     std::vector<std::thread *> connectorThreads;
-    for (ServerEntry serverEntry : dvr->topology->getTopologyData().serverList) {
+    for (ServerEntry serverEntry : dvr->topology->getTopologyData()->serverList) {
 
         // Skip connecting the running instance (this/itself)
         if (std::get<0>(serverEntry) == 1) continue;

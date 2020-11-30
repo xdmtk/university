@@ -1,7 +1,6 @@
 #ifndef DVR_HANDLER_H
 #define DVR_HANDLER_H
-#include <dvr/defs.h>
-
+class DvrFacade;
 class Handler {
 
 public:
@@ -11,6 +10,8 @@ public:
     void handleDisplayCommand();
     void handleCrashCommand();
     void handleInvalidCommand();
+    void handleUpdateCommand();
+    void handleStepCommand();
 
 private:
     DvrFacade * dvr;

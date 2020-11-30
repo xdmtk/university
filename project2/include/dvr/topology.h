@@ -1,10 +1,14 @@
 #ifndef DVR_TOPOLOGY_H
 #define DVR_TOPOLOGY_H
+
 #include <string>
 #include <vector>
 #include <tuple>
-#include <dvr/defs.h>
 
+
+class DvrFacade;
+typedef std::tuple<int, std::string, int> ServerEntry;
+typedef std::tuple<int, int, int> CostEntry;
 class Topology {
 
     struct TopologyData {
@@ -27,13 +31,17 @@ class Topology {
     };
 
 public:
-    Topology(std::string filename);
+    Topology(DvrFacade *dvr, std::string filename);
     std::string getServerPort() {return serverPort;}
-    TopologyData getTopologyData() {return topologyData;};
+    std::string getServerIp() {return serverIp;}
+    TopologyData * getTopologyData() {return &topologyData;};
+
+    bool updateCostEntry(int serverOne, int serverTwo, int cost);
 
 private:
+    DvrFacade * dvr;
     TopologyData topologyData;
-    std::string serverPort;
+    std::string serverPort, serverIp;
     bool parseTopologyFile(std::string filename);
 
     ServerEntryLine parseServerEntryLine(std::string line);
