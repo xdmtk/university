@@ -127,7 +127,9 @@ void Handler::handleCrashCommand() {
 void Handler::handleDisplayCommand() {
     Logger::info("Got display command");
 
-    for (CostEntry costEntry : dvr->topology->getTopologyData().costList) {
+    for (CostEntry costEntry : dvr->topology->getTopologyData()->costList) {
+        if (std::get<2>(costEntry) == COST_INF)
+            continue;
         std::string serverId = std::to_string(std::get<0>(costEntry));
         std::string neighborId = std::to_string(std::get<1>(costEntry));
         std::string cost = std::to_string(std::get<2>(costEntry));
