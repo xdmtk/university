@@ -23,7 +23,12 @@ ShellCommand Shell::getUserCommand() {
         return ShellCommand::StepCommand;
     }
     else if (tokens[0] == "packets") {
-	return ShellCommand::PacketCommand;
+        return ShellCommand::PacketCommand;
+    else if (tokens[0] == "display") {
+        return ShellCommand::DisplayCommand;
+    }
+    else if (tokens[0] == "crash") {
+        return ShellCommand::CrashCommand;
     }
     else {
         return ShellCommand::InvalidCommand;
