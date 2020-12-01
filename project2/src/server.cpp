@@ -111,7 +111,7 @@ void Server::setAddressOptions(struct sockaddr_in * address) {
 void Server::bindAndListen(int * bindSocket, struct sockaddr_in * address) {
 
     if (bind(*bindSocket, reinterpret_cast<struct sockaddr *>(address), sizeof(*address)) < 0) {
-        Logger::fatal("Could not bind to port " + std::to_string(address->sin_port) + "! "
+        Logger::fatal("Could not bind to port " + std::to_string(bindPort) + "! "
                       + (errno ? "Errno: " + std::string(strerror(errno)) : ""));
     }
     if (listen(*bindSocket, connectionBacklogMaxLimit) < 0) {
