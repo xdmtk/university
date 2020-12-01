@@ -69,3 +69,9 @@ If today's date was 11/30/2020.
     * `step`
     * `update`
 
+##### Gage Aschenbrenner
+
+* Reworked invalid command handler from Project 1
+* Commands implemented:
+    * `display`
+    * `crash`
