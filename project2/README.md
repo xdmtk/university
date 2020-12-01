@@ -75,3 +75,12 @@ If today's date was 11/30/2020.
 * Commands implemented:
     * `display`
     * `crash`
+    
+##### Kyle Strem
+
+* Reformatted routing table update behavior
+* Created data structures and helper functions to quickly determine relative server ID
+* Created `Message Received` functionality
+* Improved QoL of the overall behavior of the program
+* Commands implemented:
+   * `packets`
