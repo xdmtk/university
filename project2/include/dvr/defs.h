@@ -45,7 +45,7 @@ struct GeneralMessage {
 
 #define ERR_INVALID_ARGS "Invalid amount of arguments! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
 #define ERR_MALFORMED_ARGS "Invalid argument structure! Usage: ./dvr -t <topology-file-name> -i <routing-update-interval>"
-
+#define ERR_INVALID_DISABLE_ARG "Invalid amount of arguments for `disable` command! Usage: disable <server-ID>"
 #define ERR_INVALID_UPDATE_ARGS "Invalid amount of arguments! Usage: update <server id 1> <server id 2> <link cost>"
 #define ERR_MALFORMED_UPDATE_ARGS "Invalid argument structure! Usage: update <int> <int> <int/inf>"
 

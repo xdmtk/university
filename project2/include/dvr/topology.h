@@ -37,6 +37,7 @@ public:
     TopologyData * getTopologyData() {return &topologyData;};
 
     bool updateCostEntry(int serverOne, int serverTwo, int cost);
+    bool closeConnection(int close_serverID);
 
 private:
     DvrFacade * dvr;

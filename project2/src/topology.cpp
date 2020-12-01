@@ -142,3 +142,15 @@ bool Topology::updateCostEntry(int serverOne, int serverTwo, int cost) {
     }
     return hit;
 }
+
+bool Topology::closeConnection(int close_serverID) {
+    bool closed = false;
+    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
+       if(std::get<1>(costEntry) == close_serverID) {
+           std::get<2>(costEntry) = COST_INF;
+           closed = true;
+       }
+    }
+
+    return closed;
+}
