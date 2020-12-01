@@ -13,10 +13,10 @@ class DvrFacade;
 class Client {
 
 public:
-    Client(Server *server, int socketFd, int bindPort, DvrFacade *dvr);
+    Client(Server *server, int socketFd, int bindPort, int clientId, DvrFacade *dvr);
     void mainConnectionLoop();
     std::string getClientIpAddress() { return this->ipAddress;}
-
+    int getClientId() { return this->clientId; }
     int getClientBindPort() { return this->bindPort;}
     bool isAlive() {return !terminated;}
     void sendMessage(const std::string &msg);
@@ -24,7 +24,7 @@ public:
 private:
     DvrFacade * dvr;
     Server * server;
-    int socketFd, bindPort;
+    int socketFd, bindPort, clientId;
     bool terminated;
     std::string ipAddress;
 

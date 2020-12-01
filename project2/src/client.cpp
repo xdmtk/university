@@ -20,10 +20,11 @@
  * @param socketFd - The socket file descriptor connected on
  * @param bindPort - The port number the client is connected on
  */
-Client::Client(Server *server, int socketFd, int bindPort, DvrFacade *dvr) {
+Client::Client(Server *server, int socketFd, int bindPort, int clientId, DvrFacade *dvr) {
     this->socketFd = socketFd;
     this->server = server;
     this->bindPort = bindPort;
+    this->clientId = clientId;
     this->dvr = dvr;
     terminated = false;
     Logger::info("New client established at socket file descriptor: "
@@ -47,6 +48,7 @@ void Client::mainConnectionLoop() {
 
         // Parse incoming routing updates and make updates to routing table
         dvr->updater->parseIncomingRoutingUpdate(std::string(buffer));
+	dvr->packetCounter++;
         memset(buffer, '\0', 4096);
     }
     close(socketFd);

@@ -10,6 +10,8 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <string>
+#include <iostream>
 
 Updater::Updater(DvrFacade * dvr, int routingUpdateInterval) {
     this->dvr = dvr;
@@ -131,16 +133,27 @@ void Updater::enableRoutingUpdates() {
  */
 void Updater::parseIncomingRoutingUpdate(std::string msg) {
     auto tokens = splitString(msg, "|");
+
     int numberOfUpdateFields = std::atoi(tokens.at(0).c_str());
+    int senderPort = std::atoi(tokens.at(1).c_str());
+    std::string senderIP = tokens.at(2);
+    int senderId = dvr->topology->lookupServerId(senderIP, senderPort);
 
-    for (int i = 0, offset = 3; i < numberOfUpdateFields; ++i, offset += 4) {
-        auto serverId = std::atoi(tokens.at(offset+2).c_str());
-        auto cost = std::atoi(tokens.at(offset+3).c_str());
+    /* Message received notification */
+    std::cout << "RECEIVED A MESSAGE FROM SERVER " << senderId << std::endl;
 
-        if (!dvr->topology->updateCostEntry(1, serverId, cost)) {
-            Logger::error("Could not update cost on server ID " +
-                         std::to_string(serverId) + " from routing update");
-        }
+    for (int i = 3; i < 2 + (5 * numberOfUpdateFields); i += 4) { // each update block has 4 fields * # of updates
+	std::string updateeIP = tokens.at(i);
+	int updateePort = std::atoi(tokens.at(i+1).c_str());
+	int updateeId = std::atoi(tokens.at(i+2).c_str());
+        int newCost = std::atoi(tokens.at(i+3).c_str());
 
+	if (updateeIP.compare(dvr->topology->getServerIp()) == 0 && updateePort == std::atoi(dvr->topology->getServerPort().c_str())) { // it's us, the only entry we care about
+
+	        if (!dvr->topology->updateCostEntry(1, senderId, newCost)) {
+        	    Logger::error("Could not update cost on server ID " +
+                	         std::to_string(senderId) + " from routing update");
+        	}
+	}
     }
 }
