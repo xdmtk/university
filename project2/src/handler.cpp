@@ -146,7 +146,7 @@ void Handler::handleDisableCommand() {
     std::vector<std::string> tokens = splitString(std::move(dvr->shell->getLastUserInput()), " ");
 
     /* Check the argument*/
-    if (tokens.size() < 1) {
+    if (tokens.size() < 2) {
         std::cout << ERR_INVALID_DISABLE_ARG << std::endl;
         Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
         return;
@@ -157,7 +157,7 @@ void Handler::handleDisableCommand() {
         std::cout << "Server <" << close_serverID <<"> successfully closed." << std::endl;
     } 
     else {
-        std::cout << "Server <" << close_serverID <<"> successfully closed." << std::endl;
+        std::cout << "Server <" << close_serverID <<"> could not be closed." << std::endl;
     }
 
 }
