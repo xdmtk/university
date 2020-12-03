@@ -155,6 +155,7 @@ bool Topology::closeConnection(int close_serverID) {
     }
 
     return closed;
+}
 
 /**
  * Lookup function to find a server's id from their IP and port
