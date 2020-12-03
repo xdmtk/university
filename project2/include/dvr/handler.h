@@ -13,7 +13,8 @@ public:
     void handleUpdateCommand();
     void handleStepCommand();
     void handleDisableCommand();
-
+    void handlePacketCommand();
+  
 private:
     DvrFacade * dvr;
 };

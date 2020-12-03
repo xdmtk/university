@@ -24,6 +24,12 @@ Handler::Handler(DvrFacade *dvr) {
     this->dvr = dvr;
 }
 
+void Handler::handlePacketCommand() {
+    std::cout << "Packets received since last invocation: " << dvr->packetCounter << std::endl;
+    std::cout << "`packets` SUCCESS" << std::endl;
+    dvr->packetCounter = 0;
+}
+
 void Handler::handleStepCommand() {
     std::string serialized = dvr->updater->serializeGeneralMessage(
             dvr->updater->generateGeneralMessageFormat()
@@ -118,6 +124,9 @@ void Handler::handleCrashCommand() {
              + std::to_string((*it)->getClientBindPort()));
         it = dvr->clientVector->erase(it);
     }
+    for (CostEntry &costEntry : dvr->topology->getTopologyData()->costList) {
+        std::get<2>(costEntry) = COST_INF;
+    }
 }
 
 /**
@@ -133,7 +142,9 @@ void Handler::handleDisplayCommand() {
         std::string serverId = std::to_string(std::get<0>(costEntry));
         std::string neighborId = std::to_string(std::get<1>(costEntry));
         std::string cost = std::to_string(std::get<2>(costEntry));
-        Logger::info("Server ID: " + serverId + "\tNeighbor ID: " + neighborId + "\tCost: " + cost);
+        std::string displayMessage = ("Server ID: " + serverId + "\tNeighbor ID: " + neighborId + "\tCost: " + cost);
+        std::cout << displayMessage << std::endl;
+        Logger::info(displayMessage);
     }
 }
 /**

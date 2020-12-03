@@ -65,6 +65,8 @@ bool Topology::parseTopologyFile(std::string filename) {
                             sel.serverPort
                     )
             );
+	    serverIdLookupTable.insert(std::pair<std::string, int>(sel.serverIp + std::to_string(sel.serverPort), sel.serverId));
+	    serverIpLookupTable.insert(std::make_pair(sel.serverId, std::make_pair(sel.serverIp, sel.serverPort)));
         }
 
         // All subsequent lines contain cost information
@@ -153,4 +155,14 @@ bool Topology::closeConnection(int close_serverID) {
     }
 
     return closed;
+
+/**
+ * Lookup function to find a server's id from their IP and port
+ * @params ip, port
+ * @return server_id
+ */
+int Topology::lookupServerId(std::string ip, int port) {
+	int id = serverIdLookupTable.find(ip + std::to_string(port))->second;
+	
+	return id;
 }

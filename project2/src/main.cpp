@@ -69,9 +69,9 @@ int main(int argc, char ** argv) {
  * list pruning function on a separate thread.
  */
 void facadeInjector(DvrFacade *dvr, Args * args) {
-
-    dvr->updater = new Updater(dvr, args->getRoutingUpdateInterval());
+    
     dvr->topology = new Topology(dvr, args->getTopologyFilepath());
+    dvr->updater = new Updater(dvr, args->getRoutingUpdateInterval());
 
     dvr->server = new Server(dvr->topology->getServerPort(), dvr);
     dvr->connector = new Connector(dvr);

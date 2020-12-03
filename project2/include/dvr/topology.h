@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <map>
 
 
 class DvrFacade;
@@ -38,6 +39,7 @@ public:
 
     bool updateCostEntry(int serverOne, int serverTwo, int cost);
     bool closeConnection(int close_serverID);
+    int lookupServerId(std::string ip, int port);
 
 private:
     DvrFacade * dvr;
@@ -47,6 +49,8 @@ private:
 
     ServerEntryLine parseServerEntryLine(std::string line);
     CostEntryLine parseCostEntryLine(std::string line);
+    std::map<std::string, int> serverIdLookupTable;
+    std::map<int, std::pair<std::string, int>> serverIpLookupTable;
 };
 
 

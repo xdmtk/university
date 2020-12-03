@@ -7,7 +7,7 @@ class Shell {
 
 public:
     enum ShellCommand {
-        UpdateCommand, StepCommand, InvalidCommand, EmptyCommand, QuitProgram,
+        UpdateCommand, StepCommand, PacketCommand, InvalidCommand, EmptyCommand, QuitProgram,
         DisplayCommand, CrashCommand, DisableCommand
     };
     ShellCommand getUserCommand();
