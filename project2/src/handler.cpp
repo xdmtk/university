@@ -147,5 +147,30 @@ void Handler::handleDisplayCommand() {
         Logger::info(displayMessage);
     }
 }
+/**
+ * Disable the connection of the given server id
+ * For: Disable functionality in doc
+ */
+ 
+void Handler::handleDisableCommand() {
+    Logger::info("Got disable command");
+    std::vector<std::string> tokens = splitString(std::move(dvr->shell->getLastUserInput()), " ");
+
+    /* Check the argument*/
+    if (tokens.size() < 2) {
+        std::cout << ERR_INVALID_DISABLE_ARG << std::endl;
+        Logger::debug("Size of tokens: " + std::to_string(tokens.size()));
+        return;
+    }
+
+    int close_serverID = std::stoi(tokens[1]);
+    if(dvr->topology->closeConnection(close_serverID)) {
+        std::cout << "Server <" << close_serverID <<"> successfully closed." << std::endl;
+    } 
+    else {
+        std::cout << "Server <" << close_serverID <<"> could not be closed." << std::endl;
+    }
+
+}
 
 #pragma clang diagnostic pop

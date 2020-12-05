@@ -52,6 +52,9 @@ int main(int argc, char ** argv) {
             case ShellCommand::CrashCommand:
                 dvr->handler->handleCrashCommand();
                 break;
+            case ShellCommand::DisableCommand:
+                dvr->handler->handleDisableCommand();
+                break;
             case ShellCommand::PacketCommand:
                 dvr->handler->handlePacketCommand();
                 break;

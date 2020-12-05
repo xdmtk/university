@@ -12,7 +12,9 @@ public:
     void handleInvalidCommand();
     void handleUpdateCommand();
     void handleStepCommand();
+    void handleDisableCommand();
     void handlePacketCommand();
+  
 private:
     DvrFacade * dvr;
 };

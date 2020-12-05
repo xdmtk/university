@@ -31,6 +31,9 @@ ShellCommand Shell::getUserCommand() {
     else if (tokens[0] == "crash") {
         return ShellCommand::CrashCommand;
     }
+    else if (tokens[0] == "disable") {
+        return ShellCommand::DisableCommand;
+    }
     else {
         return ShellCommand::InvalidCommand;
     }
