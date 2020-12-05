@@ -54,6 +54,7 @@ int main(int argc, char ** argv) {
                 break;
             case ShellCommand::PacketCommand:
                 dvr->handler->handlePacketCommand();
+                break;
             case ShellCommand::EmptyCommand:
             default:
                 break;
