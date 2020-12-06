@@ -84,3 +84,9 @@ If today's date was 11/30/2020.
 * Improved QoL of the overall behavior of the program
 * Commands implemented:
    * `packets`
+
+##### Shant Melikyan
+
+* Overall project improvements to complement the requirements
+* Commands implemented:
+   * `disable`
