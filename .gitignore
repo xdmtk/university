@@ -27,3 +27,14 @@ nicholas_martinez.txt
 *.elf
 *.hex
 *.swp
+.idea/
+cmake-build-debug
+*.swp
+/CMakeFiles
+CMakeCache.txt
+cmake_install.cmake
+.vscode/
+project2/CMakeFiles/
+project2/Makefile
+project2/topology.txt
+project2/dvr
