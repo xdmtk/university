@@ -1,0 +1,41 @@
+                           airline test
+Smith John          N         3         2         
+Jobs Steven         N         9         3         
+Capone Al           N         3         2         
+Jackson Micheal     S         8         1         
+Humphrey H          S         8         2         
+Rhinehard Jim       N         3         1         
+Eastman Ken         N         1         1         
+Winston Salem       S         8         3         
+Smythe Susan        S         9         1         
+Kendricks Al        S         9         2         
+Allison Dennis      S         8         3         
+Greenblatt Richard  S         10        1         
+Davis Bob           S         10        2         
+Woods Bill          S         10        2         
+Borax M T           S         9         2         
+Henry John          N         1         3         
+Stevenson E         N         1         3         
+Williams Ken        N         2         1         
+Smith Martha        N         2         2         
+Koch Joe            N         2         3         
+Packard H P         N         3         3         
+Rinehart Jane       N         3         2         
+Swenson Cecill      N         4         1         
+Cory Troy           N         4         2         
+Byes Nikoline       N         4         3         
+Byes Jennifer       N         5         3         
+Harris John         N         5         2         
+Harris Judy         N         5         1         
+Hartman FG          N         6         1         
+Souse D T           N         6         2         
+Johnson Magic       N         6         3         
+Lampton George      N         7         2         
+Haywood Mark        N         7         3         
+Swift Tom           N         8         1         
+Dobbs Dr.           N         8         2         
+Golden Vinnie       N         8         3         
+Hacker E            N         5         3         
+Russell Steve       N         5         1         
+Champion Sparky     S         3         1         
+Innerments Tex      S         8         2         

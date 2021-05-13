@@ -1,0 +1,12 @@
+LDBA 'N',i
+STBA 0xFC16,d
+LDBA 'i',i 
+STBA 0xFC16,d
+LDBA 'c',i
+STBA 0xFC16,d
+LDBA 'k',i
+STBA 0xFC16,d
+STOP
+.ASCII "Nick"
+
+.END

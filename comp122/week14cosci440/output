@@ -1,0 +1,75 @@
+
+
+Storing nines into array
+
+###################################
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+
+
+Getting valid values
+
+###################################
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+
+
+Starting at range 10 to 30, should produce 10 invalid range errors
+
+###################################
+9
+9
+9
+9
+9
+9
+9
+9
+9
+9
+Element 20 is out of range
+Element 21 is out of range
+Element 22 is out of range
+Element 23 is out of range
+Element 24 is out of range
+Element 25 is out of range
+Element 26 is out of range
+Element 27 is out of range
+Element 28 is out of range
+Element 29 is out of range

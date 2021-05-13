@@ -1,0 +1,10 @@
+0000 D1 00 11 		; Load 3 from mem address 0x0011 into accumulator
+0003 08        		; Make 3 (in register 0) negative
+0004 60 00 02 	   	; Add directly 2 to r
+0007 60 00 06     	; Add directly 6 to r
+000A 90 00 30	   	; Bit mask for ASCII output
+000D F1 FC 16 		; Output
+0010 00
+0011 03 
+000D zz
+

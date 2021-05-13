@@ -1,0 +1,8 @@
+
+Any experienced programmer engaged in writing programs for use by others knows that,
+once his program is working correctly, good output is a must. Few people really care how much
+time and trouble a programmer has spent in designing and debugging a program. Most people 
+only see the results. Often, by the time a programmer has finished tackling a difficult problem,
+any output may look great. The programmer knows what it means and how to interpret it. However,
+the same cannot be said for others, or even for the programmer himself six months hence. 
+

@@ -1,0 +1,488 @@
+dmtk@DMT:~/git/realgit/school2018/week8cosci440$ run
+Please enter filename to write records to: records.txt
+
+
+Entering for Record 1
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: John
+Enter last name: Smith
+Enter S or N: N
+Enter integer 1: 3
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 2
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Steven
+Enter last name: Jobs
+Enter S or N: N
+Enter integer 1: 9
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 3
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Al
+Enter last name: Capone
+Enter S or N: N
+Enter integer 1: 3
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 4
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Micheal
+Enter last name: Jackson
+Enter S or N: S
+Enter integer 1: 8
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 5
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: H
+Enter last name: Humphrey
+Enter S or N: S
+Enter integer 1: 8
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 6
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Jim
+Enter last name: Rhinehard
+Enter S or N: N
+Enter integer 1: 3
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 7
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Ken  
+Enter last name: Eastman
+Enter S or N: N
+Enter integer 1: 1
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 8
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Salem
+Enter last name: Winston
+Enter S or N: S
+Enter integer 1: 8
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 9
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Susan
+Enter last name: Smythe
+Enter S or N: S
+Enter integer 1: 9
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 10
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Al
+Enter last name: Kendricks
+Enter S or N: S
+Enter integer 1: 9
+Enter integer 2: 2
+Enter more records? (y/N):
+y  
+
+
+Entering for Record 11
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Dennis
+Enter last name: Allison
+Enter S or N: S
+Enter integer 1: 8
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 12
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Richard           
+Enter last name: Greenblatt
+Enter S or N: S
+Enter integer 1: 10
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 13
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Bob
+Enter last name: Davis
+Enter S or N: S
+Enter integer 1: 10
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 14
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Bill
+Enter last name: Woods
+Enter S or N: S
+Enter integer 1: 10
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 15
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: M T 
+Enter last name: Borax
+Enter S or N: S
+Enter integer 1: 9
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 16
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: John
+Enter last name: Henry
+Enter S or N: N
+Enter integer 1: 1
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 17
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: E
+Enter last name: Stevenson
+Enter S or N: N
+Enter integer 1: 1
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 18
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Ken
+Enter last name: Williams
+Enter S or N: N
+Enter integer 1: 2
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 19
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Martha
+Enter last name: Smith
+Enter S or N: N
+Enter integer 1: 2
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 20
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Joe
+Enter last name: Koch
+Enter S or N: N
+Enter integer 1: 2
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 21
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: H P
+Enter last name: Packard
+Enter S or N: N
+Enter integer 1: 3
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 22
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Jane    
+Enter last name: Rinehart
+Enter S or N: N
+Enter integer 1: 3
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 23
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Cecill
+Enter last name: Swenson
+Enter S or N: N
+Enter integer 1: 4
+Enter integer 2: 1
+Enter more records? (y/N):
+y 
+
+
+Entering for Record 24
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Troy
+Enter last name: Cory
+Enter S or N: N
+Enter integer 1: 4
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 25
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Nikoline
+Enter last name: Byes
+Enter S or N: N
+Enter integer 1: 4
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 26
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Jennifer
+Enter last name: Byes
+Enter S or N: N
+Enter integer 1: 5
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 27
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: John
+Enter last name: Harris
+Enter S or N: N
+Enter integer 1: 5
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 28
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Judy
+Enter last name: Harris
+Enter S or N: N
+Enter integer 1: 5
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 29
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: FG
+Enter last name: Hartman
+Enter S or N: N
+Enter integer 1: 6
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 30
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: D T
+Enter last name: Souse
+Enter S or N: N
+Enter integer 1: 6
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 31
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Magic
+Enter last name: Johnson
+Enter S or N: N
+Enter integer 1: 6
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 32
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: George
+Enter last name: Lampton
+Enter S or N: N
+Enter integer 1: 7
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 33
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Mark
+Enter last name: Haywood
+Enter S or N: N
+Enter integer 1: 7
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 34
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Tom
+Enter last name: Swift
+Enter S or N: N
+Enter integer 1: 8
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 35
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Dr.
+Enter last name: Dobbs
+Enter S or N: N
+Enter integer 1: 8
+Enter integer 2: 2
+Enter more records? (y/N):
+y
+
+
+Entering for Record 36
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Vinnie
+Enter last name: Golden
+Enter S or N: N
+Enter integer 1: 8
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 37
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: E
+Enter last name: Hacker
+Enter S or N: N
+Enter integer 1: 5
+Enter integer 2: 3
+Enter more records? (y/N):
+y
+
+
+Entering for Record 38
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Steve
+Enter last name: Russell
+Enter S or N: N
+Enter integer 1: 5
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 39
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Sparky
+Enter last name: Champion
+Enter S or N: S
+Enter integer 1: 3
+Enter integer 2: 1
+Enter more records? (y/N):
+y
+
+
+Entering for Record 40
+# # # # # # # # # # # # # # # # # # # # # # 
+Enter first name: Tex       
+Enter last name: Innerments
+Enter S or N: S
+Enter integer 1: 8
+Enter integer 2: 2
+Enter more records? (y/N):
+n
+
+
+
+Displaying Records:
+
+                           airline test
+Smith John          N         3         2         
+Jobs Steven         N         9         3         
+Capone Al           N         3         2         
+Jackson Micheal     S         8         1         
+Humphrey H          S         8         2         
+Rhinehard Jim       N         3         1         
+Eastman Ken         N         1         1         
+Winston Salem       S         8         3         
+Smythe Susan        S         9         1         
+Kendricks Al        S         9         2         
+Allison Dennis      S         8         3         
+Greenblatt Richard  S         10        1         
+Davis Bob           S         10        2         
+Woods Bill          S         10        2         
+Borax M T           S         9         2         
+Henry John          N         1         3         
+Stevenson E         N         1         3         
+Williams Ken        N         2         1         
+Smith Martha        N         2         2         
+Koch Joe            N         2         3         
+Packard H P         N         3         3         
+Rinehart Jane       N         3         2         
+Swenson Cecill      N         4         1         
+Cory Troy           N         4         2         
+Byes Nikoline       N         4         3         
+Byes Jennifer       N         5         3         
+Harris John         N         5         2         
+Harris Judy         N         5         1         
+Hartman FG          N         6         1         
+Souse D T           N         6         2         
+Johnson Magic       N         6         3         
+Lampton George      N         7         2         
+Haywood Mark        N         7         3         
+Swift Tom           N         8         1         
+Dobbs Dr.           N         8         2         
+Golden Vinnie       N         8         3         
+Hacker E            N         5         3         
+Russell Steve       N         5         1         
+Champion Sparky     S         3         1         
+Innerments Tex      S         8         2         

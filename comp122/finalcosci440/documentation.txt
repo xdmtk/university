@@ -1,0 +1,109 @@
+//                  Documentation for Final Exam
+//                    Problem Solution Approach
+//
+//
+//
+// The assignment asks us to create a program to accept the name of a text file
+// and read that file.
+//
+//  It then wants us to print several pieces of information about this file. I will
+//  Seperate these tasks into parts and discuss how to solve each of those parts.
+//
+//
+//  PART I: Character Frequency
+//      For character frequency (printing a list of all letters, ordered with
+//      most frequently used to least frequently used), I will be utilizing a
+//      couple different dynamic storage classes to implement both accounting for
+//      occurences of a particular character and sorting them into most frequently 
+//      seen to least frequently seen.
+//
+//      For gathering the character count, I will be utilizing the Map class of the STL.
+//      Maps are similar to vectors, in which they both are dynamically allocated list
+//      abstractions, except maps hold two values for a particular entry. One being the 'key'
+//      and the other being the value.
+//
+//      For character frequency we can set the key to be the letters seen in the file
+//      and the value as how many times seen. 
+//
+//      Before we can implement any of this, we must first read the file and store it into
+//      a buffer. This is exactly what I have done, as an InputParser object stores the input
+//      file into a private string class object. Now that we have the file available, we can
+//      iterate character by character through the string. 
+//  
+//      The STL also provides an abstraction for iterating through dynamic containers like
+//      strings, vectors and maps, called iterators. So we create an iterator to process the
+//      input file character by character. With each character processed, we convert the character
+//      to its lowercase equivalent, in order to make the frequency count case insensitive.
+//
+//      Then we store that character in the map. By default, all new map entries have a value
+//      of 0. Therefore, we can check whether this value is 0, and for the first entry, we can
+//      set this value to 1. For entries that already have been accounted for, failure to find
+//      a zero value means all we have to do is increment the value for that character to keep
+//      a counter for that character.
+//
+//      Next, to sort these values, I implement two vectors. One for the character and one for its value. 
+//      Using an iterator, I iterate through the entire map, storing the highest valued character
+//      and its value in two local variables. That character and value are then pushed to their
+//      respective vectors, and using the character as the key, that character is then deleted
+//      from the map, as to not have duplicate entries in the vector. 
+//
+//      After all map entries have been erased, the two vectors should contain all entries
+//      from the map, sorted from greatest to least. Then we just iterate through those vectors
+//      to print the values
+//
+//
+//
+//
+//  PART II: Word Frequency
+//      Here the map approach is also used, except the keys are now words found in the private
+//      _inputText string member that holds the contents of the file as one long string. The
+//      same basic idea is applied, words are converted to lower case and then processed through the
+//      map. The nice thing about maps, is that their entries when inputted as an index, vs through
+//      a function of the map class, are placed alphabetically automatically. This way we can 
+//      just iterate through the map. 
+//
+//      But if this was not the case, a similar approach would be used, by placing the values and
+//      keys into seperate vectors, and then iterating through the map, analyzing the value of the
+//      first letter of each key, and taking the lowest to push to the vector, and erasing the
+//      entry from the map. 
+//
+//      After that we can simply print the word and the value by iterating through the map.
+//
+//
+//
+//
+//
+//  PART III: Averages (Letters & Words)
+//      Getting the average letters and words in the file is relatively simple. The main
+//      idea is to iterate through the input text and determine what is a word, and what is
+//      a sentence. 
+//
+//      Since sentences all end with either a period, exclamation mark, or question mark
+//      (for the most part), we can determine what is a sentence by determining whether
+//      there is any one of these notations in the word. 
+//
+//      Finding words is also simple. Since all seperate words are divided by spaces,
+//      we can keep a word count by counting the amount of spaces found in the file. 
+//      For most files, this is sufficient for an accurate word count. 
+//
+//      There are methods of error checking for these two strategies, but would be 
+//      needlessly complicated to implement for usage for 95% of plain english text
+//      files. 
+//
+//
+//
+//
+//
+//
+//
+//  Now all we have to do is put these together in the main function and run the program!
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
