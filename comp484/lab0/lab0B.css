@@ -1,0 +1,85 @@
+html {
+    background-color: #17374e;
+    font-family: sans-serif;
+}
+
+h1 {
+    margin-top: 12px;
+    margin-bottom: -14px;
+    margin-right: 16px;
+}
+
+h2 {
+    margin-right: 16px;
+}
+
+li {
+    margin-top: 8px;
+}
+
+#main-div {
+    width: 834px;
+    height: 98%;
+    background-color: white;
+    margin: 10px auto;
+    border: 4px solid black;
+
+}
+
+#page-title {
+    margin: 20px auto;
+    width: 97%;
+    height: 100px;
+    text-align: right;
+    background-color: #d7e4bd;
+    border: 1px solid black;
+}
+
+#friends {
+    width: 31%;
+    height: 180px;
+    background-color: red;
+    margin: 8px auto;
+    margin-left: 12px;
+    float: left;
+    color: white;
+    text-align: left;
+    padding-left: 10px;
+    border: 2px solid black;
+}
+
+.entries{
+    width: 62%;
+    height: 180px;
+    margin: 8px auto;
+    margin-right: 12px;
+    float: right;
+    text-align: left;
+}
+
+.entry {
+    background-color: #ccc1da;
+    width: 95%;
+    height: 300px;
+    padding-top: 5px;
+    padding-left: 20px;
+    border: 2px solid black;
+    margin-bottom: 16px;
+
+}
+
+.entry-img {
+    float: right;
+    height: 150px;
+    margin-right: 8px;
+    margin-left: 8px;
+}
+
+.special-link {
+    color:white;
+}
+
+.special-link:hover {
+    color:red;
+}
+

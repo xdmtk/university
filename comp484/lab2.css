@@ -1,0 +1,166 @@
+html {
+    background-color: #202225;
+    font-family: monospace;
+    transition: 1s;
+}
+table {
+    margin: 0 auto;
+    border-spacing: 0px;
+}
+
+td {
+    padding: 8px;
+    color: #a9a9a9;
+}
+
+#mod-two {
+    background: #3f4348;
+}
+
+th {
+    padding-bottom: 8px;
+    color: aliceblue;
+}
+
+th, td {
+    border-bottom: 1px solid #2fbd91;
+}
+
+input {
+    display: block;
+    width: 100%;
+    padding-top: 30px;
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid #a9a9a9;
+    color: #a9a9a9;
+    outline: 0;
+}
+
+span {
+    display: block;
+    width: 100%;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    color: #ff2509;
+}
+
+#form-box {
+    margin: 200px auto;
+    width: 275px;
+    padding: 20px;
+    background: #303338;
+    border-radius: 7px;
+    border: 1px solid #2fbd91;
+    transition: 2s;
+    opacity: 1.0;
+}
+
+#form-box-title {
+    color: #a9a9a9;
+    text-align: center;
+    font-size: 28px;
+}
+
+#login-register-switch {
+    font-size: 12px;
+    color: #2fbd91;
+    margin-top: 30px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+#login-register-switch:hover {
+   cursor: pointer;
+}
+
+#general-error-span {
+    visibility: hidden;
+    margin-top: 18px;
+    margin-bottom: -20px;
+    text-align: center;
+}
+
+#welcome-span {
+    color: #2fbd91;
+    text-align: center;
+    font-size: 65px;
+    font-family: monospace;
+    margin-top: 68px;
+}
+
+#submit {
+    padding: 7px 20px;
+    background: #2fbd91;
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+    border: 0;
+    display: block;
+    margin-top: 37px;
+    text-shadow: 1px 1px 2px #1a8966;
+    margin-bottom: 14px;
+}
+
+#color-changer {
+    display: block;
+    width: 220px;
+    height: 70px;
+    z-index: 1;
+}
+#color-changer:after {
+    content: '';
+    background: linear-gradient(120deg, #1cbf9a, #eae860, #1cbf9a);
+    background-size: 400% 400%;
+    clip-path: polygon(0% 100%, 4px 100%, 4px 4px, 216px 4px, 216px 66px, 4px 66px, 4px 100%, 100% 100%, 100% 0%, 0% 0%);
+    -webkit-clip-path: polygon(0% 100%, 4px 100%, 4px 4px, 216px 4px, 216px 66px, 4px 66px, 4px 100%, 100% 100%, 100% 0%, 0% 0%);
+    -moz-animation: gradient 3s ease-in-out infinite, border 1s forwards ease-in-out reverse;
+    -webkit-animation: gradient 3s ease-in-out infinite, border 1s forwards ease-in-out reverse;
+    animation: gradient 3s ease-in-out infinite, border 1s forwards ease-in-out reverse;
+}
+#color-changer > #color-changer-span {
+    display: block;
+    color: white;
+    background: linear-gradient(120deg, #1cbf9a, #eae860, #1cbf9a);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -moz-animation: gradient 3s ease-in-out infinite;
+    -webkit-animation: gradient 3s ease-in-out infinite;
+    animation: gradient 3s ease-in-out infinite;
+}
+
+/* helpers */
+.absolute-centering, #color-changer, #color-changer:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+.text-formatting, #color-changer {
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    letter-spacing: 2px;
+    line-height: 70px;
+    font-size: 28px;
+}
+
+@-moz-keyframes gradient {
+    0% {background-position: 14% 0%;}
+    50% {background-position: 87% 100%;}
+    100% {background-position: 14% 0%;}
+}
+@-webkit-keyframes gradient {
+    0% {background-position: 14% 0%;}
+    50% {background-position: 87% 100%;}
+    100% {background-position: 14% 0%;}
+}
+@keyframes gradient {
+    0% {background-position: 14% 0%;}
+    50% {background-position: 87% 100%;}
+    100% {background-position: 14% 0%;}
+}

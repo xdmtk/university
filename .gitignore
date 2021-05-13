@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 *.swp
 *.class
 *.pdf
@@ -15,7 +14,6 @@ a.out
 *.swp
 .idea/
 *.class
-=======
 cmake-build-debug
 .idea/
 .ycm_extra_conf.py
@@ -24,4 +22,5 @@ cmake-build-debug
 *.pdf
 *.pdf.cpt
 nicholas_martinez.txt
->>>>>>> comp322/master
+*.swp
+.idea/
