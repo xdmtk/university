@@ -1,0 +1,5 @@
+1. For Vertex_node: What does the next pointer represent? It doesn't seem to show any edge relationship between the node.. is it just a way to get around from node to node?
+
+1. For edge_head ( assuming a linked list of connected vertex nodes ), what is target and what is next? I thought edge_head was only supposed to contain nodes that are pointing to the given vertex node?
+
+
