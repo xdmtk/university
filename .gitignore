@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.swp
 *.class
 *.pdf
@@ -14,3 +15,13 @@ a.out
 *.swp
 .idea/
 *.class
+=======
+cmake-build-debug
+.idea/
+.ycm_extra_conf.py
+.gdb_history
+.gdb_history.cpt
+*.pdf
+*.pdf.cpt
+nicholas_martinez.txt
+>>>>>>> comp322/master
