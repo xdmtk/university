@@ -1,18 +1,16 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 *.swp
 *.class
 *.pdf
 *.swo
-=======
 a.out
 .gdb*
 *.swp
->>>>>>> comp256/master
-=======
 .idea/
 *.iml
 *.pdf
 *.kotlin_module
 *.class
->>>>>>> comp282/master
+*.bak
+*.swp
+.idea/
+*.class
