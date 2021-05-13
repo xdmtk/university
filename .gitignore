@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 *.swp
 *.class
 *.pdf
 *.swo
+=======
+a.out
+.gdb*
+*.swp
+>>>>>>> comp256/master
