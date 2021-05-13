@@ -18,7 +18,7 @@ Computer Systems / Architecture. C code relating to systems programming.
 
 ### COMP 256
 
-Discrete Structures. A math class with an emphasise on programming. Mostly C++ programs relating to combinatorics and other discrete math concepts.
+Discrete Structures. A math class with an emphasis on programming. Mostly C++ programs relating to combinatorics and other discrete math concepts.
 
 
 ### COMP 282 
