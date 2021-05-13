@@ -38,3 +38,5 @@ project2/CMakeFiles/
 project2/Makefile
 project2/topology.txt
 project2/dvr
+.idea/
+cmake-build-debug/
