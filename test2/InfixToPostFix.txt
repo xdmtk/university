@@ -1,0 +1,7 @@
+Convert the following infix expression into a postfix notation. Show each step and contents of the stack. 
+Do not need the java code, just with paper and pen (may use notepad). Upload the picture if working on 
+paper with pen; or upload the text dile.
+
+
+
+ a * b + (c - d) / (e * a + d / b) 
